@@ -12,6 +12,7 @@ from atomref_proatoms.dataset_index import (
     build_and_write_dataset_indexes,
     check_dataset_indexes,
 )
+from atomref_proatoms.dataset_summary import format_dataset_summary, summarize_dataset_indexes
 from atomref_proatoms.datasets import PRIMARY_X2C_QZVPALL
 from atomref_proatoms.profiles import derived_radii
 from atomref_proatoms.states import load_atom_states
@@ -86,6 +87,8 @@ def test_build_and_check_dataset_indexes(tmp_path: Path) -> None:
         rows = list(csv.DictReader(handle))
     assert rows[0]["state_id"] == "H_q0_mult2_hund"
     assert rows[0]["profile_archive"] == "profiles/H_q0_mult2_hund.csv.zip"
+    assert rows[0]["state_category"] == "nist_ground_state"
+    assert rows[0]["spin_model"] == "free_ion_hund_high_spin"
     assert rows[0]["electron_count_error_qa"] == "1e-09"
 
     result = check_dataset_indexes(dataset_dir, states_file=STATES_FILE, basis_root=BASIS_ROOT)
@@ -114,6 +117,7 @@ def test_build_dataset_index_cli_and_check_dataset_cli(tmp_path: Path) -> None:
             "--dataset-dir",
             str(dataset_dir),
             "--require-profile-qa",
+            "--summary",
         ],
         cwd=ROOT,
         check=True,
@@ -121,6 +125,7 @@ def test_build_dataset_index_cli_and_check_dataset_cli(tmp_path: Path) -> None:
         text=True,
     )
     assert "OK: wrote dataset indexes for 1 profile(s)" in build.stdout
+    assert "State categories: nist_ground_state=1" in build.stdout
 
     check = subprocess.run(
         [
@@ -129,6 +134,7 @@ def test_build_dataset_index_cli_and_check_dataset_cli(tmp_path: Path) -> None:
             "--dataset-dir",
             str(dataset_dir),
             "--require-profile-qa",
+            "--summary",
         ],
         cwd=ROOT,
         check=True,
@@ -136,3 +142,43 @@ def test_build_dataset_index_cli_and_check_dataset_cli(tmp_path: Path) -> None:
         text=True,
     )
     assert "OK: checked dataset" in check.stdout
+    assert "State categories: nist_ground_state=1" in check.stdout
+
+
+def test_dataset_summary_from_indexes(tmp_path: Path) -> None:
+    dataset_dir = _write_h_dataset(tmp_path)
+    build_and_write_dataset_indexes(dataset_dir, states_file=STATES_FILE, basis_root=BASIS_ROOT)
+
+    summary = summarize_dataset_indexes(dataset_dir)
+    report = format_dataset_summary(summary)
+
+    assert summary.dataset_id == PRIMARY_X2C_QZVPALL
+    assert summary.profile_count == 1
+    assert summary.symbols == ("H",)
+    assert summary.charge_counts == (("0", 1),)
+    assert summary.state_category_counts == (("nist_ground_state", 1),)
+    assert summary.electron_count_qa_count == 1
+    assert "Dataset:" in report
+    assert "State categories: nist_ground_state=1" in report
+    assert "Max |electron-count error|: 1e-09" in report
+
+
+def test_summarize_dataset_cli(tmp_path: Path) -> None:
+    dataset_dir = _write_h_dataset(tmp_path)
+    build_and_write_dataset_indexes(dataset_dir, states_file=STATES_FILE, basis_root=BASIS_ROOT)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/summarize_dataset.py",
+            "--dataset-dir",
+            str(dataset_dir),
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert "Dataset:" in result.stdout
+    assert "Profiles: 1" in result.stdout

@@ -27,6 +27,9 @@ PROFILE_INDEX_COLUMNS = (
     "charge",
     "electron_count",
     "multiplicity",
+    "state_category",
+    "state_role",
+    "spin_model",
     "basis_id",
     "basis_sha256",
     "engine",
@@ -218,6 +221,21 @@ def build_dataset_index_tables(
                 "electron_count": state.electron_count if state is not None else "",
                 "multiplicity": (
                     state.multiplicity if state is not None else state_metadata.get("multiplicity")
+                ),
+                "state_category": (
+                    state.record.get("state_category")
+                    if state is not None
+                    else state_metadata.get("state_category")
+                ),
+                "state_role": (
+                    state.record.get("state_role")
+                    if state is not None
+                    else state_metadata.get("state_role")
+                ),
+                "spin_model": (
+                    state.record.get("spin_model")
+                    if state is not None
+                    else state_metadata.get("spin_model")
                 ),
                 "basis_id": basis_id,
                 "basis_sha256": basis_sha256,

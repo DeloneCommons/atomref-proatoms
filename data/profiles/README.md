@@ -26,14 +26,17 @@ Dataset-level indexes can be generated and checked with:
 
 ```bash
 python scripts/build_dataset_index.py --dataset-dir data/profiles/<dataset_id>
-python scripts/check_dataset.py --dataset-dir data/profiles/<dataset_id>
+python scripts/check_dataset.py --dataset-dir data/profiles/<dataset_id> --summary
+python scripts/summarize_dataset.py --dataset-dir data/profiles/<dataset_id>
 ```
 
 The profile checker validates strict JSON metadata, `.csv.zip` profile archive
 structure, required profile columns, finite and monotonic radial data, cutoff-radius
 consistency, state/dataset/basis metadata consistency, and QA status fields.  The
 dataset checker additionally validates that `dataset_manifest.json`,
-`profile_index.csv`, and `derived_radii.csv` match the per-state artifacts.
+`profile_index.csv`, and `derived_radii.csv` match the per-state artifacts. The
+dataset summary reports profile counts, element/charge/state-category coverage, QA
+coverage, and derived-radius ranges from the dataset-level index files.
 
 Here, QA means generated-profile quality assurance. Current QA metadata covers SCF
 convergence, independent electron-count integration on a separate radial/angular grid,

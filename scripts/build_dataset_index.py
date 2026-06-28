@@ -22,6 +22,10 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from atomref_proatoms.dataset_index import build_and_write_dataset_indexes  # noqa: E402
+from atomref_proatoms.dataset_summary import (  # noqa: E402
+    format_dataset_summary,
+    summarize_dataset_indexes,
+)
 from atomref_proatoms.profile_checks import check_profile_dataset  # noqa: E402
 
 
@@ -61,6 +65,11 @@ def parse_args() -> argparse.Namespace:
         default=1e-8,
         help="Tolerance for qa.max_rel_angular_sigma when profile checks are run.",
     )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Print a compact dataset summary after writing indexes.",
+    )
     return parser.parse_args()
 
 
@@ -96,6 +105,9 @@ def main() -> int:
     print(f"Manifest: {args.dataset_dir / 'dataset_manifest.json'}")
     print(f"Profile index: {args.dataset_dir / 'profile_index.csv'}")
     print(f"Derived radii: {args.dataset_dir / 'derived_radii.csv'}")
+    if args.summary:
+        print()
+        print(format_dataset_summary(summarize_dataset_indexes(args.dataset_dir)))
     return 0
 
 

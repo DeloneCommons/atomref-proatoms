@@ -131,7 +131,8 @@ python scripts/run_pilots.py \
   --qa-n-ang 50 \
   --check-profiles \
   --require-profile-qa \
-  --build-indexes
+  --build-indexes \
+  --summary
 ```
 
 Available pilot groups can be listed without PySCF:
@@ -156,9 +157,15 @@ python scripts/build_dataset_index.py \
 
 python scripts/check_dataset.py \
   --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --require-profile-qa
+  --require-profile-qa \
+  --summary
+
+python scripts/summarize_dataset.py \
+  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0
 ```
 
 Use `--require-profile-qa` when checking artifacts that should include independent
-electron-count QA rather than skipped/null QA fields. Full profile generation should
-proceed only after pilot profiles pass metadata and QA checks.
+electron-count QA rather than skipped/null QA fields. The summary command prints compact
+counts for profiles, elements, charge states, state categories, QA coverage, and derived
+radius ranges. Full profile generation should proceed only after pilot profiles pass
+metadata and QA checks.

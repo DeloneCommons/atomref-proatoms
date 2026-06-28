@@ -132,6 +132,11 @@ def parse_args() -> argparse.Namespace:
             "after the batch"
         ),
     )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Print compact dataset summaries after indexes are available.",
+    )
     parser.add_argument("--list", action="store_true", help="List available pilot groups and exit")
     return parser.parse_args()
 
@@ -210,6 +215,7 @@ def build_dataset_indexes(args: argparse.Namespace, dataset_ids: set[str]) -> in
             str(dataset_dir),
         ]
         _bool_flag(command, "--require-profile-qa", args.require_profile_qa)
+        _bool_flag(command, "--summary", args.summary)
         print("\nBuilding dataset indexes:", " ".join(command))
         result = subprocess.run(command, cwd=ROOT, check=False)
         if result.returncode:
@@ -228,6 +234,8 @@ def list_groups() -> None:
 
 def main() -> int:
     args = parse_args()
+    if args.summary:
+        args.build_indexes = True
     if args.require_profile_qa and not (args.check_profiles or args.build_indexes):
         raise SystemExit("--require-profile-qa requires --check-profiles or --build-indexes")
     if args.require_profile_qa and args.no_profile_qa:
@@ -265,7 +273,6 @@ def main() -> int:
         failures += check_dataset_dirs(args, completed_dataset_ids)
     if args.build_indexes and completed_dataset_ids and not args.dry_run and not failures:
         failures += build_dataset_indexes(args, completed_dataset_ids)
-
     if failures:
         print(f"Pilot batch completed with {failures} failure(s).")
         return 1

@@ -13,6 +13,10 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from atomref_proatoms.dataset_index import check_profile_dataset_with_indexes  # noqa: E402
+from atomref_proatoms.dataset_summary import (  # noqa: E402
+    format_dataset_summary,
+    summarize_dataset_indexes,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -45,6 +49,11 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=1e-8,
         help="Tolerance for qa.max_rel_angular_sigma when that field is recorded.",
+    )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Print a compact dataset summary after successful validation.",
     )
     return parser.parse_args()
 
@@ -81,6 +90,9 @@ def main() -> int:
         print("Warnings:")
         for warning in warnings:
             print(f"  - {warning}")
+    if args.summary:
+        print()
+        print(format_dataset_summary(summarize_dataset_indexes(args.dataset_dir)))
     return 0
 
 
