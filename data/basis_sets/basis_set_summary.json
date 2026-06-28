@@ -1,0 +1,165 @@
+{
+  "schema_version": "atomref.proatoms.basis_set_summary.v0",
+  "generated_from": "basis bundle manifest.json files",
+  "generated_at_utc": "2026-06-27T19:36:24Z",
+  "basis_bundles": [
+    {
+      "basis_id": "x2c-QZVPall",
+      "basis_name_upstream": "x2c-QZVPall",
+      "role": "primary_h_rn",
+      "source": {
+        "database": "Basis Set Exchange",
+        "source_api_url": "http://www.basissetexchange.org/api/basis/x2c-qzvpall/format/nwchem/?version=1&elements=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71",
+        "source_format": "nwchem",
+        "retrieval_date": "2026-06-27",
+        "bse_export_version": "0.12",
+        "upstream_basis_version": "1",
+        "upstream_role": "orbital",
+        "upstream_source_note": "Data from Supporting info"
+      },
+      "files": {
+        "basis_file": "basis.nw",
+        "basis_sha256": "acdfcd7694d0de10703ff9194e3190f6859a51dabd23a8dfb68b7e3ec44b1d21"
+      },
+      "coverage": {
+        "coverage_label": "H-Rn",
+        "z_coverage_intervals": [
+          [
+            1,
+            86
+          ]
+        ],
+        "coverage_interval_labels": [
+          "H-Rn"
+        ],
+        "n_elements": 86
+      },
+      "usage": {
+        "dataset_ids_using_this_basis": [
+          "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0"
+        ]
+      }
+    },
+    {
+      "basis_id": "x2c-QZVPall-s",
+      "basis_name_upstream": "x2c-QZVPall-s",
+      "role": "anion_sensitivity_h_rn",
+      "source": {
+        "database": "Basis Set Exchange",
+        "source_api_url": "http://www.basissetexchange.org/api/basis/x2c-qzvpall-s/format/nwchem/?version=1&elements=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71",
+        "source_format": "nwchem",
+        "retrieval_date": "2026-06-27",
+        "bse_export_version": "0.12",
+        "upstream_basis_version": "1",
+        "upstream_role": "orbital",
+        "upstream_source_note": "Data from Supporting info"
+      },
+      "files": {
+        "basis_file": "basis.nw",
+        "basis_sha256": "f11e108ed19a8e72a6a9858e7f427972c5e4fd47fdc753290b9b83aa2d5f8dec"
+      },
+      "coverage": {
+        "coverage_label": "H-Rn",
+        "z_coverage_intervals": [
+          [
+            1,
+            86
+          ]
+        ],
+        "coverage_interval_labels": [
+          "H-Rn"
+        ],
+        "n_elements": 86
+      },
+      "usage": {
+        "dataset_ids_using_this_basis": [
+          "pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0"
+        ]
+      }
+    },
+    {
+      "basis_id": "dyall-v4z",
+      "basis_name_upstream": "dyall-v4z",
+      "role": "primary_h_lr_actinide_capable",
+      "source": {
+        "database": "Basis Set Exchange",
+        "source_api_url": "http://www.basissetexchange.org/api/basis/dyall-v4z/format/nwchem/?version=1&elements=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103",
+        "source_format": "nwchem",
+        "retrieval_date": "2026-06-27",
+        "bse_export_version": "0.12",
+        "upstream_basis_version": "1",
+        "upstream_role": "orbital",
+        "upstream_source_note": "Data from https://zenodo.org/records/7574629"
+      },
+      "files": {
+        "basis_file": "basis.nw",
+        "basis_sha256": "0ee543855f8b1e7fbe9868d4abb844d8e8cc8b8c2694067b2b40de014bb4be94"
+      },
+      "coverage": {
+        "coverage_label": "H-Og",
+        "z_coverage_intervals": [
+          [
+            1,
+            118
+          ]
+        ],
+        "coverage_interval_labels": [
+          "H-Og"
+        ],
+        "n_elements": 118
+      },
+      "usage": {
+        "dataset_ids_using_this_basis": [
+          "pbe0_sfx2c_dyallv4z_h-lr_spherical_v0"
+        ]
+      }
+    },
+    {
+      "basis_id": "dyall-av4z",
+      "basis_name_upstream": "dyall-av4z",
+      "role": "selected_anion_sensitivity_available_elements",
+      "source": {
+        "database": "Basis Set Exchange",
+        "source_api_url": "http://www.basissetexchange.org/api/basis/dyall-av4z/format/nwchem/?version=1&elements=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118",
+        "source_format": "nwchem",
+        "retrieval_date": "2026-06-27",
+        "bse_export_version": "0.12",
+        "upstream_basis_version": "1",
+        "upstream_role": "orbital",
+        "upstream_source_note": "Data from https://zenodo.org/records/7574629"
+      },
+      "files": {
+        "basis_file": "basis.nw",
+        "basis_sha256": "f5a4a4c03a9b08ba6c40ff409f91d89196ba96dcd620dc563f4b1cd103213e96"
+      },
+      "coverage": {
+        "coverage_label": "H-Ba, Hf-Ra, Rf-Og",
+        "z_coverage_intervals": [
+          [
+            1,
+            56
+          ],
+          [
+            72,
+            88
+          ],
+          [
+            104,
+            118
+          ]
+        ],
+        "coverage_interval_labels": [
+          "H-Ba",
+          "Hf-Ra",
+          "Rf-Og"
+        ],
+        "n_elements": 88
+      },
+      "usage": {
+        "dataset_ids_using_this_basis": [
+          "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v0"
+        ]
+      }
+    }
+  ]
+}

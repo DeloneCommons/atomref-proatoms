@@ -1,0 +1,52 @@
+{
+  "schema_version": "atomref.proatoms.basis_bundle.v0",
+  "basis_id": "dyall-v4z",
+  "basis_name_upstream": "dyall-v4z",
+  "description": "Dyall's valence 4-zeta primitive basis set",
+  "role": "primary_h_lr_actinide_capable",
+  "source": {
+    "database": "Basis Set Exchange",
+    "source_api_url": "http://www.basissetexchange.org/api/basis/dyall-v4z/format/nwchem/?version=1&elements=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103",
+    "source_format": "nwchem",
+    "retrieval_date": "2026-06-27",
+    "bse_export_version": "0.12",
+    "upstream_basis_version": "1",
+    "upstream_role": "orbital",
+    "upstream_source_note": "Data from https://zenodo.org/records/7574629"
+  },
+  "files": {
+    "basis_file": "basis.nw",
+    "basis_sha256": "0ee543855f8b1e7fbe9868d4abb844d8e8cc8b8c2694067b2b40de014bb4be94"
+  },
+  "format": {
+    "basis_format": "nwchem",
+    "spherical_or_cartesian": "spherical",
+    "expected_header": "BASIS \"ao basis\" SPHERICAL PRINT",
+    "intended_pyscf_loader": "pyscf.gto.basis.parse"
+  },
+  "coverage": {
+    "coverage_label": "H-Og",
+    "z_coverage_intervals": [
+      [
+        1,
+        118
+      ]
+    ],
+    "coverage_interval_labels": [
+      "H-Og"
+    ],
+    "n_elements": 118
+  },
+  "usage": {
+    "dataset_ids_using_this_basis": [
+      "pbe0_sfx2c_dyallv4z_h-lr_spherical_v0"
+    ]
+  },
+  "redistribution": {
+    "redistribution_basis": "BSE export redistributed under the BSE BSD-3-Clause notice; upstream citations are recorded in references.md.",
+    "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
+  },
+  "notes": [
+    "Basis file covers H-Og; the planned primary dataset is intentionally scoped to H-Lr."
+  ]
+}

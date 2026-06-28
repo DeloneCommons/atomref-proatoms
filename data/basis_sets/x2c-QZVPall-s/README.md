@@ -1,0 +1,41 @@
+# x2c-QZVPall-s
+
+This bundle defines the `x2c-QZVPall-s` basis input used by `atomref-proatoms`.
+It is part of the fixed basis-set layer for spherical PBE0/sf-X2C proatomic
+radial-density generation.
+
+## Scope
+
+- Role: H-Rn auxiliary/sensitivity basis, mainly for anions and formal-ion tail checks.
+- Coverage: H-Rn.
+- Basis representation: NWChem spherical/pure Gaussian basis functions.
+- Planned dataset identifiers: `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0`.
+
+This basis is kept as the x2c-family sensitivity branch for anions and formal ions. It
+is not the default neutral/cation production basis, and results produced with it should
+remain separately identified by dataset and basis identifiers.
+
+Auxiliary x2c branch. It is intended mainly for anion/formal-ion sensitivity checks
+unless a later dataset definition states otherwise.
+
+## Bundle metadata
+
+The canonical metadata record is `manifest.json`. It includes the upstream BSE
+basis name, exact BSE API URL, BSE export version, upstream basis version,
+retrieval date, coverage intervals, intended dataset identifiers, and
+redistribution note. The exact source URL is recorded as `source.source_api_url`
+in `manifest.json`.
+
+The basis-data identity is the SHA256 checksum of `basis.nw`:
+
+```text
+f11e108ed19a8e72a6a9858e7f427972c5e4fd47fdc753290b9b83aa2d5f8dec
+```
+
+`sha256sums.txt` repeats this checksum in standard checksum-file form.
+`references.md` records the BSE citation and the upstream basis-family citation.
+
+## References
+
+Franzke, Spiske, Pollak, and Weigend, J. Chem. Theory Comput. 2020, 16, 5658-5674. DOI:
+10.1021/acs.jctc.0c00546.
