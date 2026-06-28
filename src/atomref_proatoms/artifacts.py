@@ -3,21 +3,17 @@
 from __future__ import annotations
 
 import csv
-import gzip
-import io
 import json
 import math
 import numbers
 import platform
-import zipfile
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 from .profiles import DEFAULT_DENSITY_CUTOFFS, derived_radii
 from .schemas import DENSITY_MODEL, PROFILE_METADATA_SCHEMA_VERSION
 from .states import AtomState, state_digest
-
-ProfileArchiveFormat = Literal["zip", "csv.gz"]
 
 
 def json_safe(value: Any) -> Any:
@@ -55,112 +51,81 @@ def write_json(path: Path, data: Any) -> None:
     )
 
 
-def _profile_columns(
-    rows: list[tuple[float, float]] | None = None,
-    *,
-    r_bohr: list[float] | Any | None = None,
-    rho_e_bohr3: list[float] | Any | None = None,
-    rho_std_ang_e_bohr3: list[float] | Any | None = None,
-    nelec_cumulative_profile: list[float] | Any | None = None,
-) -> list[tuple[str, list[float]]]:
-    if rows is not None:
-        r_values = [row[0] for row in rows]
-        rho_values = [row[1] for row in rows]
-    else:
-        if r_bohr is None or rho_e_bohr3 is None:
-            raise ValueError("either rows or both r_bohr/rho_e_bohr3 must be provided")
-        r_values = list(r_bohr)
-        rho_values = list(rho_e_bohr3)
+def profile_density_column(state_id: str) -> str:
+    """Return the released wide-CSV density column name for one state."""
 
-    columns: list[tuple[str, list[float]]] = [
-        ("r_bohr", [float(value) for value in r_values]),
-        ("rho_e_bohr3", [float(value) for value in rho_values]),
-    ]
-    if rho_std_ang_e_bohr3 is not None:
-        columns.append(("rho_std_ang_e_bohr3", [float(value) for value in rho_std_ang_e_bohr3]))
-    if nelec_cumulative_profile is not None:
-        columns.append(
-            ("nelec_cumulative_profile", [float(value) for value in nelec_cumulative_profile])
-        )
-
-    n_rows = len(columns[0][1])
-    if any(len(values) != n_rows for _name, values in columns):
-        raise ValueError("all profile columns must have the same length")
-    return columns
+    if not state_id:
+        raise ValueError("state_id must be non-empty")
+    return f"rho_e_bohr3__{state_id}"
 
 
-def _write_profile_csv_text(handle: Any, columns: list[tuple[str, list[float]]]) -> None:
-    writer = csv.writer(handle)
-    writer.writerow([name for name, _values in columns])
-    for i in range(len(columns[0][1])):
-        writer.writerow([f"{values[i]:.17g}" for _name, values in columns])
+def _float_list(values: Sequence[float] | Any, *, label: str) -> list[float]:
+    try:
+        result = [float(value) for value in values]
+    except TypeError as exc:
+        raise ValueError(f"{label} must be a sequence of numbers") from exc
+    if not result:
+        raise ValueError(f"{label} must be non-empty")
+    return result
 
 
-def write_profile_csv_zip(
+def write_wide_profiles_csv(
     path: Path,
-    rows: list[tuple[float, float]] | None = None,
     *,
-    r_bohr: list[float] | Any | None = None,
-    rho_e_bohr3: list[float] | Any | None = None,
-    rho_std_ang_e_bohr3: list[float] | Any | None = None,
-    nelec_cumulative_profile: list[float] | Any | None = None,
-    inner_csv_name: str | None = None,
+    r_bohr: Sequence[float] | Any,
+    densities_by_state_id: Mapping[str, Sequence[float] | Any],
 ) -> None:
-    """Write a profile CSV inside a deterministic ``.zip`` archive.
+    """Write one released dataset profile CSV with a shared radius grid.
 
-    The default inner file for ``H_q0_mult2_hund.csv.zip`` is
-    ``H_q0_mult2_hund.csv``.
+    The output schema is:
+
+    ``r_bohr,rho_e_bohr3__<state_id>,rho_e_bohr3__<state_id>,...``
     """
 
+    r_values = _float_list(r_bohr, label="r_bohr")
+    if not densities_by_state_id:
+        raise ValueError("densities_by_state_id must be non-empty")
+    columns: list[tuple[str, list[float]]] = [("r_bohr", r_values)]
+    seen_columns = {"r_bohr"}
+    for state_id, rho_values_raw in densities_by_state_id.items():
+        column_name = profile_density_column(str(state_id))
+        if column_name in seen_columns:
+            raise ValueError(f"duplicate density column {column_name!r}")
+        seen_columns.add(column_name)
+        rho_values = _float_list(rho_values_raw, label=column_name)
+        if len(rho_values) != len(r_values):
+            raise ValueError(
+                f"{column_name} length {len(rho_values)} does not match r_bohr length "
+                f"{len(r_values)}"
+            )
+        columns.append((column_name, rho_values))
+
     path.parent.mkdir(parents=True, exist_ok=True)
-    columns = _profile_columns(
-        rows,
-        r_bohr=r_bohr,
-        rho_e_bohr3=rho_e_bohr3,
-        rho_std_ang_e_bohr3=rho_std_ang_e_bohr3,
-        nelec_cumulative_profile=nelec_cumulative_profile,
-    )
-    if inner_csv_name is None:
-        inner_csv_name = path.name.removesuffix(".zip")
-    if not inner_csv_name.endswith(".csv"):
-        raise ValueError("inner_csv_name must end with .csv")
-
-    text_handle = io.StringIO(newline="")
-    _write_profile_csv_text(text_handle, columns)
-    payload = text_handle.getvalue().encode("utf-8")
-
-    info = zipfile.ZipInfo(inner_csv_name)
-    info.date_time = (1980, 1, 1, 0, 0, 0)
-    info.compress_type = zipfile.ZIP_DEFLATED
-    with zipfile.ZipFile(path, "w") as archive:
-        archive.writestr(info, payload)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow([name for name, _values in columns])
+        for row_index in range(len(r_values)):
+            writer.writerow([f"{values[row_index]:.17g}" for _name, values in columns])
 
 
-def write_profile_csv_gz(
-    path: Path,
-    rows: list[tuple[float, float]] | None = None,
+def write_profile_dataset_artifacts(
+    dataset_dir: Path,
     *,
-    r_bohr: list[float] | Any | None = None,
-    rho_e_bohr3: list[float] | Any | None = None,
-    rho_std_ang_e_bohr3: list[float] | Any | None = None,
-    nelec_cumulative_profile: list[float] | Any | None = None,
-) -> None:
-    """Write a legacy profile CSV.GZ archive.
+    r_bohr: Sequence[float] | Any,
+    densities_by_state_id: Mapping[str, Sequence[float] | Any],
+    metadata: Mapping[str, Any],
+) -> tuple[Path, Path]:
+    """Write the v1 dataset-level ``profiles.csv`` and ``metadata.json`` artifacts."""
 
-    Legacy profile generation used ``.csv.zip`` archives.  This helper remains
-    temporarily available until the v1 wide-CSV extractor replaces per-state archives.
-    """
-
-    path.parent.mkdir(parents=True, exist_ok=True)
-    columns = _profile_columns(
-        rows,
+    profiles_path = dataset_dir / "profiles.csv"
+    metadata_path = dataset_dir / "metadata.json"
+    write_wide_profiles_csv(
+        profiles_path,
         r_bohr=r_bohr,
-        rho_e_bohr3=rho_e_bohr3,
-        rho_std_ang_e_bohr3=rho_std_ang_e_bohr3,
-        nelec_cumulative_profile=nelec_cumulative_profile,
+        densities_by_state_id=densities_by_state_id,
     )
-    with gzip.open(path, "wt", encoding="utf-8", newline="") as handle:
-        _write_profile_csv_text(handle, columns)
+    write_json(metadata_path, dict(metadata))
+    return profiles_path, metadata_path
 
 
 def profile_metadata_template(
@@ -179,7 +144,11 @@ def profile_metadata_template(
     basis_manifest_sha256: str | None = None,
     diagnostics: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Build the common metadata structure for one generated profile."""
+    """Build the common metadata structure for one generated profile.
+
+    This helper is retained for per-state metadata assembly during the transition to
+    aggregate dataset metadata.
+    """
 
     return {
         "schema_version": PROFILE_METADATA_SCHEMA_VERSION,
@@ -220,42 +189,6 @@ def profile_metadata_template(
             "state_record_sha256": state_digest(state.record),
         },
     }
-
-
-def write_state_profile_artifacts(
-    dataset_dir: Path,
-    *,
-    state_id: str,
-    profile: dict[str, Any],
-    metadata: dict[str, Any],
-    profile_archive_format: ProfileArchiveFormat = "zip",
-) -> tuple[Path, Path]:
-    """Write profile archive and per-state metadata JSON under a dataset directory."""
-
-    if profile_archive_format == "zip":
-        profile_path = dataset_dir / "profiles" / f"{state_id}.csv.zip"
-        write_profile_csv_zip(
-            profile_path,
-            r_bohr=profile["r_bohr"],
-            rho_e_bohr3=profile["rho_e_bohr3"],
-            rho_std_ang_e_bohr3=profile.get("rho_std_ang_e_bohr3"),
-            nelec_cumulative_profile=profile.get("nelec_cumulative_profile"),
-        )
-    elif profile_archive_format == "csv.gz":
-        profile_path = dataset_dir / "profiles" / f"{state_id}.csv.gz"
-        write_profile_csv_gz(
-            profile_path,
-            r_bohr=profile["r_bohr"],
-            rho_e_bohr3=profile["rho_e_bohr3"],
-            rho_std_ang_e_bohr3=profile.get("rho_std_ang_e_bohr3"),
-            nelec_cumulative_profile=profile.get("nelec_cumulative_profile"),
-        )
-    else:
-        raise ValueError(f"unsupported profile archive format {profile_archive_format!r}")
-
-    metadata_path = dataset_dir / "metadata" / f"{state_id}.json"
-    write_json(metadata_path, metadata)
-    return profile_path, metadata_path
 
 
 def derived_radii_from_profile(

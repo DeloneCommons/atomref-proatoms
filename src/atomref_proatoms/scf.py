@@ -6,19 +6,24 @@ usable for data checks and metadata handling without generator dependencies.
 
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .basis import BasisBundle, load_basis_nw_text
-from .datasets import assert_dataset_basis_match
+import numpy as np
+from numpy.typing import NDArray
+
+from .basis import BasisBundle, load_basis_nw_text, sha256_file
+from .datasets import ProfileDatasetConfig, assert_dataset_basis_match
 from .spherical_uks import (
     apply_x2c_if_requested,
     configure_dft_grid,
     make_spherical_uks,
     validate_spherical_ao_layout,
 )
-from .states import AtomState
+from .states import AtomState, state_digest
 
 DEFAULT_XC = "PBE0"
 DEFAULT_USE_X2C = True
@@ -26,6 +31,7 @@ DEFAULT_CONV_TOL = 1e-9
 DEFAULT_MAX_CYCLE = 100
 DEFAULT_GRID_LEVEL = 4
 DEFAULT_GRID_PRUNE = None
+SCF_ARTIFACT_SCHEMA_VERSION = "atomref.proatoms.scf_artifact.v1"
 
 
 @dataclass(frozen=True)
@@ -40,6 +46,19 @@ class SCFSettings:
     grid_prune: Any = DEFAULT_GRID_PRUNE
     verbose: int = 3
     stdout: Any | None = None
+    chkfile: Path | None = None
+
+    def to_fingerprint_json(self) -> dict[str, Any]:
+        """Return settings that affect numerical SCF results."""
+
+        return {
+            "xc": self.xc,
+            "use_x2c": self.use_x2c,
+            "conv_tol": self.conv_tol,
+            "max_cycle": self.max_cycle,
+            "grid_level": self.grid_level,
+            "grid_prune": self.grid_prune,
+        }
 
 
 @dataclass(frozen=True)
@@ -67,6 +86,47 @@ class SCFRun:
     mf: Any
     basis: BasisUse
     settings: SCFSettings
+
+
+@dataclass(frozen=True)
+class SCFArtifactPaths:
+    """File paths for one saved state/dataset SCF artifact."""
+
+    root: Path
+    dataset_id: str
+    state_id: str
+
+    @property
+    def state_dir(self) -> Path:
+        return self.root / self.dataset_id / self.state_id
+
+    @property
+    def chk(self) -> Path:
+        return self.state_dir / "scf.chk"
+
+    @property
+    def npz(self) -> Path:
+        return self.state_dir / "scf.npz"
+
+    @property
+    def metadata(self) -> Path:
+        return self.state_dir / "scf.json"
+
+    @property
+    def log(self) -> Path:
+        return self.state_dir / "scf.log"
+
+    def required_files(self) -> tuple[Path, Path, Path, Path]:
+        return (self.chk, self.npz, self.metadata, self.log)
+
+
+def scf_artifact_paths(root: Path, dataset_id: str, state_id: str) -> SCFArtifactPaths:
+    return SCFArtifactPaths(root=Path(root), dataset_id=dataset_id, state_id=state_id)
+
+
+def stable_json_digest(data: Any) -> str:
+    payload = json.dumps(data, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def import_pyscf_modules() -> tuple[Any, Any, Any, str]:
@@ -147,6 +207,8 @@ def run_spherical_uks(
     )
     if run_settings.stdout is not None:
         mf.stdout = run_settings.stdout
+    if run_settings.chkfile is not None:
+        mf.chkfile = str(run_settings.chkfile)
     mf.conv_tol = run_settings.conv_tol
     mf.max_cycle = run_settings.max_cycle
     configure_dft_grid(mf, level=run_settings.grid_level, prune=run_settings.grid_prune)
@@ -166,3 +228,141 @@ def run_dataset_state(
 
     assert_dataset_basis_match(dataset_id, bundle.basis_id)
     return run_spherical_uks(state, bundle, settings=settings)
+
+
+def _spin_pair(value: Any, *, label: str) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+    if isinstance(value, list | tuple) and len(value) == 2:
+        return np.asarray(value[0], dtype=float), np.asarray(value[1], dtype=float)
+    arr = np.asarray(value, dtype=float)
+    if arr.ndim >= 1 and arr.shape[0] == 2:
+        return np.asarray(arr[0], dtype=float), np.asarray(arr[1], dtype=float)
+    raise ValueError(f"Expected alpha/beta pair for {label}, got shape {arr.shape}")
+
+
+def scf_arrays_from_mf(mf: Any) -> dict[str, NDArray[np.float64]]:
+    """Extract project-native reusable SCF arrays from a completed UKS object."""
+
+    dm_alpha, dm_beta = _spin_pair(mf.make_rdm1(), label="density matrix")
+    mo_coeff_alpha, mo_coeff_beta = _spin_pair(mf.mo_coeff, label="mo_coeff")
+    mo_occ_alpha, mo_occ_beta = _spin_pair(mf.mo_occ, label="mo_occ")
+    mo_energy_alpha, mo_energy_beta = _spin_pair(mf.mo_energy, label="mo_energy")
+    return {
+        "dm_alpha": dm_alpha,
+        "dm_beta": dm_beta,
+        "mo_coeff_alpha": mo_coeff_alpha,
+        "mo_coeff_beta": mo_coeff_beta,
+        "mo_occ_alpha": mo_occ_alpha,
+        "mo_occ_beta": mo_occ_beta,
+        "mo_energy_alpha": mo_energy_alpha,
+        "mo_energy_beta": mo_energy_beta,
+    }
+
+
+def write_scf_npz(path: Path, mf: Any) -> None:
+    """Write the project-native reusable SCF array artifact."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(path, **scf_arrays_from_mf(mf))
+
+
+def scf_fingerprints(
+    *,
+    config_path: Path,
+    config: ProfileDatasetConfig,
+    state: AtomState,
+    bundle: BasisBundle,
+    settings: SCFSettings,
+) -> dict[str, str]:
+    return {
+        "profile_datasets_yaml_sha256": sha256_file(config_path),
+        "profile_dataset_config_sha256": stable_json_digest(config.data),
+        "basis_sha256": bundle.basis_sha256,
+        "basis_manifest_sha256": sha256_file(bundle.path / "manifest.json"),
+        "state_record_sha256": state_digest(state.record),
+        "scf_settings_sha256": stable_json_digest(settings.to_fingerprint_json()),
+    }
+
+
+def scf_metadata(
+    *,
+    dataset_id: str,
+    state: AtomState,
+    bundle: BasisBundle,
+    config: ProfileDatasetConfig,
+    config_path: Path,
+    settings: SCFSettings,
+    pyscf_version: str,
+    mf: Any,
+    log_text: str,
+) -> dict[str, Any]:
+    """Build structured JSON metadata for one local SCF artifact."""
+
+    fingerprints = scf_fingerprints(
+        config_path=config_path,
+        config=config,
+        state=state,
+        bundle=bundle,
+        settings=settings,
+    )
+    return {
+        "schema_version": SCF_ARTIFACT_SCHEMA_VERSION,
+        "profile_data_version": config.profile_data_version,
+        "dataset_id": dataset_id,
+        "state_id": state.state_id,
+        "basis_id": bundle.basis_id,
+        "density_model": config.defaults["density_model"],
+        "method": {
+            "engine": "pyscf",
+            "engine_version": pyscf_version,
+            "scf_type": config.defaults["scf_type"],
+            "xc": settings.xc,
+            "relativity": "sf-X2C-1e" if settings.use_x2c else "none",
+            "spherical_basis": True,
+        },
+        "settings": settings.to_fingerprint_json(),
+        "state": {
+            "symbol": state.symbol,
+            "z": state.z,
+            "charge": state.charge,
+            "electron_count": state.electron_count,
+            "spin_2s": state.spin_2s,
+            "multiplicity": state.multiplicity,
+            "configuration": state.record["configuration"],
+            "state_role": state.record["state_role"],
+            "state_category": state.record["state_category"],
+            "occupation_policy": state.record["occupation_policy"],
+        },
+        "basis": {
+            "basis_id": bundle.basis_id,
+            "basis_sha256": bundle.basis_sha256,
+            "basis_manifest_sha256": fingerprints["basis_manifest_sha256"],
+            "source_api_url": bundle.manifest["source"]["source_api_url"],
+        },
+        "results": {
+            "converged": bool(mf.converged),
+            "total_energy_hartree": None if mf.e_tot is None else float(mf.e_tot),
+            "nelectron": int(mf.mol.nelectron),
+            "n_ao": int(mf.mol.nao_nr()),
+        },
+        "fingerprints": fingerprints,
+        "log": {
+            "captured": True,
+            "line_count": len(log_text.splitlines()),
+        },
+    }
+
+
+def read_scf_metadata(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def scf_artifact_is_reusable(paths: SCFArtifactPaths, expected_fingerprints: dict[str, str]) -> bool:
+    """Return true if a local SCF artifact exists and matches current inputs/settings."""
+
+    if not all(path.exists() for path in paths.required_files()):
+        return False
+    try:
+        metadata = read_scf_metadata(paths.metadata)
+    except Exception:
+        return False
+    return metadata.get("fingerprints") == expected_fingerprints
