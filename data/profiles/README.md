@@ -1,7 +1,9 @@
-# Profile datasets
+# Generated radial profile datasets
 
-This directory is reserved for generated v1 radial proatomic electron-density profiles.
-Each dataset will be stored as one wide CSV plus one aggregate metadata JSON:
+This directory contains the released atomref-proatoms radial electron-density profile
+artifacts for the active repository version.
+
+Each dataset is written as one wide CSV plus one aggregate metadata JSON:
 
 ```text
 data/profiles/<dataset_id>/
@@ -9,9 +11,13 @@ data/profiles/<dataset_id>/
   metadata.json
 ```
 
-`profiles.csv` will contain a shared `r_bohr` column and one density column per state,
-using column names of the form `rho_e_bohr3__<state_id>`. `metadata.json` will contain
-method, basis, state, QA, derived-radius, column, and provenance metadata for the dataset.
+`profiles.csv` uses a shared `r_bohr` column and one density column per atomic state:
 
-SCF checkpoints, logs, density matrices, and restart material are local artifacts and belong
-under ignored `local-data/scf/`, not in this directory.
+```text
+rho_e_bohr3__<state_id>
+```
+
+`metadata.json` records the dataset scope, basis identity, method/provenance fields,
+state metadata, derived cutoff radii, QA summaries, and references to the local SCF
+artifacts that were used to generate the released profiles. Local SCF checkpoints and
+NPZ array bundles remain under ignored `local-data/scf/` and are not tracked here.

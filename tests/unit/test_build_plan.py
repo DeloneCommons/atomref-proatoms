@@ -113,3 +113,28 @@ def test_compute_wavefunctions_dry_run_does_not_import_pyscf() -> None:
     assert "Build jobs: 1" in result.stdout
     assert "Dry run completed before PySCF import/SCF execution" in result.stdout
     assert "local-data/scf" in result.stdout
+
+
+def test_extract_profiles_dry_run_does_not_import_pyscf_or_read_checkpoints(tmp_path: Path) -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/extract_profiles.py",
+            "--dataset",
+            PRIMARY_X2C_QZVPALL,
+            "--state",
+            "H_q0_mult2_hund",
+            "--scf-root",
+            str(tmp_path / "scf"),
+            "--output-root",
+            str(tmp_path / "profiles"),
+            "--dry-run",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert "Build jobs: 1" in result.stdout
+    assert "requires" in result.stdout
+    assert "Dry run completed before PySCF import/checkpoint reading" in result.stdout

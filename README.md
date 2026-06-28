@@ -77,8 +77,8 @@ The intended workflow is now five scripts:
 ```bash
 python scripts/build_atom_states.py --check
 python scripts/check_basis_bundles.py
-python scripts/compute_wavefunctions.py --list
-python scripts/extract_profiles.py
+python scripts/compute_wavefunctions.py --resume --quiet-scf-log
+python scripts/extract_profiles.py --force --check
 python scripts/build_report.py
 ```
 
@@ -93,8 +93,7 @@ python scripts/compute_wavefunctions.py \
   --dry-run
 ```
 
-The next implementation patch will make `compute_wavefunctions.py` write persistent local
-SCF artifacts:
+`compute_wavefunctions.py` writes persistent local SCF artifacts:
 
 ```text
 local-data/scf/<dataset_id>/<state_id>/
@@ -104,9 +103,17 @@ local-data/scf/<dataset_id>/<state_id>/
   scf.log
 ```
 
-`extract_profiles.py` will then read those local SCF artifacts and write the tracked
-wide profile table and aggregate metadata JSON under `data/profiles/`. `build_report.py`
-will read `data/profiles/` and generate the current scientific report under `report/`.
+`extract_profiles.py` reads those local SCF artifacts without rerunning SCF and writes the
+tracked wide profile table plus aggregate metadata JSON under `data/profiles/`:
+
+```text
+data/profiles/<dataset_id>/
+  profiles.csv
+  metadata.json
+```
+
+`build_report.py` will read `data/profiles/` and generate the current scientific report
+under `report/`.
 
 ## Layout
 

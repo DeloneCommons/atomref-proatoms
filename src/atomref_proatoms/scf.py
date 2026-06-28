@@ -265,6 +265,48 @@ def write_scf_npz(path: Path, mf: Any) -> None:
     np.savez_compressed(path, **scf_arrays_from_mf(mf))
 
 
+def load_scf_npz(path: Path) -> dict[str, NDArray[np.float64]]:
+    """Load a project-native SCF array artifact as plain numpy arrays."""
+
+    required = {
+        "dm_alpha",
+        "dm_beta",
+        "mo_coeff_alpha",
+        "mo_coeff_beta",
+        "mo_occ_alpha",
+        "mo_occ_beta",
+        "mo_energy_alpha",
+        "mo_energy_beta",
+    }
+    with np.load(path) as data:
+        arrays = {name: np.asarray(data[name], dtype=float) for name in data.files}
+    missing = sorted(required - set(arrays))
+    if missing:
+        raise ValueError(f"SCF npz artifact {path} is missing arrays {missing}")
+    if arrays["dm_alpha"].shape != arrays["dm_beta"].shape:
+        raise ValueError(f"SCF npz artifact {path} has mismatched alpha/beta density shapes")
+    return arrays
+
+
+def load_mol_from_chk(chk_path: Path) -> Any:
+    """Load a PySCF molecule from a saved checkpoint file."""
+
+    try:
+        from pyscf.scf import chkfile  # type: ignore[import-not-found]
+    except Exception as exc:  # pragma: no cover - optional dependency path
+        raise RuntimeError(
+            "PySCF is required to read SCF checkpoint files. Install with "
+            "`python -m pip install -e .[generator]`."
+        ) from exc
+    return chkfile.load_mol(str(chk_path))
+
+
+def scf_artifacts_complete(paths: SCFArtifactPaths) -> bool:
+    """Return true when all required files for one SCF artifact are present."""
+
+    return all(path.exists() and path.is_file() for path in paths.required_files())
+
+
 def scf_fingerprints(
     *,
     config_path: Path,
