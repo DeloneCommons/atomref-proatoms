@@ -277,7 +277,25 @@ python scripts/run_dataset_build.py \
   --summary
 ```
 
-Useful chunking/resume options:
+Recommended production strategy is to compute datasets one by one, package/check each
+completed dataset, and only then move to the next dataset. This keeps long runs easier to
+resume and makes release-candidate validation less ambiguous:
+
+```bash
+python scripts/run_dataset_build.py \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary \
+  --package-release \
+  --check-release-package \
+  --release-require-expected-counts \
+  --release-summary
+```
+
+Useful manual resume/debug options remain available, but they are intended for interrupted
+local work rather than final release packaging:
 
 ```bash
 python scripts/run_dataset_build.py --dataset-id all --limit 20
@@ -293,14 +311,39 @@ Completed generated dataset directories can be packaged into one release-candida
 The archive layout is rooted at `data/profiles/<dataset_id>/...` and includes a
 `release_manifest.json` with SHA256 hashes for every archived file.
 
-Package all indexed dataset directories discovered under the build output root:
+Package all indexed dataset directories discovered under the build output root.
+For completed production datasets, also request expected-count validation against the
+curated-state build plan:
 
 ```bash
 python scripts/package_dataset_outputs.py \
   --output-dir local-data/profile-builds \
   --check-datasets \
   --require-profile-qa \
-  --check-archive
+  --check-archive \
+  --require-expected-counts \
+  --summary
+```
+
+For one completed dataset release candidate, validate only that dataset:
+
+```bash
+python scripts/package_dataset_outputs.py \
+  --output-dir local-data/profile-builds \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --check-datasets \
+  --require-profile-qa \
+  --check-archive \
+  --require-expected-counts \
+  --summary \
+  --archive local-data/profile-builds-x2cqzvpall-h-rn-release.zip
+
+python scripts/check_release_package.py \
+  --archive local-data/profile-builds-x2cqzvpall-h-rn-release.zip \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --check-dataset-indexes \
+  --require-expected-counts \
+  --summary
 ```
 
 For a full v0 release candidate, require all planned datasets explicitly:
@@ -312,11 +355,16 @@ python scripts/package_dataset_outputs.py \
   --check-datasets \
   --require-profile-qa \
   --check-archive \
+  --require-expected-counts \
+  --summary \
   --archive local-data/atomref-proatoms-profiles-v0-rc.zip
 
 python scripts/check_release_package.py \
   --archive local-data/atomref-proatoms-profiles-v0-rc.zip \
-  --dataset-id all
+  --dataset-id all \
+  --check-dataset-indexes \
+  --require-expected-counts \
+  --summary
 ```
 
 `run_dataset_build.py` can also package affected dataset directories after a successful
@@ -329,5 +377,7 @@ python scripts/run_dataset_build.py \
   --require-profile-qa \
   --build-indexes \
   --package-release \
-  --check-release-package
+  --check-release-package \
+  --release-require-expected-counts \
+  --release-summary
 ```

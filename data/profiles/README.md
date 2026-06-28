@@ -120,6 +120,21 @@ python scripts/run_dataset_build.py \
   --summary
 ```
 
+Recommended production workflow is dataset-by-dataset generation and validation:
+
+```bash
+python scripts/run_dataset_build.py \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary \
+  --package-release \
+  --check-release-package \
+  --release-require-expected-counts \
+  --release-summary
+```
+
 Use `--limit`, `--start-after-state-id`, and `--only-state-id` for manual chunking and
 recovery. Use `--force` only when existing profile/metadata artifacts should be
 regenerated.
@@ -138,9 +153,18 @@ python scripts/package_dataset_outputs.py \
   --check-datasets \
   --require-profile-qa \
   --check-archive \
+  --require-expected-counts \
+  --summary \
   --archive local-data/atomref-proatoms-profiles-v0-rc.zip
 
 python scripts/check_release_package.py \
   --archive local-data/atomref-proatoms-profiles-v0-rc.zip \
-  --dataset-id all
+  --dataset-id all \
+  --check-dataset-indexes \
+  --require-expected-counts \
+  --summary
 ```
+
+`--require-expected-counts` compares embedded dataset counts with the current curated-state
+build plan, so a selected one-dataset archive can be validated before moving to the next
+production dataset.

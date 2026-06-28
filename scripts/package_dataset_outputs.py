@@ -18,6 +18,7 @@ from atomref_proatoms.release_package import (  # noqa: E402
     DEFAULT_ARCHIVE_ROOT,
     check_release_package,
     default_release_archive_path,
+    expected_profile_counts_from_states,
     format_release_package_check,
     format_release_package_result,
     package_dataset_outputs,
@@ -85,6 +86,19 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Validate the produced release ZIP archive before exiting.",
     )
+    parser.add_argument(
+        "--require-expected-counts",
+        action="store_true",
+        help=(
+            "When --check-archive is enabled, validate embedded profile counts against "
+            "the curated-state build plan."
+        ),
+    )
+    parser.add_argument(
+        "--summary",
+        action="store_true",
+        help="Print compact per-dataset release summary when checking the archive.",
+    )
     return parser.parse_args()
 
 
@@ -138,9 +152,20 @@ def main() -> int:
     print(format_release_package_result(result))
 
     if args.check_archive:
-        check = check_release_package(archive_path, expected_dataset_ids=result.dataset_ids)
+        expected_counts = None
+        if args.require_expected_counts:
+            expected_counts = expected_profile_counts_from_states(
+                ROOT / "data" / "states" / "curated" / "atom_states_v0.json",
+                dataset_ids=result.dataset_ids,
+            )
+        check = check_release_package(
+            archive_path,
+            expected_dataset_ids=result.dataset_ids,
+            require_dataset_indexes=args.summary or args.require_expected_counts,
+            expected_profile_counts=expected_counts,
+        )
         print()
-        print(format_release_package_check(check))
+        print(format_release_package_check(check, summary=args.summary))
         return 0 if check.ok else 1
     return 0
 

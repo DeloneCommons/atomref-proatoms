@@ -203,6 +203,19 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Validate the produced release-candidate ZIP archive after packaging.",
     )
+    parser.add_argument(
+        "--release-require-expected-counts",
+        action="store_true",
+        help=(
+            "When checking a release package, compare embedded dataset counts with "
+            "the curated-state build plan."
+        ),
+    )
+    parser.add_argument(
+        "--release-summary",
+        action="store_true",
+        help="Print compact per-dataset release summaries while checking a package.",
+    )
     return parser.parse_args()
 
 
@@ -374,6 +387,8 @@ def package_release_candidate(args: argparse.Namespace, dataset_ids: set[str]) -
         command.extend(["--archive", str(args.release_archive)])
     _bool_flag(command, "--require-profile-qa", args.require_profile_qa)
     _bool_flag(command, "--check-archive", args.check_release_package)
+    _bool_flag(command, "--require-expected-counts", args.release_require_expected_counts)
+    _bool_flag(command, "--summary", args.release_summary)
     print("\nPackaging release candidate:", " ".join(command))
     result = subprocess.run(command, cwd=ROOT, check=False)
     return result.returncode

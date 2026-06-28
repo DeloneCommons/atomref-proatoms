@@ -156,3 +156,93 @@ def test_package_dataset_outputs_cli_and_check_release_cli(tmp_path: Path) -> No
         text=True,
     )
     assert "Status: OK" in check.stdout
+
+
+def test_check_release_package_validates_dataset_indexes_and_expected_count(tmp_path: Path) -> None:
+    output_dir = tmp_path / "profile-builds"
+    _write_indexed_h_dataset(output_dir)
+    archive = tmp_path / "release.zip"
+    package_dataset_outputs(output_dir, archive, dataset_ids=(PRIMARY_X2C_QZVPALL,))
+
+    result = check_release_package(
+        archive,
+        expected_dataset_ids=(PRIMARY_X2C_QZVPALL,),
+        require_dataset_indexes=True,
+        expected_profile_counts={PRIMARY_X2C_QZVPALL: 1},
+    )
+
+    assert result.ok
+    assert len(result.dataset_reports) == 1
+    report = result.dataset_reports[0]
+    assert report.dataset_id == PRIMARY_X2C_QZVPALL
+    assert report.manifest_profile_count == 1
+    assert report.profile_index_rows == 1
+    assert report.derived_radii_rows == 1
+    assert report.profile_file_count == 1
+    assert report.metadata_file_count == 1
+    assert report.qa_profile_count == 1
+
+
+def test_check_release_package_detects_expected_count_mismatch(tmp_path: Path) -> None:
+    output_dir = tmp_path / "profile-builds"
+    _write_indexed_h_dataset(output_dir)
+    archive = tmp_path / "release.zip"
+    package_dataset_outputs(output_dir, archive, dataset_ids=(PRIMARY_X2C_QZVPALL,))
+
+    result = check_release_package(
+        archive,
+        expected_dataset_ids=(PRIMARY_X2C_QZVPALL,),
+        require_dataset_indexes=True,
+        expected_profile_counts={PRIMARY_X2C_QZVPALL: 2},
+    )
+
+    assert not result.ok
+    assert any("expected build-plan count" in error for error in result.errors)
+
+
+def test_package_release_manifest_includes_dataset_summary(tmp_path: Path) -> None:
+    output_dir = tmp_path / "profile-builds"
+    _write_indexed_h_dataset(output_dir)
+    archive = tmp_path / "release.zip"
+    package_dataset_outputs(output_dir, archive, dataset_ids=(PRIMARY_X2C_QZVPALL,))
+
+    with ZipFile(archive) as zip_handle:
+        manifest = json.loads(zip_handle.read(RELEASE_MANIFEST_NAME).decode("utf-8"))
+
+    assert manifest["datasets"] == [
+        {
+            "dataset_id": PRIMARY_X2C_QZVPALL,
+            "profile_count": 1,
+            "profile_index_rows": 1,
+            "derived_radii_rows": 1,
+            "profile_archive_count": 1,
+            "metadata_count": 1,
+        }
+    ]
+
+
+def test_check_release_package_cli_summary(tmp_path: Path) -> None:
+    output_dir = tmp_path / "profile-builds"
+    _write_indexed_h_dataset(output_dir)
+    archive = tmp_path / "release.zip"
+    package_dataset_outputs(output_dir, archive, dataset_ids=(PRIMARY_X2C_QZVPALL,))
+
+    check = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_release_package.py",
+            "--archive",
+            str(archive),
+            "--dataset-id",
+            PRIMARY_X2C_QZVPALL,
+            "--check-dataset-indexes",
+            "--summary",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert "Dataset summaries:" in check.stdout
+    assert "profiles=1" in check.stdout
