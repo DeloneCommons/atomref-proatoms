@@ -118,6 +118,25 @@ independent radial electron-count integration, density-tail coverage for cutoff 
 monotonic cutoff radii, nonnegative finite density values, and angular-sigma checks that
 confirm the supposedly spherical density is nearly angle-independent.
 
+After the H smoke profile is stable, run the light neutral pilot batch with the same
+profile/QA settings:
+
+```bash
+python scripts/run_pilots.py \
+  --group neutral_light_x2c \
+  --profile-n-ang 50 \
+  --qa-n-r 120 \
+  --qa-n-ang 50 \
+  --check-profiles \
+  --require-profile-qa
+```
+
+Available pilot groups can be listed without PySCF:
+
+```bash
+python scripts/run_pilots.py --list
+```
+
 Validate generated pilot artifacts without running PySCF:
 
 ```bash
