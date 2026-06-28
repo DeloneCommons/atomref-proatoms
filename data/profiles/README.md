@@ -65,3 +65,30 @@ python scripts/check_pilot_outputs.py \
 
 to validate that the expected pilot states exist in the expected dataset directories
 and that each generated dataset passes its per-state and index-level checks.
+
+## Pilot suites and review archives
+
+The local pilot-output root can contain several dataset directories at once. Use
+`full_pilot_suite` when all current pilot systems should be regenerated together:
+
+```bash
+python scripts/run_pilots.py \
+  --group full_pilot_suite \
+  --profile-n-ang 50 \
+  --qa-n-r 120 \
+  --qa-n-ang 50 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary
+```
+
+The full suite includes the light neutral x2c profiles, x2c-QZVPall-s
+anion/formal-anion checks, dyall-av4z anion/formal-anion checks, and the heavy
+Dyall Eu3+/U smoke profiles. To package the generated pilot outputs for review:
+
+```bash
+python scripts/package_pilot_outputs.py \
+  --group full_pilot_suite \
+  --archive local-data/pilot-profiles-full_pilot_suite.zip
+```

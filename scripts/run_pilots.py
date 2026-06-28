@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Run a small predefined batch of local pilot proatom profiles.
 
-This is still pilot orchestration, not a full dataset builder.  It simply calls
-``scripts/run_dataset.py`` for a curated list of state/dataset pairs so early
-Stage-5 validation can move from H to the light neutral atoms without copying
-long command lines.
+This is still pilot orchestration, not a full dataset builder.  It calls
+``scripts/run_dataset.py`` for curated state/dataset pairs so Stage-5 validation
+can cover the light neutral, anion/formal-anion, and heavy-element smoke systems
+without copying long command lines.
 """
 
 from __future__ import annotations

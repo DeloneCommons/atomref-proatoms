@@ -7,16 +7,20 @@ from pathlib import Path
 import pytest
 
 from atomref_proatoms.datasets import (
+    ANION_DYALL_AV4Z,
     ANION_X2C_QZVPALL_S,
     PRIMARY_DYALL_V4Z,
     PRIMARY_X2C_QZVPALL,
 )
 from atomref_proatoms.pilots import (
+    ANION_FORMAL_DYALL_AUGMENTED,
     ANION_FORMAL_X2C_DIFFUSE,
     DEFAULT_PILOT_GROUP,
+    FULL_PILOT_SUITE,
     HEAVY_DYALL_SMOKE,
     H_SMOKE,
     NEUTRAL_LIGHT_X2C,
+    REMAINING_DYALL_PILOTS,
     filter_pilots,
     get_pilot_group,
     pilot_group_names,
@@ -30,7 +34,10 @@ def test_pilot_group_names_are_ordered() -> None:
         H_SMOKE,
         NEUTRAL_LIGHT_X2C,
         ANION_FORMAL_X2C_DIFFUSE,
+        ANION_FORMAL_DYALL_AUGMENTED,
         HEAVY_DYALL_SMOKE,
+        REMAINING_DYALL_PILOTS,
+        FULL_PILOT_SUITE,
     )
     assert DEFAULT_PILOT_GROUP == NEUTRAL_LIGHT_X2C
 
@@ -56,12 +63,45 @@ def test_later_pilot_groups_are_explicitly_named() -> None:
     ]
     assert {pilot.dataset_id for pilot in anion_pilots} == {ANION_X2C_QZVPALL_S}
 
+    dyall_anion_pilots = get_pilot_group(ANION_FORMAL_DYALL_AUGMENTED)
+    assert [pilot.state_id for pilot in dyall_anion_pilots] == [
+        "I_qm1_mult1_hund",
+        "O_qm2_mult1_hund",
+        "S_qm2_mult1_hund",
+    ]
+    assert {pilot.dataset_id for pilot in dyall_anion_pilots} == {ANION_DYALL_AV4Z}
+
     heavy_pilots = get_pilot_group(HEAVY_DYALL_SMOKE)
     assert [pilot.state_id for pilot in heavy_pilots] == [
         "Eu_qp3_mult7_hund",
         "U_q0_mult5_hund",
     ]
     assert {pilot.dataset_id for pilot in heavy_pilots} == {PRIMARY_DYALL_V4Z}
+
+
+def test_remaining_dyall_pilots_cover_last_pilot_calculations() -> None:
+    pilots = get_pilot_group(REMAINING_DYALL_PILOTS)
+    assert len(pilots) == 5
+    assert [pilot.dataset_id for pilot in pilots] == [
+        ANION_DYALL_AV4Z,
+        ANION_DYALL_AV4Z,
+        ANION_DYALL_AV4Z,
+        PRIMARY_DYALL_V4Z,
+        PRIMARY_DYALL_V4Z,
+    ]
+
+
+def test_full_pilot_suite_covers_all_planned_pilot_datasets() -> None:
+    pilots = get_pilot_group(FULL_PILOT_SUITE)
+    assert len(pilots) == 13
+    assert {pilot.dataset_id for pilot in pilots} == {
+        PRIMARY_X2C_QZVPALL,
+        ANION_X2C_QZVPALL_S,
+        ANION_DYALL_AV4Z,
+        PRIMARY_DYALL_V4Z,
+    }
+    assert pilots[0].state_id == "H_q0_mult2_hund"
+    assert pilots[-1].state_id == "U_q0_mult5_hund"
 
 
 def test_filter_pilots_keeps_order() -> None:

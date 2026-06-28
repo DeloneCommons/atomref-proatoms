@@ -7,13 +7,23 @@ from pathlib import Path
 from atomref_proatoms.artifacts import profile_metadata_template, write_state_profile_artifacts
 from atomref_proatoms.basis import list_basis_bundles
 from atomref_proatoms.dataset_index import build_and_write_dataset_indexes
-from atomref_proatoms.datasets import ANION_X2C_QZVPALL_S, PRIMARY_X2C_QZVPALL
+from atomref_proatoms.datasets import (
+    ANION_DYALL_AV4Z,
+    ANION_X2C_QZVPALL_S,
+    PRIMARY_DYALL_V4Z,
+    PRIMARY_X2C_QZVPALL,
+)
 from atomref_proatoms.pilot_outputs import (
     check_pilot_output_root,
     expected_state_ids_by_dataset,
     format_pilot_output_check,
 )
-from atomref_proatoms.pilots import ANION_FORMAL_X2C_DIFFUSE, H_SMOKE, NEUTRAL_LIGHT_X2C
+from atomref_proatoms.pilots import (
+    ANION_FORMAL_X2C_DIFFUSE,
+    FULL_PILOT_SUITE,
+    H_SMOKE,
+    NEUTRAL_LIGHT_X2C,
+)
 from atomref_proatoms.profiles import derived_radii
 from atomref_proatoms.states import AtomState, load_atom_states
 
@@ -88,6 +98,21 @@ def test_expected_state_ids_by_dataset_keeps_sensitivity_dataset_separate() -> N
         )
     }
 
+
+def test_expected_state_ids_by_dataset_full_suite_covers_all_pilot_datasets() -> None:
+    expected = expected_state_ids_by_dataset((FULL_PILOT_SUITE,))
+
+    assert set(expected) == {
+        PRIMARY_X2C_QZVPALL,
+        ANION_X2C_QZVPALL_S,
+        ANION_DYALL_AV4Z,
+        PRIMARY_DYALL_V4Z,
+    }
+    assert expected[ANION_DYALL_AV4Z] == (
+        "I_qm1_mult1_hund",
+        "O_qm2_mult1_hund",
+        "S_qm2_mult1_hund",
+    )
 
 def test_check_pilot_output_root_accepts_complete_anion_group(tmp_path: Path) -> None:
     for state_id in ("I_qm1_mult1_hund", "O_qm2_mult1_hund", "S_qm2_mult1_hund"):

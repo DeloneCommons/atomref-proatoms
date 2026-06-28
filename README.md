@@ -198,6 +198,45 @@ primary non-diffuse H-Rn dataset. The pilot-output checker verifies that selecte
 pilot states appear in their expected dataset directories, helping prevent accidental
 mixing of primary and sensitivity outputs.
 
+The remaining recommended pilot calculations cover the Dyall augmented anion branch
+and the heavy Dyall smoke states:
+
+```bash
+python scripts/run_pilots.py \
+  --group remaining_dyall_pilots \
+  --profile-n-ang 50 \
+  --qa-n-r 120 \
+  --qa-n-ang 50 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary
+```
+
+To rerun the entire pilot suite in one command, use `full_pilot_suite`. This includes
+light neutral x2c profiles, x2c diffuse anion/formal-anion checks, Dyall-av4z
+anion/formal-anion checks, Eu3+, and neutral U:
+
+```bash
+python scripts/run_pilots.py \
+  --group full_pilot_suite \
+  --profile-n-ang 50 \
+  --qa-n-r 120 \
+  --qa-n-ang 50 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary
+```
+
+Package selected pilot outputs into one ZIP archive for review:
+
+```bash
+python scripts/package_pilot_outputs.py \
+  --group full_pilot_suite \
+  --archive local-data/pilot-profiles-full_pilot_suite.zip
+```
+
 Use `--require-profile-qa` when checking artifacts that should include independent
 electron-count QA rather than skipped/null QA fields. The summary command prints compact
 counts for profiles, elements, charge states, state categories, QA coverage, and derived
