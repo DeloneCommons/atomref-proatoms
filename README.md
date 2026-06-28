@@ -286,3 +286,48 @@ python scripts/run_dataset_build.py --dataset-id all --only-state-id I_qm1_mult1
 ```
 
 Use `--force` only when existing per-state artifacts should be regenerated.
+
+## Release-candidate packaging
+
+Completed generated dataset directories can be packaged into one release-candidate ZIP.
+The archive layout is rooted at `data/profiles/<dataset_id>/...` and includes a
+`release_manifest.json` with SHA256 hashes for every archived file.
+
+Package all indexed dataset directories discovered under the build output root:
+
+```bash
+python scripts/package_dataset_outputs.py \
+  --output-dir local-data/profile-builds \
+  --check-datasets \
+  --require-profile-qa \
+  --check-archive
+```
+
+For a full v0 release candidate, require all planned datasets explicitly:
+
+```bash
+python scripts/package_dataset_outputs.py \
+  --output-dir local-data/profile-builds \
+  --dataset-id all \
+  --check-datasets \
+  --require-profile-qa \
+  --check-archive \
+  --archive local-data/atomref-proatoms-profiles-v0-rc.zip
+
+python scripts/check_release_package.py \
+  --archive local-data/atomref-proatoms-profiles-v0-rc.zip \
+  --dataset-id all
+```
+
+`run_dataset_build.py` can also package affected dataset directories after a successful
+build/index pass:
+
+```bash
+python scripts/run_dataset_build.py \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --package-release \
+  --check-release-package
+```

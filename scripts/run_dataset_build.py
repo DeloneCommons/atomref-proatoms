@@ -32,6 +32,7 @@ from atomref_proatoms.states import load_atom_states  # noqa: E402
 RUN_DATASET = ROOT / "scripts" / "run_dataset.py"
 CHECK_PROFILES = ROOT / "scripts" / "check_profiles.py"
 BUILD_DATASET_INDEX = ROOT / "scripts" / "build_dataset_index.py"
+PACKAGE_DATASET_OUTPUTS = ROOT / "scripts" / "package_dataset_outputs.py"
 
 
 def parse_args() -> argparse.Namespace:
@@ -181,6 +182,27 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Print compact dataset summaries after indexes are available.",
     )
+    parser.add_argument(
+        "--package-release",
+        action="store_true",
+        help="Package affected dataset directories as a release-candidate ZIP after indexes build.",
+    )
+    parser.add_argument(
+        "--release-archive",
+        type=Path,
+        default=None,
+        help="Output path for --package-release; defaults beside output-dir.",
+    )
+    parser.add_argument(
+        "--release-archive-root",
+        default="data/profiles",
+        help="Path prefix inside --package-release archives; defaults to data/profiles.",
+    )
+    parser.add_argument(
+        "--check-release-package",
+        action="store_true",
+        help="Validate the produced release-candidate ZIP archive after packaging.",
+    )
     return parser.parse_args()
 
 
@@ -329,11 +351,44 @@ def build_dataset_indexes(args: argparse.Namespace, dataset_ids: set[str]) -> in
     return failures
 
 
+def package_release_candidate(args: argparse.Namespace, dataset_ids: set[str]) -> int:
+    if not dataset_ids:
+        print("No dataset directories available to package.")
+        return 0
+    command = [
+        sys.executable,
+        str(PACKAGE_DATASET_OUTPUTS),
+        "--output-dir",
+        str(args.output_dir),
+        "--archive-root",
+        args.release_archive_root,
+        "--check-datasets",
+        "--electron-count-abs-tol",
+        str(args.electron_count_abs_tol),
+        "--electron-count-rel-tol",
+        str(args.electron_count_rel_tol),
+    ]
+    for dataset_id in sorted(dataset_ids):
+        command.extend(["--dataset-id", dataset_id])
+    if args.release_archive is not None:
+        command.extend(["--archive", str(args.release_archive)])
+    _bool_flag(command, "--require-profile-qa", args.require_profile_qa)
+    _bool_flag(command, "--check-archive", args.check_release_package)
+    print("\nPackaging release candidate:", " ".join(command))
+    result = subprocess.run(command, cwd=ROOT, check=False)
+    return result.returncode
+
+
 def main() -> int:
     args = parse_args()
     if args.summary:
         args.build_indexes = True
-    if args.require_profile_qa and not (args.check_profiles or args.build_indexes):
+    if args.package_release:
+        args.build_indexes = True
+        args.check_profiles = True
+    if args.require_profile_qa and not (
+        args.check_profiles or args.build_indexes or args.package_release
+    ):
         raise SystemExit("--require-profile-qa requires --check-profiles or --build-indexes")
     if args.require_profile_qa and args.no_profile_qa:
         raise SystemExit("--require-profile-qa conflicts with --no-profile-qa")
@@ -390,6 +445,14 @@ def main() -> int:
         failures += build_dataset_indexes(args, completed_or_present_dataset_ids)
 
     print(f"\nBuild summary: ran={ran}, skipped_existing={skipped}, failures={failures}")
+    if (
+        args.package_release
+        and completed_or_present_dataset_ids
+        and not args.dry_run
+        and not failures
+    ):
+        failures += package_release_candidate(args, completed_or_present_dataset_ids)
+
     if failures:
         return 1
     return 0

@@ -123,3 +123,24 @@ python scripts/run_dataset_build.py \
 Use `--limit`, `--start-after-state-id`, and `--only-state-id` for manual chunking and
 recovery. Use `--force` only when existing profile/metadata artifacts should be
 regenerated.
+
+## Release-candidate packages
+
+Generated dataset directories can be bundled into a release-candidate ZIP after profile
+checks and dataset indexes pass. The release package preserves the intended future
+runtime layout under `data/profiles/<dataset_id>/...` and adds a root
+`release_manifest.json` containing file sizes and SHA256 hashes.
+
+```bash
+python scripts/package_dataset_outputs.py \
+  --output-dir local-data/profile-builds \
+  --dataset-id all \
+  --check-datasets \
+  --require-profile-qa \
+  --check-archive \
+  --archive local-data/atomref-proatoms-profiles-v0-rc.zip
+
+python scripts/check_release_package.py \
+  --archive local-data/atomref-proatoms-profiles-v0-rc.zip \
+  --dataset-id all
+```
