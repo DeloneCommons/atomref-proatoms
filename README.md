@@ -381,3 +381,21 @@ python scripts/run_dataset_build.py \
   --release-require-expected-counts \
   --release-summary
 ```
+
+## Cross-dataset release comparisons
+
+After computing datasets one by one, compare matching states across release-candidate
+archives before deciding whether a sensitivity branch is numerically meaningful. For
+example, compare primary x2c-QZVPall anions against the diffuse x2c-QZVPall-s anion
+branch:
+
+```bash
+python scripts/compare_release_packages.py \
+  --archive local-data/profile-builds-x2cqzvpall-h-rn-release.zip \
+  --archive local-data/profile-builds-x2cqzvpall-s-anion-release.zip \
+  --pair pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0:pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0 \
+  --csv local-data/x2cqzvpall_vs_x2cqzvpall-s_anion_radii_delta.csv
+```
+
+The comparison reports common state IDs, missing states, and per-cutoff radius deltas
+in bohr. The CSV is long-form, with one row per state and cutoff radius.

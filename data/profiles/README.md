@@ -168,3 +168,10 @@ python scripts/check_release_package.py \
 `--require-expected-counts` compares embedded dataset counts with the current curated-state
 build plan, so a selected one-dataset archive can be validated before moving to the next
 production dataset.
+
+## Comparing release-candidate datasets
+
+Use `scripts/compare_release_packages.py` to compare matching state IDs across completed
+release-candidate ZIP archives. This is intended for basis/sensitivity branches, for
+example primary x2c-QZVPall anions versus x2c-QZVPall-s anion checks. The output reports
+per-cutoff radius differences and can write a long-form CSV for review.
