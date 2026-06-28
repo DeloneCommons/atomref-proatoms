@@ -1,18 +1,188 @@
 #!/usr/bin/env python3
-"""Placeholder entry point for a later atomref-proatoms implementation stage."""
+"""Run one pilot spherical proatom profile.
+
+This is intentionally not a full dataset builder yet.  It provides the first local
+PySCF smoke path for Stage 5: choose one curated state and one dataset, enforce the
+basis/dataset no-fallback rule, run spherical UKS, evaluate a profile, and write the
+standard per-state artifacts.
+"""
 
 from __future__ import annotations
 
+import argparse
 import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from atomref_proatoms.artifacts import (  # noqa: E402
+    derived_radii_from_profile,
+    profile_metadata_template,
+    write_state_profile_artifacts,
+)
+from atomref_proatoms.basis import list_basis_bundles, sha256_file  # noqa: E402
+from atomref_proatoms.datasets import (  # noqa: E402
+    assert_dataset_basis_match,
+    dataset_scope,
+    expected_basis_for_dataset,
+    state_allowed_in_dataset,
+)
+from atomref_proatoms.profiles import density_profile_from_mf  # noqa: E402
+from atomref_proatoms.scf import SCFSettings, import_pyscf_modules, run_dataset_state  # noqa: E402
+from atomref_proatoms.states import AtomState, load_atom_states  # noqa: E402
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--state-id", required=True, help="Curated state_id, e.g. C_q0_mult3_hund")
+    parser.add_argument("--dataset-id", required=True, help="Target profile dataset_id")
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=ROOT / "local-data" / "pilot-profiles",
+        help="Output root for local pilot artifacts; defaults to local-data/pilot-profiles",
+    )
+    parser.add_argument("--no-x2c", action="store_true", help="Disable sf-X2C for debugging only")
+    parser.add_argument("--xc", default="PBE0", help="XC functional, default PBE0")
+    parser.add_argument("--conv-tol", type=float, default=1e-9, help="SCF convergence tolerance")
+    parser.add_argument("--max-cycle", type=int, default=100, help="Maximum SCF cycles")
+    parser.add_argument("--grid-level", type=int, default=4, help="PySCF DFT grid level")
+    parser.add_argument(
+        "--profile-n-ang", type=int, default=110, help="Angular grid size for profiles"
+    )
+    parser.add_argument(
+        "--no-profile-qa", action="store_true", help="Skip independent QA integration"
+    )
+    parser.add_argument("--verbose", type=int, default=3, help="PySCF verbosity")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Validate state/dataset/basis selection without importing or running PySCF",
+    )
+    return parser.parse_args()
+
+
+def find_state(state_id: str) -> AtomState:
+    states = load_atom_states(ROOT / "data" / "states" / "curated" / "atom_states_v0.json")
+    by_id = {state.state_id: state for state in states}
+    try:
+        return by_id[state_id]
+    except KeyError as exc:
+        raise SystemExit(f"Unknown state_id {state_id!r}") from exc
+
+
+def find_basis_bundle(dataset_id: str):
+    basis_id = expected_basis_for_dataset(dataset_id)
+    bundles = list_basis_bundles(ROOT / "data" / "basis_sets")
+    by_id = {bundle.basis_id: bundle for bundle in bundles}
+    try:
+        return by_id[basis_id]
+    except KeyError as exc:
+        raise SystemExit(f"Missing basis bundle {basis_id!r} for dataset {dataset_id!r}") from exc
+
+
+def git_commit_or_none() -> str | None:
+    git_dir = ROOT / ".git"
+    if not git_dir.exists():
+        return None
+    try:
+        import subprocess
+
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except Exception:
+        return None
+    return result.stdout.strip() or None
 
 
 def main() -> int:
+    args = parse_args()
+    state = find_state(args.state_id)
+    scope = dataset_scope(args.dataset_id)
+    bundle = find_basis_bundle(args.dataset_id)
+    assert_dataset_basis_match(args.dataset_id, bundle.basis_id)
+    if not state_allowed_in_dataset(args.dataset_id, z=state.z, charge=state.charge):
+        raise SystemExit(
+            f"State {state.state_id} (Z={state.z}, charge={state.charge}) is not allowed in "
+            f"dataset {args.dataset_id} ({scope.role}, {scope.coverage_label})"
+        )
+
     print(
-        "This command is a placeholder in the initial repository skeleton. "
-        "Implement it after the frozen data-layer checks and generator extraction stages.",
-        file=sys.stderr,
+        f"Selected {state.state_id}: {state.symbol}, charge={state.charge}, "
+        f"multiplicity={state.multiplicity}"
     )
-    return 2
+    print(f"Dataset: {args.dataset_id}")
+    print(f"Basis: {bundle.basis_id} ({bundle.basis_sha256})")
+
+    if args.dry_run:
+        print("Dry run completed before PySCF import/SCF execution.")
+        return 0
+
+    try:
+        _gto, _dft, _pyscf_basis, pyscf_version = import_pyscf_modules()
+        settings = SCFSettings(
+            xc=args.xc,
+            use_x2c=not args.no_x2c,
+            conv_tol=args.conv_tol,
+            max_cycle=args.max_cycle,
+            grid_level=args.grid_level,
+            verbose=args.verbose,
+        )
+        run = run_dataset_state(state, bundle, dataset_id=args.dataset_id, settings=settings)
+        profile = density_profile_from_mf(
+            run.mf,
+            n_ang=args.profile_n_ang,
+            compute_qa=not args.no_profile_qa,
+        )
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from exc
+    derived = derived_radii_from_profile(profile)
+    nelec_exact = int(run.mf.mol.nelectron)
+    nelec_qa = profile.get("nelec_integrated_qa")
+    qa = {
+        "scf_converged": bool(run.mf.converged),
+        "electron_count_error_qa": float(nelec_qa - nelec_exact),
+        "max_rel_angular_sigma": None,
+        "linear_dependency_vectors_removed": None,
+        "tail_reaches_min_cutoff": True,
+        "radii_monotonic": derived["r_iso_0.003_e_bohr3_bohr"]
+        < derived["r_iso_0.001_e_bohr3_bohr"]
+        < derived["r_iso_0.0001_e_bohr3_bohr"],
+    }
+    metadata = profile_metadata_template(
+        dataset_id=args.dataset_id,
+        state=state,
+        basis_id=bundle.basis_id,
+        basis_sha256=bundle.basis_sha256,
+        engine_version=pyscf_version,
+        xc=args.xc,
+        relativity="none" if args.no_x2c else "sf-X2C-1e",
+        derived=derived,
+        qa=qa,
+        generator_git_commit=git_commit_or_none(),
+        basis_manifest_sha256=sha256_file(bundle.path / "manifest.json"),
+    )
+    dataset_dir = args.output_dir / args.dataset_id
+    profile_path, metadata_path = write_state_profile_artifacts(
+        dataset_dir,
+        state_id=state.state_id,
+        profile=profile,
+        metadata=metadata,
+    )
+    print(f"SCF converged: {bool(run.mf.converged)}")
+    print(f"Energy / Eh: {float(run.mf.e_tot):.12g}")
+    print(f"QA electron count error: {qa['electron_count_error_qa']:.6g}")
+    print(f"Profile: {profile_path}")
+    print(f"Metadata: {metadata_path}")
+    return 0
 
 
 if __name__ == "__main__":

@@ -62,6 +62,14 @@ class AtomState:
         return int(self.record["multiplicity"])
 
     @property
+    def alpha_l_counts(self) -> dict[int, float]:
+        return {int(key): float(value) for key, value in self.record["alpha_l_counts"].items()}
+
+    @property
+    def beta_l_counts(self) -> dict[int, float]:
+        return {int(key): float(value) for key, value in self.record["beta_l_counts"].items()}
+
+    @property
     def state_category(self) -> str:
         return str(self.record["state_category"])
 
