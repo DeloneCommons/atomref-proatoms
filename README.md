@@ -112,8 +112,15 @@ data/profiles/<dataset_id>/
   metadata.json
 ```
 
-`build_report.py` will read `data/profiles/` and generate the current scientific report
-under `report/`.
+`build_report.py` reads `data/profiles/` and generates the current scientific report
+under `report/`:
+
+```text
+report/report.md
+report/report_manifest.json
+report/tables/*.csv
+report/figures/*.svg
+```
 
 ## Layout
 
