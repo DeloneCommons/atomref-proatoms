@@ -251,3 +251,38 @@ electron-count QA rather than skipped/null QA fields. The summary command prints
 counts for profiles, elements, charge states, state categories, QA coverage, and derived
 radius ranges. Full profile generation should proceed only after pilot profiles pass
 metadata and QA checks.
+
+## Full dataset build orchestration
+
+After the pilot suite is stable, use `scripts/run_dataset_build.py` for resumable
+full-dataset generation from the curated v0 state selection. It derives dataset
+membership from `data/states/curated/atom_states_v0.json` and the dataset scope table,
+so no state can silently fall back to another basis or dataset.
+
+List the planned jobs without PySCF:
+
+```bash
+python scripts/run_dataset_build.py --list
+```
+
+Build one dataset, skipping existing state artifacts by default and writing indexes after
+successful profile checks:
+
+```bash
+python scripts/run_dataset_build.py \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary
+```
+
+Useful chunking/resume options:
+
+```bash
+python scripts/run_dataset_build.py --dataset-id all --limit 20
+python scripts/run_dataset_build.py --dataset-id all --start-after-state-id Xe_q0_mult1_hund
+python scripts/run_dataset_build.py --dataset-id all --only-state-id I_qm1_mult1_hund
+```
+
+Use `--force` only when existing per-state artifacts should be regenerated.

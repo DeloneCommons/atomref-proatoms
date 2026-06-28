@@ -101,3 +101,25 @@ python scripts/package_pilot_outputs.py \
   --group full_pilot_suite \
   --archive local-data/pilot-profiles-full_pilot_suite.zip
 ```
+
+
+## Full dataset builds
+
+After pilot validation, `scripts/run_dataset_build.py` provides resumable generation of
+planned v0 datasets. It reads the curated state table, applies the dataset scope rules,
+skips existing per-state artifacts by default, and can run profile checks plus index
+building after each affected dataset is generated.
+
+```bash
+python scripts/run_dataset_build.py --list
+python scripts/run_dataset_build.py \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary
+```
+
+Use `--limit`, `--start-after-state-id`, and `--only-state-id` for manual chunking and
+recovery. Use `--force` only when existing profile/metadata artifacts should be
+regenerated.
