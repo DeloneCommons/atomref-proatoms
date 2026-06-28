@@ -31,6 +31,12 @@ PROFILE_INDEX_COLUMNS = (
     "state_category",
     "state_role",
     "spin_model",
+    "target_spin_square",
+    "reported_spin_square",
+    "reported_spin_multiplicity",
+    "spin_square_deviation",
+    "linear_dependency_warning_count",
+    "linear_dependency_vectors_removed",
     "basis_id",
     "basis_sha256",
     "engine",
@@ -166,13 +172,35 @@ def _qa_summary(profile_rows: tuple[dict[str, Any], ...]) -> dict[str, Any]:
         for row in profile_rows
         if row.get("max_rel_angular_sigma") is not None
     ]
+    spin_deviations = [
+        abs(float(row["spin_square_deviation"]))
+        for row in profile_rows
+        if row.get("spin_square_deviation") is not None
+    ]
+    dependency_vectors = [
+        int(row["linear_dependency_vectors_removed"])
+        for row in profile_rows
+        if row.get("linear_dependency_vectors_removed") is not None
+    ]
+    dependency_warnings = [
+        int(row["linear_dependency_warning_count"] or 0)
+        for row in profile_rows
+        if row.get("linear_dependency_warning_count") is not None
+    ]
     return {
         "profile_count": len(profile_rows),
         "scf_converged_count": sum(row.get("scf_converged") is True for row in profile_rows),
         "electron_count_qa_count": len(electron_errors),
         "angular_sigma_qa_count": len(angular_sigmas),
+        "spin_square_diagnostic_count": len(spin_deviations),
+        "linear_dependency_warning_count": sum(dependency_warnings),
+        "linear_dependency_profile_count": sum(
+            int(row.get("linear_dependency_warning_count") or 0) > 0 for row in profile_rows
+        ),
         "max_abs_electron_count_error_qa": max(electron_errors) if electron_errors else None,
         "max_rel_angular_sigma": max(angular_sigmas) if angular_sigmas else None,
+        "max_abs_spin_square_deviation": max(spin_deviations) if spin_deviations else None,
+        "max_linear_dependency_vectors_removed": max(dependency_vectors) if dependency_vectors else None,
         "all_tail_reaches_min_cutoff": all(
             row.get("tail_reaches_min_cutoff") is True for row in profile_rows
         ),
@@ -207,6 +235,15 @@ def build_dataset_index_tables(
         method = metadata.get("method", {})
         qa = metadata.get("qa", {})
         state_metadata = metadata.get("state", {})
+        diagnostics = metadata.get("diagnostics", {})
+        if not isinstance(diagnostics, dict):
+            diagnostics = {}
+        spin_diagnostics = diagnostics.get("spin", {})
+        if not isinstance(spin_diagnostics, dict):
+            spin_diagnostics = {}
+        linear_dependency = diagnostics.get("linear_dependency", {})
+        if not isinstance(linear_dependency, dict):
+            linear_dependency = {}
         basis_id = str(method.get("basis_id", ""))
         basis_sha256 = str(method.get("basis_sha256", ""))
         if basis_id in bases and basis_sha256 != bases[basis_id].basis_sha256:
@@ -238,6 +275,12 @@ def build_dataset_index_tables(
                     if state is not None
                     else state_metadata.get("spin_model")
                 ),
+                "target_spin_square": spin_diagnostics.get("target_spin_square"),
+                "reported_spin_square": spin_diagnostics.get("reported_spin_square"),
+                "reported_spin_multiplicity": spin_diagnostics.get("reported_multiplicity"),
+                "spin_square_deviation": spin_diagnostics.get("spin_square_deviation"),
+                "linear_dependency_warning_count": linear_dependency.get("warning_count"),
+                "linear_dependency_vectors_removed": qa.get("linear_dependency_vectors_removed"),
                 "basis_id": basis_id,
                 "basis_sha256": basis_sha256,
                 "engine": method.get("engine"),

@@ -182,3 +182,43 @@ def test_summarize_dataset_cli(tmp_path: Path) -> None:
 
     assert "Dataset:" in result.stdout
     assert "Profiles: 1" in result.stdout
+
+
+def test_dataset_index_records_spin_and_linear_dependency_diagnostics(tmp_path: Path) -> None:
+    dataset_dir = _write_h_dataset(tmp_path)
+    metadata_path = dataset_dir / "metadata" / "H_q0_mult2_hund.json"
+    metadata = json.loads(metadata_path.read_text())
+    metadata["diagnostics"] = {
+        "spin": {
+            "target_spin_2s": 1,
+            "target_multiplicity": 2,
+            "target_spin_square": 0.75,
+            "reported_spin_square": 0.7500001,
+            "reported_multiplicity": 2.0000001,
+            "spin_square_deviation": 1.0e-7,
+            "multiplicity_deviation": 1.0e-7,
+            "note": "diagnostic only",
+        },
+        "linear_dependency": {"warning_count": 1, "vectors_removed": 1},
+    }
+    metadata["qa"]["linear_dependency_vectors_removed"] = 1
+    metadata_path.write_text(json.dumps(metadata))
+
+    tables = build_and_write_dataset_indexes(
+        dataset_dir,
+        states_file=STATES_FILE,
+        basis_root=BASIS_ROOT,
+    )
+    row = tables.profile_index_rows[0]
+
+    assert row["target_spin_square"] == 0.75
+    assert row["reported_spin_square"] == 0.7500001
+    assert row["linear_dependency_warning_count"] == 1
+    assert row["linear_dependency_vectors_removed"] == 1
+    assert tables.manifest["qa_summary"]["spin_square_diagnostic_count"] == 1
+    assert tables.manifest["qa_summary"]["linear_dependency_warning_count"] == 1
+
+    summary = summarize_dataset_indexes(dataset_dir)
+    report = format_dataset_summary(summary)
+    assert "Spin-square diagnostics: 1/1" in report
+    assert "Linear-dependency warnings: 1 across 1 profile(s)" in report

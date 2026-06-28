@@ -50,6 +50,10 @@ The default strict checker tolerance for independent electron-count QA is
 heavy pilot profiles on finite QA quadrature grids while remaining strict for
 light atoms.
 
+Metadata may also contain diagnostic, non-failing fields for backend-reported spin-square
+values and parsed overlap-linear-dependency warnings. These fields help inspect open-shell
+and heavy-element pilots without treating PySCF `<S^2>` as a strict target-spin QA test.
+
 
 ## Multi-dataset pilot-output checks
 

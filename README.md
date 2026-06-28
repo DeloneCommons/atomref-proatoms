@@ -122,6 +122,11 @@ The default strict checker tolerance for independent electron-count QA is
 `max(2e-6, 2e-7 * electron_count)` electrons. This keeps light atoms strict while
 avoiding false failures for heavy Dyall pilots on finite QA quadrature grids.
 
+Generated metadata also records backend diagnostics that are not pass/fail QA targets:
+PySCF-reported `<S^2>`/multiplicity values and parsed overlap-linear-dependency warnings.
+For spherical fractional-occupation proatoms the reported `<S^2>` can differ from the
+formal target spin, so it is kept for auditability rather than used as a release check.
+
 After the H smoke profile is stable, run the light neutral pilot batch with the same
 profile/QA settings.  The `--build-indexes` flag writes the planned dataset-level
 `dataset_manifest.json`, `profile_index.csv`, and `derived_radii.csv` files after

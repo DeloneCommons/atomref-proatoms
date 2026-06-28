@@ -39,6 +39,7 @@ class SCFSettings:
     grid_level: int = DEFAULT_GRID_LEVEL
     grid_prune: Any = DEFAULT_GRID_PRUNE
     verbose: int = 3
+    stdout: Any | None = None
 
 
 @dataclass(frozen=True)
@@ -93,7 +94,13 @@ def basis_use_from_bundle(bundle: BasisBundle) -> BasisUse:
     )
 
 
-def build_atom_mol(state: AtomState, bundle: BasisBundle, *, verbose: int = 3):
+def build_atom_mol(
+    state: AtomState,
+    bundle: BasisBundle,
+    *,
+    verbose: int = 3,
+    stdout: Any | None = None,
+):
     """Build a one-center PySCF molecule from a curated state and frozen basis bundle."""
 
     gto, _dft, pyscf_basis, _version = import_pyscf_modules()
@@ -109,6 +116,8 @@ def build_atom_mol(state: AtomState, bundle: BasisBundle, *, verbose: int = 3):
     mol.cart = False
     mol.symmetry = False
     mol.verbose = verbose
+    if stdout is not None:
+        mol.stdout = stdout
     mol.build()
 
     validate_spherical_ao_layout(mol)
@@ -124,13 +133,20 @@ def run_spherical_uks(
     """Run the production spherical fractional-occupation UKS model for one state."""
 
     run_settings = settings or SCFSettings()
-    mol, basis_use = build_atom_mol(state, bundle, verbose=run_settings.verbose)
+    mol, basis_use = build_atom_mol(
+        state,
+        bundle,
+        verbose=run_settings.verbose,
+        stdout=run_settings.stdout,
+    )
     mf = make_spherical_uks(
         mol,
         xc=run_settings.xc,
         alpha_l_counts=state.alpha_l_counts,
         beta_l_counts=state.beta_l_counts,
     )
+    if run_settings.stdout is not None:
+        mf.stdout = run_settings.stdout
     mf.conv_tol = run_settings.conv_tol
     mf.max_cycle = run_settings.max_cycle
     configure_dft_grid(mf, level=run_settings.grid_level, prune=run_settings.grid_prune)

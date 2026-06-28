@@ -177,6 +177,7 @@ def profile_metadata_template(
     qa: dict[str, Any] | None = None,
     generator_git_commit: str | None = None,
     basis_manifest_sha256: str | None = None,
+    diagnostics: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build the common metadata structure for one generated profile."""
 
@@ -211,6 +212,7 @@ def profile_metadata_template(
         },
         "derived": derived or {},
         "qa": qa or {},
+        "diagnostics": diagnostics or {},
         "provenance": {
             "generator_git_commit": generator_git_commit,
             "python_version": platform.python_version(),

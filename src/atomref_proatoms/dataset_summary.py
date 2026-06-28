@@ -45,6 +45,11 @@ class DatasetSummary:
     angular_sigma_qa_count: int | None
     max_abs_electron_count_error_qa: float | None
     max_rel_angular_sigma: float | None
+    spin_square_diagnostic_count: int | None
+    max_abs_spin_square_deviation: float | None
+    linear_dependency_warning_count: int | None
+    linear_dependency_profile_count: int | None
+    max_linear_dependency_vectors_removed: int | None
     all_tail_reaches_min_cutoff: bool | None
     all_radii_monotonic: bool | None
     radius_ranges: tuple[RadiusRange, ...]
@@ -132,6 +137,21 @@ def summarize_dataset_indexes(dataset_dir: Path) -> DatasetSummary:
             qa_summary.get("max_abs_electron_count_error_qa")
         ),
         max_rel_angular_sigma=_float_or_none(qa_summary.get("max_rel_angular_sigma")),
+        spin_square_diagnostic_count=_int_or_none(
+            qa_summary.get("spin_square_diagnostic_count")
+        ),
+        max_abs_spin_square_deviation=_float_or_none(
+            qa_summary.get("max_abs_spin_square_deviation")
+        ),
+        linear_dependency_warning_count=_int_or_none(
+            qa_summary.get("linear_dependency_warning_count")
+        ),
+        linear_dependency_profile_count=_int_or_none(
+            qa_summary.get("linear_dependency_profile_count")
+        ),
+        max_linear_dependency_vectors_removed=_int_or_none(
+            qa_summary.get("max_linear_dependency_vectors_removed")
+        ),
         all_tail_reaches_min_cutoff=_bool_or_none(
             qa_summary.get("all_tail_reaches_min_cutoff")
         ),
@@ -181,6 +201,15 @@ def format_dataset_summary(summary: DatasetSummary) -> str:
         "  Max |electron-count error|: "
         f"{_format_optional_float(summary.max_abs_electron_count_error_qa)}",
         f"  Max relative angular sigma: {_format_optional_float(summary.max_rel_angular_sigma)}",
+        "Diagnostics:",
+        f"  Spin-square diagnostics: {summary.spin_square_diagnostic_count or 0}/{summary.profile_count}",
+        "  Max |spin-square diagnostic deviation|: "
+        f"{_format_optional_float(summary.max_abs_spin_square_deviation)}",
+        "  Linear-dependency warnings: "
+        f"{summary.linear_dependency_warning_count or 0} "
+        f"across {summary.linear_dependency_profile_count or 0} profile(s)",
+        "  Max linear-dependency vectors removed: "
+        f"{summary.max_linear_dependency_vectors_removed or 0}",
         "  All tails reach min cutoff: "
         f"{_format_optional_bool(summary.all_tail_reaches_min_cutoff)}",
         f"  All radii monotonic: {_format_optional_bool(summary.all_radii_monotonic)}",

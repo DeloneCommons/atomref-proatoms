@@ -137,3 +137,57 @@ def test_check_profile_dataset_rejects_profile_metadata_radius_mismatch(tmp_path
 
     assert not result.ok
     assert any("does not match profile-derived" in item for item in result.errors)
+
+
+def test_check_profile_dataset_validates_diagnostics_consistency(tmp_path) -> None:
+    dataset_dir = _write_valid_h_artifact(
+        tmp_path,
+        electron_count_error_qa=1.0e-9,
+        max_rel_angular_sigma=1.0e-10,
+    )
+    metadata_path = dataset_dir / "metadata" / "H_q0_mult2_hund.json"
+    metadata = json.loads(metadata_path.read_text())
+    metadata["diagnostics"] = {
+        "spin": {
+            "target_spin_2s": 1,
+            "target_multiplicity": 2,
+            "target_spin_square": 0.75,
+            "reported_spin_square": 0.7500001,
+            "reported_multiplicity": 2.0000001,
+            "spin_square_deviation": 1.0e-7,
+            "multiplicity_deviation": 1.0e-7,
+            "note": "diagnostic only",
+        },
+        "linear_dependency": {"warning_count": 1, "vectors_removed": 1},
+    }
+    metadata["qa"]["linear_dependency_vectors_removed"] = 1
+    metadata_path.write_text(json.dumps(metadata))
+
+    result = check_profile_dataset(
+        dataset_dir,
+        states_file=STATES_FILE,
+        basis_root=BASIS_ROOT,
+        require_profile_qa=True,
+    )
+
+    assert result.ok
+
+
+def test_check_profile_dataset_rejects_inconsistent_linear_dependency_metadata(tmp_path) -> None:
+    dataset_dir = _write_valid_h_artifact(
+        tmp_path,
+        electron_count_error_qa=1.0e-9,
+        max_rel_angular_sigma=1.0e-10,
+    )
+    metadata_path = dataset_dir / "metadata" / "H_q0_mult2_hund.json"
+    metadata = json.loads(metadata_path.read_text())
+    metadata["diagnostics"] = {
+        "linear_dependency": {"warning_count": 1, "vectors_removed": 1}
+    }
+    metadata["qa"]["linear_dependency_vectors_removed"] = None
+    metadata_path.write_text(json.dumps(metadata))
+
+    result = check_profile_dataset(dataset_dir, states_file=STATES_FILE, basis_root=BASIS_ROOT)
+
+    assert not result.ok
+    assert any("linear_dependency_vectors_removed" in error for error in result.errors)

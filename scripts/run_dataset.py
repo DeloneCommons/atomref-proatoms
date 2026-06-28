@@ -10,8 +10,10 @@ standard per-state artifacts.
 from __future__ import annotations
 
 import argparse
+import io
 import sys
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
@@ -31,9 +33,30 @@ from atomref_proatoms.datasets import (  # noqa: E402
     state_allowed_in_dataset,
 )
 from atomref_proatoms.profiles import density_profile_from_mf  # noqa: E402
-from atomref_proatoms.qa import ANGULAR_SIGMA_RHO_FLOOR, qa_result_from_profile  # noqa: E402
+from atomref_proatoms.qa import (  # noqa: E402
+    ANGULAR_SIGMA_RHO_FLOOR,
+    linear_dependency_diagnostics_from_log,
+    qa_result_from_profile,
+    spin_diagnostics_from_mf,
+)
 from atomref_proatoms.scf import SCFSettings, import_pyscf_modules, run_dataset_state  # noqa: E402
 from atomref_proatoms.states import AtomState, load_atom_states  # noqa: E402
+
+
+class TeeCapture(io.StringIO):
+    """Capture PySCF text while still echoing it to the terminal."""
+
+    def __init__(self, stream: Any) -> None:
+        super().__init__()
+        self._stream = stream
+
+    def write(self, text: str) -> int:
+        self._stream.write(text)
+        return super().write(text)
+
+    def flush(self) -> None:
+        self._stream.flush()
+        super().flush()
 
 
 def parse_args() -> argparse.Namespace:
@@ -165,6 +188,7 @@ def main() -> int:
         print("Dry run completed before PySCF import/SCF execution.")
         return 0
 
+    scf_stdout = TeeCapture(sys.stdout)
     try:
         _gto, _dft, _pyscf_basis, pyscf_version = import_pyscf_modules()
         settings = SCFSettings(
@@ -174,6 +198,7 @@ def main() -> int:
             max_cycle=args.max_cycle,
             grid_level=args.grid_level,
             verbose=args.verbose,
+            stdout=scf_stdout,
         )
         run = run_dataset_state(state, bundle, dataset_id=args.dataset_id, settings=settings)
         profile = density_profile_from_mf(
@@ -188,11 +213,14 @@ def main() -> int:
     except RuntimeError as exc:
         raise SystemExit(str(exc)) from exc
     derived = derived_radii_from_profile(profile)
+    linear_dependency = linear_dependency_diagnostics_from_log(scf_stdout.getvalue())
+    spin_diagnostics = spin_diagnostics_from_mf(run.mf, spin_2s=state.spin_2s)
     qa = qa_result_from_profile(
         scf_converged=bool(run.mf.converged),
         electron_count_exact=int(run.mf.mol.nelectron),
         derived=derived,
         profile=profile,
+        linear_dependency_vectors_removed=linear_dependency.vectors_removed,
         angular_sigma_rho_floor=args.angular_sigma_rho_floor,
     ).to_json()
     metadata = profile_metadata_template(
@@ -207,6 +235,14 @@ def main() -> int:
         qa=qa,
         generator_git_commit=git_commit_or_none(),
         basis_manifest_sha256=sha256_file(bundle.path / "manifest.json"),
+        diagnostics={
+            "spin": spin_diagnostics.to_json(),
+            "linear_dependency": linear_dependency.to_json(),
+            "scf_log": {
+                "captured": True,
+                "line_count": len(scf_stdout.getvalue().splitlines()),
+            },
+        },
     )
     dataset_dir = args.output_dir / args.dataset_id
     profile_path, metadata_path = write_state_profile_artifacts(
@@ -218,6 +254,15 @@ def main() -> int:
     )
     print(f"SCF converged: {bool(run.mf.converged)}")
     print(f"Energy / Eh: {float(run.mf.e_tot):.12g}")
+    spin_json = spin_diagnostics.to_json()
+    if spin_json["reported_spin_square"] is not None:
+        print(
+            "Spin diagnostic <S^2>: "
+            f"{spin_json['reported_spin_square']:.6g} "
+            f"(target {spin_json['target_spin_square']:.6g}; diagnostic only)"
+        )
+    if linear_dependency.vectors_removed is not None:
+        print(f"Linear-dependency vectors removed: {linear_dependency.vectors_removed}")
     if qa["electron_count_error_qa"] is None:
         print("QA electron count error: skipped")
     else:

@@ -46,3 +46,32 @@ def test_qa_result_from_profile_records_electron_and_angular_qa() -> None:
     assert result.electron_count_error_qa == pytest.approx(1.0e-8)
     assert result.max_rel_angular_sigma == pytest.approx(2.0e-9)
     assert result.radii_monotonic is True
+
+
+class _FakeMF:
+    def spin_square(self):
+        return 3.75, 4.0
+
+
+def test_spin_diagnostics_from_mf_records_reported_values() -> None:
+    from atomref_proatoms.qa import spin_diagnostics_from_mf
+
+    diagnostics = spin_diagnostics_from_mf(_FakeMF(), spin_2s=2)
+
+    assert diagnostics.target_multiplicity == 3
+    assert diagnostics.target_spin_square == pytest.approx(2.0)
+    assert diagnostics.reported_spin_square == pytest.approx(3.75)
+    assert diagnostics.reported_multiplicity == pytest.approx(4.0)
+    assert diagnostics.spin_square_deviation == pytest.approx(1.75)
+
+
+def test_linear_dependency_diagnostics_from_log_parses_vectors_removed() -> None:
+    from atomref_proatoms.qa import linear_dependency_diagnostics_from_log
+
+    diagnostics = linear_dependency_diagnostics_from_log(
+        "WARN: 1 small eigenvectors of overlap matrix removed because of linear dependency\n"
+        "WARN: 2 small eigenvectors of overlap matrix removed because of linear dependency\n"
+    )
+
+    assert diagnostics.warning_count == 2
+    assert diagnostics.vectors_removed == 3

@@ -360,6 +360,76 @@ def _qa_errors_and_warnings(
     return errors, warnings
 
 
+def _diagnostic_errors_and_warnings(
+    metadata: dict[str, Any],
+    state: AtomState | None,
+) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    state_id = str(metadata.get("state_id", "<unknown>"))
+    diagnostics = metadata.get("diagnostics")
+    if diagnostics is None or diagnostics == {}:
+        return errors, warnings
+    if not isinstance(diagnostics, dict):
+        return [f"{state_id}: metadata.diagnostics must be an object"], warnings
+
+    spin = diagnostics.get("spin")
+    if spin is not None:
+        if not isinstance(spin, dict):
+            errors.append(f"{state_id}: metadata.diagnostics.spin must be an object")
+        else:
+            if state is not None:
+                expected_mult = state.spin_2s + 1
+                expected_ss = (state.spin_2s / 2.0) * (state.spin_2s / 2.0 + 1.0)
+                if spin.get("target_spin_2s") != state.spin_2s:
+                    errors.append(f"{state_id}: diagnostics.spin.target_spin_2s mismatch")
+                if spin.get("target_multiplicity") != expected_mult:
+                    errors.append(f"{state_id}: diagnostics.spin.target_multiplicity mismatch")
+                target_ss = spin.get("target_spin_square")
+                if not _is_finite_number(target_ss) or not math.isclose(
+                    float(target_ss), expected_ss, rel_tol=1.0e-12, abs_tol=1.0e-12
+                ):
+                    errors.append(f"{state_id}: diagnostics.spin.target_spin_square mismatch")
+            for key in (
+                "reported_spin_square",
+                "reported_multiplicity",
+                "spin_square_deviation",
+                "multiplicity_deviation",
+            ):
+                value = spin.get(key)
+                if value is not None and not _is_finite_number(value):
+                    errors.append(f"{state_id}: diagnostics.spin.{key} must be finite or null")
+
+    linear = diagnostics.get("linear_dependency")
+    if linear is not None:
+        if not isinstance(linear, dict):
+            errors.append(f"{state_id}: metadata.diagnostics.linear_dependency must be an object")
+        else:
+            warning_count = linear.get("warning_count")
+            if not isinstance(warning_count, int) or isinstance(warning_count, bool) or warning_count < 0:
+                errors.append(
+                    f"{state_id}: diagnostics.linear_dependency.warning_count must be a "
+                    "non-negative integer"
+                )
+            vectors_removed = linear.get("vectors_removed")
+            if vectors_removed is not None and (
+                not isinstance(vectors_removed, int)
+                or isinstance(vectors_removed, bool)
+                or vectors_removed < 0
+            ):
+                errors.append(
+                    f"{state_id}: diagnostics.linear_dependency.vectors_removed must be "
+                    "a non-negative integer or null"
+                )
+            qa = metadata.get("qa")
+            if isinstance(qa, dict) and qa.get("linear_dependency_vectors_removed") != vectors_removed:
+                errors.append(
+                    f"{state_id}: qa.linear_dependency_vectors_removed does not match "
+                    "diagnostics.linear_dependency.vectors_removed"
+                )
+    return errors, warnings
+
+
 def _find_archive_for_state(profiles_dir: Path, state_id: str) -> tuple[Path | None, list[str]]:
     candidates = [profiles_dir / f"{state_id}.csv.zip", profiles_dir / f"{state_id}.csv.gz"]
     existing = [path for path in candidates if path.exists()]
@@ -454,8 +524,11 @@ def check_profile_dataset(
             electron_count_abs_tol=electron_count_abs_tol,
             electron_count_rel_tol=electron_count_rel_tol,
         )
+        diagnostic_errors, diagnostic_warnings = _diagnostic_errors_and_warnings(metadata, state)
         errors.extend(qa_errors)
+        errors.extend(diagnostic_errors)
         warnings.extend(qa_warnings)
+        warnings.extend(diagnostic_warnings)
         checked += 1
 
     return ProfileCheckResult(dataset_dir, checked, tuple(errors), tuple(warnings))
