@@ -10,7 +10,7 @@ data/profiles/<dataset_id>/
   dataset_manifest.json
   profile_index.csv
   derived_radii.csv
-  profiles/<state_id>.csv.gz
+  profiles/<state_id>.csv.zip
   metadata/<state_id>.json
 ```
 

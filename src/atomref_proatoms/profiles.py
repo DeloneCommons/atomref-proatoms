@@ -210,7 +210,7 @@ def density_profile_from_mf(
         "nelec_cumulative_profile": nelec_cum,
         "nelec_integrated_profile_trapz": nelec_profile_trapz,
         "nelec_qa": qa,
-        "nelec_integrated_qa": qa["nelec"] if qa is not None else math.nan,
+        "nelec_integrated_qa": qa["nelec"] if qa is not None else None,
     }
 
 

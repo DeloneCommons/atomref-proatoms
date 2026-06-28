@@ -52,6 +52,8 @@ On a local machine with PySCF installed:
 
 ```bash
 python -m pip install -e ".[generator,test,dev]"
+# or install every optional mode at once:
+python -m pip install -e ".[all]"
 python scripts/check_basis_bundles.py
 pytest -m "not slow"
 ```
@@ -77,6 +79,28 @@ local-data/             ignored local SCF/checkpoint/scratch artifacts
 
 ## Generator status
 
-The spherical fractional-occupation UKS generator is not extracted in this first skeleton.
-The placeholder modules document the intended boundaries and keep PySCF imports lazy. Full
-profile generation should start only after the current data-layer tests pass.
+The first pilot generator path is available through `scripts/run_dataset.py`. It keeps
+PySCF imports lazy and is intended for local smoke tests before full dataset builds.
+Generated profile artifacts default to per-state `.csv.zip` archives plus JSON metadata.
+
+Example dry run without PySCF:
+
+```bash
+python scripts/run_dataset.py \
+  --state-id H_q0_mult2_hund \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --dry-run
+```
+
+Example local PySCF smoke run:
+
+```bash
+python scripts/run_dataset.py \
+  --state-id H_q0_mult2_hund \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --no-profile-qa \
+  --profile-n-ang 50
+```
+
+Full profile generation should proceed only after pilot profiles pass metadata and QA
+checks.

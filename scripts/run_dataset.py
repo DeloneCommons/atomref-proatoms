@@ -56,6 +56,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--no-profile-qa", action="store_true", help="Skip independent QA integration"
     )
+    parser.add_argument(
+        "--profile-archive-format",
+        choices=("zip", "csv.gz"),
+        default="zip",
+        help="Profile archive format; defaults to per-state .csv.zip archives",
+    )
     parser.add_argument("--verbose", type=int, default=3, help="PySCF verbosity")
     parser.add_argument(
         "--dry-run",
@@ -147,9 +153,10 @@ def main() -> int:
     derived = derived_radii_from_profile(profile)
     nelec_exact = int(run.mf.mol.nelectron)
     nelec_qa = profile.get("nelec_integrated_qa")
+    electron_count_error_qa = None if nelec_qa is None else float(nelec_qa - nelec_exact)
     qa = {
         "scf_converged": bool(run.mf.converged),
-        "electron_count_error_qa": float(nelec_qa - nelec_exact),
+        "electron_count_error_qa": electron_count_error_qa,
         "max_rel_angular_sigma": None,
         "linear_dependency_vectors_removed": None,
         "tail_reaches_min_cutoff": True,
@@ -176,11 +183,15 @@ def main() -> int:
         state_id=state.state_id,
         profile=profile,
         metadata=metadata,
+        profile_archive_format=args.profile_archive_format,
     )
     print(f"SCF converged: {bool(run.mf.converged)}")
     print(f"Energy / Eh: {float(run.mf.e_tot):.12g}")
-    print(f"QA electron count error: {qa['electron_count_error_qa']:.6g}")
-    print(f"Profile: {profile_path}")
+    if qa["electron_count_error_qa"] is None:
+        print("QA electron count error: skipped")
+    else:
+        print(f"QA electron count error: {qa['electron_count_error_qa']:.6g}")
+    print(f"Profile archive: {profile_path}")
     print(f"Metadata: {metadata_path}")
     return 0
 

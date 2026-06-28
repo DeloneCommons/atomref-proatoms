@@ -9,8 +9,8 @@ from typing import Any
 @dataclass(frozen=True)
 class QAResult:
     scf_converged: bool
-    electron_count_error_qa: float
-    max_rel_angular_sigma: float
+    electron_count_error_qa: float | None
+    max_rel_angular_sigma: float | None
     tail_reaches_min_cutoff: bool
     radii_monotonic: bool
     linear_dependency_vectors_removed: int | None = None

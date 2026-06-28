@@ -31,6 +31,12 @@ generator = [
 audit = [
   "basis-set-exchange",
 ]
+all = [
+  "pytest>=7",
+  "ruff>=0.6",
+  "pyscf>=2.6",
+  "basis-set-exchange",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
