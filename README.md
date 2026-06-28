@@ -102,5 +102,13 @@ python scripts/run_dataset.py \
   --profile-n-ang 50
 ```
 
-Full profile generation should proceed only after pilot profiles pass metadata and QA
-checks.
+Validate generated pilot artifacts without running PySCF:
+
+```bash
+python scripts/check_profiles.py \
+  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0
+```
+
+Use `--require-profile-qa` when checking artifacts that should include independent
+electron-count QA rather than skipped/null QA fields. Full profile generation should
+proceed only after pilot profiles pass metadata and QA checks.

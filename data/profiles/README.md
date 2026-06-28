@@ -15,3 +15,13 @@ data/profiles/<dataset_id>/
 ```
 
 Generated profiles must record both `dataset_id` and `basis_id` so diffuse and non-diffuse basis outputs are never merged silently.
+
+Local pilot or future released profile directories can be checked with:
+
+```bash
+python scripts/check_profiles.py --dataset-dir data/profiles/<dataset_id>
+```
+
+The checker validates strict JSON metadata, `.csv.zip` profile archive structure,
+required profile columns, finite and monotonic radial data, cutoff-radius consistency,
+state/dataset/basis metadata consistency, and QA status fields.
