@@ -15,7 +15,12 @@ from typing import Any
 from .basis import list_basis_bundles
 from .datasets import expected_basis_for_dataset, state_allowed_in_dataset
 from .profiles import DEFAULT_DENSITY_CUTOFFS, derived_radii, validate_profile_metadata
-from .qa import electron_count_tolerance, radii_are_monotonic
+from .qa import (
+    ELECTRON_COUNT_ABS_TOL,
+    ELECTRON_COUNT_REL_TOL,
+    electron_count_tolerance,
+    radii_are_monotonic,
+)
 from .states import AtomState, load_atom_states
 
 DENSITY_NONNEGATIVE_TOL = 1e-12
@@ -300,6 +305,8 @@ def _qa_errors_and_warnings(
     *,
     require_profile_qa: bool,
     angular_sigma_tol: float,
+    electron_count_abs_tol: float,
+    electron_count_rel_tol: float,
 ) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -324,11 +331,16 @@ def _qa_errors_and_warnings(
     elif not _is_finite_number(electron_count_error):
         errors.append(f"{state_id}: qa.electron_count_error_qa must be finite or null")
     elif state is not None:
-        tolerance = electron_count_tolerance(state.electron_count)
+        tolerance = electron_count_tolerance(
+            state.electron_count,
+            abs_tol=electron_count_abs_tol,
+            rel_tol=electron_count_rel_tol,
+        )
         if abs(float(electron_count_error)) > tolerance:
             errors.append(
                 f"{state_id}: qa.electron_count_error_qa={float(electron_count_error):g} "
-                f"exceeds tolerance {tolerance:g}"
+                f"exceeds tolerance {tolerance:g} "
+                f"(abs_tol={electron_count_abs_tol:g}, rel_tol={electron_count_rel_tol:g})"
             )
 
     angular_sigma = qa.get("max_rel_angular_sigma")
@@ -365,6 +377,8 @@ def check_profile_dataset(
     basis_root: Path | None = None,
     require_profile_qa: bool = False,
     angular_sigma_tol: float = ANGULAR_SIGMA_DEFAULT_TOL,
+    electron_count_abs_tol: float = ELECTRON_COUNT_ABS_TOL,
+    electron_count_rel_tol: float = ELECTRON_COUNT_REL_TOL,
 ) -> ProfileCheckResult:
     """Validate generated profile archives and metadata under one dataset directory."""
 
@@ -437,6 +451,8 @@ def check_profile_dataset(
             state,
             require_profile_qa=require_profile_qa,
             angular_sigma_tol=angular_sigma_tol,
+            electron_count_abs_tol=electron_count_abs_tol,
+            electron_count_rel_tol=electron_count_rel_tol,
         )
         errors.extend(qa_errors)
         warnings.extend(qa_warnings)

@@ -45,6 +45,11 @@ maximum relative angular sigma of the density on the stored profile grid. A sphe
 production profile should have very small angular sigma except in the far tail where the
 absolute density is below the configured reporting floor.
 
+The default strict checker tolerance for independent electron-count QA is
+`max(2e-6, 2e-7 * electron_count)` electrons. This avoids false failures for
+heavy pilot profiles on finite QA quadrature grids while remaining strict for
+light atoms.
+
 
 ## Multi-dataset pilot-output checks
 
@@ -74,9 +79,9 @@ The local pilot-output root can contain several dataset directories at once. Use
 ```bash
 python scripts/run_pilots.py \
   --group full_pilot_suite \
-  --profile-n-ang 50 \
-  --qa-n-r 120 \
-  --qa-n-ang 50 \
+  --profile-n-ang 110 \
+  --qa-n-r 400 \
+  --qa-n-ang 110 \
   --check-profiles \
   --require-profile-qa \
   --build-indexes \

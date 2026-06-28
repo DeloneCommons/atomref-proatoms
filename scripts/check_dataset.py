@@ -17,6 +17,7 @@ from atomref_proatoms.dataset_summary import (  # noqa: E402
     format_dataset_summary,
     summarize_dataset_indexes,
 )
+from atomref_proatoms.qa import ELECTRON_COUNT_ABS_TOL, ELECTRON_COUNT_REL_TOL  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
@@ -51,6 +52,18 @@ def parse_args() -> argparse.Namespace:
         help="Tolerance for qa.max_rel_angular_sigma when that field is recorded.",
     )
     parser.add_argument(
+        "--electron-count-abs-tol",
+        type=float,
+        default=ELECTRON_COUNT_ABS_TOL,
+        help="Absolute floor for independent electron-count QA tolerance.",
+    )
+    parser.add_argument(
+        "--electron-count-rel-tol",
+        type=float,
+        default=ELECTRON_COUNT_REL_TOL,
+        help="Per-electron relative term for independent electron-count QA tolerance.",
+    )
+    parser.add_argument(
         "--summary",
         action="store_true",
         help="Print a compact dataset summary after successful validation.",
@@ -66,6 +79,8 @@ def main() -> int:
         basis_root=args.basis_root,
         require_profile_qa=args.require_profile_qa,
         angular_sigma_tol=args.angular_sigma_tol,
+        electron_count_abs_tol=args.electron_count_abs_tol,
+        electron_count_rel_tol=args.electron_count_rel_tol,
         require_indexes=True,
     )
     errors = list(profile_result.errors)

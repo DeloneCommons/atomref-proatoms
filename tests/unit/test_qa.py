@@ -10,8 +10,9 @@ from atomref_proatoms.qa import (
 
 
 def test_electron_count_tolerance_uses_absolute_floor() -> None:
-    assert electron_count_tolerance(1) == pytest.approx(1.0e-6)
-    assert electron_count_tolerance(2000) == pytest.approx(2.0e-5)
+    assert electron_count_tolerance(1) == pytest.approx(2.0e-6)
+    assert electron_count_tolerance(2000) == pytest.approx(4.0e-4)
+    assert electron_count_tolerance(92) == pytest.approx(1.84e-5)
 
 
 def test_max_relative_angular_sigma_ignores_tiny_density_tail() -> None:

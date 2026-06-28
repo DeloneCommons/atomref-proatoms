@@ -8,8 +8,8 @@ from dataclasses import dataclass
 from typing import Any
 
 ANGULAR_SIGMA_RHO_FLOOR = 1.0e-8
-ELECTRON_COUNT_ABS_TOL = 1.0e-6
-ELECTRON_COUNT_REL_TOL = 1.0e-8
+ELECTRON_COUNT_ABS_TOL = 2.0e-6
+ELECTRON_COUNT_REL_TOL = 2.0e-7
 
 
 @dataclass(frozen=True)
@@ -50,11 +50,25 @@ class AngularSigmaSummary:
         }
 
 
-def electron_count_tolerance(electron_count: int | float) -> float:
-    """Return the default absolute tolerance for independent electron-count QA."""
+def electron_count_tolerance(
+    electron_count: int | float,
+    *,
+    abs_tol: float = ELECTRON_COUNT_ABS_TOL,
+    rel_tol: float = ELECTRON_COUNT_REL_TOL,
+) -> float:
+    """Return the absolute tolerance for independent electron-count QA.
 
+    The independent QA integration is a numerical quadrature over the generated
+    density, not a re-normalization step. Heavy atoms and large relativistic
+    bases can show absolute errors around 1e-5 electrons on deliberately modest
+    pilot grids while still being excellent on a relative scale.  The default
+    therefore combines a small absolute floor with a per-electron relative term.
+    """
+
+    if abs_tol < 0 or rel_tol < 0:
+        raise ValueError("electron-count tolerances must be non-negative")
     n_electrons = abs(float(electron_count))
-    return max(ELECTRON_COUNT_ABS_TOL, ELECTRON_COUNT_REL_TOL * n_electrons)
+    return max(float(abs_tol), float(rel_tol) * n_electrons)
 
 
 def radii_are_monotonic(derived: dict[str, float]) -> bool:

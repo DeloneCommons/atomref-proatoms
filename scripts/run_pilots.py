@@ -25,6 +25,7 @@ from atomref_proatoms.pilots import (  # noqa: E402
     get_pilot_group,
     pilot_group_names,
 )
+from atomref_proatoms.qa import ELECTRON_COUNT_ABS_TOL, ELECTRON_COUNT_REL_TOL  # noqa: E402
 
 RUN_DATASET = ROOT / "scripts" / "run_dataset.py"
 CHECK_PROFILES = ROOT / "scripts" / "check_profiles.py"
@@ -93,6 +94,18 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=1.0e-8,
         help="Ignore angular sigma points with rho at or below this value",
+    )
+    parser.add_argument(
+        "--electron-count-abs-tol",
+        type=float,
+        default=ELECTRON_COUNT_ABS_TOL,
+        help="Absolute floor for independent electron-count QA checks after generation.",
+    )
+    parser.add_argument(
+        "--electron-count-rel-tol",
+        type=float,
+        default=ELECTRON_COUNT_REL_TOL,
+        help="Per-electron relative term for independent electron-count QA checks.",
     )
     parser.add_argument(
         "--profile-archive-format",
@@ -193,7 +206,16 @@ def check_dataset_dirs(args: argparse.Namespace, dataset_ids: set[str]) -> int:
     failures = 0
     for dataset_id in sorted(dataset_ids):
         dataset_dir = args.output_dir / dataset_id
-        command = [sys.executable, str(CHECK_PROFILES), "--dataset-dir", str(dataset_dir)]
+        command = [
+            sys.executable,
+            str(CHECK_PROFILES),
+            "--dataset-dir",
+            str(dataset_dir),
+            "--electron-count-abs-tol",
+            str(args.electron_count_abs_tol),
+            "--electron-count-rel-tol",
+            str(args.electron_count_rel_tol),
+        ]
         _bool_flag(command, "--require-profile-qa", args.require_profile_qa)
         print("\nChecking generated profiles:", " ".join(command))
         result = subprocess.run(command, cwd=ROOT, check=False)
@@ -214,6 +236,14 @@ def build_dataset_indexes(args: argparse.Namespace, dataset_ids: set[str]) -> in
             "--dataset-dir",
             str(dataset_dir),
         ]
+        command.extend(
+            [
+                "--electron-count-abs-tol",
+                str(args.electron_count_abs_tol),
+                "--electron-count-rel-tol",
+                str(args.electron_count_rel_tol),
+            ]
+        )
         _bool_flag(command, "--require-profile-qa", args.require_profile_qa)
         _bool_flag(command, "--summary", args.summary)
         print("\nBuilding dataset indexes:", " ".join(command))

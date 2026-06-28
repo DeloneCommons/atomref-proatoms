@@ -16,6 +16,7 @@ from .profile_checks import (
     read_profile_table,
     read_strict_json,
 )
+from .qa import ELECTRON_COUNT_ABS_TOL, ELECTRON_COUNT_REL_TOL
 from .schemas import PROFILE_DATASET_MANIFEST_SCHEMA_VERSION
 from .states import AtomState, load_atom_states
 
@@ -387,6 +388,8 @@ def check_profile_dataset_with_indexes(
     basis_root: Path | None = None,
     require_profile_qa: bool = False,
     angular_sigma_tol: float = ANGULAR_SIGMA_DEFAULT_TOL,
+    electron_count_abs_tol: float = ELECTRON_COUNT_ABS_TOL,
+    electron_count_rel_tol: float = ELECTRON_COUNT_REL_TOL,
     require_indexes: bool = True,
 ) -> tuple[ProfileCheckResult, DatasetIndexCheckResult | None]:
     """Run per-state profile checks and, optionally, dataset-index checks."""
@@ -397,6 +400,8 @@ def check_profile_dataset_with_indexes(
         basis_root=basis_root,
         require_profile_qa=require_profile_qa,
         angular_sigma_tol=angular_sigma_tol,
+        electron_count_abs_tol=electron_count_abs_tol,
+        electron_count_rel_tol=electron_count_rel_tol,
     )
     if not require_indexes:
         return profile_result, None

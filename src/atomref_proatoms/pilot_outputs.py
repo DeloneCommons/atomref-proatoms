@@ -9,6 +9,7 @@ from .dataset_index import check_profile_dataset_with_indexes
 from .dataset_summary import format_dataset_summary, summarize_dataset_indexes
 from .datasets import dataset_scope
 from .pilots import PilotProfile, get_pilot_group, pilot_group_names
+from .qa import ELECTRON_COUNT_ABS_TOL, ELECTRON_COUNT_REL_TOL
 
 
 @dataclass(frozen=True)
@@ -79,6 +80,8 @@ def check_pilot_output_root(
     basis_root: Path | None = None,
     require_profile_qa: bool = False,
     angular_sigma_tol: float = 1.0e-8,
+    electron_count_abs_tol: float = ELECTRON_COUNT_ABS_TOL,
+    electron_count_rel_tol: float = ELECTRON_COUNT_REL_TOL,
     require_indexes: bool = True,
     allow_missing: bool = False,
     include_summaries: bool = False,
@@ -128,6 +131,8 @@ def check_pilot_output_root(
             basis_root=basis_root,
             require_profile_qa=require_profile_qa,
             angular_sigma_tol=angular_sigma_tol,
+            electron_count_abs_tol=electron_count_abs_tol,
+            electron_count_rel_tol=electron_count_rel_tol,
             require_indexes=require_indexes,
         )
         checked.append(dataset_id)

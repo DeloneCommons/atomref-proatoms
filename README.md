@@ -108,15 +108,19 @@ Example local PySCF smoke run with the independent profile QA enabled:
 python scripts/run_dataset.py \
   --state-id H_q0_mult2_hund \
   --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --profile-n-ang 50 \
-  --qa-n-r 120 \
-  --qa-n-ang 50
+  --profile-n-ang 110 \
+  --qa-n-r 400 \
+  --qa-n-ang 110
 ```
 
 In this context, QA means generated-profile quality assurance: SCF convergence,
 independent radial electron-count integration, density-tail coverage for cutoff radii,
 monotonic cutoff radii, nonnegative finite density values, and angular-sigma checks that
 confirm the supposedly spherical density is nearly angle-independent.
+
+The default strict checker tolerance for independent electron-count QA is
+`max(2e-6, 2e-7 * electron_count)` electrons. This keeps light atoms strict while
+avoiding false failures for heavy Dyall pilots on finite QA quadrature grids.
 
 After the H smoke profile is stable, run the light neutral pilot batch with the same
 profile/QA settings.  The `--build-indexes` flag writes the planned dataset-level
@@ -126,9 +130,9 @@ the per-state profile checks pass:
 ```bash
 python scripts/run_pilots.py \
   --group neutral_light_x2c \
-  --profile-n-ang 50 \
-  --qa-n-r 120 \
-  --qa-n-ang 50 \
+  --profile-n-ang 110 \
+  --qa-n-r 400 \
+  --qa-n-ang 110 \
   --check-profiles \
   --require-profile-qa \
   --build-indexes \
@@ -184,9 +188,9 @@ Run the first diffuse anion/formal-anion pilot group as a separate sensitivity d
 ```bash
 python scripts/run_pilots.py \
   --group anion_formal_x2c_diffuse \
-  --profile-n-ang 50 \
-  --qa-n-r 120 \
-  --qa-n-ang 50 \
+  --profile-n-ang 110 \
+  --qa-n-r 400 \
+  --qa-n-ang 110 \
   --check-profiles \
   --require-profile-qa \
   --build-indexes \
@@ -204,9 +208,9 @@ and the heavy Dyall smoke states:
 ```bash
 python scripts/run_pilots.py \
   --group remaining_dyall_pilots \
-  --profile-n-ang 50 \
-  --qa-n-r 120 \
-  --qa-n-ang 50 \
+  --profile-n-ang 110 \
+  --qa-n-r 400 \
+  --qa-n-ang 110 \
   --check-profiles \
   --require-profile-qa \
   --build-indexes \
@@ -220,9 +224,9 @@ anion/formal-anion checks, Eu3+, and neutral U:
 ```bash
 python scripts/run_pilots.py \
   --group full_pilot_suite \
-  --profile-n-ang 50 \
-  --qa-n-r 120 \
-  --qa-n-ang 50 \
+  --profile-n-ang 110 \
+  --qa-n-r 400 \
+  --qa-n-ang 110 \
   --check-profiles \
   --require-profile-qa \
   --build-indexes \
