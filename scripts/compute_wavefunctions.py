@@ -1,33 +1,65 @@
 #!/usr/bin/env python3
-"""Compute or inspect the configured spherical-atom SCF wavefunction plan.
-
-The current implementation provides the v1 configuration-driven planning surface and
-no-PySCF dry-run/list mode.  The next generator patch will attach persistent
-``local-data/scf/<dataset_id>/<state_id>/`` checkpoint/NPZ/JSON/log writers to this
-entry point.
-"""
+"""Compute persistent spherical-atom SCF artifacts for configured datasets."""
 
 from __future__ import annotations
 
 import argparse
+import io
 import sys
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
+from atomref_proatoms.artifacts import write_json  # noqa: E402
+from atomref_proatoms.basis import list_basis_bundles  # noqa: E402
 from atomref_proatoms.build_plan import (  # noqa: E402
     ALL_PROFILE_DATASETS,
     ALL_V1_BUILD_PLAN,
+    ProfileBuildJob,
     build_jobs_for_datasets,
     filter_build_jobs,
     format_build_plan,
 )
 from atomref_proatoms.datasets import DATASET_IDS, load_profile_dataset_config  # noqa: E402
-from atomref_proatoms.paths import PROFILE_DATASETS_FILE, SCF_ROOT, STATES_FILE  # noqa: E402
-from atomref_proatoms.states import load_atom_states  # noqa: E402
+from atomref_proatoms.paths import (  # noqa: E402
+    BASIS_ROOT,
+    PROFILE_DATASETS_FILE,
+    SCF_ROOT,
+    STATES_FILE,
+)
+from atomref_proatoms.scf import (  # noqa: E402
+    SCFSettings,
+    import_pyscf_modules,
+    run_dataset_state,
+    scf_artifact_is_reusable,
+    scf_artifact_paths,
+    scf_fingerprints,
+    scf_metadata,
+    write_scf_npz,
+)
+from atomref_proatoms.states import AtomState, load_atom_states  # noqa: E402
+
+
+class TeeCapture(io.StringIO):
+    """Capture PySCF text while optionally echoing it to the terminal."""
+
+    def __init__(self, stream: Any | None = None) -> None:
+        super().__init__()
+        self._stream = stream
+
+    def write(self, text: str) -> int:
+        if self._stream is not None:
+            self._stream.write(text)
+        return super().write(text)
+
+    def flush(self) -> None:
+        if self._stream is not None:
+            self._stream.flush()
+        super().flush()
 
 
 def parse_args() -> argparse.Namespace:
@@ -68,6 +100,24 @@ def parse_args() -> argparse.Namespace:
         "--force",
         action="store_true",
         help="Regenerate SCF artifacts even when matching local artifacts exist.",
+    )
+    parser.add_argument("--no-x2c", action="store_true", help="Disable sf-X2C for debugging only.")
+    parser.add_argument("--xc", default=None, help="Override XC functional from the YAML default.")
+    parser.add_argument("--conv-tol", type=float, default=None, help="Override SCF conv_tol.")
+    parser.add_argument("--max-cycle", type=int, default=None, help="Override maximum SCF cycles.")
+    parser.add_argument(
+        "--grid-level", type=int, default=None, help="Override PySCF DFT grid level."
+    )
+    parser.add_argument("--verbose", type=int, default=3, help="PySCF verbosity.")
+    parser.add_argument(
+        "--quiet-scf-log",
+        action="store_true",
+        help="Capture PySCF logs to scf.log without echoing them to stdout.",
+    )
+    parser.add_argument(
+        "--continue-on-error",
+        action="store_true",
+        help="Continue selected jobs after one SCF failure.",
     )
     parser.add_argument(
         "--list",
@@ -110,6 +160,94 @@ def _selected_dataset_ids(values: list[str], configured_ids: tuple[str, ...]) ->
     return tuple(deduped)
 
 
+def _settings_from_args(
+    args: argparse.Namespace, defaults: dict[str, Any], chkfile: Path
+) -> SCFSettings:
+    relativity = str(defaults.get("relativity", "sf-X2C-1e"))
+    use_x2c = (relativity != "none") and not args.no_x2c
+    return SCFSettings(
+        xc=str(args.xc or defaults.get("xc", "PBE0")),
+        use_x2c=use_x2c,
+        conv_tol=float(
+            args.conv_tol if args.conv_tol is not None else defaults.get("conv_tol", 1e-9)
+        ),
+        max_cycle=int(
+            args.max_cycle if args.max_cycle is not None else defaults.get("max_cycle", 100)
+        ),
+        grid_level=int(
+            args.grid_level if args.grid_level is not None else defaults.get("grid_level", 4)
+        ),
+        verbose=args.verbose,
+        chkfile=chkfile,
+    )
+
+
+def _print_plan(args: argparse.Namespace, jobs: tuple[ProfileBuildJob, ...], config: Any) -> None:
+    print(f"Profile data version: {config.profile_data_version}")
+    print(f"Dataset config: {args.config}")
+    print(f"SCF artifact root: {args.scf_root}")
+    print(
+        format_build_plan(
+            jobs, show_jobs=args.show_jobs or args.list or args.dry_run, config=config
+        )
+    )
+
+
+def _compute_one_job(
+    *,
+    job: ProfileBuildJob,
+    state: AtomState,
+    bundle: Any,
+    config: Any,
+    config_path: Path,
+    scf_root: Path,
+    args: argparse.Namespace,
+    pyscf_version: str,
+) -> str:
+    paths = scf_artifact_paths(scf_root, job.dataset_id, job.state_id)
+    settings = _settings_from_args(args, config.defaults, paths.chk)
+    fingerprints = scf_fingerprints(
+        config_path=config_path,
+        config=config,
+        state=state,
+        bundle=bundle,
+        settings=settings,
+    )
+    if args.resume and not args.force and scf_artifact_is_reusable(paths, fingerprints):
+        return "skipped_reusable"
+
+    paths.state_dir.mkdir(parents=True, exist_ok=True)
+    log_capture = TeeCapture(None if args.quiet_scf_log else sys.stdout)
+    settings = SCFSettings(
+        xc=settings.xc,
+        use_x2c=settings.use_x2c,
+        conv_tol=settings.conv_tol,
+        max_cycle=settings.max_cycle,
+        grid_level=settings.grid_level,
+        grid_prune=settings.grid_prune,
+        verbose=settings.verbose,
+        stdout=log_capture,
+        chkfile=settings.chkfile,
+    )
+    run = run_dataset_state(state, bundle, dataset_id=job.dataset_id, settings=settings)
+    log_text = log_capture.getvalue()
+    paths.log.write_text(log_text, encoding="utf-8")
+    write_scf_npz(paths.npz, run.mf)
+    metadata = scf_metadata(
+        dataset_id=job.dataset_id,
+        state=state,
+        bundle=bundle,
+        config=config,
+        config_path=config_path,
+        settings=settings,
+        pyscf_version=pyscf_version,
+        mf=run.mf,
+        log_text=log_text,
+    )
+    write_json(paths.metadata, metadata)
+    return "computed"
+
+
 def main() -> int:
     args = parse_args()
     config = load_profile_dataset_config(args.config)
@@ -123,23 +261,51 @@ def main() -> int:
     if not jobs:
         raise SystemExit("Selected wavefunction plan is empty")
 
-    print(f"Profile data version: {config.profile_data_version}")
-    print(f"Dataset config: {args.config}")
-    print(f"SCF artifact root: {args.scf_root}")
-    print(
-        format_build_plan(
-            jobs, show_jobs=args.show_jobs or args.list or args.dry_run, config=config
-        )
-    )
+    _print_plan(args, jobs, config)
 
     if args.list or args.dry_run:
         print("Dry run completed before PySCF import/SCF execution.")
         return 0
 
-    raise SystemExit(
-        "Persistent SCF artifact generation is not implemented in this patch yet. "
-        "Use --dry-run/--list for plan validation."
+    state_by_id = {state.state_id: state for state in states}
+    bundle_by_id = {bundle.basis_id: bundle for bundle in list_basis_bundles(BASIS_ROOT)}
+    try:
+        _gto, _dft, _pyscf_basis, pyscf_version = import_pyscf_modules()
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from exc
+
+    counts = {"computed": 0, "skipped_reusable": 0, "failed": 0}
+    for index, job in enumerate(jobs, start=1):
+        print(f"[{index}/{len(jobs)}] {job.dataset_id} :: {job.state_id}")
+        state = state_by_id[job.state_id]
+        bundle = bundle_by_id[job.basis_id]
+        try:
+            status = _compute_one_job(
+                job=job,
+                state=state,
+                bundle=bundle,
+                config=config,
+                config_path=args.config,
+                scf_root=args.scf_root,
+                args=args,
+                pyscf_version=pyscf_version,
+            )
+        except Exception as exc:
+            counts["failed"] += 1
+            print(f"ERROR: {job.dataset_id} :: {job.state_id}: {exc}", file=sys.stderr)
+            if not args.continue_on_error:
+                return 1
+        else:
+            counts[status] += 1
+            print(f"SCF artifact status: {status}")
+
+    print(
+        "SCF summary: "
+        f"computed={counts['computed']}, "
+        f"skipped_reusable={counts['skipped_reusable']}, "
+        f"failed={counts['failed']}"
     )
+    return 1 if counts["failed"] else 0
 
 
 if __name__ == "__main__":

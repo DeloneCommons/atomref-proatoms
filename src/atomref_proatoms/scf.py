@@ -356,7 +356,9 @@ def read_scf_metadata(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def scf_artifact_is_reusable(paths: SCFArtifactPaths, expected_fingerprints: dict[str, str]) -> bool:
+def scf_artifact_is_reusable(
+    paths: SCFArtifactPaths, expected_fingerprints: dict[str, str]
+) -> bool:
     """Return true if a local SCF artifact exists and matches current inputs/settings."""
 
     if not all(path.exists() for path in paths.required_files()):
