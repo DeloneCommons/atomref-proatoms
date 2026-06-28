@@ -9,7 +9,7 @@ radial-density generation.
 - Role: H-Rn auxiliary/sensitivity basis, mainly for anions and formal-ion tail checks.
 - Coverage: H-Rn.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Planned dataset identifiers: `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0`.
+- Planned dataset identifiers: `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v1`.
 
 This basis is kept as the x2c-family sensitivity branch for anions and formal ions. It
 is not the default neutral/cation production basis, and results produced with it should

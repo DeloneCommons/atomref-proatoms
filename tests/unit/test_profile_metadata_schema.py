@@ -8,7 +8,7 @@ from atomref_proatoms.schemas import DENSITY_MODEL, PROFILE_METADATA_SCHEMA_VERS
 def valid_metadata() -> dict[str, object]:
     return {
         "schema_version": PROFILE_METADATA_SCHEMA_VERSION,
-        "dataset_id": "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0",
+        "dataset_id": "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1",
         "state_id": "C_q0_mult3_hund",
         "density_model": DENSITY_MODEL,
         "method": {

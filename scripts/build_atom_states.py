@@ -22,6 +22,7 @@ import argparse
 import csv
 import json
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -253,7 +254,36 @@ def build_summary(states: list[dict[str, Any]], selection_file: Path) -> dict[st
     }
 
 
-def main() -> None:
+def format_counts(counts: dict[str, int]) -> str:
+    return ", ".join(f"{key}={value}" for key, value in counts.items())
+
+
+def check_curated_states(states_file: Path) -> int:
+    repo_root = Path(__file__).resolve().parents[1]
+    src = repo_root / "src"
+    if src.exists() and str(src) not in sys.path:
+        sys.path.insert(0, str(src))
+    from atomref_proatoms.states import (  # noqa: PLC0415
+        load_atom_states,
+        selection_count_summary,
+        validate_state_collection,
+    )
+
+    states = load_atom_states(states_file)
+    errors = validate_state_collection(states)
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    summary = selection_count_summary(states)
+    print(f"OK: checked {summary['state_count']} atom states")
+    print(f"categories: {format_counts(summary['by_category'])}")
+    print(f"charges: {format_counts(summary['by_charge'])}")
+    print(f"spin_variant: {format_counts(summary['by_spin_variant'])}")
+    return 0
+
+
+def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--data-dir",
@@ -276,11 +306,19 @@ def main() -> None:
         default=None,
         help="Output directory. Defaults to <data-dir>/curated.",
     )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Validate the existing curated JSON without rewriting it.",
+    )
     args = parser.parse_args()
 
     data_dir = args.data_dir
     selection_file = args.selection_file or data_dir / "selection" / "required_states_v0.csv"
     out_dir = args.out_dir or data_dir / "curated"
+
+    if args.check:
+        return check_curated_states(out_dir / "atom_states_v0.json")
 
     states = build_states(data_dir, selection_file)
     summary = build_summary(states, selection_file)
@@ -289,7 +327,8 @@ def main() -> None:
     write_json(out_dir / "atom_states_summary.json", summary)
 
     print(f"Wrote {summary['state_count']} atom states to {out_dir / 'atom_states_v0.json'}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

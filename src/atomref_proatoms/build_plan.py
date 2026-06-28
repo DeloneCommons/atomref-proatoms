@@ -1,14 +1,15 @@
-"""Production-profile build plans derived from curated states and dataset scopes."""
+"""Profile build plans derived from curated states and the active dataset YAML."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
 
-from .datasets import DATASET_IDS, dataset_scope, state_allowed_in_dataset
+from .datasets import DATASET_IDS, ProfileDatasetConfig, dataset_scope
 from .states import AtomState, load_atom_states
 
-ALL_V0_BUILD_PLAN = "all_v0"
+ALL_PROFILE_DATASETS = "all"
+ALL_V1_BUILD_PLAN = "all_v1"
 
 
 @dataclass(frozen=True)
@@ -36,7 +37,9 @@ class ProfileBuildJob:
         return "anion"
 
 
-def build_jobs_for_dataset(states: list[AtomState], dataset_id: str) -> tuple[ProfileBuildJob, ...]:
+def build_jobs_for_dataset(
+    states: list[AtomState], dataset_id: str, *, config: ProfileDatasetConfig | None = None
+) -> tuple[ProfileBuildJob, ...]:
     """Return ordered build jobs for one planned dataset.
 
     Membership is derived from the current curated state selection plus the
@@ -44,10 +47,14 @@ def build_jobs_for_dataset(states: list[AtomState], dataset_id: str) -> tuple[Pr
     sensitivity datasets explicit instead of allowing runtime fallback.
     """
 
-    scope = dataset_scope(dataset_id)
+    scope = dataset_scope(dataset_id, config=config)
     jobs: list[ProfileBuildJob] = []
     for state in states:
-        if not state_allowed_in_dataset(dataset_id, z=state.z, charge=state.charge):
+        if not (
+            scope.covers_z(state.z)
+            and scope.allows_charge(state.charge)
+            and str(state.record["state_role"]) in scope.include_state_roles
+        ):
             continue
         jobs.append(
             ProfileBuildJob(
@@ -68,22 +75,30 @@ def build_jobs_for_dataset(states: list[AtomState], dataset_id: str) -> tuple[Pr
 
 
 def build_jobs_for_datasets(
-    states: list[AtomState], dataset_ids: tuple[str, ...] = DATASET_IDS
+    states: list[AtomState],
+    dataset_ids: tuple[str, ...] = DATASET_IDS,
+    *,
+    config: ProfileDatasetConfig | None = None,
 ) -> tuple[ProfileBuildJob, ...]:
     """Return ordered build jobs for multiple datasets."""
 
     jobs: list[ProfileBuildJob] = []
     for dataset_id in dataset_ids:
-        jobs.extend(build_jobs_for_dataset(states, dataset_id))
+        jobs.extend(build_jobs_for_dataset(states, dataset_id, config=config))
     return tuple(jobs)
 
 
 def load_build_jobs(
-    states_file: Path, *, dataset_ids: tuple[str, ...] = DATASET_IDS
+    states_file: Path,
+    *,
+    dataset_ids: tuple[str, ...] = DATASET_IDS,
+    config: ProfileDatasetConfig | None = None,
 ) -> tuple[ProfileBuildJob, ...]:
     """Load curated states and return planned build jobs."""
 
-    return build_jobs_for_datasets(load_atom_states(states_file), dataset_ids=dataset_ids)
+    return build_jobs_for_datasets(
+        load_atom_states(states_file), dataset_ids=dataset_ids, config=config
+    )
 
 
 def filter_build_jobs(
@@ -116,7 +131,12 @@ def build_plan_summary(jobs: tuple[ProfileBuildJob, ...]) -> dict[str, object]:
     }
 
 
-def format_build_plan(jobs: tuple[ProfileBuildJob, ...], *, show_jobs: bool = False) -> str:
+def format_build_plan(
+    jobs: tuple[ProfileBuildJob, ...],
+    *,
+    show_jobs: bool = False,
+    config: ProfileDatasetConfig | None = None,
+) -> str:
     """Format a build plan as deterministic text."""
 
     summary = build_plan_summary(jobs)
@@ -127,7 +147,7 @@ def format_build_plan(jobs: tuple[ProfileBuildJob, ...], *, show_jobs: bool = Fa
     by_dataset = summary["by_dataset"]
     assert isinstance(by_dataset, dict)
     for dataset_id, count in by_dataset.items():
-        scope = dataset_scope(str(dataset_id))
+        scope = dataset_scope(str(dataset_id), config=config)
         lines.append(f"  {dataset_id}: {count}  # {scope.role}, {scope.coverage_label}")
     charge_counts = summary["by_charge_class"]
     assert isinstance(charge_counts, dict)

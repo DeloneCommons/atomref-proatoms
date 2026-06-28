@@ -72,39 +72,38 @@ def test_filter_build_jobs_rejects_missing_state() -> None:
         filter_build_jobs(jobs, only_state_ids={"U_q0_mult5_hund"})
 
 
-def test_run_dataset_build_list_cli() -> None:
+def test_compute_wavefunctions_list_cli() -> None:
     result = subprocess.run(
         [
             sys.executable,
-            "scripts/run_dataset_build.py",
-            "--dataset-id",
+            "scripts/compute_wavefunctions.py",
+            "--dataset",
             ANION_X2C_QZVPALL_S,
             "--list",
+            "--show-jobs",
         ],
         cwd=ROOT,
         check=True,
         capture_output=True,
         text=True,
     )
+    assert "Profile data version: 1.0.0.dev0" in result.stdout
     assert "Build jobs: 13" in result.stdout
     assert ANION_X2C_QZVPALL_S in result.stdout
     assert "N_qm3_mult1_hund" in result.stdout
+    assert "Dry run completed before PySCF import/SCF execution" in result.stdout
 
 
-def test_run_dataset_build_dry_run_does_not_import_pyscf(tmp_path: Path) -> None:
+def test_compute_wavefunctions_dry_run_does_not_import_pyscf() -> None:
     result = subprocess.run(
         [
             sys.executable,
-            "scripts/run_dataset_build.py",
-            "--dataset-id",
+            "scripts/compute_wavefunctions.py",
+            "--dataset",
             PRIMARY_X2C_QZVPALL,
-            "--only-state-id",
+            "--state",
             "H_q0_mult2_hund",
-            "--output-dir",
-            str(tmp_path),
             "--dry-run",
-            "--check-profiles",
-            "--build-indexes",
         ],
         cwd=ROOT,
         check=True,
@@ -113,5 +112,4 @@ def test_run_dataset_build_dry_run_does_not_import_pyscf(tmp_path: Path) -> None
     )
     assert "Build jobs: 1" in result.stdout
     assert "Dry run completed before PySCF import/SCF execution" in result.stdout
-    assert "Build summary: ran=1, skipped_existing=0, failures=0" in result.stdout
-    assert "Checking generated profiles" not in result.stdout
+    assert "local-data/scf" in result.stdout

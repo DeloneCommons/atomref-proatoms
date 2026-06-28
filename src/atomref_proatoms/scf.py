@@ -30,7 +30,7 @@ DEFAULT_GRID_PRUNE = None
 
 @dataclass(frozen=True)
 class SCFSettings:
-    """Small configuration object for pilot spherical UKS runs."""
+    """Small configuration object for spherical UKS runs."""
 
     xc: str = DEFAULT_XC
     use_x2c: bool = DEFAULT_USE_X2C

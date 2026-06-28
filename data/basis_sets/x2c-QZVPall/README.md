@@ -9,7 +9,7 @@ radial-density generation.
 - Role: primary H-Rn basis for the default PBE0/sf-X2C spherical proatom dataset.
 - Coverage: H-Rn.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Planned dataset identifiers: `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0`.
+- Planned dataset identifiers: `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1`.
 
 This is the default Karlsruhe x2c quadruple-zeta basis branch for H-Rn. The quadruple-
 zeta level is preferred over lower-zeta x2c-TZVPall-like alternatives because radial

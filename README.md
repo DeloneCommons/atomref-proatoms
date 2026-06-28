@@ -1,26 +1,45 @@
 # atomref-proatoms
 
 `atomref-proatoms` is the heavy generator/data companion repository for `atomref`.
-It stores frozen atomic-state and basis-set inputs, implements checks around those inputs,
-and will later generate reusable radial proatomic electron-density profiles for atoms and
-selected ions.
+It stores frozen atomic-state and basis-set inputs and generates reusable radial
+proatomic electron-density profiles for atoms and selected ions.
 
 The main downstream use is empirical geometry and IAS-separator estimation in
 crystallographic and atom-centered software. The project is not intended to be a
 high-accuracy atomic spectroscopy benchmark.
 
-## What is included now
+## Current version
 
-This first repository skeleton contains:
+The active profile-data version is `1.0.0.dev0`. Dataset identifiers use the `_v1`
+suffix and are declared in a single file:
 
-- the curated atomic-state data layer copied from `atomref-proatoms-data-v2.zip`;
-- the frozen basis-set bundles copied from `atomref-proatoms-data-v2.zip`;
-- lightweight Python utilities for loading and validating basis/state/profile metadata;
+```text
+data/profile_datasets.yaml
+```
+
+Older generator/data behavior should be preserved by Git tags, GitHub releases, and
+Zenodo records rather than by keeping multiple historical workflow layers in the active
+branch.
+
+## What is included
+
+This repository contains:
+
+- curated atomic-state inputs under `data/states/`;
+- frozen BSE NWChem spherical basis exports under `data/basis_sets/`;
+- the active profile dataset specification in `data/profile_datasets.yaml`;
+- lightweight Python utilities for loading and validating state, basis, dataset, and
+  profile metadata;
 - offline data-check scripts;
-- unit tests for the frozen data layer and initial metadata helpers;
-- documentation placeholders for the next stages.
+- the simplified v1 workflow entry points.
 
-It intentionally does not contain generated radial profiles yet.
+Generated profile datasets are not tracked yet in this patch. The target release layout is:
+
+```text
+data/profiles/<dataset_id>/
+  profiles.csv
+  metadata.json
+```
 
 ## What this repository is not
 
@@ -37,8 +56,7 @@ From the repository root:
 
 ```bash
 python scripts/check_basis_bundles.py
-python scripts/build_atom_states.py
-python scripts/check_states.py
+python scripts/build_atom_states.py --check
 pytest
 ```
 
@@ -46,356 +64,75 @@ pytest
 small optional parse smoke checks for representative elements. If PySCF is absent, that
 step is explicitly skipped.
 
-## Optional PySCF smoke checks
-
-On a local machine with PySCF installed:
-
-```bash
-python -m pip install -e ".[generator,test,dev]"
-# or install every optional mode at once:
-python -m pip install -e ".[all]"
-python scripts/check_basis_bundles.py
-pytest -m "not slow"
-```
-
 The package itself must remain importable without PySCF:
 
 ```bash
 python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 ```
 
-## Layout
+## Simplified v1 workflow
 
-```text
-src/atomref_proatoms/    lightweight loaders, validators, schema helpers
-data/states/            source / selection / curated state data
-data/basis_sets/        frozen BSE NWChem spherical basis exports
-data/profiles/          reserved for future generated profile datasets
-scripts/                data checks and future build entry points
-tests/                  unit and integration tests
-docs/                   project documentation placeholders
-local-data/             ignored local SCF/checkpoint/scratch artifacts
-```
-
-## Generator status
-
-The first pilot generator path is available through `scripts/run_dataset.py`. It keeps
-PySCF imports lazy and is intended for local smoke tests before full dataset builds.
-Generated profile artifacts default to per-state `.csv.zip` archives plus JSON metadata.
-
-Example dry run without PySCF:
+The intended workflow is now five scripts:
 
 ```bash
-python scripts/run_dataset.py \
-  --state-id H_q0_mult2_hund \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+python scripts/build_atom_states.py --check
+python scripts/check_basis_bundles.py
+python scripts/compute_wavefunctions.py --list
+python scripts/extract_profiles.py
+python scripts/build_report.py
+```
+
+`compute_wavefunctions.py --list` and `--dry-run` already read the active YAML config and
+show the selected state/dataset jobs without importing PySCF:
+
+```bash
+python scripts/compute_wavefunctions.py --list
+python scripts/compute_wavefunctions.py \
+  --dataset pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1 \
+  --state H_q0_mult2_hund \
   --dry-run
 ```
 
-Example local PySCF smoke run with fast/skipped independent electron-count QA:
+The next implementation patch will make `compute_wavefunctions.py` write persistent local
+SCF artifacts:
 
-```bash
-python scripts/run_dataset.py \
-  --state-id H_q0_mult2_hund \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --no-profile-qa \
-  --profile-n-ang 50
+```text
+local-data/scf/<dataset_id>/<state_id>/
+  scf.chk
+  scf.npz
+  scf.json
+  scf.log
 ```
 
-Example local PySCF smoke run with the independent profile QA enabled:
+`extract_profiles.py` will then read those local SCF artifacts and write the tracked
+wide profile table and aggregate metadata JSON under `data/profiles/`. `build_report.py`
+will read `data/profiles/` and generate the current scientific report under `report/`.
 
-```bash
-python scripts/run_dataset.py \
-  --state-id H_q0_mult2_hund \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --profile-n-ang 110 \
-  --qa-n-r 400 \
-  --qa-n-ang 110
+## Layout
+
+```text
+src/atomref_proatoms/    lightweight loaders, validators, schema helpers, generator code
+data/profile_datasets.yaml
+                         active profile dataset specification
+data/states/            source / selection / curated state data
+data/basis_sets/        frozen BSE NWChem spherical basis exports
+data/profiles/          final generated profile datasets, one directory per dataset
+scripts/                five simplified v1 workflow entry points and data checks
+tests/                  unit and integration tests
+docs/                   project documentation
+report/                 current generated scientific report
+local-data/             ignored local SCF/checkpoint/log/scratch artifacts
 ```
 
-In this context, QA means generated-profile quality assurance: SCF convergence,
-independent radial electron-count integration, density-tail coverage for cutoff radii,
-monotonic cutoff radii, nonnegative finite density values, and angular-sigma checks that
-confirm the supposedly spherical density is nearly angle-independent.
+## Optional generator dependencies
 
-The default strict checker tolerance for independent electron-count QA is
-`max(2e-6, 2e-7 * electron_count)` electrons. This keeps light atoms strict while
-avoiding false failures for heavy Dyall pilots on finite QA quadrature grids.
-
-Generated metadata also records backend diagnostics that are not pass/fail QA targets:
-PySCF-reported `<S^2>`/multiplicity values and parsed overlap-linear-dependency warnings.
-For spherical fractional-occupation proatoms the reported `<S^2>` can differ from the
-formal target spin, so it is kept for auditability rather than used as a release check.
-
-After the H smoke profile is stable, run the light neutral pilot batch with the same
-profile/QA settings.  The `--build-indexes` flag writes the planned dataset-level
-`dataset_manifest.json`, `profile_index.csv`, and `derived_radii.csv` files after
-the per-state profile checks pass:
+Install PySCF only on machines that will run the generator:
 
 ```bash
-python scripts/run_pilots.py \
-  --group neutral_light_x2c \
-  --profile-n-ang 110 \
-  --qa-n-r 400 \
-  --qa-n-ang 110 \
-  --check-profiles \
-  --require-profile-qa \
-  --build-indexes \
-  --summary
+python -m pip install -e ".[generator,test,dev]"
+python scripts/check_basis_bundles.py
+pytest -m "not slow"
 ```
 
-Available pilot groups can be listed without PySCF:
-
-```bash
-python scripts/run_pilots.py --list
-```
-
-Validate generated pilot artifacts without running PySCF:
-
-```bash
-python scripts/check_profiles.py \
-  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0
-```
-
-Build and validate dataset-level index files after profiles are generated:
-
-```bash
-python scripts/build_dataset_index.py \
-  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --require-profile-qa
-
-python scripts/check_dataset.py \
-  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --require-profile-qa \
-  --summary
-
-python scripts/summarize_dataset.py \
-  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0
-```
-
-
-After more than one pilot group has been generated, validate the expected pilot-output root
-rather than checking each dataset directory manually. This is useful when the primary light
-neutral dataset and the diffuse anion/formal-anion sensitivity dataset coexist under the
-same `local-data/pilot-profiles/` root:
-
-```bash
-python scripts/check_pilot_outputs.py \
-  --output-dir local-data/pilot-profiles \
-  --group neutral_light_x2c \
-  --group anion_formal_x2c_diffuse \
-  --require-profile-qa \
-  --summary
-```
-
-Run the first diffuse anion/formal-anion pilot group as a separate sensitivity dataset:
-
-```bash
-python scripts/run_pilots.py \
-  --group anion_formal_x2c_diffuse \
-  --profile-n-ang 110 \
-  --qa-n-r 400 \
-  --qa-n-ang 110 \
-  --check-profiles \
-  --require-profile-qa \
-  --build-indexes \
-  --summary
-```
-
-This group writes to `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0`, not to the
-primary non-diffuse H-Rn dataset. The pilot-output checker verifies that selected
-pilot states appear in their expected dataset directories, helping prevent accidental
-mixing of primary and sensitivity outputs.
-
-The remaining recommended pilot calculations cover the Dyall augmented anion branch
-and the heavy Dyall smoke states:
-
-```bash
-python scripts/run_pilots.py \
-  --group remaining_dyall_pilots \
-  --profile-n-ang 110 \
-  --qa-n-r 400 \
-  --qa-n-ang 110 \
-  --check-profiles \
-  --require-profile-qa \
-  --build-indexes \
-  --summary
-```
-
-To rerun the entire pilot suite in one command, use `full_pilot_suite`. This includes
-light neutral x2c profiles, x2c diffuse anion/formal-anion checks, Dyall-av4z
-anion/formal-anion checks, Eu3+, and neutral U:
-
-```bash
-python scripts/run_pilots.py \
-  --group full_pilot_suite \
-  --profile-n-ang 110 \
-  --qa-n-r 400 \
-  --qa-n-ang 110 \
-  --check-profiles \
-  --require-profile-qa \
-  --build-indexes \
-  --summary
-```
-
-Package selected pilot outputs into one ZIP archive for review:
-
-```bash
-python scripts/package_pilot_outputs.py \
-  --group full_pilot_suite \
-  --archive local-data/pilot-profiles-full_pilot_suite.zip
-```
-
-Use `--require-profile-qa` when checking artifacts that should include independent
-electron-count QA rather than skipped/null QA fields. The summary command prints compact
-counts for profiles, elements, charge states, state categories, QA coverage, and derived
-radius ranges. Full profile generation should proceed only after pilot profiles pass
-metadata and QA checks.
-
-## Full dataset build orchestration
-
-After the pilot suite is stable, use `scripts/run_dataset_build.py` for resumable
-full-dataset generation from the curated v0 state selection. It derives dataset
-membership from `data/states/curated/atom_states_v0.json` and the dataset scope table,
-so no state can silently fall back to another basis or dataset.
-
-List the planned jobs without PySCF:
-
-```bash
-python scripts/run_dataset_build.py --list
-```
-
-Build one dataset, skipping existing state artifacts by default and writing indexes after
-successful profile checks:
-
-```bash
-python scripts/run_dataset_build.py \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --check-profiles \
-  --require-profile-qa \
-  --build-indexes \
-  --summary
-```
-
-Recommended production strategy is to compute datasets one by one, package/check each
-completed dataset, and only then move to the next dataset. This keeps long runs easier to
-resume and makes release-candidate validation less ambiguous:
-
-```bash
-python scripts/run_dataset_build.py \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --check-profiles \
-  --require-profile-qa \
-  --build-indexes \
-  --summary \
-  --package-release \
-  --check-release-package \
-  --release-require-expected-counts \
-  --release-summary
-```
-
-Useful manual resume/debug options remain available, but they are intended for interrupted
-local work rather than final release packaging:
-
-```bash
-python scripts/run_dataset_build.py --dataset-id all --limit 20
-python scripts/run_dataset_build.py --dataset-id all --start-after-state-id Xe_q0_mult1_hund
-python scripts/run_dataset_build.py --dataset-id all --only-state-id I_qm1_mult1_hund
-```
-
-Use `--force` only when existing per-state artifacts should be regenerated.
-
-## Release-candidate packaging
-
-Completed generated dataset directories can be packaged into one release-candidate ZIP.
-The archive layout is rooted at `data/profiles/<dataset_id>/...` and includes a
-`release_manifest.json` with SHA256 hashes for every archived file.
-
-Package all indexed dataset directories discovered under the build output root.
-For completed production datasets, also request expected-count validation against the
-curated-state build plan:
-
-```bash
-python scripts/package_dataset_outputs.py \
-  --output-dir local-data/profile-builds \
-  --check-datasets \
-  --require-profile-qa \
-  --check-archive \
-  --require-expected-counts \
-  --summary
-```
-
-For one completed dataset release candidate, validate only that dataset:
-
-```bash
-python scripts/package_dataset_outputs.py \
-  --output-dir local-data/profile-builds \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --check-datasets \
-  --require-profile-qa \
-  --check-archive \
-  --require-expected-counts \
-  --summary \
-  --archive local-data/profile-builds-x2cqzvpall-h-rn-release.zip
-
-python scripts/check_release_package.py \
-  --archive local-data/profile-builds-x2cqzvpall-h-rn-release.zip \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --check-dataset-indexes \
-  --require-expected-counts \
-  --summary
-```
-
-For a full v0 release candidate, require all planned datasets explicitly:
-
-```bash
-python scripts/package_dataset_outputs.py \
-  --output-dir local-data/profile-builds \
-  --dataset-id all \
-  --check-datasets \
-  --require-profile-qa \
-  --check-archive \
-  --require-expected-counts \
-  --summary \
-  --archive local-data/atomref-proatoms-profiles-v0-rc.zip
-
-python scripts/check_release_package.py \
-  --archive local-data/atomref-proatoms-profiles-v0-rc.zip \
-  --dataset-id all \
-  --check-dataset-indexes \
-  --require-expected-counts \
-  --summary
-```
-
-`run_dataset_build.py` can also package affected dataset directories after a successful
-build/index pass:
-
-```bash
-python scripts/run_dataset_build.py \
-  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
-  --check-profiles \
-  --require-profile-qa \
-  --build-indexes \
-  --package-release \
-  --check-release-package \
-  --release-require-expected-counts \
-  --release-summary
-```
-
-## Cross-dataset release comparisons
-
-After computing datasets one by one, compare matching states across release-candidate
-archives before deciding whether a sensitivity branch is numerically meaningful. For
-example, compare primary x2c-QZVPall anions against the diffuse x2c-QZVPall-s anion
-branch:
-
-```bash
-python scripts/compare_release_packages.py \
-  --archive local-data/profile-builds-x2cqzvpall-h-rn-release.zip \
-  --archive local-data/profile-builds-x2cqzvpall-s-anion-release.zip \
-  --pair pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0:pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0 \
-  --csv local-data/x2cqzvpall_vs_x2cqzvpall-s_anion_radii_delta.csv
-```
-
-The comparison reports common state IDs, missing states, and per-cutoff radius deltas
-in bohr. The CSV is long-form, with one row per state and cutoff radius.
+Default checks do not require internet access and do not compare frozen basis files against
+the current Basis Set Exchange API response.

@@ -120,7 +120,7 @@ def electron_count_tolerance(
     The independent QA integration is a numerical quadrature over the generated
     density, not a re-normalization step. Heavy atoms and large relativistic
     bases can show absolute errors around 1e-5 electrons on deliberately modest
-    pilot grids while still being excellent on a relative scale.  The default
+    local diagnostic grids while still being excellent on a relative scale.  The default
     therefore combines a small absolute floor with a per-electron relative term.
     """
 
@@ -241,7 +241,9 @@ def spin_diagnostics_from_mf(mf: Any, *, spin_2s: int) -> SpinDiagnostics:
         reported_spin_square=reported_ss,
         reported_multiplicity=reported_mult,
         spin_square_deviation=None if reported_ss is None else reported_ss - target_ss,
-        multiplicity_deviation=None if reported_mult is None else reported_mult - float(target_mult),
+        multiplicity_deviation=(
+            None if reported_mult is None else reported_mult - float(target_mult)
+        ),
         note=SPIN_DIAGNOSTIC_NOTE,
     )
 

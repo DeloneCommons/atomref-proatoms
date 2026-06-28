@@ -9,7 +9,7 @@ radial-density generation.
 - Role: available-element augmented Dyall quadruple-zeta sensitivity basis, mainly for selected anions.
 - Coverage: H-Ba, Hf-Ra, Rf-Og.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Planned dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v0`.
+- Planned dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1`.
 
 The augmented Dyall branch is included mainly for anion/formal-ion sensitivity checks.
 Its coverage is discontinuous and excludes the lanthanide and actinide blocks, so it

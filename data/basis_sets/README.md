@@ -93,10 +93,10 @@ the density generator and by the structural checker.
 
 | basis_id | role | coverage | n_elements | planned dataset IDs |
 |---|---|---:|---:|---|
-| `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0` |
-| `x2c-QZVPall-s` | H-Rn anion sensitivity | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0` |
-| `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v0` |
-| `dyall-av4z` | selected anion sensitivity | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v0` |
+| `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1` |
+| `x2c-QZVPall-s` | H-Rn anion sensitivity | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v1` |
+| `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1` |
+| `dyall-av4z` | selected anion sensitivity | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1` |
 
 ## Validation
 

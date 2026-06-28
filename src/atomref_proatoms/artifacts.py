@@ -147,8 +147,8 @@ def write_profile_csv_gz(
 ) -> None:
     """Write a legacy profile CSV.GZ archive.
 
-    New pilot/profile generation defaults to ``.csv.zip`` archives.  This helper is kept
-    for compatibility with early local artifacts and explicit caller requests.
+    Legacy profile generation used ``.csv.zip`` archives.  This helper remains
+    temporarily available until the v1 wide-CSV extractor replaces per-state archives.
     """
 
     path.parent.mkdir(parents=True, exist_ok=True)

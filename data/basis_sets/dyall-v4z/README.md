@@ -9,7 +9,7 @@ radial-density generation.
 - Role: primary actinide-capable Dyall quadruple-zeta basis for the H-Lr production extension.
 - Coverage: H-Og basis coverage; planned v0 profile dataset H-Lr.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Planned dataset identifiers: `pbe0_sfx2c_dyallv4z_h-lr_spherical_v0`.
+- Planned dataset identifiers: `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1`.
 
 The Dyall v4z branch is included to provide a relativistic quadruple-zeta basis with
 continuous heavy-element coverage, including lanthanides and actinides. It is the

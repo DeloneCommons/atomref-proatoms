@@ -36,7 +36,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0"
+          "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1"
         ]
       }
     },
@@ -73,7 +73,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0"
+          "pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v1"
         ]
       }
     },
@@ -110,7 +110,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_dyallv4z_h-lr_spherical_v0"
+          "pbe0_sfx2c_dyallv4z_h-lr_spherical_v1"
         ]
       }
     },
@@ -157,7 +157,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v0"
+          "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1"
         ]
       }
     }
