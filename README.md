@@ -119,7 +119,9 @@ monotonic cutoff radii, nonnegative finite density values, and angular-sigma che
 confirm the supposedly spherical density is nearly angle-independent.
 
 After the H smoke profile is stable, run the light neutral pilot batch with the same
-profile/QA settings:
+profile/QA settings.  The `--build-indexes` flag writes the planned dataset-level
+`dataset_manifest.json`, `profile_index.csv`, and `derived_radii.csv` files after
+the per-state profile checks pass:
 
 ```bash
 python scripts/run_pilots.py \
@@ -128,7 +130,8 @@ python scripts/run_pilots.py \
   --qa-n-r 120 \
   --qa-n-ang 50 \
   --check-profiles \
-  --require-profile-qa
+  --require-profile-qa \
+  --build-indexes
 ```
 
 Available pilot groups can be listed without PySCF:
@@ -142,6 +145,18 @@ Validate generated pilot artifacts without running PySCF:
 ```bash
 python scripts/check_profiles.py \
   --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0
+```
+
+Build and validate dataset-level index files after profiles are generated:
+
+```bash
+python scripts/build_dataset_index.py \
+  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --require-profile-qa
+
+python scripts/check_dataset.py \
+  --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --require-profile-qa
 ```
 
 Use `--require-profile-qa` when checking artifacts that should include independent

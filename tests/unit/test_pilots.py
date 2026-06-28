@@ -97,6 +97,7 @@ def test_run_pilots_dry_run_h_smoke(tmp_path: Path) -> None:
             "--output-dir",
             str(tmp_path),
             "--dry-run",
+            "--build-indexes",
         ],
         cwd=ROOT,
         check=True,
@@ -106,3 +107,4 @@ def test_run_pilots_dry_run_h_smoke(tmp_path: Path) -> None:
     assert "Running pilot group 'h_smoke'" in result.stdout
     assert "Dry run completed before PySCF import/SCF execution" in result.stdout
     assert "Pilot batch completed successfully" in result.stdout
+    assert "Building dataset indexes" not in result.stdout

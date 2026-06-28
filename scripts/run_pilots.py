@@ -28,6 +28,7 @@ from atomref_proatoms.pilots import (  # noqa: E402
 
 RUN_DATASET = ROOT / "scripts" / "run_dataset.py"
 CHECK_PROFILES = ROOT / "scripts" / "check_profiles.py"
+BUILD_DATASET_INDEX = ROOT / "scripts" / "build_dataset_index.py"
 
 
 def parse_args() -> argparse.Namespace:
@@ -118,7 +119,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--require-profile-qa",
         action="store_true",
-        help="When --check-profiles is used, require electron-count and angular-sigma QA",
+        help=(
+            "When --check-profiles or --build-indexes is used, require electron-count "
+            "and angular-sigma QA"
+        ),
+    )
+    parser.add_argument(
+        "--build-indexes",
+        action="store_true",
+        help=(
+            "Build dataset_manifest.json, profile_index.csv, and derived_radii.csv "
+            "after the batch"
+        ),
     )
     parser.add_argument("--list", action="store_true", help="List available pilot groups and exit")
     return parser.parse_args()
@@ -129,7 +141,9 @@ def _bool_flag(command: list[str], flag: str, enabled: bool) -> None:
         command.append(flag)
 
 
-def build_run_dataset_command(args: argparse.Namespace, state_id: str, dataset_id: str) -> list[str]:
+def build_run_dataset_command(
+    args: argparse.Namespace, state_id: str, dataset_id: str
+) -> list[str]:
     command = [
         sys.executable,
         str(RUN_DATASET),
@@ -185,6 +199,26 @@ def check_dataset_dirs(args: argparse.Namespace, dataset_ids: set[str]) -> int:
     return failures
 
 
+def build_dataset_indexes(args: argparse.Namespace, dataset_ids: set[str]) -> int:
+    failures = 0
+    for dataset_id in sorted(dataset_ids):
+        dataset_dir = args.output_dir / dataset_id
+        command = [
+            sys.executable,
+            str(BUILD_DATASET_INDEX),
+            "--dataset-dir",
+            str(dataset_dir),
+        ]
+        _bool_flag(command, "--require-profile-qa", args.require_profile_qa)
+        print("\nBuilding dataset indexes:", " ".join(command))
+        result = subprocess.run(command, cwd=ROOT, check=False)
+        if result.returncode:
+            failures += 1
+            if not args.continue_on_error:
+                break
+    return failures
+
+
 def list_groups() -> None:
     for group_name in pilot_group_names():
         print(f"{group_name}:")
@@ -194,8 +228,8 @@ def list_groups() -> None:
 
 def main() -> int:
     args = parse_args()
-    if args.require_profile_qa and not args.check_profiles:
-        raise SystemExit("--require-profile-qa requires --check-profiles")
+    if args.require_profile_qa and not (args.check_profiles or args.build_indexes):
+        raise SystemExit("--require-profile-qa requires --check-profiles or --build-indexes")
     if args.require_profile_qa and args.no_profile_qa:
         raise SystemExit("--require-profile-qa conflicts with --no-profile-qa")
     if args.list:
@@ -229,6 +263,8 @@ def main() -> int:
 
     if args.check_profiles and completed_dataset_ids and not args.dry_run:
         failures += check_dataset_dirs(args, completed_dataset_ids)
+    if args.build_indexes and completed_dataset_ids and not args.dry_run and not failures:
+        failures += build_dataset_indexes(args, completed_dataset_ids)
 
     if failures:
         print(f"Pilot batch completed with {failures} failure(s).")
