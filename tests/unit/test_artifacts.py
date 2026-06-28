@@ -4,7 +4,11 @@ import json
 import math
 import zipfile
 
-from atomref_proatoms.artifacts import write_json, write_profile_csv_zip, write_state_profile_artifacts
+from atomref_proatoms.artifacts import (
+    write_json,
+    write_profile_csv_zip,
+    write_state_profile_artifacts,
+)
 
 
 def test_write_profile_csv_zip_contains_one_csv(tmp_path) -> None:
@@ -15,7 +19,11 @@ def test_write_profile_csv_zip_contains_one_csv(tmp_path) -> None:
         assert archive.namelist() == ["H_q0_mult2_hund.csv"]
         payload = archive.read("H_q0_mult2_hund.csv").decode("utf-8")
 
-    assert payload.splitlines() == ["r_bohr,rho_e_bohr3", "0.10000000000000001,2", "0.20000000000000001,1"]
+    assert payload.splitlines() == [
+        "r_bohr,rho_e_bohr3",
+        "0.10000000000000001,2",
+        "0.20000000000000001,1",
+    ]
 
 
 def test_write_json_replaces_nonfinite_numbers_with_null(tmp_path) -> None:

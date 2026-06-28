@@ -92,7 +92,7 @@ python scripts/run_dataset.py \
   --dry-run
 ```
 
-Example local PySCF smoke run:
+Example local PySCF smoke run with fast/skipped independent electron-count QA:
 
 ```bash
 python scripts/run_dataset.py \
@@ -101,6 +101,22 @@ python scripts/run_dataset.py \
   --no-profile-qa \
   --profile-n-ang 50
 ```
+
+Example local PySCF smoke run with the independent profile QA enabled:
+
+```bash
+python scripts/run_dataset.py \
+  --state-id H_q0_mult2_hund \
+  --dataset-id pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0 \
+  --profile-n-ang 50 \
+  --qa-n-r 120 \
+  --qa-n-ang 50
+```
+
+In this context, QA means generated-profile quality assurance: SCF convergence,
+independent radial electron-count integration, density-tail coverage for cutoff radii,
+monotonic cutoff radii, nonnegative finite density values, and angular-sigma checks that
+confirm the supposedly spherical density is nearly angle-independent.
 
 Validate generated pilot artifacts without running PySCF:
 

@@ -15,7 +15,7 @@ from typing import Any
 from .basis import list_basis_bundles
 from .datasets import expected_basis_for_dataset, state_allowed_in_dataset
 from .profiles import DEFAULT_DENSITY_CUTOFFS, derived_radii, validate_profile_metadata
-from .qa import radii_are_monotonic
+from .qa import electron_count_tolerance, radii_are_monotonic
 from .states import AtomState, load_atom_states
 
 DENSITY_NONNEGATIVE_TOL = 1e-12
@@ -105,7 +105,11 @@ def _read_profile_archive_text(path: Path) -> tuple[str, str]:
 
 
 def _is_finite_number(value: Any) -> bool:
-    return isinstance(value, int | float) and not isinstance(value, bool) and math.isfinite(float(value))
+    return (
+        isinstance(value, int | float)
+        and not isinstance(value, bool)
+        and math.isfinite(float(value))
+    )
 
 
 def _parse_finite_float(value: str, *, path: Path, field: str, row_number: int) -> float:
@@ -164,6 +168,14 @@ def validate_profile_table(table: ProfileTable) -> list[str]:
             f"{table.archive_path}: rho_e_bohr3 has value {min_rho:g} below "
             f"-{DENSITY_NONNEGATIVE_TOL:g}"
         )
+    if "rho_std_ang_e_bohr3" in table.columns:
+        sigma = table.columns["rho_std_ang_e_bohr3"]
+        min_sigma = min(sigma)
+        if min_sigma < -DENSITY_NONNEGATIVE_TOL:
+            errors.append(
+                f"{table.archive_path}: rho_std_ang_e_bohr3 has value {min_sigma:g} "
+                f"below -{DENSITY_NONNEGATIVE_TOL:g}"
+            )
     if "nelec_cumulative_profile" in table.columns:
         cumulative = table.columns["nelec_cumulative_profile"]
         if cumulative[0] < -DENSITY_NONNEGATIVE_TOL:
@@ -312,7 +324,7 @@ def _qa_errors_and_warnings(
     elif not _is_finite_number(electron_count_error):
         errors.append(f"{state_id}: qa.electron_count_error_qa must be finite or null")
     elif state is not None:
-        tolerance = max(1e-6, 1e-8 * state.electron_count)
+        tolerance = electron_count_tolerance(state.electron_count)
         if abs(float(electron_count_error)) > tolerance:
             errors.append(
                 f"{state_id}: qa.electron_count_error_qa={float(electron_count_error):g} "
@@ -321,7 +333,11 @@ def _qa_errors_and_warnings(
 
     angular_sigma = qa.get("max_rel_angular_sigma")
     if angular_sigma is None:
-        warnings.append(f"{state_id}: angular-sigma QA summary is not recorded yet")
+        message = f"{state_id}: angular-sigma QA summary is not recorded yet"
+        if require_profile_qa:
+            errors.append(message)
+        else:
+            warnings.append(message)
     elif not _is_finite_number(angular_sigma):
         errors.append(f"{state_id}: qa.max_rel_angular_sigma must be finite or null")
     elif float(angular_sigma) > angular_sigma_tol:

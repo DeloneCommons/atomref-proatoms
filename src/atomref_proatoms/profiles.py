@@ -177,6 +177,10 @@ def density_profile_from_mf(
     n_ang: int = QA_N_ANG,
     dm_total: NDArray[np.float64] | None = None,
     compute_qa: bool = True,
+    qa_r_min: float = QA_R_MIN,
+    qa_r_max: float = QA_R_MAX,
+    qa_n_r: int = QA_N_R,
+    qa_n_ang: int = QA_N_ANG,
     prefer_pyscf_angular_grid: bool = True,
 ) -> dict[str, Any]:
     """Evaluate a radial density profile from a completed PySCF mean-field object."""
@@ -199,6 +203,10 @@ def density_profile_from_mf(
     if compute_qa:
         qa = electron_count_radial_gauss_log(
             mf,
+            r_min=qa_r_min,
+            r_max=qa_r_max,
+            n_r=qa_n_r,
+            n_ang=qa_n_ang,
             dm_total=dm_total,
             prefer_pyscf_angular_grid=prefer_pyscf_angular_grid,
         )

@@ -25,3 +25,10 @@ python scripts/check_profiles.py --dataset-dir data/profiles/<dataset_id>
 The checker validates strict JSON metadata, `.csv.zip` profile archive structure,
 required profile columns, finite and monotonic radial data, cutoff-radius consistency,
 state/dataset/basis metadata consistency, and QA status fields.
+
+Here, QA means generated-profile quality assurance. Current QA metadata covers SCF
+convergence, independent electron-count integration on a separate radial/angular grid,
+density-tail coverage for the requested cutoff radii, monotonic cutoff radii, and the
+maximum relative angular sigma of the density on the stored profile grid. A spherical
+production profile should have very small angular sigma except in the far tail where the
+absolute density is below the configured reporting floor.

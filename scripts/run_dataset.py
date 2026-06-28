@@ -31,6 +31,7 @@ from atomref_proatoms.datasets import (  # noqa: E402
     state_allowed_in_dataset,
 )
 from atomref_proatoms.profiles import density_profile_from_mf  # noqa: E402
+from atomref_proatoms.qa import ANGULAR_SIGMA_RHO_FLOOR, qa_result_from_profile  # noqa: E402
 from atomref_proatoms.scf import SCFSettings, import_pyscf_modules, run_dataset_state  # noqa: E402
 from atomref_proatoms.states import AtomState, load_atom_states  # noqa: E402
 
@@ -54,7 +55,39 @@ def parse_args() -> argparse.Namespace:
         "--profile-n-ang", type=int, default=110, help="Angular grid size for profiles"
     )
     parser.add_argument(
-        "--no-profile-qa", action="store_true", help="Skip independent QA integration"
+        "--no-profile-qa",
+        action="store_true",
+        help="Skip independent electron-count QA integration",
+    )
+    parser.add_argument(
+        "--qa-n-r",
+        type=int,
+        default=400,
+        help="Number of log-r radial nodes for independent electron-count QA",
+    )
+    parser.add_argument(
+        "--qa-n-ang",
+        type=int,
+        default=110,
+        help="Angular grid size for independent electron-count QA",
+    )
+    parser.add_argument(
+        "--qa-r-min",
+        type=float,
+        default=1.0e-7,
+        help="Minimum radius for independent electron-count QA",
+    )
+    parser.add_argument(
+        "--qa-r-max",
+        type=float,
+        default=120.0,
+        help="Maximum radius for independent electron-count QA",
+    )
+    parser.add_argument(
+        "--angular-sigma-rho-floor",
+        type=float,
+        default=ANGULAR_SIGMA_RHO_FLOOR,
+        help="Ignore profile-grid angular sigma points with rho at or below this value",
     )
     parser.add_argument(
         "--profile-archive-format",
@@ -147,23 +180,21 @@ def main() -> int:
             run.mf,
             n_ang=args.profile_n_ang,
             compute_qa=not args.no_profile_qa,
+            qa_r_min=args.qa_r_min,
+            qa_r_max=args.qa_r_max,
+            qa_n_r=args.qa_n_r,
+            qa_n_ang=args.qa_n_ang,
         )
     except RuntimeError as exc:
         raise SystemExit(str(exc)) from exc
     derived = derived_radii_from_profile(profile)
-    nelec_exact = int(run.mf.mol.nelectron)
-    nelec_qa = profile.get("nelec_integrated_qa")
-    electron_count_error_qa = None if nelec_qa is None else float(nelec_qa - nelec_exact)
-    qa = {
-        "scf_converged": bool(run.mf.converged),
-        "electron_count_error_qa": electron_count_error_qa,
-        "max_rel_angular_sigma": None,
-        "linear_dependency_vectors_removed": None,
-        "tail_reaches_min_cutoff": True,
-        "radii_monotonic": derived["r_iso_0.003_e_bohr3_bohr"]
-        < derived["r_iso_0.001_e_bohr3_bohr"]
-        < derived["r_iso_0.0001_e_bohr3_bohr"],
-    }
+    qa = qa_result_from_profile(
+        scf_converged=bool(run.mf.converged),
+        electron_count_exact=int(run.mf.mol.nelectron),
+        derived=derived,
+        profile=profile,
+        angular_sigma_rho_floor=args.angular_sigma_rho_floor,
+    ).to_json()
     metadata = profile_metadata_template(
         dataset_id=args.dataset_id,
         state=state,
@@ -191,6 +222,10 @@ def main() -> int:
         print("QA electron count error: skipped")
     else:
         print(f"QA electron count error: {qa['electron_count_error_qa']:.6g}")
+    if qa["max_rel_angular_sigma"] is None:
+        print("QA max relative angular sigma: unavailable")
+    else:
+        print(f"QA max relative angular sigma: {qa['max_rel_angular_sigma']:.6g}")
     print(f"Profile archive: {profile_path}")
     print(f"Metadata: {metadata_path}")
     return 0

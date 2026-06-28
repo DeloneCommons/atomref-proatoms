@@ -32,7 +32,12 @@ def _sample_profile() -> dict[str, list[float]]:
     }
 
 
-def _write_valid_h_artifact(tmp_path: Path, *, electron_count_error_qa: float | None = None) -> Path:
+def _write_valid_h_artifact(
+    tmp_path: Path,
+    *,
+    electron_count_error_qa: float | None = None,
+    max_rel_angular_sigma: float | None = None,
+) -> Path:
     state, bundle = _h_state_and_basis()
     profile = _sample_profile()
     metadata = profile_metadata_template(
@@ -45,7 +50,7 @@ def _write_valid_h_artifact(tmp_path: Path, *, electron_count_error_qa: float | 
         qa={
             "scf_converged": True,
             "electron_count_error_qa": electron_count_error_qa,
-            "max_rel_angular_sigma": None,
+            "max_rel_angular_sigma": max_rel_angular_sigma,
             "linear_dependency_vectors_removed": None,
             "tail_reaches_min_cutoff": True,
             "radii_monotonic": True,
@@ -74,6 +79,25 @@ def test_check_profile_dataset_accepts_zip_artifact_with_skipped_qa(tmp_path) ->
     assert table.inner_csv_name == "H_q0_mult2_hund.csv"
     assert table.row_count == 6
 
+
+
+
+def test_check_profile_dataset_accepts_full_profile_qa(tmp_path) -> None:
+    dataset_dir = _write_valid_h_artifact(
+        tmp_path,
+        electron_count_error_qa=1.0e-9,
+        max_rel_angular_sigma=1.0e-10,
+    )
+
+    result = check_profile_dataset(
+        dataset_dir,
+        states_file=STATES_FILE,
+        basis_root=BASIS_ROOT,
+        require_profile_qa=True,
+    )
+
+    assert result.ok
+    assert result.warnings == ()
 
 def test_check_profile_dataset_can_require_profile_qa(tmp_path) -> None:
     dataset_dir = _write_valid_h_artifact(tmp_path)

@@ -60,7 +60,10 @@ def test_expected_dataset_ids_are_declared_in_manifest_usage() -> None:
         assert expected <= actual
 
 
-@pytest.mark.parametrize("url", ["https://example.com/api/basis/x/format/nwchem/?version=1&elements=1"])
+@pytest.mark.parametrize(
+    "url",
+    ["https://example.com/api/basis/x/format/nwchem/?version=1&elements=1"],
+)
 def test_basis_source_url_shape_rejects_non_bse_hosts(url: str) -> None:
     with pytest.raises(ValueError):
         verify_basis_source_url_shape(url)
