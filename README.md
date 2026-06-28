@@ -164,6 +164,40 @@ python scripts/summarize_dataset.py \
   --dataset-dir local-data/pilot-profiles/pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v0
 ```
 
+
+After more than one pilot group has been generated, validate the expected pilot-output root
+rather than checking each dataset directory manually. This is useful when the primary light
+neutral dataset and the diffuse anion/formal-anion sensitivity dataset coexist under the
+same `local-data/pilot-profiles/` root:
+
+```bash
+python scripts/check_pilot_outputs.py \
+  --output-dir local-data/pilot-profiles \
+  --group neutral_light_x2c \
+  --group anion_formal_x2c_diffuse \
+  --require-profile-qa \
+  --summary
+```
+
+Run the first diffuse anion/formal-anion pilot group as a separate sensitivity dataset:
+
+```bash
+python scripts/run_pilots.py \
+  --group anion_formal_x2c_diffuse \
+  --profile-n-ang 50 \
+  --qa-n-r 120 \
+  --qa-n-ang 50 \
+  --check-profiles \
+  --require-profile-qa \
+  --build-indexes \
+  --summary
+```
+
+This group writes to `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v0`, not to the
+primary non-diffuse H-Rn dataset. The pilot-output checker verifies that selected
+pilot states appear in their expected dataset directories, helping prevent accidental
+mixing of primary and sensitivity outputs.
+
 Use `--require-profile-qa` when checking artifacts that should include independent
 electron-count QA rather than skipped/null QA fields. The summary command prints compact
 counts for profiles, elements, charge states, state categories, QA coverage, and derived

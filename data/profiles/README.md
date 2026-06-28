@@ -44,3 +44,24 @@ density-tail coverage for the requested cutoff radii, monotonic cutoff radii, an
 maximum relative angular sigma of the density on the stored profile grid. A spherical
 production profile should have very small angular sigma except in the far tail where the
 absolute density is below the configured reporting floor.
+
+
+## Multi-dataset pilot-output checks
+
+Generated pilot roots may contain more than one dataset directory. The light neutral
+smoke profiles belong to the primary non-diffuse x2c-QZVPall dataset, while the first
+anion/formal-anion pilots belong to the separate x2c-QZVPall-s sensitivity dataset.
+
+Use:
+
+```bash
+python scripts/check_pilot_outputs.py \
+  --output-dir local-data/pilot-profiles \
+  --group neutral_light_x2c \
+  --group anion_formal_x2c_diffuse \
+  --require-profile-qa \
+  --summary
+```
+
+to validate that the expected pilot states exist in the expected dataset directories
+and that each generated dataset passes its per-state and index-level checks.
