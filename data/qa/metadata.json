@@ -1,0 +1,12 @@
+{
+  "schema_version": "atomref.proatoms.qa_overview.v1",
+  "profile_data_version": "1.0.0.dev0",
+  "files": {
+    "qa_summary_csv": "data/qa/qa_summary.csv",
+    "qa_report_md": "data/qa/qa_report.md",
+    "metadata_json": "data/qa/metadata.json"
+  },
+  "dataset_count": 2,
+  "state_count": 189,
+  "failed_count": 0
+}

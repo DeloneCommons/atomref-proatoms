@@ -1,0 +1,29 @@
+{
+  "schema_version": "atomref.proatoms.radii_dataset.v1",
+  "profile_data_version": "1.0.0.dev0",
+  "dataset_id": "pbe0_sfx2c_dyallv4z_h-lr_spherical_v1",
+  "basis_id": "dyall-v4z",
+  "units": {
+    "r_bohr": "bohr",
+    "r_angstrom": "angstrom",
+    "rho_cutoff": "electron/bohr^3"
+  },
+  "cutoffs_e_bohr3": [
+    0.003,
+    0.001,
+    0.0001
+  ],
+  "files": {
+    "radii_csv": "data/radii/pbe0_sfx2c_dyallv4z_h-lr_spherical_v1/radii.csv",
+    "metadata_json": "data/radii/pbe0_sfx2c_dyallv4z_h-lr_spherical_v1/metadata.json"
+  },
+  "sources": {
+    "profiles_csv": "data/profiles/pbe0_sfx2c_dyallv4z_h-lr_spherical_v1/profiles.csv",
+    "profile_metadata_json": "data/profiles/pbe0_sfx2c_dyallv4z_h-lr_spherical_v1/metadata.json"
+  },
+  "row_count": 103,
+  "provenance": {
+    "profile_datasets_yaml_sha256": "eb3c70c225704eae6ff6d1e04118629d0e54613727a53cf71eb3991790450cb7",
+    "generator_git_commit": "f75c20b97fdd274b8c2f313ecafe3ff716ba91c5"
+  }
+}
