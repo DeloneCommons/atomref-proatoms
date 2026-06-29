@@ -53,11 +53,13 @@ from atomref_proatoms.qa import (  # noqa: E402
     qa_result_from_profile,
 )
 from atomref_proatoms.scf import (  # noqa: E402
+    SCFSettings,
     load_mol_from_chk,
     load_scf_npz,
     read_scf_metadata,
     scf_artifact_paths,
     scf_artifacts_complete,
+    stable_json_digest,
 )
 from atomref_proatoms.states import AtomState, load_atom_states, state_digest  # noqa: E402
 
@@ -228,6 +230,19 @@ def _check_fingerprint(
         raise ValueError(f"{label} fingerprint mismatch for {key}: expected {expected}, got {actual}")
 
 
+def _expected_scf_settings_digest(config: Any) -> str:
+    defaults = config.defaults
+    relativity = str(defaults.get("relativity", "sf-X2C-1e"))
+    settings = SCFSettings(
+        xc=str(defaults.get("xc", "PBE0")),
+        use_x2c=relativity != "none",
+        conv_tol=float(defaults.get("conv_tol", 1e-9)),
+        max_cycle=int(defaults.get("max_cycle", 100)),
+        grid_level=int(defaults.get("grid_level", 4)),
+    )
+    return stable_json_digest(settings.to_fingerprint_json())
+
+
 def _validate_scf_metadata(
     *,
     metadata: Mapping[str, Any],
@@ -244,20 +259,9 @@ def _validate_scf_metadata(
         raise ValueError(f"SCF metadata state_id mismatch: {metadata.get('state_id')!r}")
     if metadata.get("basis_id") != basis_id:
         raise ValueError(f"SCF metadata basis_id mismatch: {metadata.get('basis_id')!r}")
-    if metadata.get("profile_data_version") != config.profile_data_version:
-        raise ValueError(
-            "SCF metadata profile_data_version mismatch: "
-            f"{metadata.get('profile_data_version')!r}"
-        )
     basis = metadata.get("basis", {})
     if not isinstance(basis, Mapping) or basis.get("basis_sha256") != basis_sha256:
         raise ValueError("SCF metadata basis SHA does not match the current basis bundle")
-    _check_fingerprint(
-        metadata,
-        key="profile_datasets_yaml_sha256",
-        expected=config_sha256,
-        label=state.state_id,
-    )
     _check_fingerprint(
         metadata,
         key="basis_sha256",
@@ -268,6 +272,12 @@ def _validate_scf_metadata(
         metadata,
         key="state_record_sha256",
         expected=state_digest(state.record),
+        label=state.state_id,
+    )
+    _check_fingerprint(
+        metadata,
+        key="scf_settings_sha256",
+        expected=_expected_scf_settings_digest(config),
         label=state.state_id,
     )
 

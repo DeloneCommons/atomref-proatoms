@@ -33,6 +33,7 @@ DEFAULT_MAX_CYCLE = 100
 DEFAULT_GRID_LEVEL = 4
 DEFAULT_GRID_PRUNE = None
 SCF_ARTIFACT_SCHEMA_VERSION = "atomref.proatoms.scf_artifact.v1"
+SCF_REUSE_FINGERPRINT_KEYS = ("basis_sha256", "state_record_sha256", "scf_settings_sha256")
 
 
 @dataclass(frozen=True)
@@ -402,7 +403,12 @@ def read_scf_metadata(path: Path) -> dict[str, Any]:
 def scf_artifact_is_reusable(
     paths: SCFArtifactPaths, expected_fingerprints: dict[str, str]
 ) -> bool:
-    """Return true if a local SCF artifact exists and matches current inputs/settings."""
+    """Return true if a local SCF artifact matches the current SCF-defining inputs.
+
+    Dataset YAML hashes are intentionally not part of this reuse gate.  Scope-only
+    changes such as dropping ion datasets should not invalidate neutral SCF arrays when
+    the basis, state record, and numerical SCF settings are unchanged.
+    """
 
     if not all(path.exists() for path in paths.required_files()):
         return False
@@ -410,4 +416,7 @@ def scf_artifact_is_reusable(
         metadata = read_scf_metadata(paths.metadata)
     except Exception:
         return False
-    return metadata.get("fingerprints") == expected_fingerprints
+    actual = metadata.get("fingerprints")
+    if not isinstance(actual, dict):
+        return False
+    return all(actual.get(key) == expected_fingerprints.get(key) for key in SCF_REUSE_FINGERPRINT_KEYS)
