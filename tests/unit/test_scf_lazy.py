@@ -1,9 +1,19 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 import numpy as np
 
-from atomref_proatoms.scf import SCFSettings, load_scf_npz, import_pyscf_modules
+from atomref_proatoms.basis import BasisBundle
+from atomref_proatoms.scf import (
+    SCF_REUSE_FINGERPRINT_KEYS,
+    SCFSettings,
+    import_pyscf_modules,
+    load_scf_npz,
+    scf_fingerprints,
+)
+from atomref_proatoms.states import AtomState
 from atomref_proatoms.spherical_uks import get_atom_spherical_uks_class
 
 
@@ -47,3 +57,38 @@ def test_load_scf_npz_requires_project_native_arrays(tmp_path) -> None:
 
     assert arrays["dm_alpha"].shape == (2, 2)
     assert arrays["mo_occ_beta"].shape == (2,)
+
+
+def test_scf_fingerprints_are_release_version_independent(tmp_path) -> None:
+    bundle_dir = tmp_path / "basis"
+    bundle_dir.mkdir()
+    (bundle_dir / "manifest.json").write_text("{}")
+    state = AtomState(
+        {
+            "state_id": "H_q0_mult2_hund",
+            "symbol": "H",
+            "z": 1,
+            "charge": 0,
+            "electron_count": 1,
+        }
+    )
+    bundle = BasisBundle(
+        basis_id="x2c-QZVPall",
+        path=bundle_dir,
+        manifest={"files": {"basis_file": "basis.nw", "basis_sha256": "basis-sha"}},
+        summary_row={},
+    )
+
+    fingerprints = scf_fingerprints(
+        config_path=tmp_path / "profile_datasets.yaml",
+        config=SimpleNamespace(data={"profile_data_version": "1.0.0.dev0"}),
+        state=state,
+        bundle=bundle,
+        settings=SCFSettings(),
+    )
+
+    for key in SCF_REUSE_FINGERPRINT_KEYS:
+        assert key in fingerprints
+    assert "profile_data_version" not in fingerprints
+    assert "profile_datasets_yaml_sha256" not in fingerprints
+    assert "profile_dataset_config_sha256" not in fingerprints

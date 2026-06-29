@@ -53,6 +53,7 @@ from atomref_proatoms.qa import (  # noqa: E402
     qa_result_from_profile,
 )
 from atomref_proatoms.scf import (  # noqa: E402
+    SCF_REUSE_FINGERPRINT_KEYS,
     SCFSettings,
     load_mol_from_chk,
     load_scf_npz,
@@ -349,6 +350,11 @@ def _profile_dataset_metadata(
 def _scf_artifact_summary(paths: Any, metadata: Mapping[str, Any]) -> dict[str, Any]:
     results = metadata.get("results", {})
     fingerprints = metadata.get("fingerprints", {})
+    reusable_fingerprints = (
+        {key: fingerprints[key] for key in SCF_REUSE_FINGERPRINT_KEYS if key in fingerprints}
+        if isinstance(fingerprints, Mapping)
+        else {}
+    )
     return {
         "schema_version": metadata.get("schema_version"),
         "scf_chk": repo_relative_path(paths.chk),
@@ -356,7 +362,7 @@ def _scf_artifact_summary(paths: Any, metadata: Mapping[str, Any]) -> dict[str, 
         "scf_json": repo_relative_path(paths.metadata),
         "scf_log": repo_relative_path(paths.log),
         "results": dict(results) if isinstance(results, Mapping) else {},
-        "fingerprints": dict(fingerprints) if isinstance(fingerprints, Mapping) else {},
+        "fingerprints": reusable_fingerprints,
     }
 
 

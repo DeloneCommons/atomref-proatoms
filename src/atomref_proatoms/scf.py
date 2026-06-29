@@ -317,9 +317,16 @@ def scf_fingerprints(
     bundle: BasisBundle,
     settings: SCFSettings,
 ) -> dict[str, str]:
+    """Return fingerprints that define reusable local SCF artifacts.
+
+    The profile-data release version and the full dataset YAML hash are deliberately
+    excluded.  They describe publication scope/provenance, not the numerical SCF
+    arrays stored in ``local-data/scf``.  This keeps expensive SCF artifacts reusable
+    across release-version bumps and scope-only YAML edits.
+    """
+
+    _ = config_path, config
     return {
-        "profile_datasets_yaml_sha256": sha256_file(config_path),
-        "profile_dataset_config_sha256": stable_json_digest(config.data),
         "basis_sha256": bundle.basis_sha256,
         "basis_manifest_sha256": sha256_file(bundle.path / "manifest.json"),
         "state_record_sha256": state_digest(state.record),
@@ -350,7 +357,6 @@ def scf_metadata(
     )
     return {
         "schema_version": SCF_ARTIFACT_SCHEMA_VERSION,
-        "profile_data_version": config.profile_data_version,
         "dataset_id": dataset_id,
         "state_id": state.state_id,
         "basis_id": bundle.basis_id,
