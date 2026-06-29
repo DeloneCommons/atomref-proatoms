@@ -27,7 +27,7 @@ dev = [
   "ruff>=0.6",
 ]
 generator = [
-  "pyscf>=2.6",
+  "pyscf==2.13.1",
 ]
 audit = [
   "basis-set-exchange",
@@ -35,7 +35,7 @@ audit = [
 all = [
   "pytest>=7",
   "ruff>=0.6",
-  "pyscf>=2.6",
+  "pyscf==2.13.1",
   "basis-set-exchange",
 ]
 

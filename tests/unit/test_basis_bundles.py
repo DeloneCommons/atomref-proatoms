@@ -55,7 +55,7 @@ def test_basis_nw_identity_header_and_coverage() -> None:
 
 def test_expected_dataset_ids_are_declared_in_manifest_usage() -> None:
     for bundle in list_basis_bundles(BASIS_ROOT):
-        expected = set(BASIS_TO_DATASETS[bundle.basis_id])
+        expected = set(BASIS_TO_DATASETS.get(bundle.basis_id, ()))
         actual = set(bundle.manifest["usage"]["dataset_ids_using_this_basis"])
         assert expected <= actual
 

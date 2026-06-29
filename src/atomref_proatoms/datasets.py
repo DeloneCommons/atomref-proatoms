@@ -16,8 +16,6 @@ PROFILE_DATA_VERSION = "1.0.0.dev0"
 
 PRIMARY_X2C_QZVPALL = "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1"
 PRIMARY_DYALL_V4Z = "pbe0_sfx2c_dyallv4z_h-lr_spherical_v1"
-ANION_X2C_QZVPALL_S = "pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v1"
-ANION_DYALL_AV4Z = "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1"
 
 
 @dataclass(frozen=True)
@@ -35,7 +33,7 @@ class DatasetScope:
 
     @property
     def allow_neutral(self) -> bool:
-        return self.include_charges == "all"
+        return self.include_charges in {"all", "neutral_only"}
 
     @property
     def allow_cation(self) -> bool:
@@ -98,9 +96,10 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
             raise ValueError(f"dataset {record['dataset_id']}: invalid z interval {item!r}")
         intervals.append((start, end))
     include_charges = str(record["include_charges"])
-    if include_charges not in {"all", "negative_only"}:
+    if include_charges not in {"all", "neutral_only", "negative_only"}:
         raise ValueError(
-            f"dataset {record['dataset_id']}: include_charges must be 'all' or 'negative_only'"
+            f"dataset {record['dataset_id']}: include_charges must be 'all', "
+            "'neutral_only', or 'negative_only'"
         )
     roles_raw = record["include_state_roles"]
     if not isinstance(roles_raw, list) or not roles_raw:

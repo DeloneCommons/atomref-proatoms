@@ -120,6 +120,15 @@ def parse_args() -> argparse.Namespace:
         help="Continue selected jobs after one SCF failure.",
     )
     parser.add_argument(
+        "--allow-pyscf-version-mismatch",
+        action="store_true",
+        help=(
+            "Allow generator execution when the installed PySCF version differs from "
+            "defaults.expected_engine_version in data/profile_datasets.yaml. This is "
+            "for debugging only and should not be used for release data."
+        ),
+    )
+    parser.add_argument(
         "--list",
         action="store_true",
         help="Print the selected wavefunction plan and exit before running PySCF.",
@@ -273,6 +282,18 @@ def main() -> int:
         _gto, _dft, _pyscf_basis, pyscf_version = import_pyscf_modules()
     except RuntimeError as exc:
         raise SystemExit(str(exc)) from exc
+    expected_pyscf_version = str(config.defaults.get("expected_engine_version", "")).strip()
+    if (
+        expected_pyscf_version
+        and pyscf_version != expected_pyscf_version
+        and not args.allow_pyscf_version_mismatch
+    ):
+        raise SystemExit(
+            "Installed PySCF version "
+            f"{pyscf_version!r} does not match the release-pinned version "
+            f"{expected_pyscf_version!r}. Install the generator extra from this repo "
+            "or rerun with --allow-pyscf-version-mismatch for debugging-only artifacts."
+        )
 
     counts = {"computed": 0, "skipped_reusable": 0, "failed": 0}
     for index, job in enumerate(jobs, start=1):

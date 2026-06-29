@@ -4,6 +4,7 @@ profile_data_version: 1.0.0.dev0
 defaults:
   density_model: self_consistent_fractional_occupation_spherical_uks
   engine: pyscf
+  expected_engine_version: 2.13.1
   scf_type: UKS
   xc: PBE0
   relativity: sf-X2C-1e
@@ -32,37 +33,19 @@ cutoffs_e_bohr3:
 
 datasets:
   - dataset_id: pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1
-    role: primary
+    role: primary_neutral_h_rn
     basis_id: x2c-QZVPall
-    coverage_label: H-Rn
+    coverage_label: H-Rn neutral atoms
     z_intervals: [[1, 86]]
-    include_charges: all
+    include_charges: neutral_only
     include_state_roles: [recommended]
     diffuse: false
 
   - dataset_id: pbe0_sfx2c_dyallv4z_h-lr_spherical_v1
-    role: primary_heavy_extension
+    role: primary_neutral_h_lr
     basis_id: dyall-v4z
-    coverage_label: H-Lr selected states
+    coverage_label: H-Lr neutral atoms
     z_intervals: [[1, 103]]
-    include_charges: all
+    include_charges: neutral_only
     include_state_roles: [recommended]
     diffuse: false
-
-  - dataset_id: pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v1
-    role: anion_sensitivity
-    basis_id: x2c-QZVPall-s
-    coverage_label: H-Rn anions/formal anions
-    z_intervals: [[1, 86]]
-    include_charges: negative_only
-    include_state_roles: [recommended]
-    diffuse: true
-
-  - dataset_id: pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1
-    role: selected_anion_sensitivity
-    basis_id: dyall-av4z
-    coverage_label: H-Ba, Hf-Ra, Rf-Og selected anions
-    z_intervals: [[1, 56], [72, 88], [104, 118]]
-    include_charges: negative_only
-    include_state_roles: [recommended]
-    diffuse: true

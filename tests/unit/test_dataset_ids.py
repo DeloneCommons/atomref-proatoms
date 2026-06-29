@@ -5,10 +5,10 @@ from pathlib import Path
 import pytest
 
 from atomref_proatoms.datasets import (
-    ANION_X2C_QZVPALL_S,
     DATASET_IDS,
     PROFILE_DATA_VERSION,
     PROFILE_DATASETS_SCHEMA_VERSION,
+    PRIMARY_DYALL_V4Z,
     PRIMARY_X2C_QZVPALL,
     assert_dataset_basis_match,
     expected_basis_for_dataset,
@@ -25,13 +25,14 @@ def test_profile_dataset_yaml_is_the_active_dataset_contract() -> None:
     assert config.schema_version == PROFILE_DATASETS_SCHEMA_VERSION
     assert config.profile_data_version == PROFILE_DATA_VERSION == "1.0.0.dev0"
     assert config.dataset_ids == DATASET_IDS
-    assert len(config.datasets) == 4
+    assert len(config.datasets) == 2
+    assert config.defaults["expected_engine_version"] == "2.13.1"
 
 
 def test_dataset_basis_mapping_is_explicit() -> None:
     assert expected_basis_for_dataset(PRIMARY_X2C_QZVPALL) == "x2c-QZVPall"
-    assert expected_basis_for_dataset(ANION_X2C_QZVPALL_S) == "x2c-QZVPall-s"
-    assert len(DATASET_IDS) == 4
+    assert expected_basis_for_dataset(PRIMARY_DYALL_V4Z) == "dyall-v4z"
+    assert len(DATASET_IDS) == 2
     assert all(dataset_id.endswith("_v1") for dataset_id in DATASET_IDS)
 
 
@@ -41,7 +42,9 @@ def test_no_silent_basis_fallback() -> None:
         assert_dataset_basis_match(PRIMARY_X2C_QZVPALL, "x2c-QZVPall-s")
 
 
-def test_diffuse_sensitivity_dataset_is_anion_only() -> None:
-    assert state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=-1)
-    assert not state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=0)
-    assert not state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=1)
+def test_v1_profile_datasets_are_neutral_only() -> None:
+    assert state_allowed_in_dataset(PRIMARY_X2C_QZVPALL, z=53, charge=0)
+    assert not state_allowed_in_dataset(PRIMARY_X2C_QZVPALL, z=53, charge=-1)
+    assert not state_allowed_in_dataset(PRIMARY_X2C_QZVPALL, z=53, charge=1)
+    assert state_allowed_in_dataset(PRIMARY_DYALL_V4Z, z=92, charge=0)
+    assert not state_allowed_in_dataset(PRIMARY_DYALL_V4Z, z=92, charge=4)

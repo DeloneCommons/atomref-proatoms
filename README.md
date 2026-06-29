@@ -2,7 +2,8 @@
 
 `atomref-proatoms` is the heavy generator/data companion repository for `atomref`.
 It stores frozen atomic-state and basis-set inputs and generates reusable radial
-proatomic electron-density profiles for atoms and selected ions.
+proatomic electron-density profiles for neutral atoms in the v1 release. The curated state
+layer still keeps selected ion definitions for later explicitly labeled v2 datasets.
 
 The main downstream use is empirical geometry and IAS-separator estimation in
 crystallographic and atom-centered software. The project is not intended to be a
@@ -32,6 +33,10 @@ This repository contains:
   profile metadata;
 - offline data-check scripts;
 - the simplified v1 workflow entry points.
+
+The v1 profile datasets are neutral-only. Cations, anions, formal anions, charge-state
+interpolation, and diffuse-anion sensitivity branches are intentionally postponed until a
+separate v2 scope is justified and documented.
 
 Generated profile datasets are not tracked yet in this patch. The target release layout is:
 
@@ -72,14 +77,13 @@ python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 
 ## Simplified v1 workflow
 
-The intended workflow is now five scripts:
+The intended workflow is now four scripts:
 
 ```bash
 python scripts/build_atom_states.py --check
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
-python scripts/build_report.py
 ```
 
 `compute_wavefunctions.py --list` and `--dry-run` already read the active YAML config and
@@ -92,6 +96,10 @@ python scripts/compute_wavefunctions.py \
   --state H_q0_mult2_hund \
   --dry-run
 ```
+
+`compute_wavefunctions.py` writes persistent local SCF artifacts. The release generator
+extra pins PySCF to `2.13.1`, and the script refuses to create release artifacts with a
+different PySCF version unless `--allow-pyscf-version-mismatch` is used for debugging.
 
 `compute_wavefunctions.py` writes persistent local SCF artifacts:
 
@@ -112,16 +120,6 @@ data/profiles/<dataset_id>/
   metadata.json
 ```
 
-`build_report.py` reads `data/profiles/` and generates the current scientific report
-under `report/`:
-
-```text
-report/report.md
-report/report_manifest.json
-report/tables/*.csv
-report/figures/*.svg
-```
-
 ## Layout
 
 ```text
@@ -131,10 +129,9 @@ data/profile_datasets.yaml
 data/states/            source / selection / curated state data
 data/basis_sets/        frozen BSE NWChem spherical basis exports
 data/profiles/          final generated profile datasets, one directory per dataset
-scripts/                five simplified v1 workflow entry points and data checks
+scripts/                simplified v1 workflow entry points and data checks
 tests/                  unit and integration tests
 docs/                   project documentation
-report/                 current generated scientific report
 local-data/             ignored local SCF/checkpoint/log/scratch artifacts
 ```
 
