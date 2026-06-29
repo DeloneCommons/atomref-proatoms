@@ -425,4 +425,7 @@ def scf_artifact_is_reusable(
     actual = metadata.get("fingerprints")
     if not isinstance(actual, dict):
         return False
-    return all(actual.get(key) == expected_fingerprints.get(key) for key in SCF_REUSE_FINGERPRINT_KEYS)
+    return all(
+        actual.get(key) == expected_fingerprints.get(key)
+        for key in SCF_REUSE_FINGERPRINT_KEYS
+    )

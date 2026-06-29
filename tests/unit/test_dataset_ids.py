@@ -6,10 +6,10 @@ import pytest
 
 from atomref_proatoms.datasets import (
     DATASET_IDS,
-    PROFILE_DATA_VERSION,
-    PROFILE_DATASETS_SCHEMA_VERSION,
     PRIMARY_DYALL_V4Z,
     PRIMARY_X2C_QZVPALL,
+    PROFILE_DATA_VERSION,
+    PROFILE_DATASETS_SCHEMA_VERSION,
     assert_dataset_basis_match,
     expected_basis_for_dataset,
     load_profile_dataset_config,

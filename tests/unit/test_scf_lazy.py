@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-import pytest
 import numpy as np
+import pytest
 
 from atomref_proatoms.basis import BasisBundle
 from atomref_proatoms.scf import (
@@ -13,8 +13,8 @@ from atomref_proatoms.scf import (
     load_scf_npz,
     scf_fingerprints,
 )
-from atomref_proatoms.states import AtomState
 from atomref_proatoms.spherical_uks import get_atom_spherical_uks_class
+from atomref_proatoms.states import AtomState
 
 
 def test_scf_settings_defaults_are_production_defaults() -> None:

@@ -105,11 +105,10 @@ python scripts/compute_wavefunctions.py \
   --dry-run
 ```
 
-`compute_wavefunctions.py` writes persistent local SCF artifacts. The release generator
-extra pins PySCF to `2.13.1`, and the script refuses to create release artifacts with a
-different PySCF version unless `--allow-pyscf-version-mismatch` is used for debugging.
-
-`compute_wavefunctions.py` writes persistent local SCF artifacts:
+`compute_wavefunctions.py` writes persistent local SCF artifacts under `local-data/scf/`.
+The release generator extra pins PySCF to `2.13.1`, and the script refuses to create
+release artifacts with a different PySCF version unless `--allow-pyscf-version-mismatch`
+is used for debugging.
 
 ```text
 local-data/scf/<dataset_id>/<state_id>/

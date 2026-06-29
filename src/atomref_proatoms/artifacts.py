@@ -222,7 +222,9 @@ def _state_table_prefix(state_id: str, state: Mapping[str, Any]) -> dict[str, An
     }
 
 
-def _write_dict_rows_csv(path: Path, fieldnames: Sequence[str], rows: Sequence[Mapping[str, Any]]) -> None:
+def _write_dict_rows_csv(
+    path: Path, fieldnames: Sequence[str], rows: Sequence[Mapping[str, Any]]
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(fieldnames), extrasaction="ignore")
@@ -265,10 +267,14 @@ def write_radii_dataset_artifacts(
     for state_id, state in states.items():
         derived = derived_radii_by_state_id.get(state_id, {})
         row = _state_table_prefix(state_id, state)
-        for cutoff, bohr_field, angstrom_field in zip(cutoffs, bohr_fields, angstrom_fields, strict=True):
+        for _cutoff, bohr_field, angstrom_field in zip(
+            cutoffs, bohr_fields, angstrom_fields, strict=True
+        ):
             bohr_value = derived.get(bohr_field)
             row[bohr_field] = bohr_value
-            row[angstrom_field] = None if bohr_value is None else float(bohr_value) * BOHR_TO_ANGSTROM
+            row[angstrom_field] = (
+                None if bohr_value is None else float(bohr_value) * BOHR_TO_ANGSTROM
+            )
         rows.append(row)
 
     radii_csv = dataset_dir / "radii.csv"

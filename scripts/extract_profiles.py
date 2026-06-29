@@ -19,8 +19,8 @@ if str(SRC) not in sys.path:
 
 from atomref_proatoms.artifacts import (  # noqa: E402
     profile_density_column,
-    write_profile_dataset_artifacts,
     qa_overall_pass,
+    write_profile_dataset_artifacts,
     write_qa_dataset_artifacts,
     write_qa_overview,
     write_radii_dataset_artifacts,
@@ -62,7 +62,6 @@ from atomref_proatoms.scf import (  # noqa: E402
     stable_json_digest,
 )
 from atomref_proatoms.states import AtomState, load_atom_states, state_digest  # noqa: E402
-
 
 PROFILE_DATASET_SCHEMA_VERSION = "atomref.proatoms.profile_dataset.v1"
 ANGULAR_SIGMA_REL_TOL = 1.0e-8
@@ -122,7 +121,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Released QA output root; defaults to data/qa.",
     )
     parser.add_argument("--force", action="store_true", help="Overwrite existing dataset outputs.")
-    parser.add_argument("--list", action="store_true", help="Print the selected extraction plan and exit.")
+    parser.add_argument(
+        "--list", action="store_true", help="Print the selected extraction plan and exit."
+    )
     parser.add_argument(
         "--dry-run",
         action="store_true",
@@ -212,7 +213,9 @@ def _check_fingerprint(
     fingerprints = metadata.get("fingerprints", {})
     actual = fingerprints.get(key) if isinstance(fingerprints, Mapping) else None
     if actual != expected:
-        raise ValueError(f"{label} fingerprint mismatch for {key}: expected {expected}, got {actual}")
+        raise ValueError(
+            f"{label} fingerprint mismatch for {key}: expected {expected}, got {actual}"
+        )
 
 
 def _expected_scf_settings_digest(config: Any) -> str:
@@ -267,7 +270,9 @@ def _validate_scf_metadata(
     )
 
 
-def _method_signature(metadata: Mapping[str, Any], *, basis_id: str, basis_sha256: str) -> dict[str, Any]:
+def _method_signature(
+    metadata: Mapping[str, Any], *, basis_id: str, basis_sha256: str
+) -> dict[str, Any]:
     method = dict(metadata.get("method", {}))
     method["basis_id"] = basis_id
     method["basis_sha256"] = basis_sha256

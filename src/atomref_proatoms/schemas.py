@@ -7,7 +7,7 @@ ATOM_STATE_SUMMARY_SCHEMA_VERSION = "atomref.proatoms.state_build_summary.v0"
 BASIS_BUNDLE_SCHEMA_VERSION = "atomref.proatoms.basis_bundle.v0"
 BASIS_SET_SUMMARY_SCHEMA_VERSION = "atomref.proatoms.basis_set_summary.v0"
 PROFILE_METADATA_SCHEMA_VERSION = "atomref.proatom_profile.v1"
-PROFILE_DATASET_MANIFEST_SCHEMA_VERSION = "atomref.proatoms.profile_dataset.v0"
+PROFILE_DATASET_MANIFEST_SCHEMA_VERSION = "atomref.proatoms.profile_dataset.v1"
 
 DENSITY_MODEL = "self_consistent_fractional_occupation_spherical_uks"
 DEFAULT_SPIN_MODEL = "free_ion_hund_high_spin"

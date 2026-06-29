@@ -13,10 +13,9 @@ from functools import lru_cache
 from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
+import numpy.typing as npt
 
-
-ArrayF = NDArray[np.float64]
+ArrayF = npt.NDArray[np.float64]
 
 
 def validate_angular_block_size(l_value: int, block_size: int) -> None:
@@ -41,7 +40,7 @@ def require_spherical_basis(mol: object) -> None:
         raise ValueError("production spherical proatoms require mol.cart is False")
 
 
-def ao_angular_momenta(mol: Any) -> NDArray[np.int_]:
+def ao_angular_momenta(mol: Any) -> npt.NDArray[np.int_]:
     """Return angular momentum ``l`` for each AO in PySCF's AO ordering.
 
     The function uses only the small PySCF ``Mole`` interface needed for tests and
@@ -59,13 +58,13 @@ def ao_angular_momenta(mol: Any) -> NDArray[np.int_]:
     return ao_l
 
 
-def angular_block_indices(mol: Any) -> list[tuple[int, NDArray[np.int_]]]:
+def angular_block_indices(mol: Any) -> list[tuple[int, npt.NDArray[np.int_]]]:
     """Return AO indices grouped by angular momentum in ascending ``l`` order."""
 
     ao_l = ao_angular_momenta(mol)
     if ao_l.size == 0:
         raise ValueError("molecule has no AOs")
-    blocks: list[tuple[int, NDArray[np.int_]]] = []
+    blocks: list[tuple[int, npt.NDArray[np.int_]]] = []
     for l_value in range(int(ao_l.max()) + 1):
         idx = np.where(ao_l == l_value)[0]
         if idx.size == 0:
@@ -161,8 +160,8 @@ def spherical_block_eigh(mf: Any, fock: Sequence[Sequence[float]], ovlp: Sequenc
     if fock_arr.shape != (nao, nao):
         raise ValueError(f"matrix shape {fock_arr.shape} does not match nao={nao}")
 
-    mo_energy_blocks: list[NDArray[Any]] = []
-    mo_coeff_blocks: list[NDArray[Any]] = []
+    mo_energy_blocks: list[npt.NDArray[Any]] = []
+    mo_coeff_blocks: list[npt.NDArray[Any]] = []
 
     for l_value, idx in blocks:
         degeneracy = 2 * l_value + 1

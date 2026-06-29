@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 
 from atomref_proatoms.build_plan import (
-    build_jobs_for_datasets,
     build_jobs_for_dataset,
+    build_jobs_for_datasets,
     build_plan_summary,
     filter_build_jobs,
     format_build_plan,
