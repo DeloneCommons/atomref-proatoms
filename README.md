@@ -85,7 +85,7 @@ python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 
 ## Simplified v1 workflow
 
-The intended workflow is now four scripts:
+The intended workflow is now four production scripts:
 
 ```bash
 python scripts/build_atom_states.py --check
@@ -149,7 +149,7 @@ data/radii/            generated cutoff-radius result tables
 data/qa/               generated QA tables and compact Markdown QA status
 scripts/                simplified v1 workflow entry points and data checks
 tests/                  unit and integration tests
-docs/                   project documentation
+docs/                   project documentation and narrative notebooks
 local-data/             ignored local SCF/checkpoint/log/scratch artifacts
 ```
 

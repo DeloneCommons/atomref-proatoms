@@ -29,6 +29,10 @@ data/qa/<dataset_id>/
   Per-state release-gate QA tables. `data/qa/qa_summary.csv` and `data/qa/qa_report.md`
   summarize the generated QA status across the selected datasets.
 
+docs/notebooks/proatomic_profiles_v1.ipynb
+  Active user-facing narrative report. It reads generated files from `data/` and may
+  produce explanatory figures inside the notebook.
+
 local-data/scf/<dataset_id>/<state_id>/
   Ignored local SCF artifacts: `scf.chk`, `scf.npz`, `scf.json`, and `scf.log`.
 ```
