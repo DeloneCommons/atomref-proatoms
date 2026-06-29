@@ -141,7 +141,6 @@ def profile_metadata_template(
     relativity: str = "sf-X2C-1e",
     derived: dict[str, float] | None = None,
     qa: dict[str, Any] | None = None,
-    generator_git_commit: str | None = None,
     basis_manifest_sha256: str | None = None,
     diagnostics: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -184,7 +183,6 @@ def profile_metadata_template(
         "qa": qa or {},
         "diagnostics": diagnostics or {},
         "provenance": {
-            "generator_git_commit": generator_git_commit,
             "python_version": platform.python_version(),
             "basis_manifest_sha256": basis_manifest_sha256,
             "state_record_sha256": state_digest(state.record),
@@ -411,6 +409,9 @@ def write_qa_overview(
 
     total_states = sum(int(row.get("state_count", 0) or 0) for row in dataset_summaries)
     total_failed = sum(int(row.get("failed_count", 0) or 0) for row in dataset_summaries)
+    total_ld_warnings = sum(
+        int(row.get("linear_dependency_warning_count", 0) or 0) for row in dataset_summaries
+    )
     status = "PASS" if total_failed == 0 else "FAIL"
     lines = [
         f"# atomref-proatoms QA status: {status}",
@@ -419,21 +420,23 @@ def write_qa_overview(
         f"Datasets checked: {len(dataset_summaries)}.",
         f"States checked: {total_states}.",
         f"Failed rows: {total_failed}.",
+        f"Linear-dependency warnings: {total_ld_warnings}.",
         "",
         "This file is generated from `data/qa/*/qa.csv` and is intended as a compact ",
         "release gate, not as a narrative scientific report.",
         "",
-        "| dataset_id | states | failed | max |ΔN| | max angular σ/ρ |",
-        "|---|---:|---:|---:|---:|",
+        "| dataset_id | states | failed | max |ΔN| | max angular σ/ρ | LD warnings |",
+        "|---|---:|---:|---:|---:|---:|",
     ]
     for row in dataset_summaries:
         lines.append(
-            "| {dataset_id} | {state_count} | {failed_count} | {err} | {sigma} |".format(
+            "| {dataset_id} | {state_count} | {failed_count} | {err} | {sigma} | {ld} |".format(
                 dataset_id=row.get("dataset_id"),
                 state_count=row.get("state_count"),
                 failed_count=row.get("failed_count"),
                 err=row.get("max_abs_electron_count_error_qa"),
                 sigma=row.get("max_rel_angular_sigma"),
+                ld=row.get("linear_dependency_warning_count"),
             )
         )
     report_md.write_text("\n".join(lines) + "\n", encoding="utf-8")

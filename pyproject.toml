@@ -32,11 +32,17 @@ generator = [
 audit = [
   "basis-set-exchange",
 ]
+docs = [
+  "jupyter>=1",
+  "pandas>=2",
+]
 all = [
   "pytest>=7",
   "ruff>=0.6",
   "pyscf==2.13.1",
   "basis-set-exchange",
+  "jupyter>=1",
+  "pandas>=2",
 ]
 
 [tool.setuptools.packages.find]

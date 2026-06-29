@@ -135,7 +135,7 @@ def test_write_qa_dataset_artifacts_and_overview(tmp_path) -> None:
             "tail_reaches_min_cutoff": True,
             "radii_monotonic": True,
             "linear_dependency_warning_count": 0,
-            "linear_dependency_vectors_removed": None,
+            "linear_dependency_vectors_removed": 0,
         }
     }
     qa_csv, metadata_json = write_qa_dataset_artifacts(
@@ -173,4 +173,7 @@ def test_write_qa_dataset_artifacts_and_overview(tmp_path) -> None:
             }
         ],
     )
-    assert outputs["qa_report"].read_text().startswith("# atomref-proatoms QA status: PASS")
+    report_text = outputs["qa_report"].read_text()
+    assert report_text.startswith("# atomref-proatoms QA status: PASS")
+    assert "Linear-dependency warnings: 0." in report_text
+    assert "| dataset | 1 | 0 | 1e-12 | 0.0 | 0 |" in report_text

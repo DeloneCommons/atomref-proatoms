@@ -3,7 +3,7 @@
   "basis_id": "dyall-av4z",
   "basis_name_upstream": "dyall-av4z",
   "description": "Dyall's augmented valence 4-zeta primitive basis set",
-  "role": "selected_anion_sensitivity_available_elements",
+  "role": "auxiliary_augmented_discontinuous",
   "source": {
     "database": "Basis Set Exchange",
     "source_api_url": "http://www.basissetexchange.org/api/basis/dyall-av4z/format/nwchem/?version=1&elements=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118",
@@ -48,16 +48,15 @@
     "n_elements": 88
   },
   "usage": {
-    "dataset_ids_using_this_basis": [
-      "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1"
-    ]
+    "dataset_ids_using_this_basis": []
   },
   "redistribution": {
     "redistribution_basis": "BSE export redistributed under the BSE BSD-3-Clause notice; upstream citations are recorded in references.md.",
     "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
   },
   "notes": [
-    "Augmented Dyall sensitivity basis. The basis coverage is discontinuous; it skips La-Lu and Ac-Lr.",
-    "The planned dataset is a selected-anion branch and does not imply use for every element covered by the basis file."
+    "Auxiliary augmented Dyall branch retained as frozen input data for future sensitivity studies.",
+    "The basis coverage is discontinuous; it skips La-Lu and Ac-Lr.",
+    "No active v1 profile dataset uses this basis."
   ]
 }

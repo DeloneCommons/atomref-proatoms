@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import subprocess
 import sys
 from collections.abc import Mapping
 from pathlib import Path
@@ -199,21 +198,6 @@ def _qa_grid_kwargs(config: Any) -> dict[str, Any]:
     }
 
 
-def _git_commit() -> str | None:
-    try:
-        result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            cwd=ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except Exception:
-        return None
-    commit = result.stdout.strip()
-    return commit or None
-
-
 def _print_plan(args: argparse.Namespace, jobs: tuple[Any, ...], config: Any) -> None:
     print(f"Profile data version: {config.profile_data_version}")
     print(f"Dataset config: {repo_relative_path(args.config)}")
@@ -341,7 +325,6 @@ def _profile_dataset_metadata(
         "scf_artifacts": dict(scf_artifacts),
         "provenance": {
             "profile_datasets_yaml_sha256": config_sha256,
-            "generator_git_commit": _git_commit(),
             "scf_source": "local-data/scf/<dataset_id>/<state_id>",
         },
     }
@@ -546,7 +529,6 @@ def _extract_dataset(
     )
     provenance = {
         "profile_datasets_yaml_sha256": config_sha256,
-        "generator_git_commit": _git_commit(),
     }
     radii_csv, radii_metadata_json = write_radii_dataset_artifacts(
         radii_dir,

@@ -6,23 +6,19 @@ radial-density generation.
 
 ## Scope
 
-- Role: H-Rn auxiliary/sensitivity basis, mainly for anions and formal-ion tail checks.
+- Role: auxiliary H-Rn supplemented x2c basis retained for future sensitivity work.
 - Coverage: H-Rn.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Planned dataset identifiers: `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v1`.
+- Active v1 dataset identifiers: none.
 
-This basis is kept as the x2c-family sensitivity branch for anions and formal ions. It
-is not the default neutral/cation production basis, and results produced with it should
-remain separately identified by dataset and basis identifiers.
-
-Auxiliary x2c branch. It is intended mainly for anion/formal-ion sensitivity checks
-unless a later dataset definition states otherwise.
+No active v1 profile dataset uses this basis. Results produced with it in a future
+scope should remain separately identified by dataset and basis identifiers.
 
 ## Bundle metadata
 
 The canonical metadata record is `manifest.json`. It includes the upstream BSE
 basis name, exact BSE API URL, BSE export version, upstream basis version,
-retrieval date, coverage intervals, intended dataset identifiers, and
+retrieval date, coverage intervals, active v1 dataset identifiers, and
 redistribution note. The exact source URL is recorded as `source.source_api_url`
 in `manifest.json`.
 

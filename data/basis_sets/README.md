@@ -2,8 +2,9 @@
 
 This directory contains the fixed basis-set input layer used by `atomref-proatoms`
 for spherical proatomic radial electron-density generation. The directory is not
-a general basis-set database: it contains only the basis families selected for the
-first production and sensitivity datasets.
+a general basis-set database: it contains the basis families selected for the
+first neutral production datasets plus auxiliary frozen inputs kept for future
+sensitivity work.
 
 All basis definitions are stored in NWChem format with spherical/pure Gaussian
 basis functions. Generated profile metadata must record both the `basis_id` and
@@ -23,11 +24,11 @@ The primary heavy-element extension uses `dyall-v4z`. It provides continuous
 coverage through the actinide region and is therefore the default basis branch
 for the planned H-Lr dataset.
 
-The diffuse/supplemented branches, `x2c-QZVPall-s` and `dyall-av4z`, are included
-mainly for anions and formal crystal-ion sensitivity checks. They are auxiliary
-branches rather than replacements for the primary datasets. In particular,
-`dyall-av4z` has discontinuous element coverage and should be treated as an
-available-element sensitivity basis, not as an H-Lr basis.
+The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, are retained
+as auxiliary frozen inputs for future sensitivity work. They are not active v1
+profile datasets. In particular, `dyall-av4z` has discontinuous element coverage
+and should be treated as an available-element auxiliary basis, not as an H-Lr
+basis.
 
 ## Directory layout
 
@@ -81,7 +82,7 @@ exact BSE API URL used for each exported basis is recorded in the corresponding
 
 For each bundle, the manifest records the upstream basis name, BSE export
 version, upstream basis version, retrieval date, basis-file checksum, element
-coverage intervals, intended dataset identifiers, redistribution note, and the
+coverage intervals, active v1 dataset identifiers, redistribution note, and the
 expected spherical NWChem header. The basis-file checksum is the basis-data
 identity used by this project; documentation and metadata edits do not change the
 basis-data identity.
@@ -91,12 +92,12 @@ the density generator and by the structural checker.
 
 ## Bundle summary
 
-| basis_id | role | coverage | n_elements | planned dataset IDs |
+| basis_id | role | coverage | n_elements | active v1 dataset IDs |
 |---|---|---:|---:|---|
 | `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1` |
-| `x2c-QZVPall-s` | H-Rn anion sensitivity | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall-s_h-rn_anioncheck_v1` |
+| `x2c-QZVPall-s` | auxiliary H-Rn | H-Rn | 86 | none |
 | `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1` |
-| `dyall-av4z` | selected anion sensitivity | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1` |
+| `dyall-av4z` | auxiliary augmented / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | none |
 
 ## Validation
 

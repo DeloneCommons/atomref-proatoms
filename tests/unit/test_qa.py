@@ -75,3 +75,12 @@ def test_linear_dependency_diagnostics_from_log_parses_vectors_removed() -> None
 
     assert diagnostics.warning_count == 2
     assert diagnostics.vectors_removed == 3
+
+
+def test_linear_dependency_diagnostics_from_log_reports_zero_without_warning() -> None:
+    from atomref_proatoms.qa import linear_dependency_diagnostics_from_log
+
+    diagnostics = linear_dependency_diagnostics_from_log("converged without overlap warning\n")
+
+    assert diagnostics.warning_count == 0
+    assert diagnostics.vectors_removed == 0

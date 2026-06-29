@@ -6,23 +6,19 @@ radial-density generation.
 
 ## Scope
 
-- Role: available-element augmented Dyall quadruple-zeta sensitivity basis, mainly for selected anions.
+- Role: auxiliary augmented Dyall quadruple-zeta basis retained for future sensitivity work.
 - Coverage: H-Ba, Hf-Ra, Rf-Og.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Planned dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_selected_anions_v1`.
+- Active v1 dataset identifiers: none.
 
-The augmented Dyall branch is included mainly for anion/formal-ion sensitivity checks.
-Its coverage is discontinuous and excludes the lanthanide and actinide blocks, so it
-must not be described as an H-Lr basis.
-
-Only selected anion/formal-ion profiles are planned at this stage. The manifest records
-the full available-element coverage of the basis file.
+No active v1 profile dataset uses this basis. Its coverage is discontinuous and excludes
+the lanthanide and actinide blocks, so it must not be described as an H-Lr basis.
 
 ## Bundle metadata
 
 The canonical metadata record is `manifest.json`. It includes the upstream BSE
 basis name, exact BSE API URL, BSE export version, upstream basis version,
-retrieval date, coverage intervals, intended dataset identifiers, and
+retrieval date, coverage intervals, active v1 dataset identifiers, and
 redistribution note. The exact source URL is recorded as `source.source_api_url`
 in `manifest.json`.
 

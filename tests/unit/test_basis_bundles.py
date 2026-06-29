@@ -57,7 +57,7 @@ def test_expected_dataset_ids_are_declared_in_manifest_usage() -> None:
     for bundle in list_basis_bundles(BASIS_ROOT):
         expected = set(BASIS_TO_DATASETS.get(bundle.basis_id, ()))
         actual = set(bundle.manifest["usage"]["dataset_ids_using_this_basis"])
-        assert expected <= actual
+        assert actual == expected
 
 
 @pytest.mark.parametrize(

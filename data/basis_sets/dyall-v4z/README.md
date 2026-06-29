@@ -7,22 +7,22 @@ radial-density generation.
 ## Scope
 
 - Role: primary actinide-capable Dyall quadruple-zeta basis for the H-Lr production extension.
-- Coverage: H-Og basis coverage; planned v0 profile dataset H-Lr.
+- Coverage: H-Og basis coverage; active v1 profile dataset H-Lr.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Planned dataset identifiers: `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1`.
+- Active v1 dataset identifiers: `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1`.
 
 The Dyall v4z branch is included to provide a relativistic quadruple-zeta basis with
 continuous heavy-element coverage, including lanthanides and actinides. It is the
 primary branch for the H-Lr extension beyond the H-Rn x2c-QZVPall dataset.
 
-The basis file covers H-Og. The planned production dataset is intentionally H-Lr unless
+The basis file covers H-Og. The active production dataset is intentionally H-Lr unless
 the state-selection policy is expanded later.
 
 ## Bundle metadata
 
 The canonical metadata record is `manifest.json`. It includes the upstream BSE
 basis name, exact BSE API URL, BSE export version, upstream basis version,
-retrieval date, coverage intervals, intended dataset identifiers, and
+retrieval date, coverage intervals, active v1 dataset identifiers, and
 redistribution note. The exact source URL is recorded as `source.source_api_url`
 in `manifest.json`.
 

@@ -51,7 +51,7 @@ class LinearDependencyDiagnostics:
     """Summary of PySCF overlap-linear-dependency warnings parsed from SCF logs."""
 
     warning_count: int
-    vectors_removed: int | None
+    vectors_removed: int
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -80,7 +80,7 @@ class QAResult:
     max_rel_angular_sigma: float | None
     tail_reaches_min_cutoff: bool
     radii_monotonic: bool
-    linear_dependency_vectors_removed: int | None = None
+    linear_dependency_vectors_removed: int = 0
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -182,7 +182,7 @@ def qa_result_from_profile(
     electron_count_exact: int | float,
     derived: dict[str, float],
     profile: dict[str, Any],
-    linear_dependency_vectors_removed: int | None = None,
+    linear_dependency_vectors_removed: int = 0,
     angular_sigma_rho_floor: float = ANGULAR_SIGMA_RHO_FLOOR,
 ) -> QAResult:
     """Build the standard per-profile QA summary from a generated profile dict."""
@@ -254,5 +254,5 @@ def linear_dependency_diagnostics_from_log(log_text: str) -> LinearDependencyDia
     counts = [int(match.group("count")) for match in LINEAR_DEPENDENCY_RE.finditer(log_text)]
     return LinearDependencyDiagnostics(
         warning_count=len(counts),
-        vectors_removed=sum(counts) if counts else None,
+        vectors_removed=sum(counts),
     )

@@ -35,10 +35,10 @@ This repository contains:
 - the simplified v1 workflow entry points.
 
 The v1 profile datasets are neutral-only. Cations, anions, formal anions, charge-state
-interpolation, and diffuse-anion sensitivity branches are intentionally postponed until a
+interpolation, and additional sensitivity branches are intentionally postponed until a
 separate v2 scope is justified and documented.
 
-Generated profile datasets are not tracked yet in this patch. The target release layout is:
+Generated profile, radii, and QA artifacts use this release layout:
 
 ```text
 data/profiles/<dataset_id>/

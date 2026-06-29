@@ -15,7 +15,6 @@
   "passed_count": 86,
   "failed_count": 0,
   "provenance": {
-    "profile_datasets_yaml_sha256": "eb3c70c225704eae6ff6d1e04118629d0e54613727a53cf71eb3991790450cb7",
-    "generator_git_commit": "f75c20b97fdd274b8c2f313ecafe3ff716ba91c5"
+    "profile_datasets_yaml_sha256": "eb3c70c225704eae6ff6d1e04118629d0e54613727a53cf71eb3991790450cb7"
   }
 }
