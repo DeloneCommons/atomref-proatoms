@@ -21,6 +21,10 @@ if str(SRC) not in sys.path:
 from atomref_proatoms.artifacts import (  # noqa: E402
     profile_density_column,
     write_profile_dataset_artifacts,
+    qa_overall_pass,
+    write_qa_dataset_artifacts,
+    write_qa_overview,
+    write_radii_dataset_artifacts,
 )
 from atomref_proatoms.basis import list_basis_bundles, sha256_file  # noqa: E402
 from atomref_proatoms.build_plan import (  # noqa: E402
@@ -38,6 +42,9 @@ from atomref_proatoms.paths import (  # noqa: E402
     STATES_FILE,
     local_scf_root,
     profile_root,
+    qa_root,
+    radii_root,
+    repo_relative_path,
 )
 from atomref_proatoms.profiles import density_profile_from_mf, derived_radii  # noqa: E402
 from atomref_proatoms.qa import (  # noqa: E402
@@ -56,6 +63,7 @@ from atomref_proatoms.states import AtomState, load_atom_states, state_digest  #
 
 
 PROFILE_DATASET_SCHEMA_VERSION = "atomref.proatoms.profile_dataset.v1"
+ANGULAR_SIGMA_REL_TOL = 1.0e-8
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -98,6 +106,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=Path,
         default=profile_root(),
         help="Released profile output root; defaults to data/profiles.",
+    )
+    parser.add_argument(
+        "--radii-root",
+        type=Path,
+        default=radii_root(),
+        help="Released cutoff-radii output root; defaults to data/radii.",
+    )
+    parser.add_argument(
+        "--qa-root",
+        type=Path,
+        default=qa_root(),
+        help="Released QA output root; defaults to data/qa.",
     )
     parser.add_argument("--force", action="store_true", help="Overwrite existing dataset outputs.")
     parser.add_argument("--list", action="store_true", help="Print the selected extraction plan and exit.")
@@ -193,9 +213,9 @@ def _git_commit() -> str | None:
 
 def _print_plan(args: argparse.Namespace, jobs: tuple[Any, ...], config: Any) -> None:
     print(f"Profile data version: {config.profile_data_version}")
-    print(f"Dataset config: {args.config}")
-    print(f"SCF artifact root: {args.scf_root}")
-    print(f"Profile output root: {args.output_root}")
+    print(f"Dataset config: {repo_relative_path(args.config)}")
+    print(f"SCF artifact root: {repo_relative_path(args.scf_root)}")
+    print(f"Profile output root: {repo_relative_path(args.output_root)}")
     print(format_build_plan(jobs, show_jobs=args.list or args.dry_run, config=config))
 
 
@@ -289,9 +309,8 @@ def _profile_dataset_metadata(
     method: Mapping[str, Any],
     columns: Mapping[str, Mapping[str, Any]],
     states: Mapping[str, Mapping[str, Any]],
-    derived: Mapping[str, Mapping[str, float]],
-    qa: Mapping[str, Mapping[str, Any]],
     scf_artifacts: Mapping[str, Mapping[str, Any]],
+    related_artifacts: Mapping[str, str],
 ) -> dict[str, Any]:
     return {
         "schema_version": PROFILE_DATASET_SCHEMA_VERSION,
@@ -307,8 +326,7 @@ def _profile_dataset_metadata(
         "cutoffs_e_bohr3": list(config.cutoffs_e_bohr3),
         "columns": dict(columns),
         "states": dict(states),
-        "derived_radii": dict(derived),
-        "qa": dict(qa),
+        "related_artifacts": dict(related_artifacts),
         "scf_artifacts": dict(scf_artifacts),
         "provenance": {
             "profile_datasets_yaml_sha256": config_sha256,
@@ -323,14 +341,41 @@ def _scf_artifact_summary(paths: Any, metadata: Mapping[str, Any]) -> dict[str, 
     fingerprints = metadata.get("fingerprints", {})
     return {
         "schema_version": metadata.get("schema_version"),
-        "scf_chk": str(paths.chk),
-        "scf_npz": str(paths.npz),
-        "scf_json": str(paths.metadata),
-        "scf_log": str(paths.log),
+        "scf_chk": repo_relative_path(paths.chk),
+        "scf_npz": repo_relative_path(paths.npz),
+        "scf_json": repo_relative_path(paths.metadata),
+        "scf_log": repo_relative_path(paths.log),
         "results": dict(results) if isinstance(results, Mapping) else {},
         "fingerprints": dict(fingerprints) if isinstance(fingerprints, Mapping) else {},
     }
 
+
+
+def _dataset_qa_summary(
+    dataset_id: str, *, basis_id: str, qa_rows: list[Mapping[str, Any]]
+) -> dict[str, Any]:
+    electron_errors = [
+        abs(float(row["electron_count_error_qa"]))
+        for row in qa_rows
+        if row.get("electron_count_error_qa") is not None
+    ]
+    angular_sigmas = [
+        abs(float(row["max_rel_angular_sigma"]))
+        for row in qa_rows
+        if row.get("max_rel_angular_sigma") is not None
+    ]
+    return {
+        "dataset_id": dataset_id,
+        "basis_id": basis_id,
+        "state_count": len(qa_rows),
+        "passed_count": sum(1 for row in qa_rows if qa_overall_pass(row)),
+        "failed_count": sum(1 for row in qa_rows if not qa_overall_pass(row)),
+        "max_abs_electron_count_error_qa": max(electron_errors) if electron_errors else None,
+        "max_rel_angular_sigma": max(angular_sigmas) if angular_sigmas else None,
+        "linear_dependency_warning_count": sum(
+            int(row.get("linear_dependency_warning_count") or 0) for row in qa_rows
+        ),
+    }
 
 def _extract_dataset(
     *,
@@ -341,11 +386,25 @@ def _extract_dataset(
     config: Any,
     config_sha256: str,
     args: argparse.Namespace,
-) -> tuple[Path, Path]:
+) -> dict[str, Any]:
     output_dir = args.output_root / dataset_id
+    radii_dir = args.radii_root / dataset_id
+    qa_dir = args.qa_root / dataset_id
     profiles_csv = output_dir / "profiles.csv"
     metadata_json = output_dir / "metadata.json"
-    if (profiles_csv.exists() or metadata_json.exists()) and not args.force:
+    radii_csv = radii_dir / "radii.csv"
+    radii_metadata_json = radii_dir / "metadata.json"
+    qa_csv = qa_dir / "qa.csv"
+    qa_metadata_json = qa_dir / "metadata.json"
+    outputs_to_guard = (
+        profiles_csv,
+        metadata_json,
+        radii_csv,
+        radii_metadata_json,
+        qa_csv,
+        qa_metadata_json,
+    )
+    if any(path.exists() for path in outputs_to_guard) and not args.force:
         raise FileExistsError(f"{dataset_id}: output exists; use --force to overwrite")
 
     r_grid = _profile_grid_from_config(config)
@@ -420,6 +479,11 @@ def _extract_dataset(
             or abs(float(qa_result["electron_count_error_qa"]))
             <= float(qa_result["electron_count_tolerance"])
         )
+        qa_result["max_rel_angular_sigma_tolerance"] = ANGULAR_SIGMA_REL_TOL
+        qa_result["angular_sigma_pass"] = (
+            qa_result["max_rel_angular_sigma"] is None
+            or abs(float(qa_result["max_rel_angular_sigma"])) <= ANGULAR_SIGMA_REL_TOL
+        )
 
         densities[state.state_id] = profile["rho_e_bohr3"]
         column_name = profile_density_column(state.state_id)
@@ -438,6 +502,14 @@ def _extract_dataset(
 
     if method is None:
         raise ValueError(f"Dataset {dataset_id} has no jobs")
+    related_artifacts = {
+        "profiles_csv": repo_relative_path(profiles_csv),
+        "profile_metadata_json": repo_relative_path(metadata_json),
+        "radii_csv": repo_relative_path(radii_csv),
+        "radii_metadata_json": repo_relative_path(radii_metadata_json),
+        "qa_csv": repo_relative_path(qa_csv),
+        "qa_metadata_json": repo_relative_path(qa_metadata_json),
+    }
     metadata = _profile_dataset_metadata(
         dataset_id=dataset_id,
         basis_id=basis_id,
@@ -447,19 +519,67 @@ def _extract_dataset(
         method=method,
         columns=columns,
         states=states_metadata,
-        derived=derived_by_state,
-        qa=qa_by_state,
         scf_artifacts=scf_artifacts,
+        related_artifacts=related_artifacts,
     )
-    return write_profile_dataset_artifacts(
+    profiles_csv, metadata_json = write_profile_dataset_artifacts(
         output_dir,
         r_bohr=r_grid,
         densities_by_state_id=densities,
         metadata=metadata,
     )
+    provenance = {
+        "profile_datasets_yaml_sha256": config_sha256,
+        "generator_git_commit": _git_commit(),
+    }
+    radii_csv, radii_metadata_json = write_radii_dataset_artifacts(
+        radii_dir,
+        dataset_id=dataset_id,
+        profile_data_version=config.profile_data_version,
+        basis_id=basis_id,
+        cutoffs_e_bohr3=config.cutoffs_e_bohr3,
+        states=states_metadata,
+        derived_radii_by_state_id=derived_by_state,
+        source_profiles_csv=repo_relative_path(profiles_csv),
+        source_metadata_json=repo_relative_path(metadata_json),
+        provenance=provenance,
+    )
+    qa_csv, qa_metadata_json = write_qa_dataset_artifacts(
+        qa_dir,
+        dataset_id=dataset_id,
+        profile_data_version=config.profile_data_version,
+        basis_id=basis_id,
+        states=states_metadata,
+        qa_by_state_id=qa_by_state,
+        source_profiles_csv=repo_relative_path(profiles_csv),
+        source_metadata_json=repo_relative_path(metadata_json),
+        provenance=provenance,
+    )
+    qa_rows = []
+    for state_id, state_meta in states_metadata.items():
+        row = dict(state_meta)
+        row.update(qa_by_state[state_id])
+        row["overall_pass"] = qa_overall_pass(row)
+        qa_rows.append(row)
+    qa_summary = _dataset_qa_summary(dataset_id, basis_id=basis_id, qa_rows=qa_rows)
+    return {
+        "profiles_csv": profiles_csv,
+        "profile_metadata_json": metadata_json,
+        "radii_csv": radii_csv,
+        "radii_metadata_json": radii_metadata_json,
+        "qa_csv": qa_csv,
+        "qa_metadata_json": qa_metadata_json,
+        "qa_summary": qa_summary,
+    }
 
 
-def _check_output(dataset_dir: Path, *, expected_state_ids: list[str]) -> list[str]:
+def _check_output(
+    dataset_dir: Path,
+    *,
+    expected_state_ids: list[str],
+    radii_dir: Path | None = None,
+    qa_dir: Path | None = None,
+) -> list[str]:
     errors: list[str] = []
     profiles_csv = dataset_dir / "profiles.csv"
     metadata_json = dataset_dir / "metadata.json"
@@ -492,6 +612,18 @@ def _check_output(dataset_dir: Path, *, expected_state_ids: list[str]) -> list[s
         errors.append(f"{metadata_json}: unexpected schema_version")
     if set(metadata.get("states", {})) != set(expected_state_ids):
         errors.append(f"{metadata_json}: states do not match selected jobs")
+    for label, sibling_dir, expected_file in (
+        ("radii", radii_dir, "radii.csv"),
+        ("qa", qa_dir, "qa.csv"),
+    ):
+        if sibling_dir is None:
+            continue
+        table = sibling_dir / expected_file
+        meta = sibling_dir / "metadata.json"
+        if not table.exists():
+            errors.append(f"missing {label} table {table}")
+        if not meta.exists():
+            errors.append(f"missing {label} metadata {meta}")
     return errors
 
 
@@ -518,20 +650,21 @@ def main(argv: list[str] | None = None) -> int:
     if args.dry_run or args.list:
         if args.dry_run:
             for dataset_id, dataset_jobs in jobs_by_dataset.items():
-                print(f"Output dataset: {args.output_root / dataset_id}")
+                print(f"Output dataset: {repo_relative_path(args.output_root / dataset_id)}")
                 for job in dataset_jobs:
                     paths = scf_artifact_paths(args.scf_root, job.dataset_id, job.state_id)
-                    print(f"  requires {paths.state_dir}")
+                    print(f"  requires {repo_relative_path(paths.state_dir)}")
             print("Dry run completed before PySCF import/checkpoint reading.")
         return 0
 
     state_by_id = {state.state_id: state for state in states}
     bundle_by_id = {bundle.basis_id: bundle for bundle in list_basis_bundles(BASIS_ROOT)}
     failures = 0
+    qa_summaries: list[Mapping[str, Any]] = []
     for dataset_id, dataset_jobs in jobs_by_dataset.items():
         print(f"Extracting {dataset_id} ({len(dataset_jobs)} states)")
         try:
-            profiles_csv, metadata_json = _extract_dataset(
+            outputs = _extract_dataset(
                 dataset_id=dataset_id,
                 jobs=dataset_jobs,
                 state_by_id=state_by_id,
@@ -540,20 +673,37 @@ def main(argv: list[str] | None = None) -> int:
                 config_sha256=config_sha256,
                 args=args,
             )
-            print(f"{dataset_id}: wrote {profiles_csv} and {metadata_json}")
+            qa_summaries.append(outputs["qa_summary"])
+            print(
+                f"{dataset_id}: wrote {outputs['profiles_csv']}, "
+                f"{outputs['radii_csv']}, and {outputs['qa_csv']}"
+            )
             if args.check:
                 errors = _check_output(
-                    profiles_csv.parent,
+                    outputs["profiles_csv"].parent,
                     expected_state_ids=[job.state_id for job in dataset_jobs],
+                    radii_dir=outputs["radii_csv"].parent,
+                    qa_dir=outputs["qa_csv"].parent,
                 )
                 if errors:
                     raise ValueError("; ".join(errors))
-                print(f"{dataset_id}: profile output check OK")
+                print(f"{dataset_id}: profile/radii/QA output check OK")
         except Exception as exc:
             failures += 1
             print(f"ERROR: {dataset_id}: {exc}", file=sys.stderr)
             if not args.continue_on_error:
                 return 1
+    if qa_summaries:
+        overview = write_qa_overview(
+            args.qa_root,
+            profile_data_version=config.profile_data_version,
+            dataset_summaries=qa_summaries,
+        )
+        print(
+            "QA overview: wrote "
+            f"{repo_relative_path(overview['qa_summary'])} and "
+            f"{repo_relative_path(overview['qa_report'])}"
+        )
     return 1 if failures else 0
 
 

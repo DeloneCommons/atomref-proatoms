@@ -17,6 +17,7 @@ from numpy.typing import NDArray
 
 from .basis import BasisBundle, load_basis_nw_text, sha256_file
 from .datasets import ProfileDatasetConfig, assert_dataset_basis_match
+from .paths import repo_relative_path
 from .spherical_uks import (
     apply_x2c_if_requested,
     configure_dft_grid,
@@ -74,7 +75,7 @@ class BasisUse:
         return {
             "basis_id": self.basis_id,
             "basis_sha256": self.basis_sha256,
-            "basis_path": str(self.basis_path),
+            "basis_path": repo_relative_path(self.basis_path),
             "source_api_url": self.source_api_url,
         }
 

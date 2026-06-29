@@ -11,6 +11,7 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any
 
+from .paths import repo_relative_path
 from .profiles import DEFAULT_DENSITY_CUTOFFS, derived_radii
 from .schemas import DENSITY_MODEL, PROFILE_METADATA_SCHEMA_VERSION
 from .states import AtomState, state_digest
@@ -195,3 +196,260 @@ def derived_radii_from_profile(
     profile: dict[str, Any], cutoffs: tuple[float, ...] = DEFAULT_DENSITY_CUTOFFS
 ) -> dict[str, float]:
     return derived_radii(profile["r_bohr"], profile["rho_e_bohr3"], cutoffs)
+
+BOHR_TO_ANGSTROM = 0.529177210903
+RADII_DATASET_SCHEMA_VERSION = "atomref.proatoms.radii_dataset.v1"
+QA_DATASET_SCHEMA_VERSION = "atomref.proatoms.qa_dataset.v1"
+QA_OVERVIEW_SCHEMA_VERSION = "atomref.proatoms.qa_overview.v1"
+
+
+def radii_bohr_field(cutoff: float) -> str:
+    return f"r_iso_{cutoff:g}_e_bohr3_bohr"
+
+
+def radii_angstrom_field(cutoff: float) -> str:
+    return f"r_iso_{cutoff:g}_e_bohr3_angstrom"
+
+
+def _state_table_prefix(state_id: str, state: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "state_id": state_id,
+        "symbol": state.get("symbol"),
+        "z": state.get("z"),
+        "charge": state.get("charge"),
+        "electron_count": state.get("electron_count"),
+        "multiplicity": state.get("multiplicity"),
+        "state_category": state.get("state_category"),
+        "state_role": state.get("state_role"),
+    }
+
+
+def _write_dict_rows_csv(path: Path, fieldnames: Sequence[str], rows: Sequence[Mapping[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(fieldnames), extrasaction="ignore")
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({name: json_safe(row.get(name)) for name in fieldnames})
+
+
+def write_radii_dataset_artifacts(
+    dataset_dir: Path,
+    *,
+    dataset_id: str,
+    profile_data_version: str,
+    basis_id: str,
+    cutoffs_e_bohr3: Sequence[float],
+    states: Mapping[str, Mapping[str, Any]],
+    derived_radii_by_state_id: Mapping[str, Mapping[str, Any]],
+    source_profiles_csv: str,
+    source_metadata_json: str,
+    provenance: Mapping[str, Any] | None = None,
+) -> tuple[Path, Path]:
+    """Write one dataset's cutoff radii as a first-class result artifact."""
+
+    cutoffs = [float(value) for value in cutoffs_e_bohr3]
+    bohr_fields = [radii_bohr_field(cutoff) for cutoff in cutoffs]
+    angstrom_fields = [radii_angstrom_field(cutoff) for cutoff in cutoffs]
+    fieldnames = [
+        "state_id",
+        "symbol",
+        "z",
+        "charge",
+        "electron_count",
+        "multiplicity",
+        "state_category",
+        "state_role",
+        *bohr_fields,
+        *angstrom_fields,
+    ]
+    rows: list[dict[str, Any]] = []
+    for state_id, state in states.items():
+        derived = derived_radii_by_state_id.get(state_id, {})
+        row = _state_table_prefix(state_id, state)
+        for cutoff, bohr_field, angstrom_field in zip(cutoffs, bohr_fields, angstrom_fields, strict=True):
+            bohr_value = derived.get(bohr_field)
+            row[bohr_field] = bohr_value
+            row[angstrom_field] = None if bohr_value is None else float(bohr_value) * BOHR_TO_ANGSTROM
+        rows.append(row)
+
+    radii_csv = dataset_dir / "radii.csv"
+    metadata_json = dataset_dir / "metadata.json"
+    _write_dict_rows_csv(radii_csv, fieldnames, rows)
+    write_json(
+        metadata_json,
+        {
+            "schema_version": RADII_DATASET_SCHEMA_VERSION,
+            "profile_data_version": profile_data_version,
+            "dataset_id": dataset_id,
+            "basis_id": basis_id,
+            "units": {"r_bohr": "bohr", "r_angstrom": "angstrom", "rho_cutoff": "electron/bohr^3"},
+            "cutoffs_e_bohr3": cutoffs,
+            "files": {
+                "radii_csv": repo_relative_path(radii_csv),
+                "metadata_json": repo_relative_path(metadata_json),
+            },
+            "sources": {
+                "profiles_csv": source_profiles_csv,
+                "profile_metadata_json": source_metadata_json,
+            },
+            "row_count": len(rows),
+            "provenance": dict(provenance or {}),
+        },
+    )
+    return radii_csv, metadata_json
+
+
+def qa_overall_pass(row: Mapping[str, Any]) -> bool:
+    """Return the release QA pass/fail flag for one state row."""
+
+    required_true = [
+        "scf_converged",
+        "electron_count_pass",
+        "angular_sigma_pass",
+        "tail_reaches_min_cutoff",
+        "radii_monotonic",
+    ]
+    return all(bool(row.get(key)) for key in required_true)
+
+
+def write_qa_dataset_artifacts(
+    dataset_dir: Path,
+    *,
+    dataset_id: str,
+    profile_data_version: str,
+    basis_id: str,
+    states: Mapping[str, Mapping[str, Any]],
+    qa_by_state_id: Mapping[str, Mapping[str, Any]],
+    source_profiles_csv: str,
+    source_metadata_json: str,
+    provenance: Mapping[str, Any] | None = None,
+) -> tuple[Path, Path]:
+    """Write one dataset's QA table and metadata."""
+
+    fieldnames = [
+        "state_id",
+        "symbol",
+        "z",
+        "charge",
+        "electron_count",
+        "multiplicity",
+        "state_category",
+        "state_role",
+        "overall_pass",
+        "scf_converged",
+        "electron_count_error_qa",
+        "electron_count_tolerance",
+        "electron_count_pass",
+        "max_rel_angular_sigma",
+        "max_rel_angular_sigma_tolerance",
+        "angular_sigma_pass",
+        "tail_reaches_min_cutoff",
+        "radii_monotonic",
+        "linear_dependency_warning_count",
+        "linear_dependency_vectors_removed",
+    ]
+    rows: list[dict[str, Any]] = []
+    for state_id, state in states.items():
+        qa = dict(qa_by_state_id.get(state_id, {}))
+        row = _state_table_prefix(state_id, state)
+        row.update(qa)
+        row["overall_pass"] = qa_overall_pass(row)
+        rows.append(row)
+
+    qa_csv = dataset_dir / "qa.csv"
+    metadata_json = dataset_dir / "metadata.json"
+    _write_dict_rows_csv(qa_csv, fieldnames, rows)
+    passed = sum(1 for row in rows if bool(row["overall_pass"]))
+    write_json(
+        metadata_json,
+        {
+            "schema_version": QA_DATASET_SCHEMA_VERSION,
+            "profile_data_version": profile_data_version,
+            "dataset_id": dataset_id,
+            "basis_id": basis_id,
+            "files": {
+                "qa_csv": repo_relative_path(qa_csv),
+                "metadata_json": repo_relative_path(metadata_json),
+            },
+            "sources": {
+                "profiles_csv": source_profiles_csv,
+                "profile_metadata_json": source_metadata_json,
+            },
+            "row_count": len(rows),
+            "passed_count": passed,
+            "failed_count": len(rows) - passed,
+            "provenance": dict(provenance or {}),
+        },
+    )
+    return qa_csv, metadata_json
+
+
+def write_qa_overview(
+    qa_root: Path,
+    *,
+    profile_data_version: str,
+    dataset_summaries: Sequence[Mapping[str, Any]],
+) -> dict[str, Path]:
+    """Write a compact global QA summary and Markdown all-good report."""
+
+    qa_root.mkdir(parents=True, exist_ok=True)
+    summary_csv = qa_root / "qa_summary.csv"
+    report_md = qa_root / "qa_report.md"
+    metadata_json = qa_root / "metadata.json"
+    fields = [
+        "dataset_id",
+        "basis_id",
+        "state_count",
+        "passed_count",
+        "failed_count",
+        "max_abs_electron_count_error_qa",
+        "max_rel_angular_sigma",
+        "linear_dependency_warning_count",
+    ]
+    _write_dict_rows_csv(summary_csv, fields, dataset_summaries)
+
+    total_states = sum(int(row.get("state_count", 0) or 0) for row in dataset_summaries)
+    total_failed = sum(int(row.get("failed_count", 0) or 0) for row in dataset_summaries)
+    status = "PASS" if total_failed == 0 else "FAIL"
+    lines = [
+        f"# atomref-proatoms QA status: {status}",
+        "",
+        f"Profile data version: `{profile_data_version}`.",
+        f"Datasets checked: {len(dataset_summaries)}.",
+        f"States checked: {total_states}.",
+        f"Failed rows: {total_failed}.",
+        "",
+        "This file is generated from `data/qa/*/qa.csv` and is intended as a compact ",
+        "release gate, not as a narrative scientific report.",
+        "",
+        "| dataset_id | states | failed | max |ΔN| | max angular σ/ρ |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for row in dataset_summaries:
+        lines.append(
+            "| {dataset_id} | {state_count} | {failed_count} | {err} | {sigma} |".format(
+                dataset_id=row.get("dataset_id"),
+                state_count=row.get("state_count"),
+                failed_count=row.get("failed_count"),
+                err=row.get("max_abs_electron_count_error_qa"),
+                sigma=row.get("max_rel_angular_sigma"),
+            )
+        )
+    report_md.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    write_json(
+        metadata_json,
+        {
+            "schema_version": QA_OVERVIEW_SCHEMA_VERSION,
+            "profile_data_version": profile_data_version,
+            "files": {
+                "qa_summary_csv": repo_relative_path(summary_csv),
+                "qa_report_md": repo_relative_path(report_md),
+                "metadata_json": repo_relative_path(metadata_json),
+            },
+            "dataset_count": len(dataset_summaries),
+            "state_count": total_states,
+            "failed_count": total_failed,
+        },
+    )
+    return {"qa_summary": summary_csv, "qa_report": report_md, "metadata": metadata_json}

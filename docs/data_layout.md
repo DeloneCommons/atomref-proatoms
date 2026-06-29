@@ -20,6 +20,15 @@ data/profiles/<dataset_id>/
   Final generated radial-density release data. The v1 layout is one `profiles.csv` plus
   one `metadata.json` per neutral-atom dataset.
 
+data/radii/<dataset_id>/
+  First-class cutoff-radius results generated from `data/profiles/`. Radii are stored in
+  bohr and ångström. The 0.003 and 0.001 electron/bohr³ cutoffs are the primary practical
+  result radii; the 0.0001 cutoff is retained as a low-density tail diagnostic.
+
+data/qa/<dataset_id>/
+  Per-state release-gate QA tables. `data/qa/qa_summary.csv` and `data/qa/qa_report.md`
+  summarize the generated QA status across the selected datasets.
+
 local-data/scf/<dataset_id>/<state_id>/
   Ignored local SCF artifacts: `scf.chk`, `scf.npz`, `scf.json`, and `scf.log`.
 ```

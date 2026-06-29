@@ -44,6 +44,14 @@ Generated profile datasets are not tracked yet in this patch. The target release
 data/profiles/<dataset_id>/
   profiles.csv
   metadata.json
+
+data/radii/<dataset_id>/
+  radii.csv
+  metadata.json
+
+data/qa/<dataset_id>/
+  qa.csv
+  metadata.json
 ```
 
 ## What this repository is not
@@ -118,6 +126,14 @@ tracked wide profile table plus aggregate metadata JSON under `data/profiles/`:
 data/profiles/<dataset_id>/
   profiles.csv
   metadata.json
+
+data/radii/<dataset_id>/
+  radii.csv
+  metadata.json
+
+data/qa/<dataset_id>/
+  qa.csv
+  metadata.json
 ```
 
 ## Layout
@@ -129,6 +145,8 @@ data/profile_datasets.yaml
 data/states/            source / selection / curated state data
 data/basis_sets/        frozen BSE NWChem spherical basis exports
 data/profiles/          final generated profile datasets, one directory per dataset
+data/radii/            generated cutoff-radius result tables
+data/qa/               generated QA tables and compact Markdown QA status
 scripts/                simplified v1 workflow entry points and data checks
 tests/                  unit and integration tests
 docs/                   project documentation

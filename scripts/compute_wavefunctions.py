@@ -30,6 +30,7 @@ from atomref_proatoms.paths import (  # noqa: E402
     PROFILE_DATASETS_FILE,
     SCF_ROOT,
     STATES_FILE,
+    repo_relative_path,
 )
 from atomref_proatoms.scf import (  # noqa: E402
     SCFSettings,
@@ -193,8 +194,8 @@ def _settings_from_args(
 
 def _print_plan(args: argparse.Namespace, jobs: tuple[ProfileBuildJob, ...], config: Any) -> None:
     print(f"Profile data version: {config.profile_data_version}")
-    print(f"Dataset config: {args.config}")
-    print(f"SCF artifact root: {args.scf_root}")
+    print(f"Dataset config: {repo_relative_path(args.config)}")
+    print(f"SCF artifact root: {repo_relative_path(args.scf_root)}")
     print(
         format_build_plan(
             jobs, show_jobs=args.show_jobs or args.list or args.dry_run, config=config
