@@ -1,45 +1,146 @@
-# Data layout
+# Data layout and artifact contract
 
-The active branch carries one current profile-data version. Historical versions are
-preserved by Git tags, GitHub releases, and Zenodo records rather than by keeping multiple
-parallel workflow layouts in the repository.
+The repository separates compact tracked inputs, tracked release artifacts, and
+ignored local generator artifacts. This split is part of the data contract: a
+user can inspect and load released profile/radius/QA tables without possessing the
+SCF checkpoints used to regenerate them.
+
+## Top-level data contract
 
 ```text
 data/profile_datasets.yaml
-  Active v1 dataset specification: method defaults, grids, cutoff radii, dataset IDs,
-  basis IDs, neutral-only v1 scope rules, and element coverage.
+  Active v1 dataset specification. It declares the profile-data version, method
+  defaults, radial grids, QA grids, density cutoffs, basis IDs, element coverage,
+  and neutral-only v1 selection rules.
 
 data/states/
-  Source / selection / curated atomic-state records. The generator reads the curated JSON.
+  Compact source, selection, and curated atomic-state records. The generator uses
+  the curated JSON table. Active v1 profile datasets select neutral states from
+  this layer through `data/profile_datasets.yaml`.
 
 data/basis_sets/
-  Frozen Basis Set Exchange NWChem spherical basis exports and their manifests. Default
-  checks are offline and validate stored identity/provenance.
+  Frozen NWChem-format spherical basis-set exports, bundle manifests, checksums,
+  and reference notes. These files define the basis-data identity used by the
+  generator.
 
 data/profiles/<dataset_id>/
-  Final generated radial-density release data. The v1 layout is one `profiles.csv` plus
-  one `metadata.json` per neutral-atom dataset.
+  Generated radial electron-density profiles. Each dataset directory contains
+  `profiles.csv` and `metadata.json`.
 
 data/radii/<dataset_id>/
-  First-class cutoff-radius results generated from `data/profiles/`. Radii are stored in
-  bohr and ångström. The 0.003 and 0.001 electron/bohr³ cutoffs are the primary practical
-  result radii; the 0.0001 cutoff is retained as a low-density tail diagnostic.
+  Generated density-cutoff radii derived from the corresponding profile table.
+  Each dataset directory contains `radii.csv` and `metadata.json`.
 
 data/qa/<dataset_id>/
-  Per-state release-gate QA tables. `data/qa/qa_summary.csv` and `data/qa/qa_report.md`
-  summarize the generated QA status across the selected datasets.
+  Generated per-state QA rows for the corresponding profile dataset. Aggregate QA
+  files are stored directly under `data/qa/`.
 
 docs/notebooks/proatomic_profiles_v1.ipynb
-  Active user-facing narrative report. It reads generated files from `data/` and may
-  produce explanatory figures inside the notebook.
+  User-facing narrative report. It reads generated release artifacts from `data/`
+  and does not run SCF calculations.
 
 local-data/scf/<dataset_id>/<state_id>/
-  Ignored local SCF artifacts: `scf.chk`, `scf.npz`, `scf.json`, and `scf.log`.
+  Ignored local SCF artifacts. These directories contain checkpoints, reusable
+  arrays, metadata, and logs used to regenerate profile/radius/QA tables.
 ```
 
-`local-data/` is intentionally ignored. It contains expensive/reusable SCF material and
-scratch diagnostics, while `data/profiles/` contains compact release artifacts.
+## Active v1 datasets
 
-The active v1 profile datasets intentionally contain neutral atoms only. The curated state
-layer still records selected ions because those records are useful inputs for later v2
-charge-state or sensitivity datasets, but they are not part of the v1 released profile scope.
+| dataset_id | basis_id | coverage | selected states |
+|---|---|---:|---:|
+| `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1` | `x2c-QZVPall` | H-Rn | neutral recommended states |
+| `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1` | `dyall-v4z` | H-Lr | neutral recommended states |
+
+The dataset ID is a stable part of the public data product. It encodes method,
+basis family, coverage, spherical density convention, and major data version in a
+compact name. The full machine-readable specification remains
+`data/profile_datasets.yaml` and each dataset's `metadata.json`.
+
+## Generated profile tables
+
+`data/profiles/<dataset_id>/profiles.csv` is a wide table:
+
+```text
+r_bohr
+rho_e_bohr3__<state_id>
+rho_e_bohr3__<state_id>
+...
+```
+
+Each density column is the spherical total electron density for one selected
+state. The matching `metadata.json` records units, method metadata, basis SHA256,
+profile grid, QA grid, cutoffs, state list, related artifact paths, and generator
+provenance.
+
+Generated profile tables should not be manually edited. Changes to state
+selection, basis identity, method settings, grid settings, or version fields
+should be made in the corresponding source/configuration layer and then
+regenerated.
+
+## Generated radii tables
+
+`data/radii/<dataset_id>/radii.csv` stores one row per selected state. It includes
+state identifiers and cutoff radii in both bohr and ångström:
+
+```text
+r_iso_0.003_e_bohr3_bohr
+r_iso_0.001_e_bohr3_bohr
+r_iso_0.0001_e_bohr3_bohr
+r_iso_0.003_e_bohr3_angstrom
+r_iso_0.001_e_bohr3_angstrom
+r_iso_0.0001_e_bohr3_angstrom
+```
+
+Radii are generated from the profile table by interpolation at the declared
+density cutoffs. They are first-class release data because many downstream
+models need compact atom-size descriptors rather than full radial profiles.
+
+## Generated QA tables
+
+`data/qa/<dataset_id>/qa.csv` stores one row per selected state. The aggregate
+files are:
+
+```text
+data/qa/qa_summary.csv
+  One summary row per generated dataset.
+
+data/qa/qa_report.md
+  Compact human-readable release-gate report.
+```
+
+QA outputs are generated artifacts and should be refreshed together with profile
+and radii outputs.
+
+## Local SCF artifacts
+
+The generator writes expensive local material to:
+
+```text
+local-data/scf/<dataset_id>/<state_id>/
+  scf.chk
+  scf.npz
+  scf.json
+  scf.log
+```
+
+`local-data/` is intentionally ignored by Git. The public release does not depend
+on users having the same checkpoint files, but the checkpoint layer is needed to
+recreate the tracked generated tables without rerunning every SCF calculation.
+
+## Standard regeneration sequence
+
+From the repository root, the intended v1 data workflow is:
+
+```bash
+python scripts/build_atom_states.py --check
+python scripts/check_basis_bundles.py
+python scripts/compute_wavefunctions.py --resume --quiet-scf-log
+python scripts/extract_profiles.py --force --check
+```
+
+For inspection-only runs that do not require PySCF:
+
+```bash
+python scripts/compute_wavefunctions.py --list
+python scripts/extract_profiles.py --list
+```

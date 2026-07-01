@@ -149,6 +149,28 @@ docs/                  project documentation and notebooks
 local-data/            ignored local SCF/checkpoint/log/scratch artifacts
 ```
 
+## Documentation map
+
+```text
+docs/theory.md
+  Scientific model for the v1 spherical proatomic density profiles.
+
+docs/data_layout.md
+  Tracked inputs, generated release artifacts, and ignored local SCF artifacts.
+
+docs/basis_sets.md
+  Basis-set layer summary and validation entry point.
+
+docs/state_curation.md
+  Atomic-state curation model and generated state-table contract.
+
+docs/multiwfn_interop.md
+  Boundary for adapting v1 radial-density data to Multiwfn-related workflows.
+
+docs/notebooks/
+  User-facing notebooks that inspect generated release artifacts.
+```
+
 ## Optional generator dependencies
 
 Install PySCF only on machines that will run the generator:
