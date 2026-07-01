@@ -17,7 +17,7 @@ from atomref_proatoms.basis import (
 )
 from atomref_proatoms.datasets import BASIS_TO_DATASETS
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 BASIS_ROOT = ROOT / "data" / "basis_sets"
 
 

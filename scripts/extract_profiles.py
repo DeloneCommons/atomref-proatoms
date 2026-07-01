@@ -59,9 +59,10 @@ from atomref_proatoms.scf import (  # noqa: E402
     read_scf_metadata,
     scf_artifact_paths,
     scf_artifacts_complete,
+    scf_state_record_digest,
     stable_json_digest,
 )
-from atomref_proatoms.states import AtomState, load_atom_states, state_digest  # noqa: E402
+from atomref_proatoms.states import AtomState, load_atom_states  # noqa: E402
 
 PROFILE_DATASET_SCHEMA_VERSION = "atomref.proatoms.profile_dataset.v1"
 ANGULAR_SIGMA_REL_TOL = 1.0e-8
@@ -259,7 +260,7 @@ def _validate_scf_metadata(
     _check_fingerprint(
         metadata,
         key="state_record_sha256",
-        expected=state_digest(state.record),
+        expected=scf_state_record_digest(state.record),
         label=state.state_id,
     )
     _check_fingerprint(

@@ -9,10 +9,10 @@ generator.
 Default inputs:
   data/states/source/atom_configs_nist_source.csv
   data/states/source/atom_configs_formal_anions.csv
-  data/states/selection/required_states_v0.csv
+  data/states/selection/required_states_v1.csv
 
 Default outputs:
-  data/states/curated/atom_states_v0.json
+  data/states/curated/atom_states_v1.json
   data/states/curated/atom_states_summary.json
 """
 
@@ -46,7 +46,7 @@ CORE_CONFIGS = {
 
 SUBSHELL_RE = re.compile(r"(?P<n>\d+)(?P<letter>[spdfg])(?P<occ>\d+)")
 CORE_RE = re.compile(r"\[(?P<core>[A-Z][a-z]?)\]")
-OCCUPATION_POLICY = "free_ion_hund_high_spin_from_configuration_v0"
+OCCUPATION_POLICY = "free_ion_hund_high_spin_from_configuration_v1"
 SPIN_MODEL = "free_ion_hund_high_spin"
 SPIN_VARIANT = "hund_high_spin"
 STATE_ROLE = "recommended"
@@ -211,7 +211,7 @@ def build_states(data_dir: Path, selection_file: Path) -> list[dict[str, Any]]:
 
         states.append(
             {
-                "schema_version": "atomref.proatoms.state.v0",
+                "schema_version": "atomref.proatoms.state.v1",
                 "state_id": sid,
                 "symbol": symbol,
                 "z": z,
@@ -241,10 +241,10 @@ def build_summary(states: list[dict[str, Any]], selection_file: Path) -> dict[st
     by_curation_status = Counter(state["curation_status"] for state in states)
     by_spin_variant = Counter(state["spin_variant"] for state in states)
     return {
-        "schema_version": "atomref.proatoms.state_build_summary.v0",
+        "schema_version": "atomref.proatoms.state_build_summary.v1",
         "state_count": len(states),
         "selection_file": str(selection_file),
-        "output_files": ["atom_states_v0.json"],
+        "output_files": ["atom_states_v1.json"],
         "by_category": dict(sorted(by_category.items())),
         "by_charge": dict(sorted(by_charge.items(), key=lambda item: int(item[0]))),
         "by_curation_status": dict(sorted(by_curation_status.items())),
@@ -297,7 +297,7 @@ def main() -> int:
         default=None,
         help=(
             "CSV with element,charge columns. "
-            "Defaults to <data-dir>/selection/required_states_v0.csv."
+            "Defaults to <data-dir>/selection/required_states_v1.csv."
         ),
     )
     parser.add_argument(
@@ -314,19 +314,19 @@ def main() -> int:
     args = parser.parse_args()
 
     data_dir = args.data_dir
-    selection_file = args.selection_file or data_dir / "selection" / "required_states_v0.csv"
+    selection_file = args.selection_file or data_dir / "selection" / "required_states_v1.csv"
     out_dir = args.out_dir or data_dir / "curated"
 
     if args.check:
-        return check_curated_states(out_dir / "atom_states_v0.json")
+        return check_curated_states(out_dir / "atom_states_v1.json")
 
     states = build_states(data_dir, selection_file)
     summary = build_summary(states, selection_file)
 
-    write_json(out_dir / "atom_states_v0.json", states)
+    write_json(out_dir / "atom_states_v1.json", states)
     write_json(out_dir / "atom_states_summary.json", summary)
 
-    print(f"Wrote {summary['state_count']} atom states to {out_dir / 'atom_states_v0.json'}")
+    print(f"Wrote {summary['state_count']} atom states to {out_dir / 'atom_states_v1.json'}")
     return 0
 
 

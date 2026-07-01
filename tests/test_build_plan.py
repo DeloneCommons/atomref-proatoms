@@ -16,8 +16,8 @@ from atomref_proatoms.build_plan import (
 from atomref_proatoms.datasets import PRIMARY_DYALL_V4Z, PRIMARY_X2C_QZVPALL
 from atomref_proatoms.states import load_atom_states
 
-ROOT = Path(__file__).resolve().parents[2]
-STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v0.json"
+ROOT = Path(__file__).resolve().parents[1]
+STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v1.json"
 
 
 def _states():

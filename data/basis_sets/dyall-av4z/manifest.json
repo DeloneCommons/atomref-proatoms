@@ -55,7 +55,7 @@
     "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
   },
   "notes": [
-    "Auxiliary augmented Dyall branch retained as frozen input data for future sensitivity studies.",
+    "Auxiliary augmented Dyall branch retained as frozen input data for basis-sensitivity studies.",
     "The basis coverage is discontinuous; it skips La-Lu and Ac-Lr.",
     "No active v1 profile dataset uses this basis."
   ]

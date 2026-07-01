@@ -156,7 +156,9 @@ def validate_atom_state(record: dict[str, Any]) -> list[str]:
     if state_id != expected_id:
         errors.append(f"{state_id}: expected state_id {expected_id}")
     if z_value in ACTINIDE_Z_RANGE and int(record["charge"]) > 0:
-        errors.append(f"{state_id}: actinide cations are not part of v0 production")
+        errors.append(
+            f"{state_id}: actinide cations are not part of the curated production state table"
+        )
     return errors
 
 

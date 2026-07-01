@@ -874,7 +874,7 @@
       "configuration": "1s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -888,7 +888,7 @@
         "configuration": "1s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "He_q0_mult1_hund": {
@@ -901,7 +901,7 @@
       "configuration": "1s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -915,7 +915,7 @@
         "configuration": "1s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Li_q0_mult2_hund": {
@@ -928,7 +928,7 @@
       "configuration": "1s2 2s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -942,7 +942,7 @@
         "configuration": "1s2 2s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Be_q0_mult1_hund": {
@@ -955,7 +955,7 @@
       "configuration": "1s2 2s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -969,7 +969,7 @@
         "configuration": "1s2 2s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "B_q0_mult2_hund": {
@@ -982,7 +982,7 @@
       "configuration": "1s2 2s2 2p1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -996,7 +996,7 @@
         "configuration": "1s2 2s2 2p1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "C_q0_mult3_hund": {
@@ -1009,7 +1009,7 @@
       "configuration": "1s2 2s2 2p2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1023,7 +1023,7 @@
         "configuration": "1s2 2s2 2p2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "N_q0_mult4_hund": {
@@ -1036,7 +1036,7 @@
       "configuration": "1s2 2s2 2p3",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1050,7 +1050,7 @@
         "configuration": "1s2 2s2 2p3",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "O_q0_mult3_hund": {
@@ -1063,7 +1063,7 @@
       "configuration": "1s2 2s2 2p4",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1077,7 +1077,7 @@
         "configuration": "1s2 2s2 2p4",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "F_q0_mult2_hund": {
@@ -1090,7 +1090,7 @@
       "configuration": "1s2 2s2 2p5",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1104,7 +1104,7 @@
         "configuration": "1s2 2s2 2p5",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ne_q0_mult1_hund": {
@@ -1117,7 +1117,7 @@
       "configuration": "1s2 2s2 2p6",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1131,7 +1131,7 @@
         "configuration": "1s2 2s2 2p6",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Na_q0_mult2_hund": {
@@ -1144,7 +1144,7 @@
       "configuration": "[Ne] 3s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1158,7 +1158,7 @@
         "configuration": "[Ne] 3s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Mg_q0_mult1_hund": {
@@ -1171,7 +1171,7 @@
       "configuration": "[Ne] 3s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1185,7 +1185,7 @@
         "configuration": "[Ne] 3s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Al_q0_mult2_hund": {
@@ -1198,7 +1198,7 @@
       "configuration": "[Ne] 3s2 3p1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1212,7 +1212,7 @@
         "configuration": "[Ne] 3s2 3p1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Si_q0_mult3_hund": {
@@ -1225,7 +1225,7 @@
       "configuration": "[Ne] 3s2 3p2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1239,7 +1239,7 @@
         "configuration": "[Ne] 3s2 3p2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "P_q0_mult4_hund": {
@@ -1252,7 +1252,7 @@
       "configuration": "[Ne] 3s2 3p3",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1266,7 +1266,7 @@
         "configuration": "[Ne] 3s2 3p3",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "S_q0_mult3_hund": {
@@ -1279,7 +1279,7 @@
       "configuration": "[Ne] 3s2 3p4",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1293,7 +1293,7 @@
         "configuration": "[Ne] 3s2 3p4",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Cl_q0_mult2_hund": {
@@ -1306,7 +1306,7 @@
       "configuration": "[Ne] 3s2 3p5",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1320,7 +1320,7 @@
         "configuration": "[Ne] 3s2 3p5",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ar_q0_mult1_hund": {
@@ -1333,7 +1333,7 @@
       "configuration": "[Ne] 3s2 3p6",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1347,7 +1347,7 @@
         "configuration": "[Ne] 3s2 3p6",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "K_q0_mult2_hund": {
@@ -1360,7 +1360,7 @@
       "configuration": "[Ar] 4s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1374,7 +1374,7 @@
         "configuration": "[Ar] 4s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ca_q0_mult1_hund": {
@@ -1387,7 +1387,7 @@
       "configuration": "[Ar] 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1401,7 +1401,7 @@
         "configuration": "[Ar] 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Sc_q0_mult2_hund": {
@@ -1414,7 +1414,7 @@
       "configuration": "[Ar] 3d1 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1428,7 +1428,7 @@
         "configuration": "[Ar] 3d1 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ti_q0_mult3_hund": {
@@ -1441,7 +1441,7 @@
       "configuration": "[Ar] 3d2 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1455,7 +1455,7 @@
         "configuration": "[Ar] 3d2 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "V_q0_mult4_hund": {
@@ -1468,7 +1468,7 @@
       "configuration": "[Ar] 3d3 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1482,7 +1482,7 @@
         "configuration": "[Ar] 3d3 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Cr_q0_mult7_hund": {
@@ -1495,7 +1495,7 @@
       "configuration": "[Ar] 3d5 4s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1509,7 +1509,7 @@
         "configuration": "[Ar] 3d5 4s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Mn_q0_mult6_hund": {
@@ -1522,7 +1522,7 @@
       "configuration": "[Ar] 3d5 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1536,7 +1536,7 @@
         "configuration": "[Ar] 3d5 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Fe_q0_mult5_hund": {
@@ -1549,7 +1549,7 @@
       "configuration": "[Ar] 3d6 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1563,7 +1563,7 @@
         "configuration": "[Ar] 3d6 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Co_q0_mult4_hund": {
@@ -1576,7 +1576,7 @@
       "configuration": "[Ar] 3d7 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1590,7 +1590,7 @@
         "configuration": "[Ar] 3d7 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ni_q0_mult3_hund": {
@@ -1603,7 +1603,7 @@
       "configuration": "[Ar] 3d8 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1617,7 +1617,7 @@
         "configuration": "[Ar] 3d8 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Cu_q0_mult2_hund": {
@@ -1630,7 +1630,7 @@
       "configuration": "[Ar] 3d10 4s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1644,7 +1644,7 @@
         "configuration": "[Ar] 3d10 4s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Zn_q0_mult1_hund": {
@@ -1657,7 +1657,7 @@
       "configuration": "[Ar] 3d10 4s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1671,7 +1671,7 @@
         "configuration": "[Ar] 3d10 4s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ga_q0_mult2_hund": {
@@ -1684,7 +1684,7 @@
       "configuration": "[Ar] 3d10 4s2 4p1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1698,7 +1698,7 @@
         "configuration": "[Ar] 3d10 4s2 4p1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ge_q0_mult3_hund": {
@@ -1711,7 +1711,7 @@
       "configuration": "[Ar] 3d10 4s2 4p2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1725,7 +1725,7 @@
         "configuration": "[Ar] 3d10 4s2 4p2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "As_q0_mult4_hund": {
@@ -1738,7 +1738,7 @@
       "configuration": "[Ar] 3d10 4s2 4p3",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1752,7 +1752,7 @@
         "configuration": "[Ar] 3d10 4s2 4p3",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Se_q0_mult3_hund": {
@@ -1765,7 +1765,7 @@
       "configuration": "[Ar] 3d10 4s2 4p4",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1779,7 +1779,7 @@
         "configuration": "[Ar] 3d10 4s2 4p4",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Br_q0_mult2_hund": {
@@ -1792,7 +1792,7 @@
       "configuration": "[Ar] 3d10 4s2 4p5",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1806,7 +1806,7 @@
         "configuration": "[Ar] 3d10 4s2 4p5",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Kr_q0_mult1_hund": {
@@ -1819,7 +1819,7 @@
       "configuration": "[Ar] 3d10 4s2 4p6",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1833,7 +1833,7 @@
         "configuration": "[Ar] 3d10 4s2 4p6",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Rb_q0_mult2_hund": {
@@ -1846,7 +1846,7 @@
       "configuration": "[Kr] 5s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1860,7 +1860,7 @@
         "configuration": "[Kr] 5s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Sr_q0_mult1_hund": {
@@ -1873,7 +1873,7 @@
       "configuration": "[Kr] 5s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1887,7 +1887,7 @@
         "configuration": "[Kr] 5s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Y_q0_mult2_hund": {
@@ -1900,7 +1900,7 @@
       "configuration": "[Kr] 4d1 5s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1914,7 +1914,7 @@
         "configuration": "[Kr] 4d1 5s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Zr_q0_mult3_hund": {
@@ -1927,7 +1927,7 @@
       "configuration": "[Kr] 4d2 5s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1941,7 +1941,7 @@
         "configuration": "[Kr] 4d2 5s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Nb_q0_mult6_hund": {
@@ -1954,7 +1954,7 @@
       "configuration": "[Kr] 4d4 5s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1968,7 +1968,7 @@
         "configuration": "[Kr] 4d4 5s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Mo_q0_mult7_hund": {
@@ -1981,7 +1981,7 @@
       "configuration": "[Kr] 4d5 5s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -1995,7 +1995,7 @@
         "configuration": "[Kr] 4d5 5s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Tc_q0_mult6_hund": {
@@ -2008,7 +2008,7 @@
       "configuration": "[Kr] 4d5 5s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2022,7 +2022,7 @@
         "configuration": "[Kr] 4d5 5s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ru_q0_mult5_hund": {
@@ -2035,7 +2035,7 @@
       "configuration": "[Kr] 4d7 5s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2049,7 +2049,7 @@
         "configuration": "[Kr] 4d7 5s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Rh_q0_mult4_hund": {
@@ -2062,7 +2062,7 @@
       "configuration": "[Kr] 4d8 5s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2076,7 +2076,7 @@
         "configuration": "[Kr] 4d8 5s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Pd_q0_mult1_hund": {
@@ -2089,7 +2089,7 @@
       "configuration": "[Kr] 4d10",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2103,7 +2103,7 @@
         "configuration": "[Kr] 4d10",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ag_q0_mult2_hund": {
@@ -2116,7 +2116,7 @@
       "configuration": "[Kr] 4d10 5s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2130,7 +2130,7 @@
         "configuration": "[Kr] 4d10 5s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Cd_q0_mult1_hund": {
@@ -2143,7 +2143,7 @@
       "configuration": "[Kr] 4d10 5s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2157,7 +2157,7 @@
         "configuration": "[Kr] 4d10 5s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "In_q0_mult2_hund": {
@@ -2170,7 +2170,7 @@
       "configuration": "[Cd] 5p1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2184,7 +2184,7 @@
         "configuration": "[Cd] 5p1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Sn_q0_mult3_hund": {
@@ -2197,7 +2197,7 @@
       "configuration": "[Cd] 5p2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2211,7 +2211,7 @@
         "configuration": "[Cd] 5p2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Sb_q0_mult4_hund": {
@@ -2224,7 +2224,7 @@
       "configuration": "[Cd] 5p3",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2238,7 +2238,7 @@
         "configuration": "[Cd] 5p3",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Te_q0_mult3_hund": {
@@ -2251,7 +2251,7 @@
       "configuration": "[Cd] 5p4",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2265,7 +2265,7 @@
         "configuration": "[Cd] 5p4",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "I_q0_mult2_hund": {
@@ -2278,7 +2278,7 @@
       "configuration": "[Cd] 5p5",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2292,7 +2292,7 @@
         "configuration": "[Cd] 5p5",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Xe_q0_mult1_hund": {
@@ -2305,7 +2305,7 @@
       "configuration": "[Cd] 5p6",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2319,7 +2319,7 @@
         "configuration": "[Cd] 5p6",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Cs_q0_mult2_hund": {
@@ -2332,7 +2332,7 @@
       "configuration": "[Xe] 6s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2346,7 +2346,7 @@
         "configuration": "[Xe] 6s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ba_q0_mult1_hund": {
@@ -2359,7 +2359,7 @@
       "configuration": "[Xe] 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2373,7 +2373,7 @@
         "configuration": "[Xe] 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "La_q0_mult2_hund": {
@@ -2386,7 +2386,7 @@
       "configuration": "[Xe] 5d1 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2400,7 +2400,7 @@
         "configuration": "[Xe] 5d1 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ce_q0_mult3_hund": {
@@ -2413,7 +2413,7 @@
       "configuration": "[Xe] 4f1 5d1 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2427,7 +2427,7 @@
         "configuration": "[Xe] 4f1 5d1 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Pr_q0_mult4_hund": {
@@ -2440,7 +2440,7 @@
       "configuration": "[Xe] 4f3 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2454,7 +2454,7 @@
         "configuration": "[Xe] 4f3 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Nd_q0_mult5_hund": {
@@ -2467,7 +2467,7 @@
       "configuration": "[Xe] 4f4 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2481,7 +2481,7 @@
         "configuration": "[Xe] 4f4 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Pm_q0_mult6_hund": {
@@ -2494,7 +2494,7 @@
       "configuration": "[Xe] 4f5 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2508,7 +2508,7 @@
         "configuration": "[Xe] 4f5 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Sm_q0_mult7_hund": {
@@ -2521,7 +2521,7 @@
       "configuration": "[Xe] 4f6 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2535,7 +2535,7 @@
         "configuration": "[Xe] 4f6 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Eu_q0_mult8_hund": {
@@ -2548,7 +2548,7 @@
       "configuration": "[Xe] 4f7 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2562,7 +2562,7 @@
         "configuration": "[Xe] 4f7 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Gd_q0_mult9_hund": {
@@ -2575,7 +2575,7 @@
       "configuration": "[Xe] 4f7 5d1 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2589,7 +2589,7 @@
         "configuration": "[Xe] 4f7 5d1 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Tb_q0_mult6_hund": {
@@ -2602,7 +2602,7 @@
       "configuration": "[Xe] 4f9 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2616,7 +2616,7 @@
         "configuration": "[Xe] 4f9 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Dy_q0_mult5_hund": {
@@ -2629,7 +2629,7 @@
       "configuration": "[Xe] 4f10 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2643,7 +2643,7 @@
         "configuration": "[Xe] 4f10 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ho_q0_mult4_hund": {
@@ -2656,7 +2656,7 @@
       "configuration": "[Xe] 4f11 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2670,7 +2670,7 @@
         "configuration": "[Xe] 4f11 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Er_q0_mult3_hund": {
@@ -2683,7 +2683,7 @@
       "configuration": "[Xe] 4f12 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2697,7 +2697,7 @@
         "configuration": "[Xe] 4f12 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Tm_q0_mult2_hund": {
@@ -2710,7 +2710,7 @@
       "configuration": "[Xe] 4f13 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2724,7 +2724,7 @@
         "configuration": "[Xe] 4f13 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Yb_q0_mult1_hund": {
@@ -2737,7 +2737,7 @@
       "configuration": "[Xe] 4f14 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2751,7 +2751,7 @@
         "configuration": "[Xe] 4f14 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Lu_q0_mult2_hund": {
@@ -2764,7 +2764,7 @@
       "configuration": "[Xe] 4f14 5d1 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2778,7 +2778,7 @@
         "configuration": "[Xe] 4f14 5d1 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Hf_q0_mult3_hund": {
@@ -2791,7 +2791,7 @@
       "configuration": "[Xe] 4f14 5d2 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2805,7 +2805,7 @@
         "configuration": "[Xe] 4f14 5d2 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ta_q0_mult4_hund": {
@@ -2818,7 +2818,7 @@
       "configuration": "[Xe] 4f14 5d3 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2832,7 +2832,7 @@
         "configuration": "[Xe] 4f14 5d3 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "W_q0_mult5_hund": {
@@ -2845,7 +2845,7 @@
       "configuration": "[Xe] 4f14 5d4 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2859,7 +2859,7 @@
         "configuration": "[Xe] 4f14 5d4 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Re_q0_mult6_hund": {
@@ -2872,7 +2872,7 @@
       "configuration": "[Xe] 4f14 5d5 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2886,7 +2886,7 @@
         "configuration": "[Xe] 4f14 5d5 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Os_q0_mult5_hund": {
@@ -2899,7 +2899,7 @@
       "configuration": "[Xe] 4f14 5d6 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2913,7 +2913,7 @@
         "configuration": "[Xe] 4f14 5d6 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ir_q0_mult4_hund": {
@@ -2926,7 +2926,7 @@
       "configuration": "[Xe] 4f14 5d7 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2940,7 +2940,7 @@
         "configuration": "[Xe] 4f14 5d7 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Pt_q0_mult3_hund": {
@@ -2953,7 +2953,7 @@
       "configuration": "[Xe] 4f14 5d9 6s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2967,7 +2967,7 @@
         "configuration": "[Xe] 4f14 5d9 6s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Au_q0_mult2_hund": {
@@ -2980,7 +2980,7 @@
       "configuration": "[Xe] 4f14 5d10 6s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -2994,7 +2994,7 @@
         "configuration": "[Xe] 4f14 5d10 6s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Hg_q0_mult1_hund": {
@@ -3007,7 +3007,7 @@
       "configuration": "[Xe] 4f14 5d10 6s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3021,7 +3021,7 @@
         "configuration": "[Xe] 4f14 5d10 6s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Tl_q0_mult2_hund": {
@@ -3034,7 +3034,7 @@
       "configuration": "[Hg] 6p1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3048,7 +3048,7 @@
         "configuration": "[Hg] 6p1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Pb_q0_mult3_hund": {
@@ -3061,7 +3061,7 @@
       "configuration": "[Hg] 6p2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3075,7 +3075,7 @@
         "configuration": "[Hg] 6p2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Bi_q0_mult4_hund": {
@@ -3088,7 +3088,7 @@
       "configuration": "[Hg] 6p3",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3102,7 +3102,7 @@
         "configuration": "[Hg] 6p3",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Po_q0_mult3_hund": {
@@ -3115,7 +3115,7 @@
       "configuration": "[Hg] 6p4",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3129,7 +3129,7 @@
         "configuration": "[Hg] 6p4",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "At_q0_mult2_hund": {
@@ -3142,7 +3142,7 @@
       "configuration": "[Hg] 6p5",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3156,7 +3156,7 @@
         "configuration": "[Hg] 6p5",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Rn_q0_mult1_hund": {
@@ -3169,7 +3169,7 @@
       "configuration": "[Hg] 6p6",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3183,7 +3183,7 @@
         "configuration": "[Hg] 6p6",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Fr_q0_mult2_hund": {
@@ -3196,7 +3196,7 @@
       "configuration": "[Rn] 7s1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3210,7 +3210,7 @@
         "configuration": "[Rn] 7s1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ra_q0_mult1_hund": {
@@ -3223,7 +3223,7 @@
       "configuration": "[Rn] 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3237,7 +3237,7 @@
         "configuration": "[Rn] 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Ac_q0_mult2_hund": {
@@ -3250,7 +3250,7 @@
       "configuration": "[Rn] 6d1 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3264,7 +3264,7 @@
         "configuration": "[Rn] 6d1 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Th_q0_mult3_hund": {
@@ -3277,7 +3277,7 @@
       "configuration": "[Rn] 6d2 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3291,7 +3291,7 @@
         "configuration": "[Rn] 6d2 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Pa_q0_mult4_hund": {
@@ -3304,7 +3304,7 @@
       "configuration": "[Rn] 5f2 6d1 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3318,7 +3318,7 @@
         "configuration": "[Rn] 5f2 6d1 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "U_q0_mult5_hund": {
@@ -3331,7 +3331,7 @@
       "configuration": "[Rn] 5f3 6d1 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3345,7 +3345,7 @@
         "configuration": "[Rn] 5f3 6d1 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Np_q0_mult6_hund": {
@@ -3358,7 +3358,7 @@
       "configuration": "[Rn] 5f4 6d1 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3372,7 +3372,7 @@
         "configuration": "[Rn] 5f4 6d1 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Pu_q0_mult7_hund": {
@@ -3385,7 +3385,7 @@
       "configuration": "[Rn] 5f6 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3399,7 +3399,7 @@
         "configuration": "[Rn] 5f6 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Am_q0_mult8_hund": {
@@ -3412,7 +3412,7 @@
       "configuration": "[Rn] 5f7 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3426,7 +3426,7 @@
         "configuration": "[Rn] 5f7 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Cm_q0_mult9_hund": {
@@ -3439,7 +3439,7 @@
       "configuration": "[Rn] 5f7 6d1 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3453,7 +3453,7 @@
         "configuration": "[Rn] 5f7 6d1 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Bk_q0_mult6_hund": {
@@ -3466,7 +3466,7 @@
       "configuration": "[Rn] 5f9 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3480,7 +3480,7 @@
         "configuration": "[Rn] 5f9 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Cf_q0_mult5_hund": {
@@ -3493,7 +3493,7 @@
       "configuration": "[Rn] 5f10 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3507,7 +3507,7 @@
         "configuration": "[Rn] 5f10 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Es_q0_mult4_hund": {
@@ -3520,7 +3520,7 @@
       "configuration": "[Rn] 5f11 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3534,7 +3534,7 @@
         "configuration": "[Rn] 5f11 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Fm_q0_mult3_hund": {
@@ -3547,7 +3547,7 @@
       "configuration": "[Rn] 5f12 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3561,7 +3561,7 @@
         "configuration": "[Rn] 5f12 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Md_q0_mult2_hund": {
@@ -3574,7 +3574,7 @@
       "configuration": "[Rn] 5f13 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3588,7 +3588,7 @@
         "configuration": "[Rn] 5f13 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "No_q0_mult1_hund": {
@@ -3601,7 +3601,7 @@
       "configuration": "[Rn] 5f14 7s2",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3615,7 +3615,7 @@
         "configuration": "[Rn] 5f14 7s2",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     },
     "Lr_q0_mult2_hund": {
@@ -3628,7 +3628,7 @@
       "configuration": "[Rn] 5f14 7s2 7p1",
       "spin_model": "free_ion_hund_high_spin",
       "spin_variant": "hund_high_spin",
-      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+      "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
       "state_category": "nist_ground_state",
       "state_role": "recommended",
       "curation_status": "curated",
@@ -3642,7 +3642,7 @@
         "configuration": "[Rn] 5f14 7s2 7p1",
         "state_role": "recommended",
         "state_category": "nist_ground_state",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
       }
     }
   },

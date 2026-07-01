@@ -6,13 +6,13 @@ radial-density generation.
 
 ## Scope
 
-- Role: auxiliary H-Rn supplemented x2c basis retained for future sensitivity work.
+- Role: auxiliary H-Rn supplemented x2c basis retained for basis-sensitivity work.
 - Coverage: H-Rn.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
 - Active v1 dataset identifiers: none.
 
-No active v1 profile dataset uses this basis. Results produced with it in a future
-scope should remain separately identified by dataset and basis identifiers.
+No active v1 profile dataset uses this basis. Results produced with it must remain
+separately identified by dataset and basis identifiers.
 
 ## Bundle metadata
 

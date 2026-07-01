@@ -14,7 +14,7 @@ ALL_V1_BUILD_PLAN = "all_v1"
 
 @dataclass(frozen=True)
 class ProfileBuildJob:
-    """One state/dataset pair planned for profile generation."""
+    """One state/dataset pair configured for profile generation."""
 
     state_id: str
     dataset_id: str
@@ -40,7 +40,7 @@ class ProfileBuildJob:
 def build_jobs_for_dataset(
     states: list[AtomState], dataset_id: str, *, config: ProfileDatasetConfig | None = None
 ) -> tuple[ProfileBuildJob, ...]:
-    """Return ordered build jobs for one planned dataset.
+    """Return ordered build jobs for one configured dataset.
 
     Membership is derived from the current curated state selection plus the
     dataset scope table.  This keeps basis coverage, charge class, and

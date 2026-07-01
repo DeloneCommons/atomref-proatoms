@@ -29,7 +29,7 @@
     }
   },
   "selection": {
-    "file": "data/states/selection/required_states_v0.csv",
+    "file": "data/states/selection/required_states_v1.csv",
     "row_count": 173,
     "columns": [
       "element",
@@ -48,11 +48,11 @@
     }
   },
   "curated_output": {
-    "file": "data/states/curated/atom_states_v0.json",
+    "file": "data/states/curated/atom_states_v1.json",
     "row_count": 173,
-    "sha256": "5d1491a1c379a28bbbe230207da9f12ce1c40c07b920f1a5648dcab8acf78b6c",
+    "sha256": "d0a9df699b6a93e273527bf800e0f1b321e56186d9f1ae9bb66c1e6984c9f4b2",
     "spin_model": "free_ion_hund_high_spin",
-    "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+    "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
   },
   "raw_archive_checks": {
     "duplicate_element_charge_rows_after_compaction": 0,

@@ -12,6 +12,7 @@ from atomref_proatoms.scf import (
     import_pyscf_modules,
     load_scf_npz,
     scf_fingerprints,
+    scf_state_record_digest,
 )
 from atomref_proatoms.spherical_uks import get_atom_spherical_uks_class
 from atomref_proatoms.states import AtomState
@@ -92,3 +93,22 @@ def test_scf_fingerprints_are_release_version_independent(tmp_path) -> None:
     assert "profile_data_version" not in fingerprints
     assert "profile_datasets_yaml_sha256" not in fingerprints
     assert "profile_dataset_config_sha256" not in fingerprints
+
+
+def test_scf_state_fingerprint_is_stable_for_state_v1_label_update() -> None:
+    old_record = {
+        "schema_version": "atomref.proatoms.state.v0",
+        "state_id": "H_q0_mult2_hund",
+        "symbol": "H",
+        "z": 1,
+        "charge": 0,
+        "electron_count": 1,
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+    }
+    new_record = {
+        **old_record,
+        "schema_version": "atomref.proatoms.state.v1",
+        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
+    }
+
+    assert scf_state_record_digest(new_record) == scf_state_record_digest(old_record)

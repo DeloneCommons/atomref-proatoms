@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "atomref-proatoms"
 version = "1.0.0.dev0"
-description = "Generator/data repository for atomref proatomic radial density profiles."
+description = "Reproducible spherical proatomic radial density datasets and generator."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }

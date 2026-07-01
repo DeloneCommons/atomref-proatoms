@@ -3,8 +3,8 @@
 This directory contains the fixed basis-set input layer used by `atomref-proatoms`
 for spherical proatomic radial electron-density generation. The directory is not
 a general basis-set database: it contains the basis families selected for the
-first neutral production datasets plus auxiliary frozen inputs kept for future
-sensitivity work.
+first neutral production datasets plus auxiliary frozen inputs kept for
+basis-sensitivity work.
 
 All basis definitions are stored in NWChem format with spherical/pure Gaussian
 basis functions. Generated profile metadata must record both the `basis_id` and
@@ -22,10 +22,10 @@ empirical proatom library.
 
 The primary heavy-element extension uses `dyall-v4z`. It provides continuous
 coverage through the actinide region and is therefore the default basis branch
-for the planned H-Lr dataset.
+for the H-Lr dataset.
 
 The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, are retained
-as auxiliary frozen inputs for future sensitivity work. They are not active v1
+as auxiliary frozen inputs for basis-sensitivity work. They are not active v1
 profile datasets. In particular, `dyall-av4z` has discontinuous element coverage
 and should be treated as an available-element auxiliary basis, not as an H-Lr
 basis.

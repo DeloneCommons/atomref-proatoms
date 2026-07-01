@@ -309,6 +309,25 @@ def scf_artifacts_complete(paths: SCFArtifactPaths) -> bool:
     return all(path.exists() and path.is_file() for path in paths.required_files())
 
 
+def scf_state_record_digest(record: dict[str, Any]) -> str:
+    """Return the state-record fingerprint used for SCF artifact reuse.
+
+    SCF reuse depends on the numerical state definition, not on release-file
+    names or non-numerical schema labels.  The normalization below keeps local
+    artifacts reusable across label-only state-table updates.
+    """
+
+    normalized = dict(record)
+    if normalized.get("schema_version") == "atomref.proatoms.state.v1":
+        normalized["schema_version"] = "atomref.proatoms.state.v0"
+    if (
+        normalized.get("occupation_policy")
+        == "free_ion_hund_high_spin_from_configuration_v1"
+    ):
+        normalized["occupation_policy"] = "free_ion_hund_high_spin_from_configuration_v0"
+    return state_digest(normalized)
+
+
 def scf_fingerprints(
     *,
     config_path: Path,
@@ -329,7 +348,7 @@ def scf_fingerprints(
     return {
         "basis_sha256": bundle.basis_sha256,
         "basis_manifest_sha256": sha256_file(bundle.path / "manifest.json"),
-        "state_record_sha256": state_digest(state.record),
+        "state_record_sha256": scf_state_record_digest(state.record),
         "scf_settings_sha256": stable_json_digest(settings.to_fingerprint_json()),
     }
 

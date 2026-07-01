@@ -47,6 +47,6 @@
     "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
   },
   "notes": [
-    "Basis file covers H-Og; the planned primary dataset is intentionally scoped to H-Lr."
+    "Basis file covers H-Og; the active primary dataset is intentionally scoped to H-Lr."
   ]
 }

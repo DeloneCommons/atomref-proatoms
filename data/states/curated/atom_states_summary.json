@@ -1,9 +1,9 @@
 {
-  "schema_version": "atomref.proatoms.state_build_summary.v0",
+  "schema_version": "atomref.proatoms.state_build_summary.v1",
   "state_count": 173,
-  "selection_file": "data/states/selection/required_states_v0.csv",
+  "selection_file": "data/states/selection/required_states_v1.csv",
   "output_files": [
-    "atom_states_v0.json"
+    "atom_states_v1.json"
   ],
   "by_category": {
     "curated_common_ion": 61,
@@ -29,5 +29,5 @@
     "hund_high_spin": 173
   },
   "spin_model": "free_ion_hund_high_spin",
-  "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0"
+  "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1"
 }

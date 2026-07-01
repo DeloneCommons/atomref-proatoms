@@ -6,7 +6,7 @@ radial-density generation.
 
 ## Scope
 
-- Role: auxiliary augmented Dyall quadruple-zeta basis retained for future sensitivity work.
+- Role: auxiliary augmented Dyall quadruple-zeta basis retained for basis-sensitivity work.
 - Coverage: H-Ba, Hf-Ra, Rf-Og.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
 - Active v1 dataset identifiers: none.

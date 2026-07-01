@@ -1,8 +1,15 @@
 # Atomic state input data
 
-This directory contains the compact atomic-state input layer for `atomref-proatoms`.
-Its purpose is to define the neutral atoms, ions, and formal crystal-ion references
-for which spherical proatomic radial electron densities will be generated.
+This directory contains the compact atomic-state input layer for
+`atomref-proatoms`. Its purpose is to define generator-ready free-atom reference
+states with deterministic charge, electron-count, configuration, spin, and
+spherical occupation metadata.
+
+The active v1 profile datasets select neutral states from this table. The state
+layer also contains curated charged reference records because the state curation
+step is independent of the active profile-dataset selection. A charged state
+record is not a generated v1 profile unless it is selected by
+`data/profile_datasets.yaml`.
 
 The data stored here are intentionally minimal. For each NIST-derived atom or
 positive ion, the project keeps only the element, charge, electron count, and a
@@ -10,8 +17,7 @@ clean electronic-configuration label. Ionization energies, uncertainties, raw
 HTML pages, and bibliography rows from the NIST Atomic Spectra Database are not
 redistributed in this package. They are not needed for the density generator: the
 spin-resolved occupations are generated from configurations by a documented
-free-ion Hund high-spin convention, and actinide cations are not included in this
-state selection.
+free-ion Hund high-spin convention.
 
 ## Directory layout
 
@@ -25,10 +31,10 @@ data/states/
     atom_configs_formal_anions.csv
 
   selection/
-    required_states_v0.csv
+    required_states_v1.csv
 
   curated/
-    atom_states_v0.json
+    atom_states_v1.json
     atom_states_summary.json
 
 scripts/
@@ -39,10 +45,10 @@ scripts/
 list of `(element, charge)` pairs to build. `curated/` stores generator-ready JSON
 records produced by `scripts/build_atom_states.py`.
 
-The `selection/` directory is deliberately named as a selection layer rather than
-a complete configuration layer. Spin multiplicities and alpha/beta angular
-momentum occupation counts are assigned by the builder script and are stored only
-in the curated JSON output.
+The `selection/` directory is a selection layer rather than a complete
+configuration layer. Spin multiplicities and alpha/beta angular-momentum
+occupation counts are assigned by the builder script and are stored only in the
+curated JSON output.
 
 ## Source-data preparation
 
@@ -75,8 +81,8 @@ from the raw snapshot was excluded; it is outside the selected state scope.
 ## Formal anions
 
 NIST GSIE is used here for neutral atoms and positive ions. The small table
-`source/atom_configs_formal_anions.csv` adds the closed-shell anion and formal
-anion references needed by the proatom project:
+`source/atom_configs_formal_anions.csv` adds closed-shell anion and formal-anion
+reference configurations:
 
 ```text
 F-, Cl-, Br-, I-
@@ -91,8 +97,8 @@ anions.
 
 ## State selection
 
-`selection/required_states_v0.csv` lists the states selected for the first
-density-generation campaign. The selection policy is intentionally conservative:
+`selection/required_states_v1.csv` lists the states selected for the curated
+state table. The selection policy is conservative:
 
 - all neutral atoms H-Lr are included;
 - no actinide cations are included;
@@ -121,19 +127,19 @@ The script reads:
 ```text
 data/states/source/atom_configs_nist_source.csv
 data/states/source/atom_configs_formal_anions.csv
-data/states/selection/required_states_v0.csv
+data/states/selection/required_states_v1.csv
 ```
 
 and writes:
 
 ```text
-data/states/curated/atom_states_v0.json
+data/states/curated/atom_states_v1.json
 data/states/curated/atom_states_summary.json
 ```
 
-The curated state records are generator inputs. Each record includes a deterministic
-state ID, charge, electron count, configuration, spin multiplicity, `alpha_l_counts`,
-`beta_l_counts`, state category, and curation status.
+The curated state records are generator inputs. Each record includes a
+deterministic state ID, charge, electron count, configuration, spin multiplicity,
+`alpha_l_counts`, `beta_l_counts`, state category, and curation status.
 
 The default spin model is:
 
@@ -144,14 +150,11 @@ free_ion_hund_high_spin
 with occupation policy:
 
 ```text
-free_ion_hund_high_spin_from_configuration_v0
+free_ion_hund_high_spin_from_configuration_v1
 ```
 
 This is the recommended convention for spherical free-ion proatoms. It should not
-be interpreted as a ligand-field spin-state model. Low-spin or other constrained
-transition-metal variants, if needed later, should be added as a separate
-spin-sensitivity or diagnostic state-selection file rather than mixed into the
-recommended v0 state list.
+be interpreted as a ligand-field spin-state model.
 
 ## Licensing and attribution note
 
@@ -165,6 +168,5 @@ https://physics.nist.gov/PhysRefData/ASD/Html/iehelp.html
 
 This project does not redistribute the raw ASD pages or quantitative SRD tables.
 The compact source table keeps only common electronic-configuration labels needed
-for reproducible proatom-density generation. If this repository later includes a
-larger extract of NIST ASD data, the redistribution terms for NIST Standard
-Reference Data should be reviewed again before public release.
+for reproducible proatom-density generation. Redistribution terms for NIST
+Standard Reference Data should be reviewed before adding larger ASD extracts.

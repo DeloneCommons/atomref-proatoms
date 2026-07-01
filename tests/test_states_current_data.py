@@ -8,8 +8,8 @@ from atomref_proatoms.states import (
     validate_state_collection,
 )
 
-ROOT = Path(__file__).resolve().parents[2]
-STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v0.json"
+ROOT = Path(__file__).resolve().parents[1]
+STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v1.json"
 
 
 def test_current_state_table_loads_and_matches_expected_counts() -> None:
@@ -58,7 +58,7 @@ def test_state_charge_spin_and_l_counts_are_consistent() -> None:
         assert state.record["spin_model"] == "free_ion_hund_high_spin"
 
 
-def test_no_actinide_cations_in_v0_production_states() -> None:
+def test_no_actinide_cations_in_curated_production_states() -> None:
     for state in load_atom_states(STATES_FILE):
         assert not (89 <= state.z <= 103 and state.charge > 0)
 

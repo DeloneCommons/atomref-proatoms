@@ -15,8 +15,7 @@ The Dyall v4z branch is included to provide a relativistic quadruple-zeta basis 
 continuous heavy-element coverage, including lanthanides and actinides. It is the
 primary branch for the H-Lr extension beyond the H-Rn x2c-QZVPall dataset.
 
-The basis file covers H-Og. The active production dataset is intentionally H-Lr unless
-the state-selection policy is expanded later.
+The basis file covers H-Og. The active production dataset is intentionally scoped to H-Lr.
 
 ## Bundle metadata
 

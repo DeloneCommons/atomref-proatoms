@@ -16,7 +16,7 @@ from atomref_proatoms.datasets import (
     state_allowed_in_dataset,
 )
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "data" / "profile_datasets.yaml"
 
 
