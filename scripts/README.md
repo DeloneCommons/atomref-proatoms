@@ -191,3 +191,10 @@ Execution and QA options:
   failure.
 - `--angular-points`: override angular grid size for stored-profile density
   evaluation.
+
+## Related documentation
+
+- Scientific model: `docs/theory.md`.
+- Data products: `docs/data.md`.
+- Input data: `docs/inputs.md`.
+- MkDocs overview: `docs/index.md`.

@@ -94,3 +94,9 @@ python scripts/extract_profiles.py --force --check
 ```
 
 The compact report in `qa_report.md` is the primary release-gate summary.
+
+## Related documentation
+
+- Independent electron-count QA model: `docs/theory.md`.
+- Released artifact contract: `docs/data.md`.
+- Regeneration workflow: `docs/workflow.md`.

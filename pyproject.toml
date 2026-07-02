@@ -8,7 +8,7 @@ version = "1.0.0.dev0"
 description = "Reproducible spherical proatomic radial density datasets and generator."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { file = "LICENSE" }
+license = { file = "LICENSE.md" }
 authors = [
   { name = "DeloneCommons" }
 ]
@@ -35,6 +35,10 @@ audit = [
 docs = [
   "jupyter>=1",
   "pandas>=2",
+  "matplotlib>=3.8",
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mkdocs-jupyter>=0.24",
 ]
 all = [
   "pytest>=7",
@@ -43,6 +47,10 @@ all = [
   "basis-set-exchange",
   "jupyter>=1",
   "pandas>=2",
+  "matplotlib>=3.8",
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mkdocs-jupyter>=0.24",
 ]
 
 [tool.setuptools.packages.find]

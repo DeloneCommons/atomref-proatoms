@@ -72,3 +72,9 @@ For inspection without writing files:
 python scripts/extract_profiles.py --list
 python scripts/extract_profiles.py --dry-run
 ```
+
+## Related documentation
+
+- Scientific density model: `docs/theory.md`.
+- Released artifact contract: `docs/data.md`.
+- Regeneration workflow: `docs/workflow.md`.

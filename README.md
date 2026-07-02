@@ -1,81 +1,56 @@
 # atomref-proatoms
 
-`atomref-proatoms` provides reproducible spherical proatomic radial
-electron-density datasets generated from explicitly declared atomic-state, basis,
-method, radial-grid, and quality-assurance conventions. The v1 release focuses
-on neutral free atoms and publishes canonical radial profiles, density-cutoff
-radii, and QA tables for use in atom-centered theoretical-chemistry,
-crystallographic, empirical density/radius, and promolecular-density workflows.
+`atomref-proatoms` provides reproducible spherical proatomic radial electron-density
+profiles for isolated neutral atoms. The project is meant to supply consistent
+quantum-chemical reference data for atom-centered theoretical-chemistry,
+crystallographic, empirical density/radius, and promolecular-density models. It
+is not an atomic-spectroscopy benchmark and does not try to turn one set of
+atomic references into a universal replacement for method-specific calculations.
 
-The project is not intended to be a high-accuracy atomic spectroscopy benchmark.
-Its purpose is to provide consistent quantum-chemical reference densities with a
-transparent sphericalization convention and release-level provenance.
+Atomic reference densities are often used as if a free atom were naturally a
+single radial object. For many open-shell atoms, an ordinary single-determinant
+SCF calculation instead selects particular magnetic components and gives an
+anisotropic density. Angularly averaging that density after convergence produces
+a radial table, but the SCF potential was still optimized for the anisotropic
+state. This project uses a stricter construction: the atomic SCF problem is
+solved with spherical fractional occupations and angular-momentum block averaging
+built into the mean-field model. The radial density is therefore the
+self-consistent spherical proatom density, not a post-processed average of a
+broken-symmetry atom.
 
-## Current version
+The current project version uses PySCF `2.13.1` and computes all active v1
+profiles at the unrestricted PBE0 / spin-free one-electron X2C level with
+pure/spherical Gaussian basis functions. The two released neutral branches are:
 
-The active profile-data version is `1.0.0.dev0`. Dataset identifiers use the `_v1`
-suffix and are declared in a single file:
+- `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1`: H-Rn, `x2c-QZVPall`.
+- `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1`: H-Lr, `dyall-v4z`.
 
-```text
-data/profile_datasets.yaml
-```
-
-The active v1 profile datasets are neutral-only:
-
-```text
-pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1
-pbe0_sfx2c_dyallv4z_h-lr_spherical_v1
-```
+The machine-readable dataset specification is `data/profile_datasets.yaml`.
 
 ## What is included
 
-This repository contains:
+The release data layer contains:
 
-- compact atomic-state source and curated generator inputs under `data/states/`;
-- frozen BSE NWChem spherical basis exports under `data/basis_sets/`;
-- the active profile dataset specification in `data/profile_datasets.yaml`;
-- generated radial profile datasets under `data/profiles/`;
-- generated density-cutoff radii under `data/radii/`;
-- generated release-gate QA tables under `data/qa/`;
-- lightweight Python utilities for loading and validating state, basis, dataset,
-  profile, radii, and QA metadata;
-- workflow scripts for state generation, basis checks, local SCF generation, and
-  profile extraction.
+- radial density profiles in `data/profiles/<dataset_id>/profiles.csv`;
+- density-cutoff radii in `data/radii/<dataset_id>/radii.csv`;
+- per-state and aggregate QA tables in `data/qa/`;
+- curated atomic-state inputs in `data/states/`;
+- frozen Basis Set Exchange NWChem spherical basis exports in `data/basis_sets/`;
+- workflow scripts in `scripts/`;
+- validation and loading utilities in `src/atomref_proatoms/`.
 
-Generated profile, radii, and QA artifacts use this release layout:
+The generated profile, radii, and QA tables are tracked release artifacts. The
+expensive SCF checkpoints, arrays, and logs live under ignored `local-data/scf/`
+directories and are used only for regeneration.
 
-```text
-data/profiles/<dataset_id>/
-  profiles.csv
-  metadata.json
+For artifact formats and column conventions, see the [data-products guide](docs/data.md).
+For state and basis provenance, see the [input-data guide](docs/inputs.md).
+For the command-line workflow, see the [workflow guide](docs/workflow.md).
 
-data/radii/<dataset_id>/
-  radii.csv
-  metadata.json
+## Quick checks
 
-data/qa/<dataset_id>/
-  qa.csv
-  metadata.json
-```
-
-`local-data/scf/` is an ignored local artifact directory for SCF checkpoints,
-logs, and array bundles. It is required to regenerate the released data products
-but is not part of the public data release.
-
-## Relationship to lightweight consumers
-
-This repository is the data-generation and release-artifact project. Lightweight
-runtime packages may consume compact released snapshots from this repository, but
-they should not depend on PySCF, Basis Set Exchange tooling, external
-quantum-chemistry programs, or generator internals.
-
-The frozen `data/basis_sets/**/basis.nw` files define the basis-data identity.
-Normal validation and release checks do not download basis sets from external
-services.
-
-## Data checks
-
-From the repository root:
+Default validation does not require internet access and does not download basis
+sets. From the repository root:
 
 ```bash
 python scripts/check_basis_bundles.py
@@ -84,18 +59,18 @@ pytest
 ```
 
 `check_basis_bundles.py` is fully offline by default. If PySCF is installed, it
-also runs small optional parse smoke checks for representative elements. If PySCF
-is absent, that step is explicitly skipped.
+also runs optional representative parse smoke checks for the frozen basis files.
+If PySCF is absent, those smoke checks are reported as skipped.
 
-The package itself must remain importable without PySCF:
+The lightweight package layer must remain importable without PySCF:
 
 ```bash
 python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 ```
 
-## v1 workflow
+## Regenerating the v1 artifacts
 
-The v1 workflow uses four production scripts:
+The production workflow is:
 
 ```bash
 python scripts/build_atom_states.py --check
@@ -104,82 +79,57 @@ python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
 ```
 
-`compute_wavefunctions.py --list` and `--dry-run` read the active YAML config and
-show the selected state/dataset jobs without importing PySCF:
-
-```bash
-python scripts/compute_wavefunctions.py --list
-python scripts/compute_wavefunctions.py \
-  --dataset pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1 \
-  --state H_q0_mult2_hund \
-  --dry-run
-```
-
-`compute_wavefunctions.py` writes persistent local SCF artifacts under
-`local-data/scf/`. The release generator extra pins PySCF to `2.13.1`, and the
-script refuses to create release artifacts with a different PySCF version unless
-`--allow-pyscf-version-mismatch` is used for debugging.
-
-```text
-local-data/scf/<dataset_id>/<state_id>/
-  scf.chk
-  scf.npz
-  scf.json
-  scf.log
-```
-
-`extract_profiles.py` reads those local SCF artifacts without rerunning SCF and
-writes the tracked wide profile table, cutoff-radius table, QA table, and
-aggregate metadata under `data/profiles/`, `data/radii/`, and `data/qa/`.
-
-## Layout
-
-```text
-src/atomref_proatoms/   loaders, validators, schema helpers, and generator code
-data/profile_datasets.yaml
-                        active profile dataset specification
-data/states/           source, selection, and curated atomic-state data
-data/basis_sets/       frozen BSE NWChem spherical basis exports
-data/profiles/         generated profile datasets, one directory per dataset
-data/radii/            generated cutoff-radius result tables
-data/qa/               generated QA tables and compact Markdown QA status
-scripts/               workflow entry points and data checks
-tests/                 test suite
-docs/                  project documentation and notebooks
-local-data/            ignored local SCF/checkpoint/log/scratch artifacts
-```
-
-## Documentation map
-
-```text
-docs/theory.md
-  Scientific model for the v1 spherical proatomic density profiles.
-
-docs/data_layout.md
-  Tracked inputs, generated release artifacts, and ignored local SCF artifacts.
-
-docs/basis_sets.md
-  Basis-set layer summary and validation entry point.
-
-docs/state_curation.md
-  Atomic-state curation model and generated state-table contract.
-
-docs/multiwfn_interop.md
-  Boundary for adapting v1 radial-density data to Multiwfn-related workflows.
-
-docs/notebooks/
-  User-facing notebooks that inspect generated release artifacts.
-```
-
-## Optional generator dependencies
-
-Install PySCF only on machines that will run the generator:
+`compute_wavefunctions.py --list`, `compute_wavefunctions.py --dry-run`, and
+`extract_profiles.py --list` inspect the active build plan without running SCF.
+Actual SCF generation requires the optional generator dependencies:
 
 ```bash
 python -m pip install -e ".[generator,test,dev]"
-python scripts/check_basis_bundles.py
-pytest -m "not slow"
 ```
 
-Default checks do not require internet access and do not compare frozen basis
-files against the current Basis Set Exchange API response.
+`compute_wavefunctions.py` writes local artifacts such as `scf.chk`, `scf.npz`,
+`scf.json`, and `scf.log` under `local-data/scf/<dataset_id>/<state_id>/`.
+`extract_profiles.py` reads those local artifacts and writes the tracked profile,
+radii, and QA outputs.
+
+## Documentation
+
+The documentation is organized as a MkDocs site:
+
+- [Scientific model](docs/theory.md): spherical fractional-occupation proatoms
+  and the difference from post-SCF angular averaging.
+- [Data products](docs/data.md): released profile, radii, and QA artifacts.
+- [Input data](docs/inputs.md): basis bundles and atomic-state curation.
+- [Workflow](docs/workflow.md): scripts, package layout, and regeneration steps.
+- [Notebooks](docs/notebooks/README.md): executable reports for inspecting the
+  generated data and illustrating the method.
+- [License](docs/license.md) and [AI assistance note](docs/ai_note.md).
+
+Build the local documentation site with:
+
+```bash
+python -m pip install -e ".[docs]"
+mkdocs serve
+```
+
+## Lightweight consumers
+
+This repository is the data-generation and release-artifact project. Lightweight
+runtime packages may consume compact snapshots from `data/profiles/`,
+`data/radii/`, and `data/qa/`, but they should not depend on PySCF, Basis Set
+Exchange tooling, external quantum-chemistry programs, or generator internals.
+
+## License and attribution
+
+Code in `src/`, `scripts/`, and `tests/` is released under the MIT License. The
+released data tables, documentation, and notebooks are released under Creative
+Commons Attribution 4.0 International unless an upstream notice states otherwise.
+Frozen basis exports retain the Basis Set Exchange BSD-3-Clause notice, and the
+atomic-state source layer uses compact configuration labels prepared from the
+NIST Atomic Spectra Database, NIST Standard Reference Database 78. See
+[`LICENSE.md`](LICENSE.md) for the full repository license statement.
+
+Project planning, scientific discussion, code drafting, and documentation drafting
+used OpenAI models as assistance tools. The repository author is responsible for
+the final scientific content, code, data, validation, and release decisions. See
+[`AI_NOTE.md`](AI_NOTE.md).

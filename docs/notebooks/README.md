@@ -1,25 +1,28 @@
-# Documentation notebooks
+# How-it-works notebooks
 
-This directory contains user-facing narrative notebooks for inspecting released
-v1 data products. Notebooks in this directory are report and visualization layers;
-they should read generated artifacts rather than run SCF calculations.
+This directory contains notebook-style documentation that complements the
+scientific and data-reference pages.
 
-Current notebook:
+Two notebook roles are useful for this project:
 
-```text
-proatomic_profiles_v1.ipynb
-```
+- release-artifact inspection notebooks, which read `data/profiles/`,
+  `data/radii/`, and `data/qa/` without running SCF;
+- method demonstration notebooks, which run a small optional generator example to
+  show the difference between ordinary SCF plus post-SCF angular averaging and
+  the spherical fractional-occupation model.
 
-The notebook reads:
+The current release-artifact notebook is:
 
-```text
-data/profiles/
-data/radii/
-data/qa/
-```
+- `proatomic_profiles_v1.ipynb`
+- `spherical_vs_post_average_demo.ipynb`
 
-and can be used to display dataset summaries, QA status, selected radial density
-curves, and compact radius tables.
+The artifact-inspection notebook reads the generated v1 profile, radii, and QA
+tables and can be used to display summary tables, selected radial density curves,
+cutoff radii, and QA status. The sphericalization demo runs one small optional
+SCF example from the frozen project basis files and compares the production
+spherical density with ordinary UKS plus post-SCF angular averaging.
 
-Notebook outputs are explanatory. The release artifacts themselves are generated
-by the workflow scripts and stored under `data/`.
+Method demonstration notebooks may require the `generator` dependency extra and
+should avoid writing persistent data artifacts into the repository. Temporary
+basis or SCF material should be kept outside tracked paths or created in a
+notebook-local temporary directory.

@@ -170,3 +170,9 @@ This project does not redistribute the raw ASD pages or quantitative SRD tables.
 The compact source table keeps only common electronic-configuration labels needed
 for reproducible proatom-density generation. Redistribution terms for NIST
 Standard Reference Data should be reviewed before adding larger ASD extracts.
+
+## Related documentation
+
+- Spherical occupation model: `docs/theory.md`.
+- Input-data summary: `docs/inputs.md`.
+- State build workflow: `docs/workflow.md` and `scripts/README.md`.

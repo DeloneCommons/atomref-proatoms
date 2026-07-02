@@ -1,9 +1,8 @@
 """Spherical fractional-occupation UKS helpers.
 
-This module contains the first production extraction from the proof-of-concept
-notebook.  It intentionally keeps PySCF as a lazy dependency: import-time tests and
-metadata checks can run without PySCF, while generator entry points import PySCF only
-when a real SCF object is requested.
+PySCF is kept as a lazy dependency: import-time tests and metadata checks can run
+without PySCF, while generator entry points import PySCF only when a real SCF
+object is requested.
 """
 
 from __future__ import annotations

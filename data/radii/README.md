@@ -52,3 +52,9 @@ alongside profiles and QA tables with:
 ```bash
 python scripts/extract_profiles.py --force --check
 ```
+
+## Related documentation
+
+- Density-cutoff radius definition: `docs/theory.md`.
+- Released artifact contract: `docs/data.md`.
+- Regeneration workflow: `docs/workflow.md`.

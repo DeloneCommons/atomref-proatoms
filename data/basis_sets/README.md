@@ -123,3 +123,9 @@ The BSE BSD-3-Clause license notice is included as
 `LICENSE-BSE-BSD-3-Clause.txt`. Dyall basis-set source records are additionally
 covered by the upstream Zenodo/CC-BY citation recorded in the Dyall bundle
 references.
+
+## Related documentation
+
+- Scientific model and active electronic-structure convention: `docs/theory.md`.
+- Input-data summary: `docs/inputs.md`.
+- Basis validation workflow: `docs/workflow.md` and `scripts/README.md`.
