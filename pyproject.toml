@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE.md" }
 authors = [
-  { name = "DeloneCommons" }
+  { name = "Ivan Yu. Chernyshov", email = 'ivan.chernyshoff@gmail.com' }
 ]
 dependencies = [
   "numpy>=1.26",

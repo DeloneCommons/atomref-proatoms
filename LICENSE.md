@@ -33,7 +33,7 @@ Database when publishing work that relies on these state labels.
 
 ## MIT License text
 
-Copyright (c) 2026 DeloneCommons contributors
+Copyright (c) 2026 Ivan Yu. Chernyshov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
