@@ -82,7 +82,7 @@ def test_scf_fingerprints_are_release_version_independent(tmp_path) -> None:
 
     fingerprints = scf_fingerprints(
         config_path=tmp_path / "profile_datasets.yaml",
-        config=SimpleNamespace(data={"profile_data_version": "1.0.0.dev0"}),
+        config=SimpleNamespace(data={"profile_data_version": "1.0.0"}),
         state=state,
         bundle=bundle,
         settings=SCFSettings(),

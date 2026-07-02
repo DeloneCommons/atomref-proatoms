@@ -12,7 +12,7 @@ import yaml
 from .paths import PROFILE_DATASETS_FILE
 
 PROFILE_DATASETS_SCHEMA_VERSION = "atomref.proatoms.profile_datasets.v1"
-PROFILE_DATA_VERSION = "1.0.0.dev0"
+PROFILE_DATA_VERSION = "1.0.0"
 
 PRIMARY_X2C_QZVPALL = "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1"
 PRIMARY_DYALL_V4Z = "pbe0_sfx2c_dyallv4z_h-lr_spherical_v1"

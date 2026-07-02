@@ -99,7 +99,7 @@ def test_write_radii_dataset_artifacts_writes_csv_and_metadata(tmp_path) -> None
     radii_csv, metadata_json = write_radii_dataset_artifacts(
         tmp_path / "radii" / "dataset",
         dataset_id="dataset",
-        profile_data_version="1.0.0.dev0",
+        profile_data_version="1.0.0",
         basis_id="basis",
         cutoffs_e_bohr3=[0.003, 0.001],
         states=_state_table_metadata(),
@@ -141,7 +141,7 @@ def test_write_qa_dataset_artifacts_and_overview(tmp_path) -> None:
     qa_csv, metadata_json = write_qa_dataset_artifacts(
         tmp_path / "qa" / "dataset",
         dataset_id="dataset",
-        profile_data_version="1.0.0.dev0",
+        profile_data_version="1.0.0",
         basis_id="basis",
         states=_state_table_metadata(),
         qa_by_state_id=qa,
@@ -159,7 +159,7 @@ def test_write_qa_dataset_artifacts_and_overview(tmp_path) -> None:
 
     outputs = write_qa_overview(
         tmp_path / "qa",
-        profile_data_version="1.0.0.dev0",
+        profile_data_version="1.0.0",
         dataset_summaries=[
             {
                 "dataset_id": "dataset",

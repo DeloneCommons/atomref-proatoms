@@ -1,5 +1,5 @@
 schema_version: atomref.proatoms.profile_datasets.v1
-profile_data_version: 1.0.0.dev0
+profile_data_version: 1.0.0
 
 defaults:
   density_model: self_consistent_fractional_occupation_spherical_uks

@@ -76,7 +76,7 @@ def test_compute_wavefunctions_list_cli() -> None:
         capture_output=True,
         text=True,
     )
-    assert "Profile data version: 1.0.0.dev0" in result.stdout
+    assert "Profile data version: 1.0.0" in result.stdout
     assert "Build jobs: 103" in result.stdout
     assert PRIMARY_DYALL_V4Z in result.stdout
     assert "Lr_q0_mult2_hund" in result.stdout

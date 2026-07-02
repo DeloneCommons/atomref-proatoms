@@ -1,6 +1,6 @@
 {
   "schema_version": "atomref.proatoms.radii_dataset.v1",
-  "profile_data_version": "1.0.0.dev0",
+  "profile_data_version": "1.0.0",
   "dataset_id": "pbe0_sfx2c_dyallv4z_h-lr_spherical_v1",
   "basis_id": "dyall-v4z",
   "units": {
@@ -23,6 +23,6 @@
   },
   "row_count": 103,
   "provenance": {
-    "profile_datasets_yaml_sha256": "eb3c70c225704eae6ff6d1e04118629d0e54613727a53cf71eb3991790450cb7"
+    "profile_datasets_yaml_sha256": "5a5a33f4fa312664a1d975586a0a6b19752232dc5603ba9487a06e2bc1f8de0a"
   }
 }

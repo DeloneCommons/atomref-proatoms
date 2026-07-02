@@ -1,6 +1,6 @@
 # atomref-proatoms QA status: PASS
 
-Profile data version: `1.0.0.dev0`.
+Profile data version: `1.0.0`.
 Datasets checked: 2.
 States checked: 189.
 Failed rows: 0.

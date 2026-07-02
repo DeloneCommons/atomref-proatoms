@@ -23,7 +23,7 @@ CONFIG = ROOT / "data" / "profile_datasets.yaml"
 def test_profile_dataset_yaml_is_the_active_dataset_contract() -> None:
     config = load_profile_dataset_config(CONFIG)
     assert config.schema_version == PROFILE_DATASETS_SCHEMA_VERSION
-    assert config.profile_data_version == PROFILE_DATA_VERSION == "1.0.0.dev0"
+    assert config.profile_data_version == PROFILE_DATA_VERSION == "1.0.0"
     assert config.dataset_ids == DATASET_IDS
     assert len(config.datasets) == 2
     assert config.defaults["expected_engine_version"] == "2.13.1"
