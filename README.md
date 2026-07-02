@@ -1,5 +1,8 @@
 # atomref-proatoms
 
+[![CI][ci-badge]][ci-workflow]
+[![Pages][pages-badge]][pages-workflow]
+
 `atomref-proatoms` provides reproducible spherical proatomic radial electron-density
 profiles for isolated neutral atoms. The project is meant to supply consistent
 quantum-chemical reference data for atom-centered theoretical-chemistry,
@@ -133,3 +136,8 @@ Project planning, scientific discussion, code drafting, and documentation drafti
 used OpenAI models as assistance tools. The repository author is responsible for
 the final scientific content, code, data, validation, and release decisions. See
 [`AI_NOTE.md`](AI_NOTE.md).
+
+[ci-badge]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/ci.yml/badge.svg
+[ci-workflow]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/ci.yml
+[pages-badge]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/pages.yml/badge.svg
+[pages-workflow]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/pages.yml
