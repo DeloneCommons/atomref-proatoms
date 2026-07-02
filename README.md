@@ -109,7 +109,7 @@ Build the local documentation site with:
 
 ```bash
 python -m pip install -e ".[docs]"
-mkdocs serve
+NO_MKDOCS_2_WARNING=1 mkdocs serve
 ```
 
 ## Lightweight consumers

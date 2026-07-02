@@ -86,7 +86,7 @@ The documentation site is built with MkDocs:
 
 ```bash
 python -m pip install -e ".[docs]"
-mkdocs serve
+NO_MKDOCS_2_WARNING=1 mkdocs serve
 ```
 
 Notebook pages are included in the site without execution. Executing notebooks is

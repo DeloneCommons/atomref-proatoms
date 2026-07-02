@@ -1,20 +1,20 @@
 # Scientific model
 
 The released v1 objects are spherical radial electron-density profiles for
-isolated neutral atoms. For an atom `A`, the tabulated quantity is the total
+isolated neutral atoms. For an atom $A$, the tabulated quantity is the total
 spin-summed density averaged over directions at fixed radius,
 
-```text
-rho_A(r) = (1 / 4 pi) integral rho_A(r, Omega) dOmega,
-```
+\[
+\rho_A(r) = \frac{1}{4\pi} \int \rho_A(r, \Omega)\,d\Omega,
+\]
 
-with `r` in bohr and `rho_A(r)` in electrons/bohr³. The intended normalization is
+with $r$ in bohr and $\rho_A(r)$ in electrons/bohr³. The intended normalization is
 
-```text
-4 pi integral_0^infinity r^2 rho_A(r) dr = N_A,
-```
+\[
+4\pi \int_0^\infty r^2 \rho_A(r)\,dr = N_A,
+\]
 
-where `N_A` is the number of electrons in the neutral atom.
+where $N_A$ is the number of electrons in the neutral atom.
 
 These profiles are reference densities for atom-centered models and descriptors.
 They are not experimental atomic radii, spectroscopic term energies, or
@@ -63,9 +63,9 @@ keeps the SCF update consistent with a spherical one-center atom.
 
 The stored profile is the spin-summed density,
 
-```text
-rho(r) = rho_alpha(r) + rho_beta(r),
-```
+\[
+\rho(r) = \rho_\alpha(r) + \rho_\beta(r),
+\]
 
 not a spin-density profile. Backend spin diagnostics are retained as provenance
 where available, but `<S^2>` is not used as a release-gate target for these
@@ -115,9 +115,9 @@ quantities can be dominated by extremely small densities.
 The radii tables are derived from the profile tables. A cutoff radius is the
 outermost interpolated crossing of
 
-```text
-rho_A(r) = rho_cut.
-```
+\[
+\rho_A(r) = \rho_{\mathrm{cut}}.
+\]
 
 The v1 density cutoffs are:
 
@@ -135,11 +135,11 @@ values are positive.
 
 Electron-count QA is intentionally performed on an independent grid rather than
 by trusting the stored profile mesh. The release QA integrates the angularly
-averaged density with Gauss-Legendre quadrature in `t = log(r)`:
+averaged density with Gauss-Legendre quadrature in $t = \log(r)$:
 
-```text
-N = integral 4 pi r(t)^3 rho(r(t)) dt, where r(t) = exp(t).
-```
+\[
+N = \int 4\pi r(t)^3 \rho(r(t))\,dt, \qquad r(t) = \exp(t).
+\]
 
 The active QA grid uses:
 
