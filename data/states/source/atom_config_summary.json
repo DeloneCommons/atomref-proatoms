@@ -187,7 +187,7 @@
   ],
   "v2_formal_tables": {
     "data/states/curated/formal_atoms_ions.csv": {
-      "row_count": 46,
+      "row_count": 40,
       "columns": [
         "z",
         "symbol",
@@ -201,20 +201,20 @@
         "rule_reason",
         "notes"
       ],
-      "sha256": "df172e143690a68942a3ca4f0725b588656124eee153d0b6e817dfde58abab78",
-      "note": "V2 formal anion preparation table for required monoanions without accepted physical/reference rows and formal p-block multianions; every row is marked physical_status=not_claimed; purely formal actinide fallback monoanions are excluded from the initial v2 formal scope.",
+      "sha256": "fc14adfae8f3703dceb151d08247d787bbe00ee03b36959e618b95603f420093",
+      "note": "V2 formal anion preparation table for required H-Rn monoanion fallbacks without accepted physical/reference rows and formal group-13--16 p-block dianions plus carbon/pnictogen trianions; every row is marked physical_status=not_claimed; purely formal actinide fallback monoanions and halogen dianions are excluded from the initial v2 formal scope.",
       "state_role_counts": {
-        "formal_monoanion": 15,
-        "formal_multianion": 31
+        "formal_monoanion": 14,
+        "formal_multianion": 26
       },
       "rule_reason_counts": {
         "review_unbound_but_required_by_policy": 8,
-        "p_block_formal_dianion_policy": 25,
+        "p_block_formal_dianion_policy": 20,
         "carbon_pnictogen_formal_trianion_policy": 6,
-        "review_theory_only_but_required_by_policy": 7
+        "review_theory_only_but_required_by_policy": 6
       },
       "physical_status_counts": {
-        "not_claimed": 46
+        "not_claimed": 40
       }
     }
   },
@@ -230,5 +230,61 @@
     "state_source",
     "rule_reason",
     "notes"
-  ]
+  ],
+  "v2_selection": {
+    "file": "data/states/selection/required_states_v2.csv",
+    "row_count": 495,
+    "columns": [
+      "z",
+      "symbol",
+      "charge",
+      "electron_count",
+      "state_source",
+      "source_table",
+      "state_role",
+      "physical_status",
+      "include_reason"
+    ],
+    "sha256": "761197b80fd6b172c6957393c9c2734eca3481906b1b5da96960fdb473d8aea6",
+    "by_charge": {
+      "-3": 6,
+      "-2": 20,
+      "-1": 80,
+      "0": 103,
+      "1": 102,
+      "2": 95,
+      "3": 89
+    },
+    "note": "V2 compute-state selection combining NIST neutral/cation rows, accepted H-Rn Ning-Lu monoanion rows, and formal anion rows; H+, He2+, He3+, group-18 anions, accepted monoanions beyond Rn, halogen dianions, and purely formal actinide fallback monoanions are excluded."
+  },
+  "v2_curated_output": {
+    "json_file": "data/states/curated/atom_states_v2.json",
+    "csv_file": "data/states/curated/atom_states_v2.csv",
+    "summary_file": "data/states/curated/atom_states_summary_v2.json",
+    "row_count": 495,
+    "csv_columns": [
+      "state_id",
+      "z",
+      "symbol",
+      "charge",
+      "electron_count",
+      "configuration",
+      "ground_level",
+      "multiplicity",
+      "spin_2s",
+      "state_category",
+      "state_role",
+      "physical_status",
+      "state_source",
+      "source_table",
+      "nist_ie_provenance",
+      "rule_reason",
+      "notes"
+    ],
+    "json_sha256": "4583dc2999d3fe26aba2f0eaaaaced89ae77b164c650b909cb236d3b232309bd",
+    "csv_sha256": "d4f8fd0f78f0c88f7311c41ab246aec0c33aae64d12986b3bd9648886ae2e0cb",
+    "summary_sha256": "34a0b7498913aedd7066d59948fd8763b126ef731e1182268e812e7b02d36064",
+    "spin_model": "curated_ground_multiplicity",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+  }
 }

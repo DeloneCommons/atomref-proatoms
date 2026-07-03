@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 ATOM_STATE_SCHEMA_VERSION = "atomref.proatoms.state.v1"
+ATOM_STATE_V2_SCHEMA_VERSION = "atomref.proatoms.state.v2"
 ATOM_STATE_SUMMARY_SCHEMA_VERSION = "atomref.proatoms.state_build_summary.v1"
+ATOM_STATE_V2_SUMMARY_SCHEMA_VERSION = "atomref.proatoms.state_build_summary.v2"
 BASIS_BUNDLE_SCHEMA_VERSION = "atomref.proatoms.basis_bundle.v0"
 BASIS_SET_SUMMARY_SCHEMA_VERSION = "atomref.proatoms.basis_set_summary.v0"
 PROFILE_METADATA_SCHEMA_VERSION = "atomref.proatom_profile.v1"
@@ -13,6 +15,15 @@ DENSITY_MODEL = "self_consistent_fractional_occupation_spherical_uks"
 DEFAULT_SPIN_MODEL = "free_ion_hund_high_spin"
 DEFAULT_SPIN_VARIANT = "hund_high_spin"
 DEFAULT_OCCUPATION_POLICY = "free_ion_hund_high_spin_from_configuration_v1"
+V2_OCCUPATION_POLICY = "spherical_l_counts_from_curated_multiplicity_v2"
+V2_SPIN_MODEL = "curated_ground_multiplicity"
+V2_SPIN_VARIANT = "curated_multiplicity"
+ALLOWED_ATOM_STATE_SCHEMA_VERSIONS = frozenset(
+    {ATOM_STATE_SCHEMA_VERSION, ATOM_STATE_V2_SCHEMA_VERSION}
+)
+ALLOWED_OCCUPATION_POLICIES = frozenset({DEFAULT_OCCUPATION_POLICY, V2_OCCUPATION_POLICY})
+ALLOWED_SPIN_MODELS = frozenset({DEFAULT_SPIN_MODEL, V2_SPIN_MODEL})
+ALLOWED_SPIN_VARIANTS = frozenset({DEFAULT_SPIN_VARIANT, V2_SPIN_VARIANT})
 
 REQUIRED_STATE_FIELDS = frozenset(
     {

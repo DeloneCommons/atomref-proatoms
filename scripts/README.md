@@ -198,3 +198,18 @@ Execution and QA options:
 - Data products: `docs/data.md`.
 - Input data: `docs/inputs.md`.
 - MkDocs overview: `docs/index.md`.
+
+
+### Building the v2 state table
+
+The v2 state-selection layer can be regenerated without running SCF jobs:
+
+```bash
+python scripts/build_atom_states.py --version v2
+python scripts/build_atom_states.py --version v2 --check
+```
+
+This reads the compact NIST source table, the Ning--Lu monoanion table, and the
+formal-anion table, then writes `required_states_v2.csv`, `atom_states_v2.csv`,
+`atom_states_v2.json`, and `atom_states_summary_v2.json`. The default invocation
+without `--version v2` still rebuilds the v1 curated state file.

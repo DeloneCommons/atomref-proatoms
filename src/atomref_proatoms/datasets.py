@@ -234,7 +234,7 @@ def assert_dataset_basis_match(dataset_id: str, basis_id: str) -> None:
 
 
 def state_allowed_in_dataset(
-    dataset_id: str, *, z: int, charge: int, state_role: str = "recommended"
+    dataset_id: str, *, z: int, charge: int, state_role: str = "reference"
 ) -> bool:
     scope = dataset_scope(dataset_id)
     return (

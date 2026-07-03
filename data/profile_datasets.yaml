@@ -38,7 +38,7 @@ datasets:
     coverage_label: H-Rn neutral atoms
     z_intervals: [[1, 86]]
     include_charges: neutral_only
-    include_state_roles: [recommended]
+    include_state_roles: [reference, reference_uncertain]
     diffuse: false
 
   - dataset_id: pbe0_sfx2c_dyallv4z_h-lr_spherical_v1
@@ -47,5 +47,5 @@ datasets:
     coverage_label: H-Lr neutral atoms
     z_intervals: [[1, 103]]
     include_charges: neutral_only
-    include_state_roles: [recommended]
+    include_state_roles: [reference, reference_uncertain]
     diffuse: false

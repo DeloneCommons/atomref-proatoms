@@ -10,10 +10,11 @@ from typing import Any
 
 from .basis import ELEMENTS
 from .schemas import (
+    ALLOWED_ATOM_STATE_SCHEMA_VERSIONS,
+    ALLOWED_OCCUPATION_POLICIES,
+    ALLOWED_SPIN_MODELS,
+    ALLOWED_SPIN_VARIANTS,
     ATOM_STATE_SCHEMA_VERSION,
-    DEFAULT_OCCUPATION_POLICY,
-    DEFAULT_SPIN_MODEL,
-    DEFAULT_SPIN_VARIANT,
     FORBIDDEN_STATE_FIELDS,
     REQUIRED_STATE_FIELDS,
 )
@@ -24,6 +25,9 @@ ALLOWED_STATE_CATEGORIES = {
     "curated_common_ion",
     "formal_crystal_ion_reference",
     "diagnostic_only",
+    "nist_reference",
+    "ning2022_monoanion_reference",
+    "formal_anion_reference",
 }
 
 
@@ -97,11 +101,15 @@ def charge_label(charge: int) -> str:
     return f"qm{abs(charge)}"
 
 
-def _l_count_sum(counts: dict[str, Any]) -> int:
-    return sum(int(value) for value in counts.values())
+def _l_count_sum(counts: dict[str, Any]) -> float:
+    return sum(float(value) for value in counts.values())
 
 
-def expected_alpha_beta_counts(record: dict[str, Any]) -> tuple[int, int, int]:
+def _nearly_equal(left: float, right: float, *, tol: float = 1e-9) -> bool:
+    return abs(left - right) <= tol
+
+
+def expected_alpha_beta_counts(record: dict[str, Any]) -> tuple[float, float, float]:
     alpha = _l_count_sum(record["alpha_l_counts"])
     beta = _l_count_sum(record["beta_l_counts"])
     return alpha, beta, alpha + beta
@@ -127,17 +135,18 @@ def validate_atom_state(record: dict[str, Any]) -> list[str]:
     z_value = int(record["z"])
     if 1 <= z_value <= len(ELEMENTS) and ELEMENTS[z_value - 1] != symbol:
         errors.append(f"{state_id}: z={z_value} does not match symbol {symbol}")
-    if record["schema_version"] != ATOM_STATE_SCHEMA_VERSION:
-        errors.append(f"{state_id}: unexpected schema_version {record['schema_version']!r}")
+    schema_version = record["schema_version"]
+    if schema_version not in ALLOWED_ATOM_STATE_SCHEMA_VERSIONS:
+        errors.append(f"{state_id}: unexpected schema_version {schema_version!r}")
     if record["electron_count"] != z_value - int(record["charge"]):
         errors.append(f"{state_id}: electron_count != z - charge")
     if record["multiplicity"] != int(record["spin_2s"]) + 1:
         errors.append(f"{state_id}: multiplicity != spin_2s + 1")
-    if record["spin_model"] != DEFAULT_SPIN_MODEL:
+    if record["spin_model"] not in ALLOWED_SPIN_MODELS:
         errors.append(f"{state_id}: unexpected spin_model {record['spin_model']!r}")
-    if record["spin_variant"] != DEFAULT_SPIN_VARIANT:
+    if record["spin_variant"] not in ALLOWED_SPIN_VARIANTS:
         errors.append(f"{state_id}: unexpected spin_variant {record['spin_variant']!r}")
-    if record["occupation_policy"] != DEFAULT_OCCUPATION_POLICY:
+    if record["occupation_policy"] not in ALLOWED_OCCUPATION_POLICIES:
         errors.append(f"{state_id}: unexpected occupation_policy")
     if record["state_category"] not in ALLOWED_STATE_CATEGORIES:
         errors.append(f"{state_id}: unexpected state_category {record['state_category']!r}")
@@ -145,20 +154,24 @@ def validate_atom_state(record: dict[str, Any]) -> list[str]:
         errors.append(f"{state_id}: notes must be a list")
 
     alpha, beta, total = expected_alpha_beta_counts(record)
-    if total != int(record["electron_count"]):
+    if not _nearly_equal(total, float(record["electron_count"])):
         errors.append(f"{state_id}: alpha/beta l-counts do not sum to electron_count")
-    if alpha - beta != int(record["spin_2s"]):
+    if not _nearly_equal(alpha - beta, float(record["spin_2s"])):
         errors.append(f"{state_id}: alpha/beta l-counts do not match spin_2s")
-    expected_id = (
+    expected_prefix = (
         f"{symbol}_{charge_label(int(record['charge']))}_"
-        f"mult{record['multiplicity']}_hund"
+        f"mult{record['multiplicity']}_"
     )
-    if state_id != expected_id:
-        errors.append(f"{state_id}: expected state_id {expected_id}")
-    if z_value in ACTINIDE_Z_RANGE and int(record["charge"]) > 0:
-        errors.append(
-            f"{state_id}: actinide cations are not part of the curated production state table"
-        )
+    if schema_version == ATOM_STATE_SCHEMA_VERSION:
+        expected_id = f"{expected_prefix}hund"
+        if state_id != expected_id:
+            errors.append(f"{state_id}: expected state_id {expected_id}")
+        if z_value in ACTINIDE_Z_RANGE and int(record["charge"]) > 0:
+            errors.append(
+                f"{state_id}: actinide cations are not part of the curated production state table"
+            )
+    elif not state_id.startswith(expected_prefix):
+        errors.append(f"{state_id}: expected state_id prefix {expected_prefix}")
     return errors
 
 
@@ -205,40 +218,73 @@ def selection_count_summary(states: list[AtomState]) -> dict[str, Any]:
 def validate_state_collection(states: list[AtomState]) -> list[str]:
     errors: list[str] = []
     summary = selection_count_summary(states)
-    expected_summary = {
-        "state_count": 173,
-        "neutral_count": 103,
-        "cation_count": 57,
-        "anion_count": 13,
-        "by_category": {
-            "curated_common_ion": 61,
-            "formal_crystal_ion_reference": 9,
-            "nist_ground_state": 103,
-        },
-        "by_charge": {
-            "-3": 5,
-            "-2": 4,
-            "-1": 4,
-            "0": 103,
-            "1": 9,
-            "2": 22,
-            "3": 23,
-            "4": 3,
-        },
-        "by_spin_variant": {"hund_high_spin": 173},
-    }
+    schema_versions = {str(state.record["schema_version"]) for state in states}
+    if schema_versions == {ATOM_STATE_SCHEMA_VERSION}:
+        expected_summary = {
+            "state_count": 173,
+            "neutral_count": 103,
+            "cation_count": 57,
+            "anion_count": 13,
+            "by_category": {
+                "curated_common_ion": 61,
+                "formal_crystal_ion_reference": 9,
+                "nist_ground_state": 103,
+            },
+            "by_charge": {
+                "-3": 5,
+                "-2": 4,
+                "-1": 4,
+                "0": 103,
+                "1": 9,
+                "2": 22,
+                "3": 23,
+                "4": 3,
+            },
+            "by_spin_variant": {"hund_high_spin": 173},
+        }
+    elif schema_versions == {"atomref.proatoms.state.v2"}:
+        expected_summary = {
+            "state_count": 495,
+            "neutral_count": 103,
+            "cation_count": 286,
+            "anion_count": 106,
+            "by_category": {
+                "formal_anion_reference": 40,
+                "ning2022_monoanion_reference": 66,
+                "nist_reference": 389,
+            },
+            "by_charge": {
+                "-3": 6,
+                "-2": 20,
+                "-1": 80,
+                "0": 103,
+                "1": 102,
+                "2": 95,
+                "3": 89,
+            },
+            "by_spin_variant": {"curated_multiplicity": 495},
+        }
+    else:
+        errors.append(f"State collection has mixed or unsupported schema versions: {schema_versions}")
+        return errors
+
     for key, expected in expected_summary.items():
         if summary[key] != expected:
             errors.append(f"State collection {key}={summary[key]!r} != {expected!r}")
+
     for state in states:
-        if state.state_category == "formal_crystal_ion_reference":
+        if state.state_category in {"formal_crystal_ion_reference", "formal_anion_reference"}:
             notes = " ".join(str(note) for note in state.record.get("notes", []))
-            if "not a claim of a stable free isolated atomic anion" not in notes:
+            if (
+                "not a claim of a stable" not in notes
+                and "not a stable isolated atomic anion" not in notes
+            ):
                 errors.append(f"{state.state_id}: formal anion note is missing/unclear")
-        if (
-            state.symbol in {"F", "Cl", "Br", "I"}
-            and state.charge == -1
-            and state.state_category != "curated_common_ion"
-        ):
-            errors.append(f"{state.state_id}: halide must be curated_common_ion")
+        if state.record["schema_version"] == ATOM_STATE_SCHEMA_VERSION:
+            if (
+                state.symbol in {"F", "Cl", "Br", "I"}
+                and state.charge == -1
+                and state.state_category != "curated_common_ion"
+            ):
+                errors.append(f"{state.state_id}: halide must be curated_common_ion")
     return errors

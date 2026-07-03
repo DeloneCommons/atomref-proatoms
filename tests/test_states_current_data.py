@@ -4,6 +4,7 @@ import csv
 from collections import Counter
 from pathlib import Path
 
+from atomref_proatoms.paths import STATES_FILE
 from atomref_proatoms.states import (
     load_atom_states,
     selection_count_summary,
@@ -11,32 +12,30 @@ from atomref_proatoms.states import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v1.json"
 NIST_SOURCE_FILE = ROOT / "data" / "states" / "source" / "atom_configs_nist_source.csv"
 
 def test_current_state_table_loads_and_matches_expected_counts() -> None:
     states = load_atom_states(STATES_FILE)
     summary = selection_count_summary(states)
-    assert summary["state_count"] == 173
+    assert summary["state_count"] == 495
     assert summary["neutral_count"] == 103
-    assert summary["cation_count"] == 57
-    assert summary["anion_count"] == 13
+    assert summary["cation_count"] == 286
+    assert summary["anion_count"] == 106
     assert summary["by_category"] == {
-        "curated_common_ion": 61,
-        "formal_crystal_ion_reference": 9,
-        "nist_ground_state": 103,
+        "formal_anion_reference": 40,
+        "ning2022_monoanion_reference": 66,
+        "nist_reference": 389,
     }
     assert summary["by_charge"] == {
-        "-3": 5,
-        "-2": 4,
-        "-1": 4,
+        "-3": 6,
+        "-2": 20,
+        "-1": 80,
         "0": 103,
-        "1": 9,
-        "2": 22,
-        "3": 23,
-        "4": 3,
+        "1": 102,
+        "2": 95,
+        "3": 89,
     }
-    assert summary["by_spin_variant"] == {"hund_high_spin": 173}
+    assert summary["by_spin_variant"] == {"curated_multiplicity": 495}
     assert validate_state_collection(states) == []
 
 
@@ -53,24 +52,24 @@ def test_state_charge_spin_and_l_counts_are_consistent() -> None:
     for state in load_atom_states(STATES_FILE):
         assert state.electron_count == state.z - state.charge
         assert state.multiplicity == state.spin_2s + 1
-        alpha = sum(int(value) for value in state.record["alpha_l_counts"].values())
-        beta = sum(int(value) for value in state.record["beta_l_counts"].values())
-        assert alpha + beta == state.electron_count
-        assert alpha - beta == state.spin_2s
-        assert state.record["spin_model"] == "free_ion_hund_high_spin"
+        alpha = sum(float(value) for value in state.record["alpha_l_counts"].values())
+        beta = sum(float(value) for value in state.record["beta_l_counts"].values())
+        assert abs((alpha + beta) - state.electron_count) < 1e-9
+        assert abs((alpha - beta) - state.spin_2s) < 1e-9
+        assert state.record["spin_model"] == "curated_ground_multiplicity"
 
 
-def test_no_actinide_cations_in_curated_production_states() -> None:
-    for state in load_atom_states(STATES_FILE):
-        assert not (89 <= state.z <= 103 and state.charge > 0)
+def test_actinide_cations_are_in_active_v2_state_table() -> None:
+    states = load_atom_states(STATES_FILE)
+    assert any(89 <= state.z <= 103 and state.charge > 0 for state in states)
 
 
 def test_formal_anions_and_halides_are_labeled_as_expected() -> None:
     for state in load_atom_states(STATES_FILE):
         if state.charge < -1:
-            assert state.state_category == "formal_crystal_ion_reference"
+            assert state.state_category == "formal_anion_reference"
         if state.symbol in {"F", "Cl", "Br", "I"} and state.charge == -1:
-            assert state.state_category == "curated_common_ion"
+            assert state.state_category == "ning2022_monoanion_reference"
 
 
 def test_nist_source_table_keeps_compact_v2_state_metadata() -> None:
@@ -204,7 +203,7 @@ def test_v2_formal_anion_table_is_explicitly_not_claimed() -> None:
     with FORMAL_V2_FILE.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
 
-    assert len(rows) == 46
+    assert len(rows) == 40
     assert rows[0].keys() == {
         "z",
         "symbol",
@@ -227,17 +226,17 @@ def test_v2_formal_anion_table_is_explicitly_not_claimed() -> None:
     assert {row["physical_status"] for row in rows} == {"not_claimed"}
 
     assert Counter(row["state_role"] for row in rows) == {
-        "formal_monoanion": 15,
-        "formal_multianion": 31,
+        "formal_monoanion": 14,
+        "formal_multianion": 26,
     }
     assert Counter(row["state_source"] for row in rows) == {
-        "formal_rule": 39,
-        "manual_curated": 7,
+        "formal_rule": 34,
+        "manual_curated": 6,
     }
     assert Counter(row["rule_reason"] for row in rows) == {
         "review_unbound_but_required_by_policy": 8,
-        "review_theory_only_but_required_by_policy": 7,
-        "p_block_formal_dianion_policy": 25,
+        "review_theory_only_but_required_by_policy": 6,
+        "p_block_formal_dianion_policy": 20,
         "carbon_pnictogen_formal_trianion_policy": 6,
     }
 
@@ -249,27 +248,22 @@ def test_v2_formal_anion_table_is_explicitly_not_claimed() -> None:
         "C",
         "N",
         "O",
-        "F",
         "Al",
         "Si",
         "P",
         "S",
-        "Cl",
         "Ga",
         "Ge",
         "As",
         "Se",
-        "Br",
         "In",
         "Sn",
         "Sb",
         "Te",
-        "I",
         "Tl",
         "Pb",
         "Bi",
         "Po",
-        "At",
     }
     carbon_pnictogens = {"C", "N", "P", "As", "Sb", "Bi"}
 
@@ -291,5 +285,157 @@ def test_v2_formal_anion_table_is_explicitly_not_claimed() -> None:
     assert ("Ac", "-1") not in by_key
     assert ("Pa", "-1") not in by_key
     assert ("Lr", "-1") not in by_key
-    assert by_key[("F", "-2")]["configuration"] == "[Ne] 3s1"
+    assert ("F", "-2") not in by_key
+    assert ("Cl", "-2") not in by_key
+    assert ("Br", "-2") not in by_key
+    assert ("I", "-2") not in by_key
+    assert ("At", "-2") not in by_key
+    assert ("Fr", "-1") not in by_key
     assert by_key[("Bi", "-3")]["configuration"] == "[Hg] 6p6"
+
+V2_SELECTION_FILE = ROOT / "data" / "states" / "selection" / "required_states_v2.csv"
+V2_STATES_CSV_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v2.csv"
+V2_STATES_JSON_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v2.json"
+V2_STATES_SUMMARY_FILE = ROOT / "data" / "states" / "curated" / "atom_states_summary_v2.json"
+
+
+def test_v2_required_states_table_matches_charge_policy() -> None:
+    with V2_SELECTION_FILE.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+
+    assert len(rows) == 495
+    assert rows[0].keys() == {
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "state_source",
+        "source_table",
+        "state_role",
+        "physical_status",
+        "include_reason",
+    }
+
+    keys = [(row["symbol"], row["charge"]) for row in rows]
+    assert len(keys) == len(set(keys))
+    assert all(int(row["electron_count"]) > 0 for row in rows)
+    assert all(int(row["charge"]) <= 3 for row in rows)
+    assert Counter(row["charge"] for row in rows) == {
+        "-3": 6,
+        "-2": 20,
+        "-1": 80,
+        "0": 103,
+        "1": 102,
+        "2": 95,
+        "3": 89,
+    }
+
+    group18 = {"He", "Ne", "Ar", "Kr", "Xe", "Rn"}
+    assert not any(row["symbol"] in group18 and int(row["charge"]) < 0 for row in rows)
+    assert ("H", "1") not in keys
+    assert ("He", "2") not in keys
+    assert ("He", "3") not in keys
+    assert ("Ac", "-1") not in keys
+    assert ("Pa", "-1") not in keys
+    assert ("Lr", "-1") not in keys
+    assert ("Fr", "-1") not in keys
+    assert ("Ra", "-1") not in keys
+    assert ("Th", "-1") not in keys
+    assert ("U", "-1") not in keys
+    assert ("F", "-2") not in keys
+    assert ("Cl", "-2") not in keys
+    assert ("Br", "-2") not in keys
+    assert ("I", "-2") not in keys
+    assert ("At", "-2") not in keys
+
+
+def test_v2_curated_json_loads_with_curated_multiplicities() -> None:
+    states = load_atom_states(V2_STATES_JSON_FILE)
+    summary = selection_count_summary(states)
+
+    assert summary["state_count"] == 495
+    assert summary["neutral_count"] == 103
+    assert summary["cation_count"] == 286
+    assert summary["anion_count"] == 106
+    assert summary["by_category"] == {
+        "formal_anion_reference": 40,
+        "ning2022_monoanion_reference": 66,
+        "nist_reference": 389,
+    }
+    assert summary["by_spin_variant"] == {"curated_multiplicity": 495}
+
+    by_key = {(state.symbol, state.charge): state for state in states}
+    ce = by_key[("Ce", 0)]
+    assert ce.multiplicity == 1
+    assert ce.record["state_id"] == "Ce_q0_mult1_nist"
+    assert ce.record["alpha_l_counts"]["2"] == 10.5
+    assert ce.record["beta_l_counts"]["3"] == 0.5
+
+    carbon_anion = by_key[("C", -1)]
+    assert carbon_anion.record["state_source"] == "ning2022"
+    assert carbon_anion.record["state_role"] == "bound_experimental"
+
+    nitrogen_anion = by_key[("N", -1)]
+    assert nitrogen_anion.record["state_category"] == "formal_anion_reference"
+    assert nitrogen_anion.record["physical_status"] == "not_claimed"
+
+
+def test_v2_summary_records_policy_exclusions() -> None:
+    import json
+
+    summary = json.loads(V2_STATES_SUMMARY_FILE.read_text(encoding="utf-8"))
+    assert summary["schema_version"] == "atomref.proatoms.state_build_summary.v2"
+    assert summary["state_count"] == 495
+    assert summary["by_source"] == {
+        "formal_rule": 34,
+        "manual_curated": 6,
+        "ning2022": 66,
+        "nist_gsie": 389,
+    }
+    assert summary["diagnostics"] == {
+        "skipped_cations": [
+            {
+                "symbol": "H",
+                "charge": "1",
+                "reason": "missing_nist_electron_bearing_state",
+            },
+            {
+                "symbol": "He",
+                "charge": "2",
+                "reason": "missing_nist_electron_bearing_state",
+            },
+            {
+                "symbol": "He",
+                "charge": "3",
+                "reason": "missing_nist_electron_bearing_state",
+            },
+        ]
+    }
+
+
+def test_v2_review_csv_is_json_subset_without_l_counts() -> None:
+    with V2_STATES_CSV_FILE.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+
+    assert len(rows) == 495
+    assert rows[0].keys() == {
+        "state_id",
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_level",
+        "multiplicity",
+        "spin_2s",
+        "state_category",
+        "state_role",
+        "physical_status",
+        "state_source",
+        "source_table",
+        "nist_ie_provenance",
+        "rule_reason",
+        "notes",
+    }
+    assert "alpha_l_counts" not in rows[0]
+    assert "beta_l_counts" not in rows[0]

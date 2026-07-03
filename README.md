@@ -29,6 +29,11 @@ pure/spherical Gaussian basis functions. The two released neutral branches are:
 - `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1`: H-Lr, `dyall-v4z`.
 
 The machine-readable dataset specification is `data/profile_datasets.yaml`.
+The active generated profiles are still v1 neutral-atom data, but the state layer
+now also contains v2 preparation outputs for later charged-dataset generation:
+`data/states/selection/required_states_v2.csv`,
+`data/states/curated/atom_states_v2.csv`, and
+`data/states/curated/atom_states_v2.json`.
 
 ## What is included
 
@@ -58,6 +63,7 @@ sets. From the repository root:
 ```bash
 python scripts/check_basis_bundles.py
 python scripts/build_atom_states.py --check
+python scripts/build_atom_states.py --version v2 --check
 pytest
 ```
 

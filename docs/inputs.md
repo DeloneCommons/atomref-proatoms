@@ -1,27 +1,27 @@
 # Input data
 
-The v1 datasets are generated from two compact tracked input layers: atomic-state
-records and frozen Gaussian basis bundles. The active selection and numerical
-settings are combined in `data/profile_datasets.yaml`.
+The active v2 state layer is generated from compact tracked source tables.
+Frozen Gaussian basis bundles and profile-generation settings are declared
+separately in `data/profile_datasets.yaml`.
 
 ## Atomic-state layer
 
 The curated state table is:
 
-- `data/states/curated/atom_states_v1.json`
+- `data/states/curated/atom_states_v2.json`
 
 The selection file used to build it is:
 
-- `data/states/selection/required_states_v1.csv`
+- `data/states/selection/required_states_v2.csv`
 
 Each curated record contains the fields needed to construct a one-center PySCF
 atom and assign spherical fractional occupations: element, charge, electron
 count, configuration, multiplicity, spin-resolved angular-momentum counts,
 state role, curation status, and occupation policy.
 
-The active v1 profile datasets select neutral recommended states from this table.
-A charged record may exist in the curated state layer without being part of any
-v1 generated profile dataset.
+The active v2 curated table contains neutral, cationic, physical/provisional
+monoanion, and formal-anion reference states. Profile-generation datasets may
+select a subset of these states by charge and state role.
 
 ### Source convention
 
@@ -51,19 +51,19 @@ A compact monoanion source table is stored at
 not store electron-affinity values or numerical uncertainties. Rows may be
 flagged as accepted experimental/evaluated monoanions, provisional experimental
 monoanions, theory-only diagnostics, or excluded/unbound/problematic cases. This
-source table is preparation material for v2 and is not yet used by the active v1
-profile-generation contract.
+source table is part of the active v2 state-preparation layer.
 
-The active v1 formal-anion configuration records are stored separately under
-`data/states/source/`. They are part of the state curation layer, not active v1
-profile outputs unless selected by the active profile-dataset configuration.
+The legacy v1 formal-anion configuration records remain in `data/states/source/`
+only as historical source data from the v1 release line. The active v2 formal
+anion table is `data/states/curated/formal_atoms_ions.csv`.
 
 A v2 formal-anion preparation table is stored at
 `data/states/curated/formal_atoms_ions.csv`. It contains formal references for
 required monoanions without accepted physical/reference rows and for the v2
 p-block multianion policy. Purely formal actinide fallback monoanions are out of
-the initial v2 scope; source-backed actinide monoanions may still enter later
-through the Ning--Lu source table. Every formal row is marked
+the initial v2 scope; source-backed actinide monoanions are retained in the
+Ning--Lu source-status table for future extension but do not enter the initial
+H-Rn anion compute set. Every formal row is marked
 `physical_status = not_claimed`; these records are stockholder/Hirshfeld-I-like
 density references, not stable isolated atomic-anion claims.
 
@@ -110,3 +110,26 @@ products. It declares:
 
 This YAML file should be treated as the central machine-readable contract for the
 v1 release configuration.
+
+
+## V2 state-selection outputs
+
+The active v2 state-preparation command is:
+
+```bash
+python scripts/build_atom_states.py
+```
+
+It produces the active v2 selection and curated-state set:
+
+```text
+data/states/selection/required_states_v2.csv
+data/states/curated/atom_states_v2.csv
+data/states/curated/atom_states_v2.json
+data/states/curated/atom_states_summary_v2.json
+```
+
+The v2 output combines NIST neutral/cation rows, accepted Ning--Lu monoanion
+rows, and explicitly formal anion rows. The v2 JSON uses curated ground
+multiplicities and a spherical l-count occupation convention rather than the
+legacy configuration-only Hund high-spin rule.

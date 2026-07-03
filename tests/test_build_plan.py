@@ -14,10 +14,10 @@ from atomref_proatoms.build_plan import (
     format_build_plan,
 )
 from atomref_proatoms.datasets import PRIMARY_DYALL_V4Z, PRIMARY_X2C_QZVPALL
+from atomref_proatoms.paths import STATES_FILE
 from atomref_proatoms.states import load_atom_states
 
 ROOT = Path(__file__).resolve().parents[1]
-STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v1.json"
 
 
 def _states():
@@ -38,13 +38,13 @@ def test_build_plan_dataset_counts_match_neutral_scope_policy() -> None:
 
 def test_build_plan_preserves_state_order_with_dataset_blocks() -> None:
     jobs = build_jobs_for_datasets(_states(), dataset_ids=(PRIMARY_X2C_QZVPALL, PRIMARY_DYALL_V4Z))
-    assert jobs[0].state_id == "H_q0_mult2_hund"
+    assert jobs[0].state_id == "H_q0_mult2_nist"
     assert jobs[0].dataset_id == PRIMARY_X2C_QZVPALL
-    assert jobs[85].state_id == "Rn_q0_mult1_hund"
+    assert jobs[85].state_id == "Rn_q0_mult1_nist"
     assert jobs[85].dataset_id == PRIMARY_X2C_QZVPALL
-    assert jobs[86].state_id == "H_q0_mult2_hund"
+    assert jobs[86].state_id == "H_q0_mult2_nist"
     assert jobs[86].dataset_id == PRIMARY_DYALL_V4Z
-    assert jobs[-1].state_id == "Lr_q0_mult2_hund"
+    assert jobs[-1].state_id == "Lr_q0_mult2_nist"
 
 
 def test_build_plan_summary_counts_charge_classes() -> None:
@@ -58,7 +58,7 @@ def test_build_plan_summary_counts_charge_classes() -> None:
 def test_filter_build_jobs_rejects_missing_state() -> None:
     jobs = build_jobs_for_datasets(_states(), dataset_ids=(PRIMARY_X2C_QZVPALL,))
     with pytest.raises(ValueError, match="not in the selected build plan"):
-        filter_build_jobs(jobs, only_state_ids={"U_q0_mult5_hund"})
+        filter_build_jobs(jobs, only_state_ids={"U_q0_mult5_nist"})
 
 
 def test_compute_wavefunctions_list_cli() -> None:
@@ -79,7 +79,7 @@ def test_compute_wavefunctions_list_cli() -> None:
     assert "Profile data version: 1.0.0" in result.stdout
     assert "Build jobs: 103" in result.stdout
     assert PRIMARY_DYALL_V4Z in result.stdout
-    assert "Lr_q0_mult2_hund" in result.stdout
+    assert "Lr_q0_mult2_nist" in result.stdout
     assert "Dry run completed before PySCF import/SCF execution" in result.stdout
 
 
@@ -91,7 +91,7 @@ def test_compute_wavefunctions_dry_run_does_not_import_pyscf() -> None:
             "--dataset",
             PRIMARY_X2C_QZVPALL,
             "--state",
-            "H_q0_mult2_hund",
+            "H_q0_mult2_nist",
             "--dry-run",
         ],
         cwd=ROOT,
@@ -112,7 +112,7 @@ def test_extract_profiles_dry_run_does_not_import_pyscf_or_read_checkpoints(tmp_
             "--dataset",
             PRIMARY_X2C_QZVPALL,
             "--state",
-            "H_q0_mult2_hund",
+            "H_q0_mult2_nist",
             "--scf-root",
             str(tmp_path / "scf"),
             "--output-root",
