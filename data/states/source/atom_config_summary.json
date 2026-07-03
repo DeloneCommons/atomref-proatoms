@@ -11,16 +11,33 @@
         "electron_count",
         "configuration",
         "ground_level",
+        "ground_multiplicity",
         "nist_ie_provenance"
       ],
-      "sha256": "2fabef65e18ca2b1d60f6880a3ddd2541c4c36a513e80015f64b34578bb4702e",
-      "note": "Compact element/charge/configuration table derived from NIST ASD GSIE snapshots; NIST ground-level labels and ionization-energy provenance classes are retained, but quantitative ionization-energy values are not included.",
+      "sha256": "eeab666dcd4e5b5ded06f5eb58f5c87cc83378f196b9b752e39c0672b837d131",
+      "note": "Compact element/charge/configuration table derived from NIST ASD GSIE snapshots; NIST ground-level labels, parsed simple LS-term multiplicities, and ionization-energy provenance classes are retained, but quantitative ionization-energy values are not included.",
       "nist_ie_provenance_counts": {
         "evaluated": 311,
         "semiempirical": 898,
         "theoretical": 4143
       },
-      "ground_level_blank_count": 138
+      "ground_level_blank_count": 138,
+      "ground_multiplicity_parsed_count": 4885,
+      "ground_multiplicity_blank_count": 467
+    },
+    "atom_configs_nist_ground_level_review.csv": {
+      "row_count": 329,
+      "columns": [
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_level",
+        "review_reason"
+      ],
+      "sha256": "fb08a41497b528180a019096677bffc9e4962832ab5af1abeb9843432ce4b3c0",
+      "note": "Rows with non-empty NIST ground_level labels that were not parsed by the simple leading-multiplicity LS-term rule."
     },
     "atom_configs_formal_anions.csv": {
       "row_count": 13,
@@ -71,5 +88,27 @@
         "reason": "Incomplete high-charge source row in the raw NIST HTML snapshot; outside the project state-selection scope."
       }
     ]
+  },
+  "source_files": [
+    "atom_configs_nist_source.csv",
+    "atom_configs_nist_ground_level_review.csv",
+    "atom_configs_formal_anions.csv"
+  ],
+  "nist_source_fields": [
+    "z",
+    "symbol",
+    "charge",
+    "electron_count",
+    "configuration",
+    "ground_level",
+    "ground_multiplicity",
+    "nist_ie_provenance"
+  ],
+  "nist_ground_level_multiplicity": {
+    "parsed_simple_ls_term_count": 4885,
+    "manual_review_count": 329,
+    "missing_ground_level_count": 138,
+    "review_file": "atom_configs_nist_ground_level_review.csv",
+    "parser_rule": "leading integer before spectroscopic term letter in compact LS-like labels, e.g. 4S°3/2 -> 4"
   }
 }

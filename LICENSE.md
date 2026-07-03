@@ -26,9 +26,10 @@ retain the Basis Set Exchange BSD-3-Clause notice included at
 recorded in each basis bundle's `references.md` file.
 
 The atomic-state source layer uses compact electronic-configuration labels,
-ground-level labels, and ionization-energy provenance classes prepared from the
-NIST Atomic Spectra Database, NIST Standard Reference Database 78. This project
-does not redistribute raw NIST ASD pages, quantitative ionization-energy tables,
+ground-level labels, parsed simple term multiplicities, and ionization-energy
+provenance classes prepared from the NIST Atomic Spectra Database, NIST Standard
+Reference Database 78. This project does not redistribute raw NIST ASD pages,
+quantitative ionization-energy tables,
 uncertainty records, or bibliography rows. Cite the NIST Atomic Spectra Database
 when publishing work that relies on these state labels.
 

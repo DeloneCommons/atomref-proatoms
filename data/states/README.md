@@ -13,14 +13,15 @@ record is not a generated v1 profile unless it is selected by
 
 The data stored here are intentionally minimal. For each NIST-derived atom or
 positive ion, the project keeps only the element, charge, electron count, a clean
-electronic-configuration label, the NIST ground-level label, and a compact
-provenance class derived from the syntax of the NIST ionization-energy value.
+electronic-configuration label, the NIST ground-level label, a parsed simple
+LS-term multiplicity when the level label permits it, and a compact provenance
+class derived from the syntax of the NIST ionization-energy value.
 Raw HTML pages, quantitative ionization energies, numerical uncertainties, and
 bibliography rows from the NIST Atomic Spectra Database are not redistributed in
 this package. The current v1 density generator still uses the configuration
 column and a documented free-ion Hund high-spin convention for spin-resolved
-occupations; the retained NIST ground-level labels are a preparation layer for
-v2 spin/multiplicity curation.
+occupations; the retained NIST ground-level labels and parsed multiplicities are
+a preparation layer for v2 spin/multiplicity curation.
 
 ## Directory layout
 
@@ -31,6 +32,7 @@ data/states/
   source/
     atom_config_summary.json
     atom_configs_nist_source.csv
+    atom_configs_nist_ground_level_review.csv
     atom_configs_formal_anions.csv
 
   selection/
@@ -49,9 +51,10 @@ list of `(element, charge)` pairs to build. `curated/` stores generator-ready JS
 records produced by `scripts/build_atom_states.py`.
 
 The `selection/` directory is a selection layer rather than a complete
-configuration layer. Spin multiplicities and alpha/beta angular-momentum
-occupation counts are assigned by the builder script and are stored only in the
-curated JSON output.
+configuration layer. The NIST source table now includes parsed simple
+ground-level multiplicities for v2 curation, but the current v1 curated JSON is
+still built with the documented Hund high-spin convention in
+`scripts/build_atom_states.py`.
 
 ## Source-data preparation
 
@@ -68,9 +71,13 @@ https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=Na+Mg&submit=Retrieve+Data&un
 The configuration column is the compact shell-occupation label prepared from the
 NIST GSIE state fields and normalized to plain text forms suitable for a small
 CSV table. The `ground_level` column stores the corresponding NIST `Ground
-Level` label in compact text form, such as `2S1/2`, `3P2`, or `4S°3/2`. It is
-retained as the source label for later v2 spin/multiplicity curation; the current
-v1 builder does not yet reconstruct spectroscopic terms from it.
+Level` label in compact text form, such as `2S1/2`, `3P2`, or `4S°3/2`. The
+`ground_multiplicity` column is parsed only for simple LS-like labels with a
+leading term multiplicity, for example `4S°3/2 -> 4`. Rows with missing
+`ground_level` values or non-LS/intermediate-coupling labels have blank
+`ground_multiplicity` values; non-empty unparsed labels are listed in
+`atom_configs_nist_ground_level_review.csv` for later v2 manual curation. The
+current v1 builder does not yet use these parsed multiplicities.
 
 The `nist_ie_provenance` column is derived only from the bracket syntax of the
 NIST `Ionization Energy (eV)` field:
@@ -84,9 +91,11 @@ missing        empty value, if present
 
 This is a provenance class for the ionization-energy entry, not a stored
 ionization energy and not a complete confidence score for the state label. Some
-high-charge rows in the compact source table have blank NIST ground-level labels;
-those rows are retained because the table mirrors the compact source preparation
-scope, while v2 production selections will use only policy-selected states.
+high-charge rows in the compact source table have blank NIST ground-level labels,
+and some heavy-atom or high-charge rows use jj/intermediate-coupling labels that
+are intentionally not converted into LS multiplicities. Those rows are retained
+because the table mirrors the compact source preparation scope, while v2
+production selections will use only policy-selected and reviewed states.
 
 One practical caveat of the GSIE spectra input is that element symbols such as
 `V` and `I` can also be interpreted in Roman-numeral ion-stage notation in some
@@ -94,8 +103,11 @@ combined queries. During preparation, returned spectrum labels and charges were
 checked against the intended element-charge rows before compaction.
 
 After compaction, the NIST-derived source table contains 5352 complete rows and
-no duplicate `(symbol, charge)` keys. One incomplete high-charge nobelium row
-from the raw snapshot was excluded; it is outside the selected state scope.
+no duplicate `(symbol, charge)` keys. The simple ground-level parser assigns
+4885 `ground_multiplicity` values, leaves 138 rows blank because no NIST
+ground-level label was retained, and writes 329 non-empty non-LS labels to the
+review file. One incomplete high-charge nobelium row from the raw snapshot was
+excluded; it is outside the selected state scope.
 
 ## Formal anions
 
@@ -187,8 +199,9 @@ https://physics.nist.gov/PhysRefData/ASD/Html/iehelp.html
 
 This project does not redistribute the raw ASD pages or quantitative SRD tables.
 The compact source table keeps only common electronic-configuration labels, NIST
-ground-level labels, and ionization-energy provenance classes needed for
-reproducible proatom-density generation and v2 state curation. Redistribution
+ground-level labels, parsed simple term multiplicities, and ionization-energy
+provenance classes needed for reproducible proatom-density generation and v2
+state curation. Redistribution
 terms for NIST Standard Reference Data should be reviewed before adding larger
 ASD extracts or quantitative energy tables.
 

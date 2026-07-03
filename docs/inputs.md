@@ -28,11 +28,16 @@ v1 generated profile dataset.
 Neutral and positive-ion state labels are prepared from the NIST Atomic Spectra
 Database Ground States and Ionization Energies interface, NIST Standard
 Reference Database 78. This repository keeps compact configuration labels needed
-for generator reproducibility, NIST ground-level labels for later v2
-spin/multiplicity curation, and an ionization-energy provenance class derived
-from the NIST bracket syntax. It does not redistribute raw NIST ASD pages,
-quantitative ionization-energy values, numerical uncertainty records, or
-bibliography rows.
+for generator reproducibility, NIST ground-level labels, parsed simple
+LS-term multiplicities for later v2 spin curation, and an ionization-energy
+provenance class derived from the NIST bracket syntax. It does not redistribute raw
+NIST ASD pages, quantitative ionization-energy values, numerical uncertainty
+records, or bibliography rows.
+
+Rows whose non-empty NIST `Ground Level` labels are not simple LS-like terms are
+listed in `data/states/source/atom_configs_nist_ground_level_review.csv`. The
+current v1 builder still uses its documented Hund high-spin occupation model;
+the parsed NIST multiplicities are retained for the v2 state-curation layer.
 
 Small formal-anion configuration records are stored separately under
 `data/states/source/`. They are part of the state curation layer, not active v1
