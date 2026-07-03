@@ -18,7 +18,6 @@ from atomref_proatoms.artifacts import write_json  # noqa: E402
 from atomref_proatoms.basis import list_basis_bundles  # noqa: E402
 from atomref_proatoms.build_plan import (  # noqa: E402
     ALL_PROFILE_DATASETS,
-    ALL_V1_BUILD_PLAN,
     ProfileBuildJob,
     build_jobs_for_datasets,
     filter_build_jobs,
@@ -78,8 +77,8 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[],
         help=(
-            "Dataset ID to compute; may be repeated. Use 'all' or 'all_v1' for all "
-            "configured v1 datasets. Defaults to all datasets."
+            "Dataset ID to compute; may be repeated. Use 'all' for all "
+            "configured datasets. Defaults to all datasets."
         ),
     )
     parser.add_argument(
@@ -151,7 +150,7 @@ def _selected_dataset_ids(values: list[str], configured_ids: tuple[str, ...]) ->
     if not values:
         return configured_ids
     expanded: list[str] = []
-    aliases = {ALL_PROFILE_DATASETS, ALL_V1_BUILD_PLAN}
+    aliases = {ALL_PROFILE_DATASETS}
     for value in values:
         if value in aliases:
             expanded.extend(configured_ids)

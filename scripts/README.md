@@ -1,9 +1,9 @@
 # Workflow scripts
 
-This directory contains the command-line entry points used to validate inputs,
+This directory contains command-line entry points used to validate inputs,
 produce local SCF artifacts, and extract released radial-density datasets. The
 scripts are intentionally small wrappers around the Python package code so that
-the release workflow is reproducible from the repository root.
+workflow behavior is reproducible from the repository root.
 
 ## Pipeline order
 
@@ -23,7 +23,7 @@ artifacts require the generator dependency set.
 
 | script | purpose | primary outputs |
 |---|---|---|
-| `build_atom_states.py` | Build or validate curated atomic-state JSON records from compact source and selection CSV files. | `data/states/curated/atom_states_v1.json`, `data/states/curated/atom_states_summary.json` |
+| `build_atom_states.py` | Build or validate the active v2 curated atomic-state table from compact source/status CSV files. | `data/states/selection/required_states_v2.csv`, `data/states/curated/atom_states_v2.csv`, `data/states/curated/atom_states_v2.json`, `data/states/curated/atom_states_summary_v2.json` |
 | `check_basis_bundles.py` | Validate frozen basis bundles, checksums, NWChem spherical headers, coverage metadata, and optional PySCF parseability. | terminal validation report |
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
@@ -33,16 +33,18 @@ artifacts require the generator dependency set.
 Default inputs:
 
 ```text
-data/states/source/atom_configs_nist_source.csv
-data/states/source/atom_configs_formal_anions.csv
-data/states/selection/required_states_v1.csv
+data/states/source/nist_gsie/nist_neutral_cation_states.csv
+data/states/source/ning2022/ning2022_monoanions.csv
+data/states/curated/formal_atoms_ions.csv
 ```
 
 Default outputs:
 
 ```text
-data/states/curated/atom_states_v1.json
-data/states/curated/atom_states_summary.json
+data/states/selection/required_states_v2.csv
+data/states/curated/atom_states_v2.csv
+data/states/curated/atom_states_v2.json
+data/states/curated/atom_states_summary_v2.json
 ```
 
 Common commands:
@@ -54,13 +56,12 @@ python scripts/build_atom_states.py --check
 
 Options:
 
-- `--data-dir`: directory containing `source/` and `selection/`; default is
-  `data/states`.
-- `--selection-file`: explicit state-selection CSV; default is
-  `<data-dir>/selection/required_states_v1.csv`.
-- `--out-dir`: output directory for curated JSON files; default is
-  `<data-dir>/curated`.
-- `--check`: validate the existing curated JSON without rewriting it.
+- `--data-dir`: directory containing `source/`, `selection/`, and `curated/`;
+  default is `data/states`.
+- `--check`: validate the existing curated v2 JSON without rewriting it.
+
+The builder is v2-only in the active codebase. Historical v1 state files are kept
+at release/tag/archive level, not as live source-tree functionality.
 
 ## `check_basis_bundles.py`
 
@@ -108,8 +109,8 @@ local-data/scf/<dataset_id>/<state_id>/
 Selection options:
 
 - `--config`: profile dataset YAML; default is `data/profile_datasets.yaml`.
-- `--dataset`, `--dataset-id`: select one dataset; may be repeated. `all` and
-  `all_v1` select all configured v1 datasets.
+- `--dataset`, `--dataset-id`: select one dataset; may be repeated. `all` selects
+  all configured datasets.
 - `--state`, `--state-id`: restrict to one state ID; may be repeated.
 - `--scf-root`: local SCF artifact root; default is `local-data/scf`.
 
@@ -171,8 +172,8 @@ data/qa/metadata.json
 Selection and path options:
 
 - `--config`: active dataset YAML; default is `data/profile_datasets.yaml`.
-- `--dataset`, `--dataset-id`: select one dataset; may be repeated. `all` and
-  `all_v1` select all configured v1 datasets.
+- `--dataset`, `--dataset-id`: select one dataset; may be repeated. `all` selects
+  all configured datasets.
 - `--state`, `--state-id`: restrict to one state ID; may be repeated.
 - `--scf-root`: local SCF artifact root; default is `local-data/scf`.
 - `--output-root`, `--profiles-root`: profile output root; default is
@@ -198,18 +199,3 @@ Execution and QA options:
 - Data products: `docs/data.md`.
 - Input data: `docs/inputs.md`.
 - MkDocs overview: `docs/index.md`.
-
-
-### Building the v2 state table
-
-The v2 state-selection layer can be regenerated without running SCF jobs:
-
-```bash
-python scripts/build_atom_states.py --version v2
-python scripts/build_atom_states.py --version v2 --check
-```
-
-This reads the compact NIST source table, the Ning--Lu monoanion table, and the
-formal-anion table, then writes `required_states_v2.csv`, `atom_states_v2.csv`,
-`atom_states_v2.json`, and `atom_states_summary_v2.json`. The default invocation
-without `--version v2` still rebuilds the v1 curated state file.

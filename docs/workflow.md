@@ -21,7 +21,7 @@ package code. Their detailed command-line options are documented in
 
 ## Standard workflow
 
-Run the v1 release workflow from the repository root:
+Run the workflow checks from the repository root:
 
 ```bash
 python scripts/build_atom_states.py --check

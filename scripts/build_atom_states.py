@@ -7,8 +7,8 @@ spectroscopic terms. It combines project-maintained CSV inputs under
 generator.
 
 Default inputs:
-  data/states/source/atom_configs_nist_source.csv
-  data/states/source/ning2022_monoanions.csv
+  data/states/source/nist_gsie/nist_neutral_cation_states.csv
+  data/states/source/ning2022/ning2022_monoanions.csv
   data/states/curated/formal_atoms_ions.csv
 
 Default outputs:
@@ -31,6 +31,15 @@ from typing import Any
 
 L_BY_LETTER = {"s": 0, "p": 1, "d": 2, "f": 3, "g": 4}
 ORBITALS_BY_L = {l_value: 2 * l_value + 1 for l_value in L_BY_LETTER.values()}
+
+# Relative table paths are stored in generated rows so that source provenance
+# remains auditable after the source layer was organized by data source.
+NIST_SOURCE_TABLE = Path("source/nist_gsie/nist_neutral_cation_states.csv")
+NING2022_SOURCE_TABLE = Path("source/ning2022/ning2022_monoanions.csv")
+FORMAL_ANION_TABLE = Path("curated/formal_atoms_ions.csv")
+NIST_SOURCE_TABLE_LABEL = NIST_SOURCE_TABLE.as_posix()
+NING2022_SOURCE_TABLE_LABEL = NING2022_SOURCE_TABLE.as_posix()
+FORMAL_ANION_TABLE_LABEL = FORMAL_ANION_TABLE.as_posix()
 
 # Bracket cores used by NIST GSIE ground-shell notation and by the compact
 # formal-anion table. They are expanded explicitly to keep this script
@@ -178,8 +187,9 @@ def infer_occupation_counts_for_multiplicity(
 ) -> dict[str, Any]:
     """Infer spherical alpha/beta l-counts for a curated multiplicity.
 
-    The v1 builder used the maximum-spin Hund count implied by the configuration.
-    For v2, the spin multiplicity comes from the curated NIST/Ning/formal source
+    Earlier state builders used the maximum-spin Hund count implied by the
+    configuration. In the active v2 builder, the spin multiplicity comes from
+    the curated NIST/Ning/formal source
     table.  When the curated multiplicity is lower than the maximum-spin count
     implied by the configuration, the remaining spin imbalance is distributed
     proportionally over the open angular-momentum channels.  This keeps the
@@ -274,14 +284,11 @@ def v2_notes(row: dict[str, str], *extra: str) -> list[str]:
 
 
 def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[str, Any]]:
-    source_dir = data_dir / "source"
-    curated_dir = data_dir / "curated"
+    nist_rows = read_csv_rows(data_dir / NIST_SOURCE_TABLE)
+    ning_rows = read_csv_rows(data_dir / NING2022_SOURCE_TABLE)
+    formal_rows = read_csv_rows(data_dir / FORMAL_ANION_TABLE)
 
-    nist_rows = read_csv_rows(source_dir / "atom_configs_nist_source.csv")
-    ning_rows = read_csv_rows(source_dir / "ning2022_monoanions.csv")
-    formal_rows = read_csv_rows(curated_dir / "formal_atoms_ions.csv")
-
-    nist_by_key = index_rows(nist_rows, name="atom_configs_nist_source.csv")
+    nist_by_key = index_rows(nist_rows, name=NIST_SOURCE_TABLE_LABEL)
     selection_rows: list[dict[str, str]] = []
     skipped_cations: list[dict[str, str]] = []
 
@@ -300,7 +307,7 @@ def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[
                 "charge": "0",
                 "electron_count": neutral["electron_count"],
                 "state_source": "nist_gsie",
-                "source_table": "atom_configs_nist_source.csv",
+                "source_table": NIST_SOURCE_TABLE_LABEL,
                 "state_role": "reference",
                 "physical_status": "experimental_or_evaluated",
                 "include_reason": "neutral_reference_policy",
@@ -343,7 +350,7 @@ def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[
                     "charge": str(charge),
                     "electron_count": row["electron_count"],
                     "state_source": "nist_gsie",
-                    "source_table": "atom_configs_nist_source.csv",
+                    "source_table": NIST_SOURCE_TABLE_LABEL,
                     "state_role": "reference"
                     if row["nist_ie_provenance"] == "evaluated"
                     else "reference_uncertain",
@@ -367,7 +374,7 @@ def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[
                 "charge": "-1",
                 "electron_count": row["electron_count"],
                 "state_source": "ning2022",
-                "source_table": "ning2022_monoanions.csv",
+                "source_table": NING2022_SOURCE_TABLE_LABEL,
                 "state_role": row["state_role"],
                 "physical_status": row["physical_status"],
                 "include_reason": "accepted_physical_or_provisional_monoanion",
@@ -382,7 +389,7 @@ def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[
                 "charge": row["charge"],
                 "electron_count": row["electron_count"],
                 "state_source": row["state_source"],
-                "source_table": "formal_atoms_ions.csv",
+                "source_table": FORMAL_ANION_TABLE_LABEL,
                 "state_role": row["state_role"],
                 "physical_status": row["physical_status"],
                 "include_reason": row["rule_reason"],
@@ -402,20 +409,17 @@ def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[
 def build_states_v2(
     data_dir: Path,
 ) -> tuple[list[dict[str, Any]], list[dict[str, str]], dict[str, Any]]:
-    source_dir = data_dir / "source"
-    curated_dir = data_dir / "curated"
-
     nist_by_key = index_rows(
-        read_csv_rows(source_dir / "atom_configs_nist_source.csv"),
-        name="atom_configs_nist_source.csv",
+        read_csv_rows(data_dir / NIST_SOURCE_TABLE),
+        name=NIST_SOURCE_TABLE_LABEL,
     )
     ning_by_key = index_rows(
-        read_csv_rows(source_dir / "ning2022_monoanions.csv"),
-        name="ning2022_monoanions.csv",
+        read_csv_rows(data_dir / NING2022_SOURCE_TABLE),
+        name=NING2022_SOURCE_TABLE_LABEL,
     )
     formal_by_key = index_rows(
-        read_csv_rows(curated_dir / "formal_atoms_ions.csv"),
-        name="formal_atoms_ions.csv",
+        read_csv_rows(data_dir / FORMAL_ANION_TABLE),
+        name=FORMAL_ANION_TABLE_LABEL,
     )
 
     selection_rows, diagnostics = build_v2_selection_rows(data_dir)
@@ -426,7 +430,7 @@ def build_states_v2(
         symbol = selected["symbol"]
         charge = int(selected["charge"])
         source_table = selected["source_table"]
-        if source_table == "atom_configs_nist_source.csv":
+        if source_table == NIST_SOURCE_TABLE_LABEL:
             row = nist_by_key[(symbol, charge)]
             multiplicity = int(row["ground_multiplicity"])
             ground_level = row["ground_level"]
@@ -435,7 +439,7 @@ def build_states_v2(
             state_source = "nist_gsie"
             nist_ie_provenance = row["nist_ie_provenance"]
             rule_reason = ""
-        elif source_table == "ning2022_monoanions.csv":
+        elif source_table == NING2022_SOURCE_TABLE_LABEL:
             row = ning_by_key[(symbol, charge)]
             multiplicity = int(row["ground_multiplicity"])
             ground_level = row["ground_level"]
@@ -446,7 +450,7 @@ def build_states_v2(
             state_source = "ning2022"
             nist_ie_provenance = ""
             rule_reason = ""
-        elif source_table == "formal_atoms_ions.csv":
+        elif source_table == FORMAL_ANION_TABLE_LABEL:
             row = formal_by_key[(symbol, charge)]
             multiplicity = int(row["ground_multiplicity"])
             ground_level = ""

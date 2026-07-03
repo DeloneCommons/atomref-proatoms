@@ -21,19 +21,16 @@ built into the mean-field model. The radial density is therefore the
 self-consistent spherical proatom density, not a post-processed average of a
 broken-symmetry atom.
 
-The current project version uses PySCF `2.13.1` and computes all active v1
-profiles at the unrestricted PBE0 / spin-free one-electron X2C level with
-pure/spherical Gaussian basis functions. The two released neutral branches are:
+The active state layer is v2. It combines NIST-derived neutral/cation states,
+Ning--Lu 2022 physical/provisional monoanion states, and explicitly formal
+anion references for the initial charged-state scope. The active curated state
+table is `data/states/curated/atom_states_v2.json`, with its selection table in
+`data/states/selection/required_states_v2.csv`. Historical v1 state files are
+kept at Git tag/release/archive level, not as live source-tree functionality.
 
-- `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1`: H-Rn, `x2c-QZVPall`.
-- `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1`: H-Lr, `dyall-v4z`.
-
-The machine-readable dataset specification is `data/profile_datasets.yaml`.
-The active generated profiles are still v1 neutral-atom data, but the state layer
-now also contains v2 preparation outputs for later charged-dataset generation:
-`data/states/selection/required_states_v2.csv`,
-`data/states/curated/atom_states_v2.csv`, and
-`data/states/curated/atom_states_v2.json`.
+The current profile-generation settings are declared in
+`data/profile_datasets.yaml`. Full v2 SCF/profile generation is a later step
+after the state/data layer is stable.
 
 ## What is included
 
@@ -63,7 +60,6 @@ sets. From the repository root:
 ```bash
 python scripts/check_basis_bundles.py
 python scripts/build_atom_states.py --check
-python scripts/build_atom_states.py --version v2 --check
 pytest
 ```
 
@@ -77,9 +73,9 @@ The lightweight package layer must remain importable without PySCF:
 python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 ```
 
-## Regenerating the v1 artifacts
+## Regeneration workflow
 
-The production workflow is:
+The profile-generation workflow is:
 
 ```bash
 python scripts/build_atom_states.py --check
@@ -139,7 +135,7 @@ parsed simple term multiplicities, a small set of manual v2-domain
 multiplicity assignments, and ionization-energy provenance classes prepared
 from the NIST Atomic Spectra Database, NIST Standard Reference Database 78. It
 also includes a compact Ning--Lu 2022 monoanion state-status source table without
-electron-affinity values and a v2 formal-anion preparation table whose rows are
+electron-affinity values and a formal-anion preparation table whose rows are
 explicitly marked as formal/not-claimed references. See
 [`LICENSE.md`](LICENSE.md) for the full repository license statement.
 

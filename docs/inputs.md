@@ -29,9 +29,9 @@ Neutral and positive-ion state labels are prepared from the NIST Atomic Spectra
 Database Ground States and Ionization Energies interface, NIST Standard
 Reference Database 78. This repository keeps compact configuration labels needed
 for generator reproducibility, NIST ground-level labels, parsed simple
-LS-term multiplicities for later v2 spin curation, a small set of manual
-v2-domain multiplicity assignments for non-LS NIST labels, and an
-ionization-energy provenance class derived from the NIST bracket syntax. It does not redistribute raw
+LS-term multiplicities, a small set of manual v2-domain multiplicity assignments
+for non-LS NIST labels, and an ionization-energy provenance class derived from
+the NIST bracket syntax. It does not redistribute raw
 NIST ASD pages, quantitative ionization-energy values, numerical uncertainty
 records, or bibliography rows.
 
@@ -41,23 +41,17 @@ charge-policy domain whose NIST labels use jj or pair-coupled notation, the
 project assigns LS-equivalent/Hund-consistent multiplicities manually in the
 source table. Remaining non-empty labels outside this v2 domain that are not parsed by the
 simple rule are left blank. No separate review table is shipped because these
-rows are outside the intended v2 neutral/cation computation scope. The current
-v1 builder still uses its documented Hund high-spin occupation model; the NIST
-multiplicities are retained for the v2 state-curation layer.
+rows are outside the intended v2 neutral/cation computation scope.
 
 A compact monoanion source table is stored at
-`data/states/source/ning2022_monoanions.csv`. It is curated from Ning and Lu
+`data/states/source/ning2022/ning2022_monoanions.csv`. It is curated from Ning and Lu
 2022 and retains only state labels plus status flags for H-U monoanions. It does
 not store electron-affinity values or numerical uncertainties. Rows may be
 flagged as accepted experimental/evaluated monoanions, provisional experimental
 monoanions, theory-only diagnostics, or excluded/unbound/problematic cases. This
 source table is part of the active v2 state-preparation layer.
 
-The legacy v1 formal-anion configuration records remain in `data/states/source/`
-only as historical source data from the v1 release line. The active v2 formal
-anion table is `data/states/curated/formal_atoms_ions.csv`.
-
-A v2 formal-anion preparation table is stored at
+A formal-anion preparation table is stored at
 `data/states/curated/formal_atoms_ions.csv`. It contains formal references for
 required monoanions without accepted physical/reference rows and for the v2
 p-block multianion policy. Purely formal actinide fallback monoanions are out of
@@ -76,7 +70,7 @@ The frozen basis bundles are stored under `data/basis_sets/`. Each bundle contai
 one NWChem-format spherical basis file, a manifest, SHA256 checksum, local
 reference notes, and a bundle README.
 
-Active v1 branches:
+Basis branches currently declared for profile generation:
 
 | basis ID | role | active coverage |
 |---|---|---:|
@@ -108,11 +102,11 @@ products. It declares:
 - density cutoffs used for radii;
 - active dataset IDs, basis IDs, element coverage, and neutral-only selection.
 
-This YAML file should be treated as the central machine-readable contract for the
-v1 release configuration.
+This YAML file should be treated as the central machine-readable contract for
+profile-generation settings.
 
 
-## V2 state-selection outputs
+## State-selection outputs
 
 The active v2 state-preparation command is:
 
@@ -132,4 +126,4 @@ data/states/curated/atom_states_summary_v2.json
 The v2 output combines NIST neutral/cation rows, accepted Ning--Lu monoanion
 rows, and explicitly formal anion rows. The v2 JSON uses curated ground
 multiplicities and a spherical l-count occupation convention rather than the
-legacy configuration-only Hund high-spin rule.
+earlier configuration-only Hund high-spin rule.

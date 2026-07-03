@@ -1,8 +1,8 @@
 # atomref-proatoms
 
-`atomref-proatoms` is a reproducible data package for spherical neutral proatomic
-radial electron densities. It publishes named profile datasets, cutoff radii, and
-QA tables generated from declared atomic states, frozen basis files, mean-field
+`atomref-proatoms` is a reproducible data package for spherical proatomic radial
+electron densities. It publishes named profile datasets, cutoff radii, and QA
+tables generated from declared atomic states, frozen basis files, mean-field
 settings, radial grids, and validation criteria.
 
 The package addresses a common ambiguity in proatom data. Open-shell atoms are
@@ -14,13 +14,10 @@ constraint is imposed inside the atomic SCF model through fractional occupations
 and angular-momentum block averaging. The tabulated density is therefore the
 self-consistent spherical proatom density intended by the dataset definition.
 
-The current v1 datasets are neutral-only:
-
-- `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1`, covering H-Rn with `x2c-QZVPall`.
-- `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1`, covering H-Lr with `dyall-v4z`.
-
-Both use unrestricted PBE0 with PySCF `2.13.1`, spin-free one-electron X2C, and
-pure/spherical Gaussian basis functions.
+The active state layer is v2 and contains neutral, cationic, accepted
+monoanion, and explicitly formal anion references. Existing profile-generation
+settings are declared in `data/profile_datasets.yaml`; full v2 SCF/profile
+generation is a later workflow step.
 
 ## Documentation sections
 

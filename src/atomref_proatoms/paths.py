@@ -21,9 +21,7 @@ ROOT = repo_root()
 DATA_DIR = ROOT / "data"
 LOCAL_DATA_DIR = ROOT / "local-data"
 PROFILE_DATASETS_FILE = DATA_DIR / "profile_datasets.yaml"
-STATES_V1_FILE = DATA_DIR / "states" / "curated" / "atom_states_v1.json"
-STATES_V2_FILE = DATA_DIR / "states" / "curated" / "atom_states_v2.json"
-STATES_FILE = STATES_V2_FILE
+STATES_FILE = DATA_DIR / "states" / "curated" / "atom_states_v2.json"
 BASIS_ROOT = DATA_DIR / "basis_sets"
 PROFILES_ROOT = DATA_DIR / "profiles"
 RADII_ROOT = DATA_DIR / "radii"
@@ -57,12 +55,10 @@ def profile_datasets_file() -> Path:
     return PROFILE_DATASETS_FILE
 
 
-def states_file(version: str = "v1") -> Path:
-    if version == "v1":
-        return STATES_V1_FILE
-    if version == "v2":
-        return STATES_V2_FILE
-    raise ValueError(f"Unsupported state table version: {version!r}")
+def states_file() -> Path:
+    """Return the active v2 curated state table."""
+
+    return STATES_FILE
 
 
 def basis_root() -> Path:

@@ -12,7 +12,7 @@ from atomref_proatoms.states import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-NIST_SOURCE_FILE = ROOT / "data" / "states" / "source" / "atom_configs_nist_source.csv"
+NIST_SOURCE_FILE = ROOT / "data" / "states" / "source" / "nist_gsie" / "nist_neutral_cation_states.csv"
 
 def test_current_state_table_loads_and_matches_expected_counts() -> None:
     states = load_atom_states(STATES_FILE)
@@ -132,7 +132,7 @@ def test_nist_source_table_keeps_compact_v2_state_metadata() -> None:
     assert by_key[("Mg", "3")]["nist_ie_provenance"] == "semiempirical"
     assert by_key[("H", "0")]["nist_ie_provenance"] == "theoretical"
 
-NING2022_SOURCE_FILE = ROOT / "data" / "states" / "source" / "ning2022_monoanions.csv"
+NING2022_SOURCE_FILE = ROOT / "data" / "states" / "source" / "ning2022" / "ning2022_monoanions.csv"
 
 
 def test_ning2022_monoanion_source_table_is_compact_and_status_only() -> None:
@@ -328,6 +328,11 @@ def test_v2_required_states_table_matches_charge_policy() -> None:
         "1": 102,
         "2": 95,
         "3": 89,
+    }
+    assert {row["source_table"] for row in rows} == {
+        "source/nist_gsie/nist_neutral_cation_states.csv",
+        "source/ning2022/ning2022_monoanions.csv",
+        "curated/formal_atoms_ions.csv",
     }
 
     group18 = {"He", "Ne", "Ar", "Kr", "Xe", "Rn"}

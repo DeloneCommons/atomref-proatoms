@@ -24,7 +24,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": [
@@ -54,7 +54,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -84,7 +84,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -112,7 +112,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -142,7 +142,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -172,7 +172,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -202,7 +202,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -233,7 +233,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -266,7 +266,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -296,7 +296,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -326,7 +326,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -357,7 +357,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -390,7 +390,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -421,7 +421,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -451,7 +451,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -481,7 +481,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -511,7 +511,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -543,7 +543,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "carbon_pnictogen_formal_trianion_policy",
     "notes": [
@@ -577,7 +577,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -610,7 +610,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -641,7 +641,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -672,7 +672,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -702,7 +702,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -732,7 +732,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -764,7 +764,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "carbon_pnictogen_formal_trianion_policy",
     "notes": [
@@ -798,7 +798,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -832,7 +832,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -866,7 +866,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -897,7 +897,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -928,7 +928,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -958,7 +958,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -990,7 +990,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -1024,7 +1024,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -1056,7 +1056,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1087,7 +1087,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1118,7 +1118,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -1149,7 +1149,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1181,7 +1181,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -1213,7 +1213,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1245,7 +1245,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1276,7 +1276,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -1307,7 +1307,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -1339,7 +1339,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1371,7 +1371,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1403,7 +1403,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1434,7 +1434,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -1466,7 +1466,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -1498,7 +1498,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1530,7 +1530,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1562,7 +1562,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -1597,7 +1597,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1629,7 +1629,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1661,7 +1661,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1693,7 +1693,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -1727,7 +1727,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -1759,7 +1759,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1791,7 +1791,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1823,7 +1823,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1855,7 +1855,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1887,7 +1887,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -1921,7 +1921,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -1953,7 +1953,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -1985,7 +1985,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2017,7 +2017,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2049,7 +2049,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2081,7 +2081,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "carbon_pnictogen_formal_trianion_policy",
     "notes": [
@@ -2115,7 +2115,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -2149,7 +2149,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -2181,7 +2181,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2213,7 +2213,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -2245,7 +2245,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2277,7 +2277,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2309,7 +2309,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -2343,7 +2343,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -2375,7 +2375,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2407,7 +2407,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2439,7 +2439,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -2471,7 +2471,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -2503,7 +2503,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -2535,7 +2535,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2567,7 +2567,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2599,7 +2599,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -2631,7 +2631,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -2663,7 +2663,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2695,7 +2695,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2727,7 +2727,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -2759,7 +2759,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -2791,7 +2791,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -2823,7 +2823,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2855,7 +2855,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2887,7 +2887,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -2919,7 +2919,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2951,7 +2951,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -2983,7 +2983,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3017,7 +3017,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -3050,7 +3050,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3083,7 +3083,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3116,7 +3116,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3148,7 +3148,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3181,7 +3181,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -3214,7 +3214,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3247,7 +3247,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3280,7 +3280,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3313,7 +3313,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3346,7 +3346,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -3379,7 +3379,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3412,7 +3412,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3445,7 +3445,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3478,7 +3478,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3511,7 +3511,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -3544,7 +3544,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3577,7 +3577,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3610,7 +3610,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3643,7 +3643,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -3677,7 +3677,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -3713,7 +3713,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3746,7 +3746,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3779,7 +3779,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3812,7 +3812,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -3846,7 +3846,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -3880,7 +3880,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3914,7 +3914,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3948,7 +3948,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -3981,7 +3981,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4015,7 +4015,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -4049,7 +4049,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4083,7 +4083,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4117,7 +4117,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -4151,7 +4151,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -4185,7 +4185,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -4219,7 +4219,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4253,7 +4253,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4287,7 +4287,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4321,7 +4321,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -4355,7 +4355,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -4389,7 +4389,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4423,7 +4423,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4457,7 +4457,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4491,7 +4491,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -4525,7 +4525,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -4562,7 +4562,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4596,7 +4596,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4630,7 +4630,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4664,7 +4664,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4698,7 +4698,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -4734,7 +4734,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -4768,7 +4768,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4802,7 +4802,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4836,7 +4836,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4870,7 +4870,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -4904,7 +4904,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -4940,7 +4940,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -4974,7 +4974,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5008,7 +5008,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5042,7 +5042,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5076,7 +5076,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5110,7 +5110,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "carbon_pnictogen_formal_trianion_policy",
     "notes": [
@@ -5146,7 +5146,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -5182,7 +5182,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -5216,7 +5216,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5250,7 +5250,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5284,7 +5284,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5318,7 +5318,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5352,7 +5352,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -5388,7 +5388,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -5422,7 +5422,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5456,7 +5456,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5490,7 +5490,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5524,7 +5524,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5558,7 +5558,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -5592,7 +5592,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5626,7 +5626,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5660,7 +5660,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5694,7 +5694,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5728,7 +5728,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5762,7 +5762,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5796,7 +5796,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5830,7 +5830,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5864,7 +5864,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -5898,7 +5898,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5932,7 +5932,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -5966,7 +5966,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -6000,7 +6000,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6034,7 +6034,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6068,7 +6068,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6102,7 +6102,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -6136,7 +6136,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6170,7 +6170,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6204,7 +6204,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6238,7 +6238,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6272,7 +6272,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -6306,7 +6306,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6340,7 +6340,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6374,7 +6374,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6408,7 +6408,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6442,7 +6442,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -6476,7 +6476,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6510,7 +6510,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6544,7 +6544,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6578,7 +6578,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6612,7 +6612,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -6646,7 +6646,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6680,7 +6680,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6714,7 +6714,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6748,7 +6748,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6782,7 +6782,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "manual_curated",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_theory_only_but_required_by_policy",
     "notes": [
@@ -6819,7 +6819,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -6853,7 +6853,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6887,7 +6887,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -6921,7 +6921,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -6955,7 +6955,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -6989,7 +6989,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7023,7 +7023,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -7057,7 +7057,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -7091,7 +7091,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -7125,7 +7125,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -7159,7 +7159,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7193,7 +7193,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -7227,7 +7227,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -7261,7 +7261,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -7295,7 +7295,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -7329,7 +7329,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7363,7 +7363,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -7397,7 +7397,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -7431,7 +7431,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -7465,7 +7465,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -7499,7 +7499,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7533,7 +7533,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7567,7 +7567,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -7601,7 +7601,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -7635,7 +7635,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -7672,7 +7672,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7706,7 +7706,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7740,7 +7740,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7774,7 +7774,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -7808,7 +7808,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -7844,7 +7844,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -7878,7 +7878,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7912,7 +7912,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7946,7 +7946,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -7980,7 +7980,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8014,7 +8014,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -8050,7 +8050,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -8084,7 +8084,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8118,7 +8118,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8152,7 +8152,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8186,7 +8186,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8220,7 +8220,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "carbon_pnictogen_formal_trianion_policy",
     "notes": [
@@ -8256,7 +8256,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -8292,7 +8292,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -8326,7 +8326,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8360,7 +8360,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8394,7 +8394,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8428,7 +8428,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8462,7 +8462,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -8498,7 +8498,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -8532,7 +8532,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8566,7 +8566,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8600,7 +8600,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8634,7 +8634,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8668,7 +8668,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -8702,7 +8702,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8736,7 +8736,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8770,7 +8770,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8804,7 +8804,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8838,7 +8838,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8872,7 +8872,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -8906,7 +8906,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -8940,7 +8940,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -8974,7 +8974,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -9008,7 +9008,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9042,7 +9042,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9076,7 +9076,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -9110,7 +9110,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9144,7 +9144,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9178,7 +9178,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9212,7 +9212,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": [
@@ -9248,7 +9248,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9282,7 +9282,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9316,7 +9316,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9350,7 +9350,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9385,7 +9385,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": [
@@ -9423,7 +9423,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9458,7 +9458,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9493,7 +9493,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9528,7 +9528,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9563,7 +9563,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -9598,7 +9598,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9633,7 +9633,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9668,7 +9668,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9703,7 +9703,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9738,7 +9738,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -9773,7 +9773,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9808,7 +9808,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9843,7 +9843,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9878,7 +9878,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -9913,7 +9913,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "manual_curated",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_theory_only_but_required_by_policy",
     "notes": [
@@ -9951,7 +9951,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -9986,7 +9986,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10021,7 +10021,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10056,7 +10056,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10091,7 +10091,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "manual_curated",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_theory_only_but_required_by_policy",
     "notes": [
@@ -10129,7 +10129,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -10164,7 +10164,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10199,7 +10199,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10234,7 +10234,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10269,7 +10269,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -10304,7 +10304,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -10339,7 +10339,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10374,7 +10374,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10409,7 +10409,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10444,7 +10444,7 @@
     "curation_status": "provisional",
     "physical_status": "provisional_experimental",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": [
@@ -10481,7 +10481,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -10516,7 +10516,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10551,7 +10551,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10586,7 +10586,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10622,7 +10622,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -10658,7 +10658,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -10694,7 +10694,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10730,7 +10730,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10766,7 +10766,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10802,7 +10802,7 @@
     "curation_status": "provisional",
     "physical_status": "provisional_experimental",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": [
@@ -10840,7 +10840,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -10876,7 +10876,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10912,7 +10912,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10948,7 +10948,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -10984,7 +10984,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "manual_curated",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_theory_only_but_required_by_policy",
     "notes": [
@@ -11023,7 +11023,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11059,7 +11059,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11095,7 +11095,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11131,7 +11131,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11167,7 +11167,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "manual_curated",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_theory_only_but_required_by_policy",
     "notes": [
@@ -11206,7 +11206,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11242,7 +11242,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11278,7 +11278,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11314,7 +11314,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11350,7 +11350,7 @@
     "curation_status": "provisional",
     "physical_status": "provisional_experimental",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": [
@@ -11388,7 +11388,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11424,7 +11424,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11460,7 +11460,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11496,7 +11496,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11532,7 +11532,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -11571,7 +11571,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11607,7 +11607,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11643,7 +11643,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11679,7 +11679,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11715,7 +11715,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -11751,7 +11751,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11787,7 +11787,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11823,7 +11823,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11859,7 +11859,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -11895,7 +11895,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -11931,7 +11931,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -11967,7 +11967,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12003,7 +12003,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12039,7 +12039,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12075,7 +12075,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -12111,7 +12111,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -12147,7 +12147,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12183,7 +12183,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12219,7 +12219,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12255,7 +12255,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -12291,7 +12291,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -12327,7 +12327,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12363,7 +12363,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12399,7 +12399,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12435,7 +12435,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -12471,7 +12471,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -12507,7 +12507,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12543,7 +12543,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12579,7 +12579,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12615,7 +12615,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": [
@@ -12653,7 +12653,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -12689,7 +12689,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12725,7 +12725,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12761,7 +12761,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12797,7 +12797,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -12833,7 +12833,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -12869,7 +12869,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -12905,7 +12905,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12941,7 +12941,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -12977,7 +12977,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -13013,7 +13013,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13049,7 +13049,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13085,7 +13085,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -13121,7 +13121,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -13157,7 +13157,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -13193,7 +13193,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13229,7 +13229,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13265,7 +13265,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -13301,7 +13301,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -13337,7 +13337,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_unbound_but_required_by_policy",
     "notes": [
@@ -13376,7 +13376,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13412,7 +13412,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13448,7 +13448,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13484,7 +13484,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13520,7 +13520,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -13558,7 +13558,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -13594,7 +13594,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13630,7 +13630,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13666,7 +13666,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13702,7 +13702,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13738,7 +13738,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -13776,7 +13776,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -13812,7 +13812,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13848,7 +13848,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13884,7 +13884,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13920,7 +13920,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -13956,7 +13956,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "carbon_pnictogen_formal_trianion_policy",
     "notes": [
@@ -13994,7 +13994,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -14032,7 +14032,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -14068,7 +14068,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14104,7 +14104,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14140,7 +14140,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14176,7 +14176,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14212,7 +14212,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "formal_rule",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "p_block_formal_dianion_policy",
     "notes": [
@@ -14250,7 +14250,7 @@
     "curation_status": "formal",
     "physical_status": "not_claimed",
     "state_source": "manual_curated",
-    "source_table": "formal_atoms_ions.csv",
+    "source_table": "curated/formal_atoms_ions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "review_theory_only_but_required_by_policy",
     "notes": [
@@ -14289,7 +14289,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14325,7 +14325,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -14361,7 +14361,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -14397,7 +14397,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -14433,7 +14433,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "ning2022",
-    "source_table": "ning2022_monoanions.csv",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
     "nist_ie_provenance": "",
     "rule_reason": "",
     "notes": []
@@ -14469,7 +14469,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14505,7 +14505,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -14541,7 +14541,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -14577,7 +14577,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -14613,7 +14613,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14649,7 +14649,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -14685,7 +14685,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -14721,7 +14721,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -14757,7 +14757,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14793,7 +14793,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -14829,7 +14829,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14865,7 +14865,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14901,7 +14901,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -14937,7 +14937,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -14973,7 +14973,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15009,7 +15009,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15045,7 +15045,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15081,7 +15081,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15117,7 +15117,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15153,7 +15153,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15189,7 +15189,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15225,7 +15225,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15261,7 +15261,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15297,7 +15297,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15333,7 +15333,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15369,7 +15369,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15405,7 +15405,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15441,7 +15441,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15477,7 +15477,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15513,7 +15513,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15549,7 +15549,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15585,7 +15585,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15621,7 +15621,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15657,7 +15657,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15693,7 +15693,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15729,7 +15729,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15765,7 +15765,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15801,7 +15801,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15837,7 +15837,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15873,7 +15873,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15909,7 +15909,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -15945,7 +15945,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -15981,7 +15981,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16017,7 +16017,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16053,7 +16053,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16089,7 +16089,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -16125,7 +16125,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16161,7 +16161,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16197,7 +16197,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16233,7 +16233,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -16269,7 +16269,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16305,7 +16305,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16341,7 +16341,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16377,7 +16377,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -16413,7 +16413,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16449,7 +16449,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16485,7 +16485,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16521,7 +16521,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16557,7 +16557,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16593,7 +16593,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16629,7 +16629,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16665,7 +16665,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16701,7 +16701,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16737,7 +16737,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16773,7 +16773,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16809,7 +16809,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -16845,7 +16845,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -16881,7 +16881,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16917,7 +16917,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
@@ -16953,7 +16953,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "evaluated",
     "rule_reason": "",
     "notes": []
@@ -16989,7 +16989,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -17025,7 +17025,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
@@ -17061,7 +17061,7 @@
     "curation_status": "curated",
     "physical_status": "experimental_or_evaluated",
     "state_source": "nist_gsie",
-    "source_table": "atom_configs_nist_source.csv",
+    "source_table": "source/nist_gsie/nist_neutral_cation_states.csv",
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []

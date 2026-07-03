@@ -6,11 +6,11 @@ read together: profiles give the radial density, radii give compact density-cuto
 size descriptors, and QA records whether the generated objects passed the release
 checks.
 
-The active dataset specification is `data/profile_datasets.yaml`. It declares the
+The dataset specification is `data/profile_datasets.yaml`. It declares the
 profile-data version, density model, electronic-structure settings, radial grid,
-QA grid, density cutoffs, selected basis families, and selected neutral states.
+QA grid, density cutoffs, selected basis families, and selected states.
 
-## Active v1 datasets
+## Tracked neutral profile datasets
 
 | dataset ID | basis | coverage | selected states |
 |---|---|---:|---:|

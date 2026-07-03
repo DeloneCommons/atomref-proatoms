@@ -1,8 +1,9 @@
 # Scientific model
 
-The released v1 objects are spherical radial electron-density profiles for
-isolated neutral atoms. For an atom $A$, the tabulated quantity is the total
-spin-summed density averaged over directions at fixed radius,
+The released objects are spherical radial electron-density profiles for isolated
+atoms or ions selected by an explicit state policy. For an atom or ion $A$, the
+tabulated quantity is the total spin-summed density averaged over directions at
+fixed radius,
 
 \[
 \rho_A(r) = \frac{1}{4\pi} \int \rho_A(r, \Omega)\,d\Omega,
@@ -14,7 +15,7 @@ with $r$ in bohr and $\rho_A(r)$ in electrons/bohr³. The intended normalization
 4\pi \int_0^\infty r^2 \rho_A(r)\,dr = N_A,
 \]
 
-where $N_A$ is the number of electrons in the neutral atom.
+where $N_A$ is the number of electrons in the selected atom or ion.
 
 These profiles are reference densities for atom-centered models and descriptors.
 They are not experimental atomic radii, spectroscopic term energies, or
@@ -38,9 +39,9 @@ density is not generally the same object as a density obtained from a
 self-consistent spherical ensemble. In practical terms, post-averaging can shift
 radial density tails and density-cutoff radii for open-shell atoms.
 
-The v1 generator therefore defines the proatom at the SCF level. Sphericalization
-is not a plotting operation; it is part of the variational model used to obtain
-the density.
+The generator therefore defines the proatom at the SCF level. Sphericalization is
+not a plotting operation; it is part of the variational model used to obtain the
+density.
 
 ## Spherical fractional-occupation UKS construction
 
@@ -73,10 +74,10 @@ fractional-occupation spherical ensembles.
 
 ## Current electronic-structure convention
 
-The current project version uses PySCF `2.13.1`. Active v1 wavefunctions are
-computed with unrestricted PBE0, spin-free one-electron X2C (`sf-X2C-1e`),
-pure/spherical Gaussian basis functions, SCF convergence tolerance `1e-9`, and
-PySCF DFT grid level `4`.
+The current project version uses PySCF `2.13.1`. Profile-generation settings use
+unrestricted PBE0, spin-free one-electron X2C (`sf-X2C-1e`), pure/spherical
+Gaussian basis functions, SCF convergence tolerance `1e-9`, and PySCF DFT grid
+level `4`.
 
 Two all-electron scalar-relativistic basis branches are active:
 
@@ -84,13 +85,13 @@ Two all-electron scalar-relativistic basis branches are active:
 - `dyall-v4z` for the H-Lr dataset.
 
 The basis files are frozen in `data/basis_sets/`; their checksums are part of the
-release identity. The state table is frozen in `data/states/curated/`, and the
-active neutral-only dataset selection is declared in `data/profile_datasets.yaml`.
+release identity. The active state table is frozen in `data/states/curated/`, and
+dataset selections are declared in `data/profile_datasets.yaml`.
 
-Effective-core and valence-only density conventions are not mixed into these v1
-profile families. A dataset produced with a different basis, relativistic model,
-core convention, charge selection, or occupation policy should receive a separate
-dataset identifier.
+Effective-core and valence-only density conventions are not mixed silently into
+all-electron profile families. A dataset produced with a different basis,
+relativistic model, core convention, charge selection, or occupation policy
+should receive a separate dataset identifier.
 
 ## Radial profile representation
 
@@ -119,7 +120,7 @@ outermost interpolated crossing of
 \rho_A(r) = \rho_{\mathrm{cut}}.
 \]
 
-The v1 density cutoffs are:
+The current density cutoffs are:
 
 - `0.003 electrons/bohr^3`
 - `0.001 electrons/bohr^3`

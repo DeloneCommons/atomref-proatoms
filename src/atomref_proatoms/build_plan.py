@@ -9,7 +9,6 @@ from .datasets import DATASET_IDS, ProfileDatasetConfig, dataset_scope
 from .states import AtomState, load_atom_states
 
 ALL_PROFILE_DATASETS = "all"
-ALL_V1_BUILD_PLAN = "all_v1"
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,244 @@
+{
+  "schema_version": "atomref.proatoms.state_source_summary.v2",
+  "created_utc": "2026-07-03",
+  "source_tables": {
+    "source/nist_gsie/nist_neutral_cation_states.csv": {
+      "row_count": 5352,
+      "columns": [
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_level",
+        "ground_multiplicity",
+        "nist_ie_provenance"
+      ],
+      "sha256": "cb2005180cbfbd72beccd65bb79a46a32a827596c305b7a89301608ccd131c07",
+      "note": "Compact neutral/cation table derived from NIST ASD GSIE snapshots; configuration, ground_level, nist_ie_provenance, and ground_multiplicity are retained, but quantitative ionization energies, uncertainties, raw HTML, URLs, and bibliography rows are not redistributed.",
+      "nist_ie_provenance_counts": {
+        "theoretical": 4143,
+        "evaluated": 311,
+        "semiempirical": 898
+      },
+      "ground_level_blank_count": 138,
+      "ground_multiplicity_assigned_count": 4892,
+      "ground_multiplicity_blank_count": 460
+    },
+    "source/ning2022/ning2022_monoanions.csv": {
+      "row_count": 92,
+      "columns": [
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_level",
+        "ground_multiplicity",
+        "state_role",
+        "physical_status",
+        "notes"
+      ],
+      "sha256": "15f560c1e2976d829fa628d4f1cab2eac346d488fd0edf8ad0e2e78583465fb4",
+      "note": "Compact monoanion state/status table curated from Ning and Lu 2022; electron-affinity values are intentionally not included in this source layer.",
+      "state_role_counts": {
+        "bound_experimental": 65,
+        "excluded": 14,
+        "diagnostic_theory": 9,
+        "bound_provisional": 4
+      },
+      "physical_status_counts": {
+        "experimental_or_evaluated": 65,
+        "unbound_or_metastable": 14,
+        "theoretical_only": 9,
+        "provisional_experimental": 4
+      }
+    },
+    "curated/formal_atoms_ions.csv": {
+      "row_count": 40,
+      "columns": [
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_multiplicity",
+        "state_role",
+        "physical_status",
+        "state_source",
+        "rule_reason",
+        "notes"
+      ],
+      "sha256": "fc14adfae8f3703dceb151d08247d787bbe00ee03b36959e618b95603f420093",
+      "note": "V2 formal anion preparation table for required monoanion fallbacks without accepted physical/reference rows and formal group-13--16 p-block dianions plus carbon/pnictogen trianions. Every row is marked physical_status=not_claimed; purely formal actinide fallback monoanions and halogen dianions are excluded from the initial v2 formal scope.",
+      "state_role_counts": {
+        "formal_monoanion": 14,
+        "formal_multianion": 26
+      },
+      "rule_reason_counts": {
+        "review_unbound_but_required_by_policy": 8,
+        "p_block_formal_dianion_policy": 20,
+        "carbon_pnictogen_formal_trianion_policy": 6,
+        "review_theory_only_but_required_by_policy": 6
+      },
+      "physical_status_counts": {
+        "not_claimed": 40
+      }
+    }
+  },
+  "selection": {
+    "row_count": 495,
+    "columns": [
+      "z",
+      "symbol",
+      "charge",
+      "electron_count",
+      "state_source",
+      "source_table",
+      "state_role",
+      "physical_status",
+      "include_reason"
+    ],
+    "sha256": "328063c96494898f85b23d448ae42ade0b7f54e543b508baa4c127af201798d0",
+    "by_charge": {
+      "-1": 80,
+      "0": 103,
+      "1": 102,
+      "2": 95,
+      "-2": 20,
+      "3": 89,
+      "-3": 6
+    },
+    "source_table_counts": {
+      "source/ning2022/ning2022_monoanions.csv": 66,
+      "source/nist_gsie/nist_neutral_cation_states.csv": 389,
+      "curated/formal_atoms_ions.csv": 40
+    },
+    "note": "Active v2 compute-state selection combining NIST neutral/cation rows, accepted H-Rn Ning--Lu monoanion rows, and formal anion rows; H+, He2+, He3+, group-18 anions, accepted monoanions beyond Rn, halogen dianions, and purely formal actinide fallback monoanions are excluded."
+  },
+  "curated_output": {
+    "json_file": "data/states/curated/atom_states_v2.json",
+    "csv_file": "data/states/curated/atom_states_v2.csv",
+    "summary_file": "data/states/curated/atom_states_summary_v2.json",
+    "row_count": 495,
+    "csv_columns": [
+      "state_id",
+      "z",
+      "symbol",
+      "charge",
+      "electron_count",
+      "configuration",
+      "ground_level",
+      "multiplicity",
+      "spin_2s",
+      "state_category",
+      "state_role",
+      "physical_status",
+      "state_source",
+      "source_table",
+      "nist_ie_provenance",
+      "rule_reason",
+      "notes"
+    ],
+    "json_sha256": "512b4d4dfebf9bc92c3a3bcb499655bb96159301ea34fd32fe8f93511522b65c",
+    "csv_sha256": "e460daf5ad6b9af319d5a24abb5e4fc1c048d8daf8aa3c3a1d45791ba9e1e0c8",
+    "summary_sha256": "34a0b7498913aedd7066d59948fd8763b126ef731e1182268e812e7b02d36064",
+    "spin_model": "curated_ground_multiplicity",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+  },
+  "nist_source_fields": [
+    "z",
+    "symbol",
+    "charge",
+    "electron_count",
+    "configuration",
+    "ground_level",
+    "ground_multiplicity",
+    "nist_ie_provenance"
+  ],
+  "nist_ground_level_multiplicity": {
+    "parser_rule": "leading integer before spectroscopic term letter in compact LS-like labels, e.g. 4S°3/2 -> 4; seven v2 neutral/cation policy-domain jj/pair-coupled labels were assigned manually from the corresponding LS-equivalent/Hund-consistent spin multiplicities; remaining non-LS labels outside the v2 neutral/cation policy domain are left blank",
+    "manual_v2_domain_assignment_count": 7,
+    "manual_v2_domain_assignments": [
+      {
+        "symbol": "Pr",
+        "charge": 1,
+        "ground_level": "(9/2,1/2)°4",
+        "ground_multiplicity": 5
+      },
+      {
+        "symbol": "Tb",
+        "charge": 1,
+        "ground_level": "(15/2,1/2)°8",
+        "ground_multiplicity": 7
+      },
+      {
+        "symbol": "Dy",
+        "charge": 1,
+        "ground_level": "(8,1/2)17/2",
+        "ground_multiplicity": 6
+      },
+      {
+        "symbol": "Ho",
+        "charge": 1,
+        "ground_level": "(15/2,1/2)°8",
+        "ground_multiplicity": 5
+      },
+      {
+        "symbol": "Er",
+        "charge": 1,
+        "ground_level": "(6,1/2)13/2",
+        "ground_multiplicity": 4
+      },
+      {
+        "symbol": "Tm",
+        "charge": 1,
+        "ground_level": "(7/2,1/2)°4",
+        "ground_multiplicity": 3
+      },
+      {
+        "symbol": "Pb",
+        "charge": 0,
+        "ground_level": "(1/2,1/2)0",
+        "ground_multiplicity": 3
+      }
+    ],
+    "assigned_count": 4892,
+    "blank_count": 460
+  },
+  "ning2022_source_fields": [
+    "z",
+    "symbol",
+    "charge",
+    "electron_count",
+    "configuration",
+    "ground_level",
+    "ground_multiplicity",
+    "state_role",
+    "physical_status",
+    "notes"
+  ],
+  "formal_fields": [
+    "z",
+    "symbol",
+    "charge",
+    "electron_count",
+    "configuration",
+    "ground_multiplicity",
+    "state_role",
+    "physical_status",
+    "state_source",
+    "rule_reason",
+    "notes"
+  ],
+  "raw_archive_checks": {
+    "duplicate_element_charge_rows_after_compaction": 0,
+    "excluded_rows": [
+      {
+        "symbol": "No",
+        "charge": 98,
+        "reason": "Incomplete high-charge source row in the raw NIST HTML snapshot; outside the project state-selection scope."
+      }
+    ]
+  }
+}

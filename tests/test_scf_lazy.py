@@ -95,20 +95,16 @@ def test_scf_fingerprints_are_release_version_independent(tmp_path) -> None:
     assert "profile_dataset_config_sha256" not in fingerprints
 
 
-def test_scf_state_fingerprint_is_stable_for_state_v1_label_update() -> None:
-    old_record = {
-        "schema_version": "atomref.proatoms.state.v0",
-        "state_id": "H_q0_mult2_hund",
+def test_scf_state_fingerprint_tracks_active_v2_state_definition() -> None:
+    record = {
+        "schema_version": "atomref.proatoms.state.v2",
+        "state_id": "H_q0_mult2_nist",
         "symbol": "H",
         "z": 1,
         "charge": 0,
         "electron_count": 1,
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v0",
+        "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
     }
-    new_record = {
-        **old_record,
-        "schema_version": "atomref.proatoms.state.v1",
-        "occupation_policy": "free_ion_hund_high_spin_from_configuration_v1",
-    }
+    changed_record = {**record, "multiplicity": 1}
 
-    assert scf_state_record_digest(new_record) == scf_state_record_digest(old_record)
+    assert scf_state_record_digest(changed_record) != scf_state_record_digest(record)

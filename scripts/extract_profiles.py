@@ -28,7 +28,6 @@ from atomref_proatoms.artifacts import (  # noqa: E402
 from atomref_proatoms.basis import list_basis_bundles, sha256_file  # noqa: E402
 from atomref_proatoms.build_plan import (  # noqa: E402
     ALL_PROFILE_DATASETS,
-    ALL_V1_BUILD_PLAN,
     build_jobs_for_datasets,
     filter_build_jobs,
     format_build_plan,
@@ -83,8 +82,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="append",
         default=[],
         help=(
-            "Dataset ID to extract; may be repeated. Use 'all' or 'all_v1' for all "
-            "configured v1 datasets. Defaults to all datasets."
+            "Dataset ID to extract; may be repeated. Use 'all' for all "
+            "configured datasets. Defaults to all datasets."
         ),
     )
     parser.add_argument(
@@ -157,7 +156,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def _selected_dataset_ids(values: list[str], configured_ids: tuple[str, ...]) -> tuple[str, ...]:
     if not values:
         return configured_ids
-    aliases = {"all", ALL_PROFILE_DATASETS, ALL_V1_BUILD_PLAN}
+    aliases = {"all", ALL_PROFILE_DATASETS}
     expanded: list[str] = []
     for value in values:
         if value in aliases:
