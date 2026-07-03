@@ -184,5 +184,51 @@
     "state_role",
     "physical_status",
     "notes"
+  ],
+  "v2_formal_tables": {
+    "data/states/curated/formal_atoms_ions.csv": {
+      "row_count": 46,
+      "columns": [
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_multiplicity",
+        "state_role",
+        "physical_status",
+        "state_source",
+        "rule_reason",
+        "notes"
+      ],
+      "sha256": "df172e143690a68942a3ca4f0725b588656124eee153d0b6e817dfde58abab78",
+      "note": "V2 formal anion preparation table for required monoanions without accepted physical/reference rows and formal p-block multianions; every row is marked physical_status=not_claimed; purely formal actinide fallback monoanions are excluded from the initial v2 formal scope.",
+      "state_role_counts": {
+        "formal_monoanion": 15,
+        "formal_multianion": 31
+      },
+      "rule_reason_counts": {
+        "review_unbound_but_required_by_policy": 8,
+        "p_block_formal_dianion_policy": 25,
+        "carbon_pnictogen_formal_trianion_policy": 6,
+        "review_theory_only_but_required_by_policy": 7
+      },
+      "physical_status_counts": {
+        "not_claimed": 46
+      }
+    }
+  },
+  "v2_formal_fields": [
+    "z",
+    "symbol",
+    "charge",
+    "electron_count",
+    "configuration",
+    "ground_multiplicity",
+    "state_role",
+    "physical_status",
+    "state_source",
+    "rule_reason",
+    "notes"
   ]
 }

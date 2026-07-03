@@ -196,3 +196,100 @@ def test_ning2022_monoanion_source_table_is_compact_and_status_only() -> None:
     assert by_symbol["Yb"]["state_role"] == "excluded"
     assert by_symbol["Yb"]["configuration"] == ""
     assert by_symbol["Rn"]["state_role"] == "excluded"
+
+FORMAL_V2_FILE = ROOT / "data" / "states" / "curated" / "formal_atoms_ions.csv"
+
+
+def test_v2_formal_anion_table_is_explicitly_not_claimed() -> None:
+    with FORMAL_V2_FILE.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+
+    assert len(rows) == 46
+    assert rows[0].keys() == {
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_multiplicity",
+        "state_role",
+        "physical_status",
+        "state_source",
+        "rule_reason",
+        "notes",
+    }
+
+    keys = [(row["symbol"], row["charge"]) for row in rows]
+    assert len(keys) == len(set(keys))
+    assert all(int(row["electron_count"]) == int(row["z"]) - int(row["charge"]) for row in rows)
+    assert all(row["configuration"] for row in rows)
+    assert all(row["ground_multiplicity"] for row in rows)
+    assert {row["physical_status"] for row in rows} == {"not_claimed"}
+
+    assert Counter(row["state_role"] for row in rows) == {
+        "formal_monoanion": 15,
+        "formal_multianion": 31,
+    }
+    assert Counter(row["state_source"] for row in rows) == {
+        "formal_rule": 39,
+        "manual_curated": 7,
+    }
+    assert Counter(row["rule_reason"] for row in rows) == {
+        "review_unbound_but_required_by_policy": 8,
+        "review_theory_only_but_required_by_policy": 7,
+        "p_block_formal_dianion_policy": 25,
+        "carbon_pnictogen_formal_trianion_policy": 6,
+    }
+
+    group18 = {"He", "Ne", "Ar", "Kr", "Xe", "Rn"}
+    assert not any(row["symbol"] in group18 for row in rows)
+
+    p_block = {
+        "B",
+        "C",
+        "N",
+        "O",
+        "F",
+        "Al",
+        "Si",
+        "P",
+        "S",
+        "Cl",
+        "Ga",
+        "Ge",
+        "As",
+        "Se",
+        "Br",
+        "In",
+        "Sn",
+        "Sb",
+        "Te",
+        "I",
+        "Tl",
+        "Pb",
+        "Bi",
+        "Po",
+        "At",
+    }
+    carbon_pnictogens = {"C", "N", "P", "As", "Sb", "Bi"}
+
+    assert {row["symbol"] for row in rows if row["charge"] == "-2"} == p_block
+    assert {row["symbol"] for row in rows if row["charge"] == "-3"} == carbon_pnictogens
+    assert all(
+        row["symbol"] in p_block or row["charge"] == "-1"
+        for row in rows
+        if int(row["charge"]) < -1
+    )
+
+    by_key = {(row["symbol"], row["charge"]): row for row in rows}
+    assert by_key[("Be", "-1")]["state_role"] == "formal_monoanion"
+    assert by_key[("Be", "-1")]["rule_reason"] == "review_unbound_but_required_by_policy"
+    assert by_key[("Tc", "-1")]["state_source"] == "manual_curated"
+    assert by_key[("Tc", "-1")]["rule_reason"] == "review_theory_only_but_required_by_policy"
+    assert by_key[("Yb", "-1")]["rule_reason"] == "review_unbound_but_required_by_policy"
+    assert not any(89 <= int(row["z"]) <= 103 for row in rows)
+    assert ("Ac", "-1") not in by_key
+    assert ("Pa", "-1") not in by_key
+    assert ("Lr", "-1") not in by_key
+    assert by_key[("F", "-2")]["configuration"] == "[Ne] 3s1"
+    assert by_key[("Bi", "-3")]["configuration"] == "[Hg] 6p6"

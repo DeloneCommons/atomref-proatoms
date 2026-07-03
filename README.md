@@ -133,7 +133,8 @@ parsed simple term multiplicities, a small set of manual v2-domain
 multiplicity assignments, and ionization-energy provenance classes prepared
 from the NIST Atomic Spectra Database, NIST Standard Reference Database 78. It
 also includes a compact Ning--Lu 2022 monoanion state-status source table without
-electron-affinity values. See
+electron-affinity values and a v2 formal-anion preparation table whose rows are
+explicitly marked as formal/not-claimed references. See
 [`LICENSE.md`](LICENSE.md) for the full repository license statement.
 
 Project planning, scientific discussion, code drafting, and documentation drafting

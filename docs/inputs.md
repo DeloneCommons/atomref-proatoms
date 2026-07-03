@@ -54,9 +54,18 @@ monoanions, theory-only diagnostics, or excluded/unbound/problematic cases. This
 source table is preparation material for v2 and is not yet used by the active v1
 profile-generation contract.
 
-Small formal-anion configuration records are stored separately under
+The active v1 formal-anion configuration records are stored separately under
 `data/states/source/`. They are part of the state curation layer, not active v1
 profile outputs unless selected by the active profile-dataset configuration.
+
+A v2 formal-anion preparation table is stored at
+`data/states/curated/formal_atoms_ions.csv`. It contains formal references for
+required monoanions without accepted physical/reference rows and for the v2
+p-block multianion policy. Purely formal actinide fallback monoanions are out of
+the initial v2 scope; source-backed actinide monoanions may still enter later
+through the Ning--Lu source table. Every formal row is marked
+`physical_status = not_claimed`; these records are stockholder/Hirshfeld-I-like
+density references, not stable isolated atomic-anion claims.
 
 The state-layer details are documented in `data/states/README.md`, and the build
 entry point is `scripts/build_atom_states.py`.

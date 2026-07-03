@@ -41,6 +41,13 @@ electron-affinity values and numerical uncertainties from the review are not
 redistributed in this table. Cite Ning and Lu 2022 when publishing work that
 relies on these monoanion labels or status classes.
 
+The v2 formal-anion preparation table is a project-curated set of formal density
+references derived from the documented charge policy, isoelectronic filling, and
+manual curation of theory-only/limit-based monoanion rows. Purely formal
+actinide fallback monoanions are excluded from the initial v2 formal scope. These
+rows are explicitly marked as formal `not_claimed` references and are not claims
+of stable isolated atomic anions.
+
 ## MIT License text
 
 Copyright (c) 2026 Ivan Yu. Chernyshov
