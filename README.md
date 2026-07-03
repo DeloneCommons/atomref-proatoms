@@ -129,8 +129,9 @@ released data tables, documentation, and notebooks are released under Creative
 Commons Attribution 4.0 International unless an upstream notice states otherwise.
 Frozen basis exports retain the Basis Set Exchange BSD-3-Clause notice, and the
 atomic-state source layer uses compact configuration labels, ground-level labels,
-parsed simple term multiplicities, and ionization-energy provenance classes
-prepared from the NIST Atomic Spectra Database, NIST Standard Reference Database
+parsed simple term multiplicities, a small set of manual v2-domain
+multiplicity assignments, and ionization-energy provenance classes prepared
+from the NIST Atomic Spectra Database, NIST Standard Reference Database
 78. See
 [`LICENSE.md`](LICENSE.md) for the full repository license statement.
 

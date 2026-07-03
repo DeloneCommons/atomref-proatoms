@@ -13,10 +13,6 @@ from atomref_proatoms.states import (
 ROOT = Path(__file__).resolve().parents[1]
 STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v1.json"
 NIST_SOURCE_FILE = ROOT / "data" / "states" / "source" / "atom_configs_nist_source.csv"
-NIST_LEVEL_REVIEW_FILE = (
-    ROOT / "data" / "states" / "source" / "atom_configs_nist_ground_level_review.csv"
-)
-
 
 def test_current_state_table_loads_and_matches_expected_counts() -> None:
     states = load_atom_states(STATES_FILE)
@@ -107,14 +103,14 @@ def test_nist_source_table_keeps_compact_v2_state_metadata() -> None:
 
     multiplicity = Counter(row["ground_multiplicity"] or "<blank>" for row in rows)
     assert multiplicity == {
-        "<blank>": 467,
+        "<blank>": 460,
         "1": 919,
         "2": 1586,
-        "3": 1026,
-        "4": 586,
-        "5": 399,
-        "6": 206,
-        "7": 104,
+        "3": 1028,
+        "4": 587,
+        "5": 401,
+        "6": 207,
+        "7": 105,
         "8": 53,
         "9": 5,
         "10": 1,
@@ -126,29 +122,13 @@ def test_nist_source_table_keeps_compact_v2_state_metadata() -> None:
     assert by_key[("P", "0")]["ground_level"] == "4S°3/2"
     assert by_key[("P", "0")]["ground_multiplicity"] == "4"
     assert by_key[("Pb", "0")]["ground_level"] == "(1/2,1/2)0"
-    assert by_key[("Pb", "0")]["ground_multiplicity"] == ""
+    assert by_key[("Pb", "0")]["ground_multiplicity"] == "3"
+    assert by_key[("Pr", "1")]["ground_level"] == "(9/2,1/2)°4"
+    assert by_key[("Pr", "1")]["ground_multiplicity"] == "5"
+    assert by_key[("Tb", "1")]["ground_multiplicity"] == "7"
+    assert by_key[("Dy", "1")]["ground_multiplicity"] == "6"
+    assert by_key[("Ho", "1")]["ground_multiplicity"] == "5"
+    assert by_key[("Er", "1")]["ground_multiplicity"] == "4"
+    assert by_key[("Tm", "1")]["ground_multiplicity"] == "3"
     assert by_key[("Mg", "3")]["nist_ie_provenance"] == "semiempirical"
     assert by_key[("H", "0")]["nist_ie_provenance"] == "theoretical"
-
-
-def test_nist_ground_level_review_table_lists_non_ls_labels_only() -> None:
-    with NIST_LEVEL_REVIEW_FILE.open(newline="", encoding="utf-8") as handle:
-        rows = list(csv.DictReader(handle))
-
-    assert len(rows) == 329
-    assert rows[0].keys() == {
-        "z",
-        "symbol",
-        "charge",
-        "electron_count",
-        "configuration",
-        "ground_level",
-        "review_reason",
-    }
-    assert {row["review_reason"] for row in rows} == {"not_simple_ls_term"}
-    assert all(row["ground_level"] for row in rows)
-    assert all(not row["ground_level"][0].isdigit() for row in rows)
-
-    by_key = {(row["symbol"], row["charge"]): row for row in rows}
-    assert by_key[("Pb", "0")]["ground_level"] == "(1/2,1/2)0"
-    assert by_key[("Y", "32")]["ground_level"] == "(0,3/2)°3/2"

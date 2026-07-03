@@ -14,8 +14,8 @@
         "ground_multiplicity",
         "nist_ie_provenance"
       ],
-      "sha256": "eeab666dcd4e5b5ded06f5eb58f5c87cc83378f196b9b752e39c0672b837d131",
-      "note": "Compact element/charge/configuration table derived from NIST ASD GSIE snapshots; NIST ground-level labels, parsed simple LS-term multiplicities, and ionization-energy provenance classes are retained, but quantitative ionization-energy values are not included.",
+      "sha256": "cb2005180cbfbd72beccd65bb79a46a32a827596c305b7a89301608ccd131c07",
+      "note": "Compact element/charge/configuration table derived from NIST ASD GSIE snapshots; NIST ground-level labels, parsed simple LS-term multiplicities, seven v2-domain manual multiplicity assignments, and ionization-energy provenance classes are retained, but quantitative ionization-energy values are not included.",
       "nist_ie_provenance_counts": {
         "evaluated": 311,
         "semiempirical": 898,
@@ -23,21 +23,9 @@
       },
       "ground_level_blank_count": 138,
       "ground_multiplicity_parsed_count": 4885,
-      "ground_multiplicity_blank_count": 467
-    },
-    "atom_configs_nist_ground_level_review.csv": {
-      "row_count": 329,
-      "columns": [
-        "z",
-        "symbol",
-        "charge",
-        "electron_count",
-        "configuration",
-        "ground_level",
-        "review_reason"
-      ],
-      "sha256": "fb08a41497b528180a019096677bffc9e4962832ab5af1abeb9843432ce4b3c0",
-      "note": "Rows with non-empty NIST ground_level labels that were not parsed by the simple leading-multiplicity LS-term rule."
+      "ground_multiplicity_blank_count": 460,
+      "ground_multiplicity_manual_v2_domain_count": 7,
+      "ground_multiplicity_assigned_count": 4892
     },
     "atom_configs_formal_anions.csv": {
       "row_count": 13,
@@ -91,7 +79,6 @@
   },
   "source_files": [
     "atom_configs_nist_source.csv",
-    "atom_configs_nist_ground_level_review.csv",
     "atom_configs_formal_anions.csv"
   ],
   "nist_source_fields": [
@@ -106,9 +93,54 @@
   ],
   "nist_ground_level_multiplicity": {
     "parsed_simple_ls_term_count": 4885,
-    "manual_review_count": 329,
     "missing_ground_level_count": 138,
-    "review_file": "atom_configs_nist_ground_level_review.csv",
-    "parser_rule": "leading integer before spectroscopic term letter in compact LS-like labels, e.g. 4S°3/2 -> 4"
+    "parser_rule": "leading integer before spectroscopic term letter in compact LS-like labels, e.g. 4S°3/2 -> 4; seven v2 neutral/cation policy-domain jj/pair-coupled labels were assigned manually from the corresponding LS-equivalent/Hund-consistent spin multiplicities; remaining non-LS labels outside the v2 neutral/cation policy domain are left blank and are not shipped as a separate review table",
+    "manual_v2_domain_assignment_count": 7,
+    "assigned_count": 4892,
+    "manual_v2_domain_assignments": [
+      {
+        "symbol": "Pr",
+        "charge": 1,
+        "ground_level": "(9/2,1/2)°4",
+        "ground_multiplicity": 5
+      },
+      {
+        "symbol": "Tb",
+        "charge": 1,
+        "ground_level": "(15/2,1/2)°8",
+        "ground_multiplicity": 7
+      },
+      {
+        "symbol": "Dy",
+        "charge": 1,
+        "ground_level": "(8,1/2)17/2",
+        "ground_multiplicity": 6
+      },
+      {
+        "symbol": "Ho",
+        "charge": 1,
+        "ground_level": "(15/2,1/2)°8",
+        "ground_multiplicity": 5
+      },
+      {
+        "symbol": "Er",
+        "charge": 1,
+        "ground_level": "(6,1/2)13/2",
+        "ground_multiplicity": 4
+      },
+      {
+        "symbol": "Tm",
+        "charge": 1,
+        "ground_level": "(7/2,1/2)°4",
+        "ground_multiplicity": 3
+      },
+      {
+        "symbol": "Pb",
+        "charge": 0,
+        "ground_level": "(1/2,1/2)0",
+        "ground_multiplicity": 3
+      }
+    ],
+    "unassigned_non_ls_outside_v2_domain_count": 322
   }
 }

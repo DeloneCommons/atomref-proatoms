@@ -1711,7 +1711,7 @@ z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,ni
 58,Ce,56,2,1s2,1S0,1,theoretical
 58,Ce,57,1,1s1,2S1/2,2,theoretical
 59,Pr,0,59,[Xe] 4f3 6s2,4I°9/2,4,semiempirical
-59,Pr,1,58,[Xe] 4f3 6s1,"(9/2,1/2)°4",,semiempirical
+59,Pr,1,58,[Xe] 4f3 6s1,"(9/2,1/2)°4",5,semiempirical
 59,Pr,2,57,[Xe] 4f3,4I°9/2,4,evaluated
 59,Pr,3,56,[Xe] 4f2,3H4,3,semiempirical
 59,Pr,4,55,[Xe] 4f1,2F°5/2,2,semiempirical
@@ -2080,7 +2080,7 @@ z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,ni
 64,Gd,62,2,1s2,1S0,1,theoretical
 64,Gd,63,1,1s1,2S1/2,2,theoretical
 65,Tb,0,65,[Xe] 4f9 6s2,6H°15/2,6,evaluated
-65,Tb,1,64,[Xe] 4f9 6s1,"(15/2,1/2)°8",,semiempirical
+65,Tb,1,64,[Xe] 4f9 6s1,"(15/2,1/2)°8",7,semiempirical
 65,Tb,2,63,[Xe] 4f9,6H°15/2,6,semiempirical
 65,Tb,3,62,[Xe] 4f8,7F6,7,semiempirical
 65,Tb,4,61,[Xe] 4f7,8S°7/2,8,semiempirical
@@ -2145,7 +2145,7 @@ z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,ni
 65,Tb,63,2,1s2,1S0,1,theoretical
 65,Tb,64,1,1s1,2S1/2,2,theoretical
 66,Dy,0,66,[Xe] 4f10 6s2,5I8,5,evaluated
-66,Dy,1,65,[Xe] 4f10 6s1,"(8,1/2)17/2",,semiempirical
+66,Dy,1,65,[Xe] 4f10 6s1,"(8,1/2)17/2",6,semiempirical
 66,Dy,2,64,[Xe] 4f10,5I8,5,semiempirical
 66,Dy,3,63,[Xe] 4f9,6H°15/2,6,semiempirical
 66,Dy,4,62,[Xe] 4f8,7F6,7,semiempirical
@@ -2211,7 +2211,7 @@ z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,ni
 66,Dy,64,2,1s2,1S0,1,theoretical
 66,Dy,65,1,1s1,2S1/2,2,theoretical
 67,Ho,0,67,[Xe] 4f11 6s2,4I°15/2,4,evaluated
-67,Ho,1,66,[Xe] 4f11 6s1,"(15/2,1/2)°8",,semiempirical
+67,Ho,1,66,[Xe] 4f11 6s1,"(15/2,1/2)°8",5,semiempirical
 67,Ho,2,65,[Xe] 4f11,4I°15/2,4,semiempirical
 67,Ho,3,64,[Xe] 4f10,5I8,5,semiempirical
 67,Ho,4,63,[Xe] 4f9,6H°15/2,6,semiempirical
@@ -2278,7 +2278,7 @@ z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,ni
 67,Ho,65,2,1s2,1S0,1,theoretical
 67,Ho,66,1,1s1,2S1/2,2,theoretical
 68,Er,0,68,[Xe] 4f12 6s2,3H6,3,evaluated
-68,Er,1,67,[Xe] 4f12 6s1,"(6,1/2)13/2",,semiempirical
+68,Er,1,67,[Xe] 4f12 6s1,"(6,1/2)13/2",4,semiempirical
 68,Er,2,66,[Xe] 4f12,3H6,3,semiempirical
 68,Er,3,65,[Xe] 4f11,4I°15/2,4,semiempirical
 68,Er,4,64,[Xe] 4f10,5I8,5,semiempirical
@@ -2346,7 +2346,7 @@ z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,ni
 68,Er,66,2,1s2,1S0,1,theoretical
 68,Er,67,1,1s1,2S1/2,2,theoretical
 69,Tm,0,69,[Xe] 4f13 6s2,2F°7/2,2,evaluated
-69,Tm,1,68,[Xe] 4f13 6s1,"(7/2,1/2)°4",,semiempirical
+69,Tm,1,68,[Xe] 4f13 6s1,"(7/2,1/2)°4",3,semiempirical
 69,Tm,2,67,[Xe] 4f13,2F°7/2,2,semiempirical
 69,Tm,3,66,[Xe] 4f12,3H6,3,semiempirical
 69,Tm,4,65,[Xe] 4f11,4I°15/2,4,semiempirical
@@ -3320,7 +3320,7 @@ z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,ni
 81,Tl,78,3,1s2 2s1,2S1/2,2,theoretical
 81,Tl,79,2,1s2,1S0,1,theoretical
 81,Tl,80,1,1s1,2S1/2,2,theoretical
-82,Pb,0,82,[Hg] 6p2,"(1/2,1/2)0",,evaluated
+82,Pb,0,82,[Hg] 6p2,"(1/2,1/2)0",3,evaluated
 82,Pb,1,81,[Hg] 6p1,2P°1/2,2,evaluated
 82,Pb,2,80,[Xe] 4f14 5d10 6s2,1S0,1,evaluated
 82,Pb,3,79,[Xe] 4f14 5d10 6s1,2S1/2,2,evaluated
