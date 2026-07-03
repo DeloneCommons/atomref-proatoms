@@ -25,6 +25,7 @@ generation is a later workflow step.
   construction, radial grids, cutoff radii, and QA model.
 - [Data products](data.md) describes the released profile, radii, and QA files.
 - [Input data](inputs.md) describes the basis-set bundles and atomic-state table.
+- [State policy](state_policy.md) explains the v2 state-source hierarchy, formal anion labels, and interpretation limits.
 - [Workflow](workflow.md) documents the scripts and regeneration commands.
 - [Notebooks](notebooks/README.md) collect practical reports and method demos.
 - [License](license.md) and [AI assistance note](ai_note.md) record repository
@@ -33,8 +34,8 @@ generation is a later workflow step.
 ## Minimal validation
 
 ```bash
+python scripts/check_states.py
 python scripts/check_basis_bundles.py
-python scripts/build_atom_states.py --check
 pytest
 ```
 

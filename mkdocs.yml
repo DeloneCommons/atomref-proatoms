@@ -1,5 +1,5 @@
 site_name: atomref-proatoms
-site_description: Reproducible spherical neutral proatomic radial-density datasets
+site_description: Reproducible spherical atomic and ionic proatomic radial-density datasets
 repo_url: https://github.com/DeloneCommons/atomref-proatoms
 edit_uri: edit/main/
 
@@ -25,6 +25,7 @@ nav:
   - Scientific model: theory.md
   - Data products: data.md
   - Input data: inputs.md
+  - State policy: state_policy.md
   - Workflow: workflow.md
   - How it works:
       - Notebook guide: notebooks/README.md

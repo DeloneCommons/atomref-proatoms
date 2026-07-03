@@ -24,13 +24,13 @@ package code. Their detailed command-line options are documented in
 Run the workflow checks from the repository root:
 
 ```bash
-python scripts/build_atom_states.py --check
+python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
 ```
 
-The first two commands validate compact tracked inputs. The third command creates
+`check_states.py` and `check_basis_bundles.py` validate compact tracked inputs. The third command creates
 or reuses ignored local SCF artifacts. The fourth command extracts tracked
 profile, radii, and QA artifacts from complete local SCF material.
 

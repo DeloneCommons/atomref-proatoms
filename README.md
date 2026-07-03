@@ -4,7 +4,7 @@
 [![Pages][pages-badge]][pages-workflow]
 
 `atomref-proatoms` provides reproducible spherical proatomic radial electron-density
-profiles for isolated neutral atoms. The project is meant to supply consistent
+profiles for isolated atoms and ions. The project is meant to supply consistent
 quantum-chemical reference data for atom-centered theoretical-chemistry,
 crystallographic, empirical density/radius, and promolecular-density models. It
 is not an atomic-spectroscopy benchmark and does not try to turn one set of
@@ -50,6 +50,7 @@ directories and are used only for regeneration.
 
 For artifact formats and column conventions, see the [data-products guide](docs/data.md).
 For state and basis provenance, see the [input-data guide](docs/inputs.md).
+For scientific state-policy interpretation, see the [state-policy guide](docs/state_policy.md).
 For the command-line workflow, see the [workflow guide](docs/workflow.md).
 
 ## Quick checks
@@ -58,8 +59,8 @@ Default validation does not require internet access and does not download basis
 sets. From the repository root:
 
 ```bash
+python scripts/check_states.py
 python scripts/check_basis_bundles.py
-python scripts/build_atom_states.py --check
 pytest
 ```
 
@@ -78,7 +79,7 @@ python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 The profile-generation workflow is:
 
 ```bash
-python scripts/build_atom_states.py --check
+python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
@@ -105,6 +106,7 @@ The documentation is organized as a MkDocs site:
   and the difference from post-SCF angular averaging.
 - [Data products](docs/data.md): released profile, radii, and QA artifacts.
 - [Input data](docs/inputs.md): basis bundles and atomic-state curation.
+- [State policy](docs/state_policy.md): v2 state-source hierarchy, formal anion meaning, and interpretation limits.
 - [Workflow](docs/workflow.md): scripts, package layout, and regeneration steps.
 - [Notebooks](docs/notebooks/README.md): executable reports for inspecting the
   generated data and illustrating the method.

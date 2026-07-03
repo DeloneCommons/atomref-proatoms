@@ -72,11 +72,14 @@ state categories:
   formal_anion_reference: 40
 ```
 
-The state builder can validate the current table without rewriting it:
+Validate the current table without rewriting it:
 
 ```bash
-python scripts/build_atom_states.py --check
+python scripts/check_states.py
 ```
+
+`python scripts/build_atom_states.py --check` remains available as a maintainer
+compatibility path, but `check_states.py` is the clearer user-facing command.
 
 To regenerate the v2 selection and curated outputs from the compact source
 layers:

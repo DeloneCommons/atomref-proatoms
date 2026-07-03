@@ -8,13 +8,13 @@ workflow behavior is reproducible from the repository root.
 ## Pipeline order
 
 ```bash
-python scripts/build_atom_states.py --check
+python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
 ```
 
-`build_atom_states.py --check`, `check_basis_bundles.py`,
+`check_states.py`, `check_basis_bundles.py`,
 `compute_wavefunctions.py --list`, and `compute_wavefunctions.py --dry-run` do
 not require PySCF. Running SCF and extracting profiles from PySCF checkpoint
 artifacts require the generator dependency set.
@@ -23,10 +23,28 @@ artifacts require the generator dependency set.
 
 | script | purpose | primary outputs |
 |---|---|---|
-| `build_atom_states.py` | Build or validate the active v2 curated atomic-state table from compact source/status CSV files. | `data/states/selection/required_states_v2.csv`, `data/states/curated/atom_states_v2.csv`, `data/states/curated/atom_states_v2.json`, `data/states/curated/atom_states_summary_v2.json` |
+| `check_states.py` | Validate the active v2 curated atomic-state table without rewriting generated state outputs. | terminal validation report |
+| `build_atom_states.py` | Build the active v2 curated atomic-state table from compact source/status CSV files. | `data/states/selection/required_states_v2.csv`, `data/states/curated/atom_states_v2.csv`, `data/states/curated/atom_states_v2.json`, `data/states/curated/atom_states_summary_v2.json` |
 | `check_basis_bundles.py` | Validate frozen basis bundles, checksums, NWChem spherical headers, coverage metadata, and optional PySCF parseability. | terminal validation report |
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
+
+## `check_states.py`
+
+Common command:
+
+```bash
+python scripts/check_states.py
+```
+
+This is the clearest validation command for users and CI jobs that only need to
+confirm the active v2 state table. It delegates to the same state-table validator
+used by the builder and does not rewrite any generated state outputs.
+
+Options:
+
+- `--data-dir`: directory containing `source/`, `selection/`, and `curated/`;
+  default is `data/states`.
 
 ## `build_atom_states.py`
 
@@ -60,8 +78,10 @@ Options:
   default is `data/states`.
 - `--check`: validate the existing curated v2 JSON without rewriting it.
 
-The builder is v2-only in the active codebase. Historical v1 state files are kept
-at release/tag/archive level, not as live source-tree functionality.
+The builder is v2-only in the active codebase. `--check` remains available for
+maintainer compatibility, but `scripts/check_states.py` is the preferred
+user-facing validation command. Historical v1 state files are kept at
+release/tag/archive level, not as live source-tree functionality.
 
 ## `check_basis_bundles.py`
 
@@ -198,4 +218,5 @@ Execution and QA options:
 - Scientific model: `docs/theory.md`.
 - Data products: `docs/data.md`.
 - Input data: `docs/inputs.md`.
+- State policy: `docs/state_policy.md`.
 - MkDocs overview: `docs/index.md`.

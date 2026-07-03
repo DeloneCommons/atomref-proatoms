@@ -61,8 +61,10 @@ H-Rn anion compute set. Every formal row is marked
 `physical_status = not_claimed`; these records are stockholder/Hirshfeld-I-like
 density references, not stable isolated atomic-anion claims.
 
-The state-layer details are documented in `data/states/README.md`, and the build
-entry point is `scripts/build_atom_states.py`.
+The state-layer details are documented in `data/states/README.md`, the policy
+rationale is summarized in `docs/state_policy.md`, the user-facing validation
+entry point is `scripts/check_states.py`, and the regeneration entry point is
+`scripts/build_atom_states.py`.
 
 ## Basis-set layer
 
@@ -107,6 +109,12 @@ profile-generation settings.
 
 
 ## State-selection outputs
+
+The active v2 state-validation command is:
+
+```bash
+python scripts/check_states.py
+```
 
 The active v2 state-preparation command is:
 

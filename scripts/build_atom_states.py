@@ -674,7 +674,7 @@ def check_curated_states(states_file: Path) -> int:
     return 0
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--data-dir",
@@ -687,7 +687,7 @@ def main() -> int:
         action="store_true",
         help="Validate the existing curated v2 JSON without rewriting it.",
     )
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     data_dir = args.data_dir
     states_file = data_dir / "curated" / "atom_states_v2.json"
