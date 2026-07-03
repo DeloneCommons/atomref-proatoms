@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import csv
+from collections import Counter
 from pathlib import Path
 
 from atomref_proatoms.states import (
@@ -10,6 +12,7 @@ from atomref_proatoms.states import (
 
 ROOT = Path(__file__).resolve().parents[1]
 STATES_FILE = ROOT / "data" / "states" / "curated" / "atom_states_v1.json"
+NIST_SOURCE_FILE = ROOT / "data" / "states" / "source" / "atom_configs_nist_source.csv"
 
 
 def test_current_state_table_loads_and_matches_expected_counts() -> None:
@@ -69,3 +72,37 @@ def test_formal_anions_and_halides_are_labeled_as_expected() -> None:
             assert state.state_category == "formal_crystal_ion_reference"
         if state.symbol in {"F", "Cl", "Br", "I"} and state.charge == -1:
             assert state.state_category == "curated_common_ion"
+
+
+def test_nist_source_table_keeps_compact_v2_state_metadata() -> None:
+    with NIST_SOURCE_FILE.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+
+    assert len(rows) == 5352
+    assert rows[0].keys() == {
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_level",
+        "nist_ie_provenance",
+    }
+
+    keys = [(row["symbol"], row["charge"]) for row in rows]
+    assert len(keys) == len(set(keys))
+
+    provenance = Counter(row["nist_ie_provenance"] for row in rows)
+    assert set(provenance) <= {"evaluated", "semiempirical", "theoretical", "missing"}
+    assert provenance == {
+        "evaluated": 311,
+        "semiempirical": 898,
+        "theoretical": 4143,
+    }
+    assert sum(1 for row in rows if not row["ground_level"]) == 138
+
+    by_key = {(row["symbol"], row["charge"]): row for row in rows}
+    assert by_key[("Fe", "1")]["ground_level"] == "6D9/2"
+    assert by_key[("P", "0")]["ground_level"] == "4S°3/2"
+    assert by_key[("Mg", "3")]["nist_ie_provenance"] == "semiempirical"
+    assert by_key[("H", "0")]["nist_ie_provenance"] == "theoretical"

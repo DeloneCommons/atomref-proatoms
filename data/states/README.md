@@ -12,12 +12,15 @@ record is not a generated v1 profile unless it is selected by
 `data/profile_datasets.yaml`.
 
 The data stored here are intentionally minimal. For each NIST-derived atom or
-positive ion, the project keeps only the element, charge, electron count, and a
-clean electronic-configuration label. Ionization energies, uncertainties, raw
-HTML pages, and bibliography rows from the NIST Atomic Spectra Database are not
-redistributed in this package. They are not needed for the density generator: the
-spin-resolved occupations are generated from configurations by a documented
-free-ion Hund high-spin convention.
+positive ion, the project keeps only the element, charge, electron count, a clean
+electronic-configuration label, the NIST ground-level label, and a compact
+provenance class derived from the syntax of the NIST ionization-energy value.
+Raw HTML pages, quantitative ionization energies, numerical uncertainties, and
+bibliography rows from the NIST Atomic Spectra Database are not redistributed in
+this package. The current v1 density generator still uses the configuration
+column and a documented free-ion Hund high-spin convention for spin-resolved
+occupations; the retained NIST ground-level labels are a preparation layer for
+v2 spin/multiplicity curation.
 
 ## Directory layout
 
@@ -62,12 +65,28 @@ Example query shape used during preparation:
 https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=Na+Mg&submit=Retrieve+Data&units=1&format=0&order=0&at_num_out=on&sp_name_out=on&ion_charge_out=on&el_name_out=on&seq_out=on&shells_out=on&conf_out=on&level_out=on&ion_conf_out=on&e_out=0&unc_out=on&biblio=on
 ```
 
-The important NIST output field for this project is `Ground Shells`, because it
-provides a compact shell-occupation label such as `[Ar] 3d6`. These labels were
-normalized to plain text forms suitable for a small CSV table. The NIST `Ground
-Configuration` and `Ground Level` fields were inspected during preparation but
-are not retained here, because the project does not reconstruct spectroscopic
-terms from NIST data.
+The configuration column is the compact shell-occupation label prepared from the
+NIST GSIE state fields and normalized to plain text forms suitable for a small
+CSV table. The `ground_level` column stores the corresponding NIST `Ground
+Level` label in compact text form, such as `2S1/2`, `3P2`, or `4S°3/2`. It is
+retained as the source label for later v2 spin/multiplicity curation; the current
+v1 builder does not yet reconstruct spectroscopic terms from it.
+
+The `nist_ie_provenance` column is derived only from the bracket syntax of the
+NIST `Ionization Energy (eV)` field:
+
+```text
+evaluated      plain numeric value
+semiempirical  square-bracketed value: [ ... ]
+theoretical    parenthesized value: ( ... )
+missing        empty value, if present
+```
+
+This is a provenance class for the ionization-energy entry, not a stored
+ionization energy and not a complete confidence score for the state label. Some
+high-charge rows in the compact source table have blank NIST ground-level labels;
+those rows are retained because the table mirrors the compact source preparation
+scope, while v2 production selections will use only policy-selected states.
 
 One practical caveat of the GSIE spectra input is that element symbols such as
 `V` and `I` can also be interpreted in Roman-numeral ion-stage notation in some
@@ -167,9 +186,11 @@ https://physics.nist.gov/PhysRefData/ASD/Html/iehelp.html
 ```
 
 This project does not redistribute the raw ASD pages or quantitative SRD tables.
-The compact source table keeps only common electronic-configuration labels needed
-for reproducible proatom-density generation. Redistribution terms for NIST
-Standard Reference Data should be reviewed before adding larger ASD extracts.
+The compact source table keeps only common electronic-configuration labels, NIST
+ground-level labels, and ionization-energy provenance classes needed for
+reproducible proatom-density generation and v2 state curation. Redistribution
+terms for NIST Standard Reference Data should be reviewed before adding larger
+ASD extracts or quantitative energy tables.
 
 ## Related documentation
 

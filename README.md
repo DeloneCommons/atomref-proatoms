@@ -128,8 +128,9 @@ Code in `src/`, `scripts/`, and `tests/` is released under the MIT License. The
 released data tables, documentation, and notebooks are released under Creative
 Commons Attribution 4.0 International unless an upstream notice states otherwise.
 Frozen basis exports retain the Basis Set Exchange BSD-3-Clause notice, and the
-atomic-state source layer uses compact configuration labels prepared from the
-NIST Atomic Spectra Database, NIST Standard Reference Database 78. See
+atomic-state source layer uses compact configuration and ground-level labels
+prepared from the NIST Atomic Spectra Database, NIST Standard Reference Database
+78. See
 [`LICENSE.md`](LICENSE.md) for the full repository license statement.
 
 Project planning, scientific discussion, code drafting, and documentation drafting

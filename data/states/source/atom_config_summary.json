@@ -9,10 +9,18 @@
         "symbol",
         "charge",
         "electron_count",
-        "configuration"
+        "configuration",
+        "ground_level",
+        "nist_ie_provenance"
       ],
-      "sha256": "4d6af82f5ede6d99c8c334c48ba1f60e19569f174e396dd91e60af1458e53fdb",
-      "note": "Compact element/charge/configuration table derived from NIST ASD GSIE snapshots; quantitative ionization-energy data are not included."
+      "sha256": "2fabef65e18ca2b1d60f6880a3ddd2541c4c36a513e80015f64b34578bb4702e",
+      "note": "Compact element/charge/configuration table derived from NIST ASD GSIE snapshots; NIST ground-level labels and ionization-energy provenance classes are retained, but quantitative ionization-energy values are not included.",
+      "nist_ie_provenance_counts": {
+        "evaluated": 311,
+        "semiempirical": 898,
+        "theoretical": 4143
+      },
+      "ground_level_blank_count": 138
     },
     "atom_configs_formal_anions.csv": {
       "row_count": 13,

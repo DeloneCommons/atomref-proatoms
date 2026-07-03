@@ -25,11 +25,14 @@ v1 generated profile dataset.
 
 ### Source convention
 
-Neutral and positive-ion configuration labels are prepared from the NIST Atomic
-Spectra Database Ground States and Ionization Energies interface, NIST Standard
+Neutral and positive-ion state labels are prepared from the NIST Atomic Spectra
+Database Ground States and Ionization Energies interface, NIST Standard
 Reference Database 78. This repository keeps compact configuration labels needed
-for generator reproducibility. It does not redistribute raw NIST ASD pages,
-ionization-energy tables, uncertainty records, or bibliography rows.
+for generator reproducibility, NIST ground-level labels for later v2
+spin/multiplicity curation, and an ionization-energy provenance class derived
+from the NIST bracket syntax. It does not redistribute raw NIST ASD pages,
+quantitative ionization-energy values, numerical uncertainty records, or
+bibliography rows.
 
 Small formal-anion configuration records are stored separately under
 `data/states/source/`. They are part of the state curation layer, not active v1
