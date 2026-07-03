@@ -33,6 +33,7 @@ data/states/
     atom_config_summary.json
     atom_configs_nist_source.csv
     atom_configs_formal_anions.csv
+    ning2022_monoanions.csv
 
   selection/
     required_states_v1.csv
@@ -45,9 +46,9 @@ scripts/
   build_atom_states.py
 ```
 
-`source/` stores compact configuration inputs. `selection/` stores the versioned
-list of `(element, charge)` pairs to build. `curated/` stores generator-ready JSON
-records produced by `scripts/build_atom_states.py`.
+`source/` stores compact configuration and state-status inputs. `selection/` stores
+the versioned list of `(element, charge)` pairs to build. `curated/` stores
+generator-ready JSON records produced by `scripts/build_atom_states.py`.
 
 The `selection/` directory is a selection layer rather than a complete
 configuration layer. The NIST source table now includes ground-level
@@ -116,6 +117,61 @@ rows are manually assigned, 138 rows remain blank because no NIST ground-level
 label was retained, and 322 non-empty non-LS labels outside the current v2
 neutral/cation policy domain remain blank. One incomplete high-charge nobelium row from the raw
 snapshot was excluded; it is outside the selected state scope.
+
+
+## Ning--Lu monoanion source table
+
+The table `source/ning2022_monoanions.csv` is a compact monoanion
+state-status layer prepared from Ning and Lu, *Electron Affinities of Atoms and
+Structures of Atomic Negative Ions*, J. Phys. Chem. Ref. Data 51, 021502
+(2022). It uses the recommended atomic-anion state rows from Table 3 as the
+main source for H-U monoanions.
+
+The table intentionally does not store electron-affinity values or their
+uncertainties. At this stage, atomref-proatoms needs the state labels and
+source-level status flags only; quantitative affinity data can be added later if
+a future workflow needs them. The retained fields are:
+
+```text
+z
+symbol
+charge = -1
+electron_count
+configuration
+ground_level
+ground_multiplicity
+state_role
+physical_status
+notes
+```
+
+`configuration`, `ground_level`, and `ground_multiplicity` describe the
+recommended negative-ion state where Ning--Lu provides one. Rows that the review
+treats as unbound, metastable-only, or not accepted as stable negative ions keep
+blank state fields and are flagged as `state_role = excluded`. Theory-only or
+upper-limit cases that should not be used as physical/reference monoanions by
+default are flagged as `state_role = diagnostic_theory`. Very weak or otherwise
+provisional experimental rows are flagged as `bound_provisional`.
+
+Current source-status vocabulary:
+
+```text
+state_role:
+  bound_experimental
+  bound_provisional
+  diagnostic_theory
+  excluded
+
+physical_status:
+  experimental_or_evaluated
+  provisional_experimental
+  theoretical_only
+  unbound_or_metastable
+```
+
+This table is a source layer, not the final v2 compute-state table. The v2 state
+builder will decide which rows become physical/reference monoanions and which
+required monoanions instead fall through to formal references.
 
 ## Formal anions
 

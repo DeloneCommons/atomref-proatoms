@@ -39,6 +39,35 @@
       ],
       "sha256": "02c1688204bd387ceeecc6274d09c64ac76518285be2b95d3f70f1d09a90f1a0",
       "note": "Small inferred table for formal crystal-ion anions absent from the NIST positive-ion source layer."
+    },
+    "ning2022_monoanions.csv": {
+      "row_count": 92,
+      "columns": [
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_level",
+        "ground_multiplicity",
+        "state_role",
+        "physical_status",
+        "notes"
+      ],
+      "sha256": "15f560c1e2976d829fa628d4f1cab2eac346d488fd0edf8ad0e2e78583465fb4",
+      "note": "Compact monoanion state-status table curated from Ning and Lu 2022 Table 3; electron-affinity values are intentionally not included in this source layer.",
+      "state_role_counts": {
+        "bound_experimental": 65,
+        "bound_provisional": 4,
+        "diagnostic_theory": 9,
+        "excluded": 14
+      },
+      "physical_status_counts": {
+        "experimental_or_evaluated": 65,
+        "provisional_experimental": 4,
+        "theoretical_only": 9,
+        "unbound_or_metastable": 14
+      }
     }
   },
   "selection": {
@@ -79,7 +108,8 @@
   },
   "source_files": [
     "atom_configs_nist_source.csv",
-    "atom_configs_formal_anions.csv"
+    "atom_configs_formal_anions.csv",
+    "ning2022_monoanions.csv"
   ],
   "nist_source_fields": [
     "z",
@@ -142,5 +172,17 @@
       }
     ],
     "unassigned_non_ls_outside_v2_domain_count": 322
-  }
+  },
+  "ning2022_source_fields": [
+    "z",
+    "symbol",
+    "charge",
+    "electron_count",
+    "configuration",
+    "ground_level",
+    "ground_multiplicity",
+    "state_role",
+    "physical_status",
+    "notes"
+  ]
 }

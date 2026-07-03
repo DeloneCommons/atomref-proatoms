@@ -28,11 +28,18 @@ recorded in each basis bundle's `references.md` file.
 The atomic-state source layer uses compact electronic-configuration labels,
 ground-level labels, parsed simple term multiplicities, a small set of manual
 v2-domain multiplicity assignments, and ionization-energy provenance classes
-prepared from the NIST Atomic Spectra Database, NIST Standard
-Reference Database 78. This project does not redistribute raw NIST ASD pages,
-quantitative ionization-energy tables,
-uncertainty records, or bibliography rows. Cite the NIST Atomic Spectra Database
-when publishing work that relies on these state labels.
+prepared from the NIST Atomic Spectra Database, NIST Standard Reference Database
+78. This project does not redistribute raw NIST ASD pages, quantitative
+ionization-energy tables, uncertainty records, or bibliography rows. Cite the
+NIST Atomic Spectra Database when publishing work that relies on these state
+labels.
+
+The monoanion source-status table is a compact curation from Ning and Lu,
+*Electron Affinities of Atoms and Structures of Atomic Negative Ions*, J. Phys.
+Chem. Ref. Data 51, 021502 (2022). It stores state labels and status flags only;
+electron-affinity values and numerical uncertainties from the review are not
+redistributed in this table. Cite Ning and Lu 2022 when publishing work that
+relies on these monoanion labels or status classes.
 
 ## MIT License text
 

@@ -1,0 +1,93 @@
+z,symbol,charge,electron_count,configuration,ground_level,ground_multiplicity,state_role,physical_status,notes
+1,H,-1,2,1s2,1S0,1,bound_experimental,experimental_or_evaluated,recommended high-accuracy calculation; experimental photodetachment value exists
+2,He,-1,3,,,,excluded,unbound_or_metastable,no stable negative ion; metastable excited anion states are not production references
+3,Li,-1,4,[He] 2s2,1S0,1,bound_experimental,experimental_or_evaluated,
+4,Be,-1,5,,,,excluded,unbound_or_metastable,no stable negative ion; long-lived metastable anion reported
+5,B,-1,6,[He] 2s2 2p2,3P0,3,bound_experimental,experimental_or_evaluated,
+6,C,-1,7,[He] 2s2 2p3,4S3/2,4,bound_experimental,experimental_or_evaluated,
+7,N,-1,8,,,,excluded,unbound_or_metastable,no stable negative ion
+8,O,-1,9,[He] 2s2 2p5,2P3/2,2,bound_experimental,experimental_or_evaluated,
+9,F,-1,10,[He] 2s2 2p6,1S0,1,bound_experimental,experimental_or_evaluated,
+10,Ne,-1,11,,,,excluded,unbound_or_metastable,no stable negative ion
+11,Na,-1,12,[Ne] 3s2,1S0,1,bound_experimental,experimental_or_evaluated,
+12,Mg,-1,13,,,,excluded,unbound_or_metastable,no stable negative ion; metastable assignment uncertain
+13,Al,-1,14,[Ne] 3s2 3p2,3P0,3,bound_experimental,experimental_or_evaluated,
+14,Si,-1,15,[Ne] 3s2 3p3,4S3/2,4,bound_experimental,experimental_or_evaluated,
+15,P,-1,16,[Ne] 3s2 3p4,3P2,3,bound_experimental,experimental_or_evaluated,
+16,S,-1,17,[Ne] 3s2 3p5,2P3/2,2,bound_experimental,experimental_or_evaluated,
+17,Cl,-1,18,[Ne] 3s2 3p6,1S0,1,bound_experimental,experimental_or_evaluated,
+18,Ar,-1,19,,,,excluded,unbound_or_metastable,no stable negative ion; metastable excited anion states are not production references
+19,K,-1,20,[Ar] 4s2,1S0,1,bound_experimental,experimental_or_evaluated,
+20,Ca,-1,21,[Ar] 4s2 4p1,2P1/2,2,bound_experimental,experimental_or_evaluated,
+21,Sc,-1,22,[Ar] 3d1 4s2 4p1,1D2,1,bound_experimental,experimental_or_evaluated,
+22,Ti,-1,23,[Ar] 3d3 4s2,4F3/2,4,bound_experimental,experimental_or_evaluated,
+23,V,-1,24,[Ar] 3d4 4s2,5D0,5,bound_experimental,experimental_or_evaluated,
+24,Cr,-1,25,[Ar] 3d5 4s2,6S5/2,6,bound_experimental,experimental_or_evaluated,
+25,Mn,-1,26,,,,excluded,unbound_or_metastable,no accepted stable negative ion in Ning-Lu 2022 table
+26,Fe,-1,27,[Ar] 3d7 4s2,4F9/2,4,bound_experimental,experimental_or_evaluated,
+27,Co,-1,28,[Ar] 3d8 4s2,3F4,3,bound_experimental,experimental_or_evaluated,
+28,Ni,-1,29,[Ar] 3d9 4s2,2D5/2,2,bound_experimental,experimental_or_evaluated,
+29,Cu,-1,30,[Ar] 3d10 4s2,1S0,1,bound_experimental,experimental_or_evaluated,
+30,Zn,-1,31,,,,excluded,unbound_or_metastable,closed-shell atom; no stable negative ion expected in the review
+31,Ga,-1,32,[Ar] 3d10 4s2 4p2,3P0,3,bound_experimental,experimental_or_evaluated,
+32,Ge,-1,33,[Ar] 3d10 4s2 4p3,4S3/2,4,bound_experimental,experimental_or_evaluated,
+33,As,-1,34,[Ar] 3d10 4s2 4p4,3P2,3,bound_experimental,experimental_or_evaluated,
+34,Se,-1,35,[Ar] 3d10 4s2 4p5,2P3/2,2,bound_experimental,experimental_or_evaluated,
+35,Br,-1,36,[Ar] 3d10 4s2 4p6,1S0,1,bound_experimental,experimental_or_evaluated,
+36,Kr,-1,37,,,,excluded,unbound_or_metastable,no stable negative ion
+37,Rb,-1,38,[Kr] 5s2,1S0,1,bound_experimental,experimental_or_evaluated,
+38,Sr,-1,39,[Kr] 5s2 5p1,2P1/2,2,bound_experimental,experimental_or_evaluated,
+39,Y,-1,40,[Kr] 4d1 5s2 5p1,1D2,1,bound_experimental,experimental_or_evaluated,
+40,Zr,-1,41,[Kr] 4d3 5s2,4F3/2,4,bound_experimental,experimental_or_evaluated,
+41,Nb,-1,42,[Kr] 4d4 5s2,5D0,5,bound_experimental,experimental_or_evaluated,
+42,Mo,-1,43,[Kr] 4d5 5s2,6S5/2,6,bound_experimental,experimental_or_evaluated,
+43,Tc,-1,44,[Kr] 4d6 5s2,5D4,5,diagnostic_theory,theoretical_only,calculated/semiempirical recommendation only; no experimental EA in the review
+44,Ru,-1,45,[Kr] 4d7 5s2,4F9/2,4,bound_experimental,experimental_or_evaluated,
+45,Rh,-1,46,[Kr] 4d8 5s2,3F4,3,bound_experimental,experimental_or_evaluated,
+46,Pd,-1,47,[Kr] 4d10 5s1,2S1/2,2,bound_experimental,experimental_or_evaluated,
+47,Ag,-1,48,[Kr] 4d10 5s2,1S0,1,bound_experimental,experimental_or_evaluated,
+48,Cd,-1,49,,,,excluded,unbound_or_metastable,closed-shell atom; no stable negative ion expected in the review
+49,In,-1,50,[Kr] 4d10 5s2 5p2,3P0,3,bound_experimental,experimental_or_evaluated,
+50,Sn,-1,51,[Kr] 4d10 5s2 5p3,4S3/2,4,bound_experimental,experimental_or_evaluated,
+51,Sb,-1,52,[Kr] 4d10 5s2 5p4,3P2,3,bound_experimental,experimental_or_evaluated,
+52,Te,-1,53,[Kr] 4d10 5s2 5p5,2P3/2,2,bound_experimental,experimental_or_evaluated,
+53,I,-1,54,[Kr] 4d10 5s2 5p6,1S0,1,bound_experimental,experimental_or_evaluated,
+54,Xe,-1,55,,,,excluded,unbound_or_metastable,no stable negative ion; earlier claimed observations are treated as unreliable in the review context
+55,Cs,-1,56,[Xe] 6s2,1S0,1,bound_experimental,experimental_or_evaluated,
+56,Ba,-1,57,[Xe] 6s2 6p1,2P1/2,2,bound_experimental,experimental_or_evaluated,
+57,La,-1,58,[Xe] 5d2 6s2,3F2,3,bound_experimental,experimental_or_evaluated,multiple bound anion states exist; table row is the recommended ground state
+58,Ce,-1,59,[Xe] 4f1 5d2 6s2,4H7/2,4,bound_experimental,experimental_or_evaluated,multiple bound anion states may exist; table row is the recommended ground state
+59,Pr,-1,60,[Xe] 4f3 6s2 6p1,5K5,5,bound_experimental,experimental_or_evaluated,
+60,Nd,-1,61,[Xe] 4f4 6s2 6p1,6K9/2,6,bound_experimental,experimental_or_evaluated,
+61,Pm,-1,62,[Xe] 4f5 6s2 6p1,7I3,7,diagnostic_theory,theoretical_only,calculated recommendation only; no experimental EA in the review
+62,Sm,-1,63,[Xe] 4f6 6s2 6p1,8G1/2,8,diagnostic_theory,theoretical_only,calculated recommendation and experimental lower limit only; no assigned experimental ground state in the review
+63,Eu,-1,64,[Xe] 4f7 6s2 6p1,9P3,9,bound_experimental,experimental_or_evaluated,
+64,Gd,-1,65,[Xe] 4f7 5d1 6s2 6p1,10F3/2,10,bound_provisional,provisional_experimental,preliminary/large-uncertainty heavy-anion assignment
+65,Tb,-1,66,[Xe] 4f8 5d1 6s2 6p1,9G7,9,bound_experimental,experimental_or_evaluated,
+66,Dy,-1,67,[Xe] 4f10 6s2 6p1,6H15/2,6,bound_provisional,provisional_experimental,very weak binding; AMS estimate in the review
+67,Ho,-1,68,[Xe] 4f11 6s2 6p1,5H7,5,diagnostic_theory,theoretical_only,experimental upper limit only; not used as a physical/reference monoanion by default
+68,Er,-1,69,[Xe] 4f12 6s2 6p1,4G11/2,4,diagnostic_theory,theoretical_only,experimental upper limit only; not used as a physical/reference monoanion by default
+69,Tm,-1,70,[Xe] 4f13 6s2 6p1,3D3,3,bound_provisional,provisional_experimental,very weak binding; AMS estimate in the review
+70,Yb,-1,71,,,,excluded,unbound_or_metastable,review concludes Yb cannot form a stable negative ion
+71,Lu,-1,72,[Xe] 4f14 5d1 6s2 6p1,1D2,1,bound_experimental,experimental_or_evaluated,
+72,Hf,-1,73,[Xe] 4f14 5d2 6s2 6p1,4G5/2,4,bound_experimental,experimental_or_evaluated,
+73,Ta,-1,74,[Xe] 4f14 5d4 6s2,5D0,5,bound_experimental,experimental_or_evaluated,
+74,W,-1,75,[Xe] 4f14 5d5 6s2,6S5/2,6,bound_experimental,experimental_or_evaluated,
+75,Re,-1,76,[Xe] 4f14 5d6 6s2,5D4,5,bound_experimental,experimental_or_evaluated,
+76,Os,-1,77,[Xe] 4f14 5d7 6s2,4F9/2,4,bound_experimental,experimental_or_evaluated,multiple bound anion states exist; table row is the recommended ground state
+77,Ir,-1,78,[Xe] 4f14 5d8 6s2,3F4,3,bound_experimental,experimental_or_evaluated,
+78,Pt,-1,79,[Xe] 4f14 5d9 6s2,2D5/2,2,bound_experimental,experimental_or_evaluated,
+79,Au,-1,80,[Xe] 4f14 5d10 6s2,1S0,1,bound_experimental,experimental_or_evaluated,
+80,Hg,-1,81,,,,excluded,unbound_or_metastable,closed-shell atom; no stable negative ion expected in the review
+81,Tl,-1,82,[Xe] 4f14 5d10 6s2 6p2,3P0,3,bound_experimental,experimental_or_evaluated,
+82,Pb,-1,83,[Xe] 4f14 5d10 6s2 6p3,4S3/2,4,bound_experimental,experimental_or_evaluated,
+83,Bi,-1,84,[Xe] 4f14 5d10 6s2 6p4,3P2,3,bound_experimental,experimental_or_evaluated,
+84,Po,-1,85,[Xe] 4f14 5d10 6s2 6p5,2P3/2,2,diagnostic_theory,theoretical_only,calculated recommendation only; no experimental EA in the review
+85,At,-1,86,[Xe] 4f14 5d10 6s2 6p6,1S0,1,bound_experimental,experimental_or_evaluated,
+86,Rn,-1,87,,,,excluded,unbound_or_metastable,no stable negative ion
+87,Fr,-1,88,[Rn] 7s2,1S0,1,diagnostic_theory,theoretical_only,calculated recommendation only; no experimental EA in the review
+88,Ra,-1,89,[Rn] 7s2 7p1,2P1/2,2,bound_provisional,provisional_experimental,AMS estimate; no detailed assigned spectrum in the review table
+89,Ac,-1,90,[Rn] 6d1 7s2 7p1,3F2,3,diagnostic_theory,theoretical_only,calculated recommendation only; no experimental EA in the review
+90,Th,-1,91,[Rn] 6d3 7s2,4F3/2,4,bound_experimental,experimental_or_evaluated,multiple bound anion states exist; table row is the recommended ground state
+91,Pa,-1,92,[Rn] 5f2 6d1 7s2 7p1,5L6,5,diagnostic_theory,theoretical_only,calculated recommendation and experimental lower limit only; no assigned experimental ground state in the review
+92,U,-1,93,[Rn] 5f3 6d1 7s2 7p1,6M13/2,6,bound_experimental,experimental_or_evaluated,multiple bound anion states exist; table row is the recommended ground state

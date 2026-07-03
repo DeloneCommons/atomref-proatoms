@@ -45,6 +45,15 @@ rows are outside the intended v2 neutral/cation computation scope. The current
 v1 builder still uses its documented Hund high-spin occupation model; the NIST
 multiplicities are retained for the v2 state-curation layer.
 
+A compact monoanion source table is stored at
+`data/states/source/ning2022_monoanions.csv`. It is curated from Ning and Lu
+2022 and retains only state labels plus status flags for H-U monoanions. It does
+not store electron-affinity values or numerical uncertainties. Rows may be
+flagged as accepted experimental/evaluated monoanions, provisional experimental
+monoanions, theory-only diagnostics, or excluded/unbound/problematic cases. This
+source table is preparation material for v2 and is not yet used by the active v1
+profile-generation contract.
+
 Small formal-anion configuration records are stored separately under
 `data/states/source/`. They are part of the state curation layer, not active v1
 profile outputs unless selected by the active profile-dataset configuration.

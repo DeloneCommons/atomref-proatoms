@@ -132,3 +132,67 @@ def test_nist_source_table_keeps_compact_v2_state_metadata() -> None:
     assert by_key[("Tm", "1")]["ground_multiplicity"] == "3"
     assert by_key[("Mg", "3")]["nist_ie_provenance"] == "semiempirical"
     assert by_key[("H", "0")]["nist_ie_provenance"] == "theoretical"
+
+NING2022_SOURCE_FILE = ROOT / "data" / "states" / "source" / "ning2022_monoanions.csv"
+
+
+def test_ning2022_monoanion_source_table_is_compact_and_status_only() -> None:
+    with NING2022_SOURCE_FILE.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+
+    assert len(rows) == 92
+    assert rows[0].keys() == {
+        "z",
+        "symbol",
+        "charge",
+        "electron_count",
+        "configuration",
+        "ground_level",
+        "ground_multiplicity",
+        "state_role",
+        "physical_status",
+        "notes",
+    }
+    assert "electron_affinity_eV" not in rows[0]
+    assert "electron_affinity_uncertainty_eV" not in rows[0]
+
+    keys = [(row["symbol"], row["charge"]) for row in rows]
+    assert len(keys) == len(set(keys))
+    assert {row["charge"] for row in rows} == {"-1"}
+    assert all(int(row["electron_count"]) == int(row["z"]) + 1 for row in rows)
+
+    assert Counter(row["state_role"] for row in rows) == {
+        "bound_experimental": 65,
+        "bound_provisional": 4,
+        "diagnostic_theory": 9,
+        "excluded": 14,
+    }
+    assert Counter(row["physical_status"] for row in rows) == {
+        "experimental_or_evaluated": 65,
+        "provisional_experimental": 4,
+        "theoretical_only": 9,
+        "unbound_or_metastable": 14,
+    }
+
+    for row in rows:
+        if row["state_role"] in {"bound_experimental", "bound_provisional", "diagnostic_theory"}:
+            assert row["configuration"]
+            assert row["ground_level"]
+            assert row["ground_multiplicity"]
+        if row["state_role"] == "excluded":
+            assert row["physical_status"] == "unbound_or_metastable"
+
+    by_symbol = {row["symbol"]: row for row in rows}
+    assert by_symbol["C"]["configuration"] == "[He] 2s2 2p3"
+    assert by_symbol["C"]["ground_level"] == "4S3/2"
+    assert by_symbol["C"]["ground_multiplicity"] == "4"
+    assert by_symbol["Ba"]["configuration"] == "[Xe] 6s2 6p1"
+    assert by_symbol["Ba"]["ground_level"] == "2P1/2"
+    assert by_symbol["La"]["state_role"] == "bound_experimental"
+    assert by_symbol["La"]["ground_level"] == "3F2"
+    assert by_symbol["Gd"]["state_role"] == "bound_provisional"
+    assert by_symbol["Ho"]["state_role"] == "diagnostic_theory"
+    assert by_symbol["Tc"]["physical_status"] == "theoretical_only"
+    assert by_symbol["Yb"]["state_role"] == "excluded"
+    assert by_symbol["Yb"]["configuration"] == ""
+    assert by_symbol["Rn"]["state_role"] == "excluded"

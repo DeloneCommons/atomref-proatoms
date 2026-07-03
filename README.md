@@ -131,8 +131,9 @@ Frozen basis exports retain the Basis Set Exchange BSD-3-Clause notice, and the
 atomic-state source layer uses compact configuration labels, ground-level labels,
 parsed simple term multiplicities, a small set of manual v2-domain
 multiplicity assignments, and ionization-energy provenance classes prepared
-from the NIST Atomic Spectra Database, NIST Standard Reference Database
-78. See
+from the NIST Atomic Spectra Database, NIST Standard Reference Database 78. It
+also includes a compact Ning--Lu 2022 monoanion state-status source table without
+electron-affinity values. See
 [`LICENSE.md`](LICENSE.md) for the full repository license statement.
 
 Project planning, scientific discussion, code drafting, and documentation drafting
