@@ -20,8 +20,8 @@ def test_write_wide_profiles_csv_contains_shared_radius_and_state_columns(tmp_pa
         path,
         r_bohr=[0.1, 0.2],
         densities_by_state_id={
-            "H_q0_mult2_hund": [2.0, 1.0],
-            "He_q0_mult1_hund": [4.0, 2.0],
+            "H_q0_mult2_nist": [2.0, 1.0],
+            "He_q0_mult1_nist": [4.0, 2.0],
         },
     )
 
@@ -29,7 +29,7 @@ def test_write_wide_profiles_csv_contains_shared_radius_and_state_columns(tmp_pa
         rows = list(csv.reader(handle))
 
     assert rows == [
-        ["r_bohr", "rho_e_bohr3__H_q0_mult2_hund", "rho_e_bohr3__He_q0_mult1_hund"],
+        ["r_bohr", "rho_e_bohr3__H_q0_mult2_nist", "rho_e_bohr3__He_q0_mult1_nist"],
         ["0.10000000000000001", "2", "4"],
         ["0.20000000000000001", "1", "2"],
     ]
@@ -40,12 +40,12 @@ def test_write_wide_profiles_csv_rejects_mismatched_lengths(tmp_path) -> None:
         write_wide_profiles_csv(
             tmp_path / "profiles.csv",
             r_bohr=[0.1, 0.2],
-            densities_by_state_id={"H_q0_mult2_hund": [2.0]},
+            densities_by_state_id={"H_q0_mult2_nist": [2.0]},
         )
 
 
 def test_profile_density_column_is_state_id_based() -> None:
-    assert profile_density_column("O_qm2_mult1_hund") == "rho_e_bohr3__O_qm2_mult1_hund"
+    assert profile_density_column("O_qm2_mult1_formal") == "rho_e_bohr3__O_qm2_mult1_formal"
 
 
 def test_write_json_replaces_nonfinite_numbers_with_null(tmp_path) -> None:
@@ -62,7 +62,7 @@ def test_write_profile_dataset_artifacts_writes_one_csv_and_one_json(tmp_path) -
     profiles_path, metadata_path = write_profile_dataset_artifacts(
         tmp_path,
         r_bohr=[0.1, 0.2],
-        densities_by_state_id={"H_q0_mult2_hund": [2.0, 1.0]},
+        densities_by_state_id={"H_q0_mult2_nist": [2.0, 1.0]},
         metadata={"dataset_id": "test", "qa": {"electron_count_error_qa": None}},
     )
 
@@ -83,7 +83,7 @@ from atomref_proatoms.profiles.artifacts import (  # noqa: E402
 
 def _state_table_metadata() -> dict[str, dict[str, object]]:
     return {
-        "H_q0_mult2_hund": {
+        "H_q0_mult2_nist": {
             "symbol": "H",
             "z": 1,
             "charge": 0,
@@ -104,7 +104,7 @@ def test_write_radii_dataset_artifacts_writes_csv_and_metadata(tmp_path) -> None
         cutoffs_e_bohr3=[0.003, 0.001],
         states=_state_table_metadata(),
         derived_radii_by_state_id={
-            "H_q0_mult2_hund": {
+            "H_q0_mult2_nist": {
                 "r_iso_0.003_e_bohr3_bohr": 1.0,
                 "r_iso_0.001_e_bohr3_bohr": 2.0,
             }
@@ -115,7 +115,7 @@ def test_write_radii_dataset_artifacts_writes_csv_and_metadata(tmp_path) -> None
 
     with radii_csv.open(newline="") as handle:
         rows = list(csv.DictReader(handle))
-    assert rows[0]["state_id"] == "H_q0_mult2_hund"
+    assert rows[0]["state_id"] == "H_q0_mult2_nist"
     assert rows[0]["r_iso_0.003_e_bohr3_bohr"] == "1.0"
     metadata = json.loads(metadata_json.read_text())
     assert metadata["schema_version"] == "atomref.proatoms.radii_dataset.v1"
@@ -124,7 +124,7 @@ def test_write_radii_dataset_artifacts_writes_csv_and_metadata(tmp_path) -> None
 
 def test_write_qa_dataset_artifacts_and_overview(tmp_path) -> None:
     qa = {
-        "H_q0_mult2_hund": {
+        "H_q0_mult2_nist": {
             "scf_converged": True,
             "electron_count_error_qa": 1.0e-12,
             "electron_count_tolerance": 2.0e-6,
@@ -152,7 +152,7 @@ def test_write_qa_dataset_artifacts_and_overview(tmp_path) -> None:
     with qa_csv.open(newline="") as handle:
         rows = list(csv.DictReader(handle))
     assert rows[0]["overall_pass"] == "True"
-    assert qa_overall_pass({**qa["H_q0_mult2_hund"], "overall_pass": True})
+    assert qa_overall_pass({**qa["H_q0_mult2_nist"], "overall_pass": True})
     metadata = json.loads(metadata_json.read_text())
     assert metadata["schema_version"] == "atomref.proatoms.qa_dataset.v1"
     assert metadata["failed_count"] == 0

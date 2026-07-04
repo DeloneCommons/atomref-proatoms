@@ -48,7 +48,9 @@
     "n_elements": 88
   },
   "usage": {
-    "dataset_ids_using_this_basis": []
+    "dataset_ids_using_this_basis": [
+      "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2"
+    ]
   },
   "redistribution": {
     "redistribution_basis": "BSE export redistributed under the BSE BSD-3-Clause notice; upstream citations are recorded in references.md.",
@@ -57,6 +59,6 @@
   "notes": [
     "Auxiliary augmented Dyall branch retained as frozen input data for basis-sensitivity studies.",
     "The basis coverage is discontinuous; it skips La-Lu and Ac-Lr.",
-    "No active v1 profile dataset uses this basis."
+    "Active v2 anion sensitivity profile dataset uses this basis for anions in its declared coverage."
   ]
 }

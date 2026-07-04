@@ -74,13 +74,15 @@ reference notes, and a bundle README.
 
 Basis branches currently declared for profile generation:
 
-| basis ID | role | active coverage |
+| basis ID | role | active dataset scope |
 |---|---|---:|
-| `x2c-QZVPall` | primary H-Rn scalar-relativistic branch | H-Rn |
-| `dyall-v4z` | primary H-Lr heavy-element branch | H-Lr |
+| `x2c-QZVPall` | primary H-Rn scalar-relativistic branch | all curated v2 states, H-Rn |
+| `dyall-v4z` | primary H-Lr heavy-element branch | all curated v2 states, H-Lr |
+| `x2c-QZVPall-s` | auxiliary supplemented branch | anions, H-Rn |
+| `dyall-av4z` | auxiliary augmented branch | anions where available within H-Lr |
 
-Auxiliary frozen bundles may be present for sensitivity checks. They are not
-active profile datasets unless explicitly selected in `data/profile_datasets.yaml`.
+The two primary datasets are not split into separate atom/cation/anion products.
+The supplemented/augmented branches are separate anion-sensitivity datasets.
 
 The basis text checksum is the basis-data identity. Ordinary validation is
 offline and checks required files, checksums, NWChem spherical headers, manifest
@@ -102,7 +104,7 @@ products. It declares:
 - the stored radial profile grid;
 - the independent QA grid;
 - density cutoffs used for radii;
-- active dataset IDs, basis IDs, element coverage, and neutral-only selection.
+- active dataset IDs, basis IDs, element coverage, charge-class selection, and state-role selection.
 
 This YAML file should be treated as the central machine-readable contract for
 profile-generation settings.

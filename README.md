@@ -28,25 +28,28 @@ table is `data/states/curated/atom_states_v2.json`, with its selection table in
 `data/states/selection/required_states_v2.csv`. Historical v1 state files are
 kept at Git tag/release/archive level, not as live source-tree functionality.
 
-The current profile-generation settings are declared in
-`data/profile_datasets.yaml`. Full v2 SCF/profile generation is a later step
-after the state/data layer is stable.
+The current v2 profile-generation settings are declared in
+`data/profile_datasets.yaml`. They define two primary charged-state datasets
+(`x2c-QZVPall` H-Rn and `dyall-v4z` H-Lr) plus two separate anion-sensitivity
+datasets (`x2c-QZVPall-s` H-Rn and `dyall-av4z` where available). Full v2
+SCF/profile generation is a later step after the state/data and configuration
+layers are stable.
 
 ## What is included
 
-The release data layer contains:
+The active preparation layer contains:
 
-- radial density profiles in `data/profiles/<dataset_id>/profiles.csv`;
-- density-cutoff radii in `data/radii/<dataset_id>/radii.csv`;
-- per-state and aggregate QA tables in `data/qa/`;
 - curated atomic-state inputs in `data/states/`;
 - frozen Basis Set Exchange NWChem spherical basis exports in `data/basis_sets/`;
+- the v2 profile dataset specification in `data/profile_datasets.yaml`;
 - workflow scripts in `scripts/`;
 - validation and loading utilities in `src/atomref_proatoms/`.
 
-The generated profile, radii, and QA tables are tracked release artifacts. The
-expensive SCF checkpoints, arrays, and logs live under ignored `local-data/scf/`
-directories and are used only for regeneration.
+Generated v2 profile, radii, and QA tables are not committed in this preparation
+snapshot. After SCF/profile generation, they will be tracked under
+`data/profiles/`, `data/radii/`, and `data/qa/`. The expensive SCF checkpoints,
+arrays, and logs live under ignored `local-data/scf/` directories and are used
+only for regeneration.
 
 For artifact formats and column conventions, see the [data-products guide](docs/data.md).
 For state and basis provenance, see the [input-data guide](docs/inputs.md).
@@ -61,6 +64,7 @@ sets. From the repository root:
 ```bash
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
+python scripts/check_profile_artifacts.py
 pytest
 ```
 
@@ -83,6 +87,7 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
+python scripts/check_profile_artifacts.py --require-generated
 ```
 
 `compute_wavefunctions.py --list`, `compute_wavefunctions.py --dry-run`, and
@@ -96,7 +101,8 @@ python -m pip install -e ".[generator,test,dev]"
 `compute_wavefunctions.py` writes local artifacts such as `scf.chk`, `scf.npz`,
 `scf.json`, and `scf.log` under `local-data/scf/<dataset_id>/<state_id>/`.
 `extract_profiles.py` reads those local artifacts and writes the tracked profile,
-radii, and QA outputs.
+radii, and QA outputs. `check_profile_artifacts.py --require-generated` is the
+release-gate consistency check for committed profile/radii/QA artifacts.
 
 ## Documentation
 
@@ -104,7 +110,7 @@ The documentation is organized as a MkDocs site:
 
 - [Scientific model](docs/theory.md): spherical fractional-occupation proatoms
   and the difference from post-SCF angular averaging.
-- [Data products](docs/data.md): released profile, radii, and QA artifacts.
+- [Data products](docs/data.md): active v2 dataset scopes and generated artifact contracts.
 - [Input data](docs/inputs.md): basis bundles and atomic-state curation.
 - [State policy](docs/state_policy.md): v2 state-source hierarchy, formal anion meaning, and interpretation limits.
 - [Workflow](docs/workflow.md): scripts, package layout, and regeneration steps.
@@ -122,8 +128,9 @@ NO_MKDOCS_2_WARNING=1 mkdocs serve
 ## Lightweight consumers
 
 This repository is the data-generation and release-artifact project. Lightweight
-runtime packages may consume compact snapshots from `data/profiles/`,
-`data/radii/`, and `data/qa/`, but they should not depend on PySCF, Basis Set
+runtime packages may consume compact generated snapshots from `data/profiles/`,
+`data/radii/`, and `data/qa/` once v2 profiles are released, but they should not
+depend on PySCF, Basis Set
 Exchange tooling, external quantum-chemistry programs, or generator internals.
 
 ## License and attribution

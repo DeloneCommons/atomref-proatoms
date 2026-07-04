@@ -12,10 +12,14 @@ import yaml
 from .paths import PROFILE_DATASETS_FILE
 
 PROFILE_DATASETS_SCHEMA_VERSION = "atomref.proatoms.profile_datasets.v1"
-PROFILE_DATA_VERSION = "1.0.0"
+PROFILE_DATA_VERSION = "2.0.0"
 
-PRIMARY_X2C_QZVPALL = "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1"
-PRIMARY_DYALL_V4Z = "pbe0_sfx2c_dyallv4z_h-lr_spherical_v1"
+PRIMARY_X2C_QZVPALL = "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2"
+PRIMARY_DYALL_V4Z = "pbe0_sfx2c_dyallv4z_h-lr_spherical_v2"
+ANION_X2C_QZVPALL_S = "pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2"
+ANION_DYALL_AV4Z = "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2"
+PRIMARY_PROFILE_DATASETS = (PRIMARY_X2C_QZVPALL, PRIMARY_DYALL_V4Z)
+ANION_SENSITIVITY_DATASETS = (ANION_X2C_QZVPALL_S, ANION_DYALL_AV4Z)
 
 
 @dataclass(frozen=True)

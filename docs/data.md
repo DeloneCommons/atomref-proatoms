@@ -1,26 +1,37 @@
 # Data products
 
-The released data products are tracked under `data/profiles/`, `data/radii/`, and
-`data/qa/`. They are generated from the same dataset specification and should be
-read together: profiles give the radial density, radii give compact density-cutoff
-size descriptors, and QA records whether the generated objects passed the release
-checks.
+`data/profile_datasets.yaml` is the active machine-readable contract for v2
+profile generation. It declares the profile-data version, density model,
+electronic-structure settings, radial grid, QA grid, density cutoffs, selected
+basis families, element coverage, charge-class selection, and state-role
+selection.
 
-The dataset specification is `data/profile_datasets.yaml`. It declares the
-profile-data version, density model, electronic-structure settings, radial grid,
-QA grid, density cutoffs, selected basis families, and selected states.
+No final v2 profile, radii, or QA tables are committed in this preparation
+snapshot. The old neutral-only v1 generated artifacts were removed from the
+active tree; v1 remains available from historical tags/releases/archives. After
+SCF generation and profile extraction, the released data products will be tracked
+under `data/profiles/`, `data/radii/`, and `data/qa/`.
 
-## Tracked neutral profile datasets
+## Planned v2 profile datasets
 
 | dataset ID | basis | coverage | selected states |
 |---|---|---:|---:|
-| `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1` | `x2c-QZVPall` | H-Rn | neutral recommended states |
-| `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1` | `dyall-v4z` | H-Lr | neutral recommended states |
+| `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | `x2c-QZVPall` | H-Rn | all curated v2 states |
+| `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | `dyall-v4z` | H-Lr | all curated v2 states |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` | `x2c-QZVPall-s` | H-Rn | anions only |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` | `dyall-av4z` | H-Ba, Hf-Ra | anions only |
+
+The two primary datasets are deliberately not split into separate neutral,
+cation, and anion products. The supplemented/augmented branches are separate
+anion-sensitivity datasets. `dyall-av4z` is discontinuous and excludes the
+lanthanide and actinide blocks; within the active H-Lr state range, the dataset
+therefore covers H-Ba and Hf-Ra only.
 
 The dataset ID is part of the public data identity. It encodes the method family,
 basis family, element coverage, spherical density convention, and major data
 version in a compact name. The full machine-readable record remains in
-`data/profile_datasets.yaml` and in each generated `metadata.json` file.
+`data/profile_datasets.yaml` and, after generation, in each generated
+`metadata.json` file.
 
 ## Radial profile tables
 
@@ -30,8 +41,8 @@ Each generated profile dataset contains:
 - `data/profiles/<dataset_id>/metadata.json`
 
 `profiles.csv` is a wide table. It has one shared radial column, `r_bohr`, and
-one density column for each selected atomic state. Density columns use deterministic
-curated state IDs:
+one density column for each selected atomic state. Density columns use
+deterministic curated state IDs:
 
 ```text
 rho_e_bohr3__<state_id>
@@ -42,9 +53,9 @@ spherical proatomic density described in the [scientific model](theory.md).
 
 `metadata.json` records the dataset identity, profile-data version, basis ID and
 basis checksum, density model, method settings, radial grid, QA grid, density
-cutoffs, state list, column map, related artifact paths, and generator provenance.
-The local SCF artifact paths recorded in metadata are regeneration provenance;
-those files are intentionally ignored by Git.
+cutoffs, state list, column map, related artifact paths, and generator
+provenance. The local SCF artifact paths recorded in metadata are regeneration
+provenance; those files are intentionally ignored by Git.
 
 The directory-level details are documented in `data/profiles/README.md`.
 
@@ -93,7 +104,8 @@ The directory-level details are documented in `data/qa/README.md`.
 
 Profile, radii, and QA tables are generated artifacts. Do not hand-edit them.
 Change the source/configuration layer instead, regenerate with
-`scripts/extract_profiles.py`, and inspect `data/qa/qa_report.md`.
+`scripts/extract_profiles.py`, inspect `data/qa/qa_report.md`, and run
+`python scripts/check_profile_artifacts.py --require-generated` before release.
 
 The expensive local SCF material is stored under:
 

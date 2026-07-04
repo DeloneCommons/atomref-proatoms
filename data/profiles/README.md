@@ -1,19 +1,36 @@
 # Generated radial profile datasets
 
-This directory contains the released spherical proatomic radial electron-density
-profiles for the active `atomref-proatoms` data version. A profile is a tabulated
-free-atom electron density, `rho(r)`, evaluated on the common radial grid defined
-in `data/profile_datasets.yaml` and stored with explicit state, basis, method,
-and QA provenance.
+This directory is the target location for released spherical proatomic radial
+electron-density profiles. Profiles are generated from the active v2 state table
+and the dataset scopes declared in `data/profile_datasets.yaml`.
 
-The profiles are intended as stable reference data for atom-centered
-computational chemistry workflows. Typical downstream uses include empirical
-atomic density/radius models, crystallographic descriptors, promolecular-density
-approximations, deformation-density baselines, and lightweight packages that need
-precomputed consistent atomic reference densities rather than a local quantum-
-chemistry generator.
+No final v2 profile tables are committed in this preparation snapshot. The old
+neutral-only v1 profile artifacts were removed from the active tree; v1 remains
+available from historical tags/releases/archives.
 
-## Dataset layout
+## Active v2 dataset scopes
+
+The active v2 profile configuration declares four dataset scopes:
+
+```text
+pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2
+  x2c-QZVPall, H-Rn, all curated v2 states
+
+pbe0_sfx2c_dyallv4z_h-lr_spherical_v2
+  dyall-v4z, H-Lr, all curated v2 states
+
+pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2
+  x2c-QZVPall-s, H-Rn, anions only
+
+pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2
+  dyall-av4z, H-Ba and Hf-Ra within the active H-Lr state range, anions only
+```
+
+The two primary datasets are deliberately not split into separate neutral,
+cation, and anion products. Charge/state membership is part of the dataset scope
+record and generated metadata.
+
+## Dataset layout after generation
 
 Each generated dataset is written as one wide CSV plus one aggregate metadata
 JSON:
@@ -31,8 +48,8 @@ atomic state:
 r_bohr,rho_e_bohr3__<state_id>,rho_e_bohr3__<state_id>,...
 ```
 
-The radius unit is bohr. Electron density is reported as electrons/bohr³.
-Column names are deterministic and are based on curated state IDs.
+The radius unit is bohr. Electron density is reported as electrons/bohr³. Column
+names are deterministic and are based on curated state IDs.
 
 ## Metadata
 
@@ -45,25 +62,15 @@ The local SCF artifacts referenced in metadata are stored under ignored
 `local-data/scf/` directories and are not tracked in the release repository. They
 are the regeneration source for these profiles.
 
-## Active v1 datasets
-
-The active v1 datasets are declared in `data/profile_datasets.yaml`:
-
-```text
-pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1
-pbe0_sfx2c_dyallv4z_h-lr_spherical_v1
-```
-
-Both select neutral atomic states. Generated cutoff radii and QA summaries are
-published separately under `data/radii/` and `data/qa/`.
-
 ## Regeneration
 
-Profiles are generated artifacts and should not be hand-edited. Regenerate them
-from complete local SCF artifacts with:
+Profiles are generated artifacts and should not be hand-edited. After complete
+local SCF artifacts have been produced, regenerate them and run the artifact
+consistency gate with:
 
 ```bash
 python scripts/extract_profiles.py --force --check
+python scripts/check_profile_artifacts.py --require-generated
 ```
 
 For inspection without writing files:

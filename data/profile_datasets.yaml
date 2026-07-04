@@ -1,5 +1,5 @@
 schema_version: atomref.proatoms.profile_datasets.v1
-profile_data_version: 1.0.0
+profile_data_version: 2.0.0
 
 defaults:
   density_model: self_consistent_fractional_occupation_spherical_uks
@@ -31,21 +31,73 @@ cutoffs_e_bohr3:
   - 0.001
   - 0.0001
 
+state_role_sets:
+  all_curated_v2:
+    - reference
+    - reference_uncertain
+    - bound_experimental
+    - bound_provisional
+    - formal_monoanion
+    - formal_multianion
+  anions_v2:
+    - bound_experimental
+    - bound_provisional
+    - formal_monoanion
+    - formal_multianion
+
 datasets:
-  - dataset_id: pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1
-    role: primary_neutral_h_rn
+  - dataset_id: pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2
+    role: primary_h_rn_all_curated_states
     basis_id: x2c-QZVPall
-    coverage_label: H-Rn neutral atoms
+    coverage_label: H-Rn all curated v2 states
     z_intervals: [[1, 86]]
-    include_charges: neutral_only
-    include_state_roles: [reference, reference_uncertain]
+    include_charges: all
+    include_state_roles:
+      - reference
+      - reference_uncertain
+      - bound_experimental
+      - bound_provisional
+      - formal_monoanion
+      - formal_multianion
     diffuse: false
 
-  - dataset_id: pbe0_sfx2c_dyallv4z_h-lr_spherical_v1
-    role: primary_neutral_h_lr
+  - dataset_id: pbe0_sfx2c_dyallv4z_h-lr_spherical_v2
+    role: primary_h_lr_all_curated_states
     basis_id: dyall-v4z
-    coverage_label: H-Lr neutral atoms
+    coverage_label: H-Lr all curated v2 states
     z_intervals: [[1, 103]]
-    include_charges: neutral_only
-    include_state_roles: [reference, reference_uncertain]
+    include_charges: all
+    include_state_roles:
+      - reference
+      - reference_uncertain
+      - bound_experimental
+      - bound_provisional
+      - formal_monoanion
+      - formal_multianion
     diffuse: false
+
+  - dataset_id: pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2
+    role: anion_sensitivity_h_rn
+    basis_id: x2c-QZVPall-s
+    coverage_label: H-Rn anions with x2c-QZVPall-s
+    z_intervals: [[1, 86]]
+    include_charges: negative_only
+    include_state_roles:
+      - bound_experimental
+      - bound_provisional
+      - formal_monoanion
+      - formal_multianion
+    diffuse: true
+
+  - dataset_id: pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2
+    role: anion_sensitivity_available_dyall_av4z
+    basis_id: dyall-av4z
+    coverage_label: H-Ba and Hf-Ra anions with dyall-av4z
+    z_intervals: [[1, 56], [72, 88]]
+    include_charges: negative_only
+    include_state_roles:
+      - bound_experimental
+      - bound_provisional
+      - formal_monoanion
+      - formal_multianion
+    diffuse: true

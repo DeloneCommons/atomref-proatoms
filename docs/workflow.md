@@ -29,11 +29,14 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
+python scripts/check_profile_artifacts.py --require-generated
 ```
 
 `check_states.py` and `check_basis_bundles.py` validate compact tracked inputs. The third command creates
 or reuses ignored local SCF artifacts. The fourth command extracts tracked
-profile, radii, and QA artifacts from complete local SCF material.
+profile, radii, and QA artifacts from complete local SCF material. The final
+checker confirms that generated artifact directories match the active v2 dataset
+configuration, profile-data version, and QA summaries.
 
 ## Inspection commands
 
@@ -78,8 +81,10 @@ refuses to create release artifacts with a different PySCF version unless
 - `data/qa/<dataset_id>/qa.csv` and `metadata.json`;
 - aggregate QA files under `data/qa/`.
 
-The generated profile, radii, and QA files should be committed together after the
-QA report has been inspected.
+Generated profile, radii, and QA files should be committed together after the
+QA report and `check_profile_artifacts.py --require-generated` have passed. In the current v2 preparation snapshot, no final
+v2 profile/radii/QA tables are committed yet; only the dataset specification and
+input/state layers are active.
 
 ## Documentation build
 

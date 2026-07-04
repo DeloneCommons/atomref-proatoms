@@ -11,7 +11,7 @@ from atomref_proatoms.states import (
     validate_state_collection,
 )
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NIST_SOURCE_FILE = (
     ROOT / "data" / "states" / "source" / "nist_gsie" / "nist_neutral_cation_states.csv"
 )

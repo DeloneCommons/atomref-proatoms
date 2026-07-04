@@ -8,8 +8,8 @@ from atomref_proatoms.dataio.schemas import DENSITY_MODEL, PROFILE_METADATA_SCHE
 def valid_metadata() -> dict[str, object]:
     return {
         "schema_version": PROFILE_METADATA_SCHEMA_VERSION,
-        "dataset_id": "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1",
-        "state_id": "C_q0_mult3_hund",
+        "dataset_id": "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2",
+        "state_id": "C_q0_mult3_nist",
         "density_model": DENSITY_MODEL,
         "method": {
             "engine": "pyscf",
@@ -26,7 +26,7 @@ def valid_metadata() -> dict[str, object]:
             "spin_2s": 2,
             "multiplicity": 3,
             "configuration": "1s2 2s2 2p2",
-            "spin_model": "free_ion_hund_high_spin",
+            "spin_model": "curated_ground_multiplicity",
         },
         "units": {"r": "bohr", "rho": "electron/bohr^3"},
         "derived": {

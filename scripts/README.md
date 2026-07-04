@@ -12,9 +12,10 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
+python scripts/check_profile_artifacts.py --require-generated
 ```
 
-`check_states.py`, `check_basis_bundles.py`,
+`check_states.py`, `check_basis_bundles.py`, `check_profile_artifacts.py`,
 `compute_wavefunctions.py --list`, and `compute_wavefunctions.py --dry-run` do
 not require PySCF. Running SCF and extracting profiles from PySCF checkpoint
 artifacts require the generator dependency set.
@@ -28,6 +29,7 @@ artifacts require the generator dependency set.
 | `check_basis_bundles.py` | Validate frozen basis bundles, checksums, NWChem spherical headers, coverage metadata, and optional PySCF parseability. | terminal validation report |
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
+| `check_profile_artifacts.py` | Validate generated profile/radii/QA artifact directories against the active v2 dataset config. | terminal validation report |
 
 ## `check_states.py`
 
@@ -100,6 +102,34 @@ Options:
 
 - `--basis-root`: basis bundle root; default is `data/basis_sets`.
 
+## `check_profile_artifacts.py`
+
+Common commands:
+
+```bash
+python scripts/check_profile_artifacts.py
+python scripts/check_profile_artifacts.py --require-generated
+```
+
+Before profile generation, the default command passes cleanly when no generated
+profile/radii/QA dataset directories are present. After generation, the release
+gate is `--require-generated`: it checks that dataset directories under
+`data/profiles/`, `data/radii/`, and `data/qa/` exactly match the active dataset
+IDs, carry the configured `profile_data_version`, and have matching state rows,
+profile columns, metadata, and QA overview files.
+
+Options:
+
+- `--config`: active dataset YAML; default is `data/profile_datasets.yaml`.
+- `--states-file`: active curated state JSON; default is
+  `data/states/curated/atom_states_v2.json`.
+- `--profiles-root`, `--radii-root`, `--qa-root`: generated artifact roots.
+- `--require-generated`: fail if no generated dataset artifacts are present.
+- `--allow-partial`: permit a matching subset of configured datasets for
+  incremental local work.
+- `--allow-qa-failures`: inspect artifact consistency without treating QA
+  failures as a checker failure.
+
 ## `compute_wavefunctions.py`
 
 Common inspection commands:
@@ -107,7 +137,7 @@ Common inspection commands:
 ```bash
 python scripts/compute_wavefunctions.py --list
 python scripts/compute_wavefunctions.py --dry-run
-python scripts/compute_wavefunctions.py --dataset pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1 --show-jobs --list
+python scripts/compute_wavefunctions.py --dataset pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2 --show-jobs --list
 ```
 
 Production command shape:

@@ -66,7 +66,7 @@ def test_scf_fingerprints_are_release_version_independent(tmp_path) -> None:
     (bundle_dir / "manifest.json").write_text("{}")
     state = AtomState(
         {
-            "state_id": "H_q0_mult2_hund",
+            "state_id": "H_q0_mult2_nist",
             "symbol": "H",
             "z": 1,
             "charge": 0,
