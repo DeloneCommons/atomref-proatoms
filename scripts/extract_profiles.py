@@ -38,8 +38,8 @@ from atomref_proatoms.engines.pyscf_backend import (  # noqa: E402
     read_scf_metadata,
     scf_artifact_paths,
     scf_artifacts_complete,
+    scf_settings_reuse_digest,
     scf_state_record_digest,
-    stable_json_digest,
 )
 from atomref_proatoms.profiles.artifacts import (  # noqa: E402
     profile_density_column,
@@ -224,6 +224,25 @@ def _check_fingerprint(
         )
 
 
+def _check_scf_settings_fingerprint(
+    metadata: Mapping[str, Any], *, expected: str, label: str
+) -> None:
+    fingerprints = metadata.get("fingerprints", {})
+    actual = (
+        fingerprints.get("scf_settings_sha256")
+        if isinstance(fingerprints, Mapping)
+        else None
+    )
+    if actual == expected:
+        return
+    settings = metadata.get("settings", {})
+    if isinstance(settings, Mapping) and scf_settings_reuse_digest(settings) == expected:
+        return
+    raise ValueError(
+        f"{label} fingerprint mismatch for scf_settings_sha256: "
+        f"expected {expected}, got {actual}"
+    )
+
 def _expected_scf_settings_digest(config: Any) -> str:
     defaults = config.defaults
     relativity = str(defaults.get("relativity", "sf-X2C-1e"))
@@ -231,10 +250,10 @@ def _expected_scf_settings_digest(config: Any) -> str:
         xc=str(defaults.get("xc", "PBE0")),
         use_x2c=relativity != "none",
         conv_tol=float(defaults.get("conv_tol", 1e-9)),
-        max_cycle=int(defaults.get("max_cycle", 100)),
+        max_cycle=int(defaults.get("max_cycle", 300)),
         grid_level=int(defaults.get("grid_level", 4)),
     )
-    return stable_json_digest(settings.to_fingerprint_json())
+    return scf_settings_reuse_digest(settings.to_fingerprint_json())
 
 
 def _validate_scf_metadata(
@@ -294,9 +313,8 @@ def _validate_scf_metadata(
         expected=scf_state_record_digest(state.record),
         label=state.state_id,
     )
-    _check_fingerprint(
+    _check_scf_settings_fingerprint(
         metadata,
-        key="scf_settings_sha256",
         expected=_expected_scf_settings_digest(config),
         label=state.state_id,
     )
@@ -402,7 +420,6 @@ def _scf_artifact_summary(paths: Any, metadata: Mapping[str, Any]) -> dict[str, 
         "results": dict(results) if isinstance(results, Mapping) else {},
         "fingerprints": reusable_fingerprints,
     }
-
 
 
 def _dataset_qa_summary(

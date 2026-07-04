@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -29,10 +30,14 @@ from .spherical_uks import (
 DEFAULT_XC = "PBE0"
 DEFAULT_USE_X2C = True
 DEFAULT_CONV_TOL = 1e-9
-DEFAULT_MAX_CYCLE = 100
+DEFAULT_MAX_CYCLE = 300
 DEFAULT_GRID_LEVEL = 4
 DEFAULT_GRID_PRUNE = None
 SCF_ARTIFACT_SCHEMA_VERSION = "atomref.proatoms.scf_artifact.v1"
+# Keys that define reuse identity of a converged SCF artifact.  Runtime controls
+# that only affect how long/verbosely SCF is attempted, such as max_cycle, are
+# recorded in metadata but intentionally not part of this reuse fingerprint.
+SCF_SETTINGS_REUSE_KEYS = ("xc", "use_x2c", "conv_tol", "grid_level", "grid_prune")
 SCF_REUSE_FINGERPRINT_KEYS = (
     "basis_sha256",
     "state_record_sha256",
@@ -58,7 +63,12 @@ class SCFSettings:
     chkfile: Path | None = None
 
     def to_fingerprint_json(self) -> dict[str, Any]:
-        """Return settings that affect numerical SCF results."""
+        """Return full SCF settings stored in run metadata.
+
+        This includes runtime controls such as ``max_cycle`` so that a run is
+        auditable.  Use :meth:`to_reuse_fingerprint_json` for artifact reuse
+        fingerprints, where non-solution-defining controls are omitted.
+        """
 
         return {
             "xc": self.xc,
@@ -68,6 +78,11 @@ class SCFSettings:
             "grid_level": self.grid_level,
             "grid_prune": self.grid_prune,
         }
+
+    def to_reuse_fingerprint_json(self) -> dict[str, Any]:
+        """Return settings that define reusable converged SCF arrays."""
+
+        return scf_settings_reuse_payload(self.to_fingerprint_json())
 
 
 @dataclass(frozen=True)
@@ -136,6 +151,24 @@ def scf_artifact_paths(root: Path, dataset_id: str, state_id: str) -> SCFArtifac
 def stable_json_digest(data: Any) -> str:
     payload = json.dumps(data, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
+
+
+def scf_settings_reuse_payload(settings: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the settings subset that defines converged SCF-array reuse.
+
+    ``max_cycle`` is deliberately excluded.  It changes whether an SCF attempt is
+    allowed to continue long enough, but a converged fixed point obtained before
+    or after increasing this limit is the same numerical object for reuse
+    purposes, provided the physical/model settings match.
+    """
+
+    return {key: settings.get(key) for key in SCF_SETTINGS_REUSE_KEYS}
+
+
+def scf_settings_reuse_digest(settings: Mapping[str, Any]) -> str:
+    """Return the stable reuse digest for SCF settings metadata."""
+
+    return stable_json_digest(scf_settings_reuse_payload(settings))
 
 
 def import_pyscf_modules() -> tuple[Any, Any, Any, str]:
@@ -357,7 +390,7 @@ def scf_fingerprints(
         "basis_sha256": bundle.basis_sha256,
         "basis_manifest_sha256": sha256_file(bundle.path / "manifest.json"),
         "state_record_sha256": scf_state_record_digest(state.record),
-        "scf_settings_sha256": stable_json_digest(settings.to_fingerprint_json()),
+        "scf_settings_sha256": scf_settings_reuse_digest(settings.to_fingerprint_json()),
         "engine_version": engine_version,
         "density_model": density_model,
         "scf_type": scf_type,
@@ -466,7 +499,15 @@ def scf_artifact_is_reusable(
     actual = metadata.get("fingerprints")
     if not isinstance(actual, dict):
         return False
-    return all(
-        actual.get(key) == expected_fingerprints.get(key)
-        for key in SCF_REUSE_FINGERPRINT_KEYS
-    )
+    for key in SCF_REUSE_FINGERPRINT_KEYS:
+        if key == "scf_settings_sha256":
+            expected = expected_fingerprints.get(key)
+            if actual.get(key) == expected:
+                continue
+            settings = metadata.get("settings", {})
+            if isinstance(settings, dict) and scf_settings_reuse_digest(settings) == expected:
+                continue
+            return False
+        if actual.get(key) != expected_fingerprints.get(key):
+            return False
+    return True

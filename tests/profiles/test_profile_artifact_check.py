@@ -9,6 +9,7 @@ from pathlib import Path
 from atomref_proatoms.dataio.paths import STATES_FILE
 from atomref_proatoms.engines.pyscf_backend import (
     SCFSettings,
+    scf_settings_reuse_digest,
     scf_state_record_digest,
     stable_json_digest,
 )
@@ -44,7 +45,7 @@ defaults:
   relativity: sf-X2C-1e
   spherical_basis: true
   conv_tol: 1.0e-9
-  max_cycle: 100
+  max_cycle: 300
   grid_level: 4
 
 profile_grid:
@@ -113,7 +114,7 @@ def _write_valid_artifacts(tmp_path: Path) -> tuple[Path, Path, Path, Path, Path
         ],
     )
     state_record = _h_state_record()
-    scf_settings_sha256 = stable_json_digest(SCFSettings().to_fingerprint_json())
+    scf_settings_sha256 = scf_settings_reuse_digest(SCFSettings().to_fingerprint_json())
     scf_fingerprints = {
         "basis_sha256": BASIS_SHA256,
         "state_record_sha256": scf_state_record_digest(state_record),
@@ -291,6 +292,29 @@ def test_check_generated_artifacts_accepts_complete_matching_artifacts(tmp_path:
     assert result.ok, result.errors
     assert result.checked_dataset_ids == (DATASET_ID,)
     assert result.state_count == 1
+
+
+def test_check_generated_artifacts_accepts_legacy_max_cycle_settings_digest(
+    tmp_path: Path,
+) -> None:
+    config, states, profiles_root, radii_root, qa_root = _write_valid_artifacts(tmp_path)
+    metadata_path = profiles_root / DATASET_ID / "metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    legacy_digest = stable_json_digest(SCFSettings(max_cycle=100).to_fingerprint_json())
+    metadata["scf_artifacts"][STATE_ID]["fingerprints"][
+        "scf_settings_sha256"
+    ] = legacy_digest
+    metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+
+    result = check_generated_artifacts(
+        config_path=config,
+        states_file=states,
+        profiles_root=profiles_root,
+        radii_root=radii_root,
+        qa_root=qa_root,
+    )
+
+    assert result.ok, result.errors
 
 
 def test_check_generated_artifacts_rejects_stale_scf_state_fingerprint(

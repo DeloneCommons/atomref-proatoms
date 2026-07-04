@@ -183,7 +183,7 @@ def _settings_from_args(
             args.conv_tol if args.conv_tol is not None else defaults.get("conv_tol", 1e-9)
         ),
         max_cycle=int(
-            args.max_cycle if args.max_cycle is not None else defaults.get("max_cycle", 100)
+            args.max_cycle if args.max_cycle is not None else defaults.get("max_cycle", 300)
         ),
         grid_level=int(
             args.grid_level if args.grid_level is not None else defaults.get("grid_level", 4)

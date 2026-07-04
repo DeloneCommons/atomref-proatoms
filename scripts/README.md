@@ -218,7 +218,7 @@ Method/debug options:
 - `--no-x2c`: disable scalar X2C for debugging.
 - `--xc`: override the configured exchange-correlation functional.
 - `--conv-tol`: override SCF convergence tolerance.
-- `--max-cycle`: override maximum SCF cycles.
+- `--max-cycle`: override maximum SCF cycles; the v2 dataset default is 300.
 - `--grid-level`: override PySCF DFT grid level.
 - `--verbose`: set PySCF verbosity.
 

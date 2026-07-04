@@ -10,7 +10,7 @@ defaults:
   relativity: sf-X2C-1e
   spherical_basis: true
   conv_tol: 1.0e-9
-  max_cycle: 100
+  max_cycle: 300
   grid_level: 4
 
 profile_grid:

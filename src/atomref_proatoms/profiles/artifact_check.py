@@ -24,6 +24,7 @@ from ..dataio.schemas import PROFILE_DATASET_MANIFEST_SCHEMA_VERSION
 from ..engines.pyscf_backend import (
     SCF_REUSE_FINGERPRINT_KEYS,
     SCFSettings,
+    scf_settings_reuse_digest,
     stable_json_digest,
 )
 from ..states.state_tables import load_atom_states, state_digest
@@ -345,7 +346,17 @@ def _check_profiles_dataset(
         per_state_expected = dict(expected_fingerprints)
         if state_digest_expected is not None:
             per_state_expected["state_record_sha256"] = state_digest_expected
+        accepted_settings_digests = _expected_scf_settings_digests(config)
         for key in SCF_REUSE_FINGERPRINT_KEYS:
+            if key == "scf_settings_sha256":
+                actual = fingerprints.get(key)
+                if actual not in accepted_settings_digests:
+                    errors.append(
+                        f"{repo_relative_path(metadata_json)}: scf_artifacts[{state_id!r}] "
+                        f"fingerprint {key!r} must be one of "
+                        f"{sorted(accepted_settings_digests)!r}, got {actual!r}"
+                    )
+                continue
             if key in per_state_expected and fingerprints.get(key) != per_state_expected[key]:
                 errors.append(
                     f"{repo_relative_path(metadata_json)}: scf_artifacts[{state_id!r}] "
@@ -576,17 +587,41 @@ def _check_basis_sensitivity_qa(
             )
 
 
-def _expected_scf_settings_digest(config: ProfileDatasetConfig) -> str:
+def _scf_settings_from_config(
+    config: ProfileDatasetConfig, *, max_cycle: int | None = None
+) -> SCFSettings:
     defaults = config.defaults
     relativity = str(defaults.get("relativity", "sf-X2C-1e"))
-    settings = SCFSettings(
+    return SCFSettings(
         xc=str(defaults.get("xc", "PBE0")),
         use_x2c=relativity != "none",
         conv_tol=float(defaults.get("conv_tol", 1e-9)),
-        max_cycle=int(defaults.get("max_cycle", 100)),
+        max_cycle=int(
+            max_cycle if max_cycle is not None else defaults.get("max_cycle", 300)
+        ),
         grid_level=int(defaults.get("grid_level", 4)),
     )
-    return stable_json_digest(settings.to_fingerprint_json())
+
+
+def _expected_scf_settings_digest(config: ProfileDatasetConfig) -> str:
+    settings = _scf_settings_from_config(config)
+    return scf_settings_reuse_digest(settings.to_fingerprint_json())
+
+
+def _expected_scf_settings_digests(config: ProfileDatasetConfig) -> set[str]:
+    """Return accepted current and legacy SCF-settings digests.
+
+    Older v2 pre-release artifacts included ``max_cycle`` in the digest.  The
+    current digest excludes it because it is a convergence-attempt limit rather
+    than part of the converged SCF solution.
+    """
+
+    current = _scf_settings_from_config(config)
+    digests = {scf_settings_reuse_digest(current.to_fingerprint_json())}
+    for max_cycle in {100, current.max_cycle}:
+        legacy = _scf_settings_from_config(config, max_cycle=max_cycle)
+        digests.add(stable_json_digest(legacy.to_fingerprint_json()))
+    return digests
 
 
 def _expected_reuse_fingerprints(
