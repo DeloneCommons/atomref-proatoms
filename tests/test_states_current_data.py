@@ -4,7 +4,7 @@ import csv
 from collections import Counter
 from pathlib import Path
 
-from atomref_proatoms.paths import STATES_FILE
+from atomref_proatoms.dataio.paths import STATES_FILE
 from atomref_proatoms.states import (
     load_atom_states,
     selection_count_summary,
@@ -12,7 +12,9 @@ from atomref_proatoms.states import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-NIST_SOURCE_FILE = ROOT / "data" / "states" / "source" / "nist_gsie" / "nist_neutral_cation_states.csv"
+NIST_SOURCE_FILE = (
+    ROOT / "data" / "states" / "source" / "nist_gsie" / "nist_neutral_cation_states.csv"
+)
 
 def test_current_state_table_loads_and_matches_expected_counts() -> None:
     states = load_atom_states(STATES_FILE)

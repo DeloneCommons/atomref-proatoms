@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from atomref_proatoms.artifacts import (
+from atomref_proatoms.profiles.artifacts import (
     profile_density_column,
     write_json,
     write_profile_dataset_artifacts,
@@ -73,7 +73,7 @@ def test_write_profile_dataset_artifacts_writes_one_csv_and_one_json(tmp_path) -
         "qa": {"electron_count_error_qa": None},
     }
 
-from atomref_proatoms.artifacts import (  # noqa: E402
+from atomref_proatoms.profiles.artifacts import (  # noqa: E402
     qa_overall_pass,
     write_qa_dataset_artifacts,
     write_qa_overview,

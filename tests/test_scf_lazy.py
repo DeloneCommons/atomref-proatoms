@@ -5,8 +5,8 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from atomref_proatoms.basis import BasisBundle
-from atomref_proatoms.scf import (
+from atomref_proatoms.dataio.basis import BasisBundle
+from atomref_proatoms.engines.pyscf_backend import (
     SCF_REUSE_FINGERPRINT_KEYS,
     SCFSettings,
     import_pyscf_modules,
@@ -14,7 +14,7 @@ from atomref_proatoms.scf import (
     scf_fingerprints,
     scf_state_record_digest,
 )
-from atomref_proatoms.spherical_uks import get_atom_spherical_uks_class
+from atomref_proatoms.engines.spherical_uks import get_atom_spherical_uks_class
 from atomref_proatoms.states import AtomState
 
 

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from atomref_proatoms.datasets import (
+from atomref_proatoms.dataio.datasets import (
     DATASET_IDS,
     PRIMARY_DYALL_V4Z,
     PRIMARY_X2C_QZVPALL,

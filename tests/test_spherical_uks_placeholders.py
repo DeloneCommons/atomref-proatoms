@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import pytest
 
-from atomref_proatoms.spherical_uks import require_spherical_basis, validate_angular_block_size
+from atomref_proatoms.engines.spherical_uks import (
+    require_spherical_basis,
+    validate_angular_block_size,
+)
 
 
 def test_validate_angular_block_size_accepts_degeneracy_multiples() -> None:

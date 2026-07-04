@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from atomref_proatoms.qa import (
+from atomref_proatoms.profiles.qa import (
     electron_count_tolerance,
     max_relative_angular_sigma,
     qa_result_from_profile,
@@ -54,7 +54,7 @@ class _FakeMF:
 
 
 def test_spin_diagnostics_from_mf_records_reported_values() -> None:
-    from atomref_proatoms.qa import spin_diagnostics_from_mf
+    from atomref_proatoms.profiles.qa import spin_diagnostics_from_mf
 
     diagnostics = spin_diagnostics_from_mf(_FakeMF(), spin_2s=2)
 
@@ -66,7 +66,7 @@ def test_spin_diagnostics_from_mf_records_reported_values() -> None:
 
 
 def test_linear_dependency_diagnostics_from_log_parses_vectors_removed() -> None:
-    from atomref_proatoms.qa import linear_dependency_diagnostics_from_log
+    from atomref_proatoms.profiles.qa import linear_dependency_diagnostics_from_log
 
     diagnostics = linear_dependency_diagnostics_from_log(
         "WARN: 1 small eigenvectors of overlap matrix removed because of linear dependency\n"
@@ -78,7 +78,7 @@ def test_linear_dependency_diagnostics_from_log_parses_vectors_removed() -> None
 
 
 def test_linear_dependency_diagnostics_from_log_reports_zero_without_warning() -> None:
-    from atomref_proatoms.qa import linear_dependency_diagnostics_from_log
+    from atomref_proatoms.profiles.qa import linear_dependency_diagnostics_from_log
 
     diagnostics = linear_dependency_diagnostics_from_log("converged without overlap warning\n")
 

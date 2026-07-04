@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from atomref_proatoms.basis import (
+from atomref_proatoms.dataio.basis import (
     EXPECTED_BASIS_IDS,
     EXPECTED_NWCHEM_SPHERICAL_HEADER,
     basis_covers_z,
@@ -15,7 +15,7 @@ from atomref_proatoms.basis import (
     verify_basis_source_metadata,
     verify_basis_source_url_shape,
 )
-from atomref_proatoms.datasets import BASIS_TO_DATASETS
+from atomref_proatoms.dataio.datasets import BASIS_TO_DATASETS
 
 ROOT = Path(__file__).resolve().parents[1]
 BASIS_ROOT = ROOT / "data" / "basis_sets"

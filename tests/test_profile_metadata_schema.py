@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from atomref_proatoms.profiles import validate_profile_metadata
-from atomref_proatoms.qa import radii_are_monotonic
-from atomref_proatoms.schemas import DENSITY_MODEL, PROFILE_METADATA_SCHEMA_VERSION
+from atomref_proatoms.profiles.qa import radii_are_monotonic
+from atomref_proatoms.dataio.schemas import DENSITY_MODEL, PROFILE_METADATA_SCHEMA_VERSION
 
 
 def valid_metadata() -> dict[str, object]:

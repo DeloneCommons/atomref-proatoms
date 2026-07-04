@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from atomref_proatoms.grids import (
+from atomref_proatoms.profiles.grids import (
     angular_grid,
     fibonacci_angular_grid,
     gauss_legendre_log_grid,

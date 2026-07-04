@@ -2,39 +2,49 @@
 
 from __future__ import annotations
 
+import importlib.util
 
-def test_v2_subpackage_imports_match_compatibility_shims() -> None:
-    from atomref_proatoms.dataio.basis import BasisBundle as NewBasisBundle
-    from atomref_proatoms.dataio.datasets import DATASET_IDS as NEW_DATASET_IDS
-    from atomref_proatoms.dataio.paths import STATES_FILE as NEW_STATES_FILE
-    from atomref_proatoms.engines.pyscf_backend import SCFSettings as NewSCFSettings
-    from atomref_proatoms.engines.spherical_uks import (
-        validate_angular_block_size as new_validate_angular_block_size,
-    )
-    from atomref_proatoms.profiles.artifacts import write_json as new_write_json
-    from atomref_proatoms.profiles.grids import log_radial_grid as new_log_radial_grid
-    from atomref_proatoms.profiles.qa import QAResult as NewQAResult
-    from atomref_proatoms.profiles.radial import radius_at_density as new_radius_at_density
-    from atomref_proatoms.states.state_tables import AtomState as NewAtomState
 
-    from atomref_proatoms.artifacts import write_json
-    from atomref_proatoms.basis import BasisBundle
-    from atomref_proatoms.datasets import DATASET_IDS
-    from atomref_proatoms.grids import log_radial_grid
-    from atomref_proatoms.paths import STATES_FILE
+REMOVED_TOP_LEVEL_MODULES = (
+    "atomref_proatoms.artifacts",
+    "atomref_proatoms.basis",
+    "atomref_proatoms.build_plan",
+    "atomref_proatoms.datasets",
+    "atomref_proatoms.grids",
+    "atomref_proatoms.paths",
+    "atomref_proatoms.qa",
+    "atomref_proatoms.scf",
+    "atomref_proatoms.schemas",
+    "atomref_proatoms.spherical_uks",
+)
+
+
+def test_v2_subpackage_imports_are_canonical() -> None:
+    from atomref_proatoms.dataio.basis import BasisBundle
+    from atomref_proatoms.dataio.datasets import DATASET_IDS
+    from atomref_proatoms.dataio.paths import STATES_FILE
+    from atomref_proatoms.engines.pyscf_backend import SCFSettings
+    from atomref_proatoms.engines.spherical_uks import validate_angular_block_size
     from atomref_proatoms.profiles import radius_at_density
-    from atomref_proatoms.qa import QAResult
-    from atomref_proatoms.scf import SCFSettings
-    from atomref_proatoms.spherical_uks import validate_angular_block_size
+    from atomref_proatoms.profiles.artifacts import write_json
+    from atomref_proatoms.profiles.grids import log_radial_grid
+    from atomref_proatoms.profiles.qa import QAResult
+    from atomref_proatoms.profiles.radial import radius_at_density as radial_radius_at_density
     from atomref_proatoms.states import AtomState
+    from atomref_proatoms.states.state_tables import AtomState as StateTableAtomState
 
-    assert NewBasisBundle is BasisBundle
-    assert NEW_DATASET_IDS == DATASET_IDS
-    assert NEW_STATES_FILE == STATES_FILE
-    assert NewSCFSettings is SCFSettings
-    assert new_validate_angular_block_size is validate_angular_block_size
-    assert new_write_json is write_json
-    assert new_log_radial_grid is log_radial_grid
-    assert NewQAResult is QAResult
-    assert new_radius_at_density is radius_at_density
-    assert NewAtomState is AtomState
+    assert BasisBundle.__name__ == "BasisBundle"
+    assert DATASET_IDS
+    assert STATES_FILE.name == "atom_states_v2.json"
+    assert SCFSettings.__name__ == "SCFSettings"
+    assert callable(validate_angular_block_size)
+    assert callable(write_json)
+    assert callable(log_radial_grid)
+    assert QAResult.__name__ == "QAResult"
+    assert radius_at_density is radial_radius_at_density
+    assert AtomState is StateTableAtomState
+
+
+def test_old_top_level_compatibility_modules_are_removed() -> None:
+    for module_name in REMOVED_TOP_LEVEL_MODULES:
+        assert importlib.util.find_spec(module_name) is None

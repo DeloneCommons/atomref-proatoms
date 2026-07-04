@@ -6,15 +6,15 @@ from pathlib import Path
 
 import pytest
 
-from atomref_proatoms.build_plan import (
+from atomref_proatoms.profiles.build_plan import (
     build_jobs_for_dataset,
     build_jobs_for_datasets,
     build_plan_summary,
     filter_build_jobs,
     format_build_plan,
 )
-from atomref_proatoms.datasets import PRIMARY_DYALL_V4Z, PRIMARY_X2C_QZVPALL
-from atomref_proatoms.paths import STATES_FILE
+from atomref_proatoms.dataio.datasets import PRIMARY_DYALL_V4Z, PRIMARY_X2C_QZVPALL
+from atomref_proatoms.dataio.paths import STATES_FILE
 from atomref_proatoms.states import load_atom_states
 
 ROOT = Path(__file__).resolve().parents[1]

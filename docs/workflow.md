@@ -14,7 +14,7 @@ The Python package in `src/atomref_proatoms/` is organized into v2 subpackages w
 - `engines/`: PySCF-facing backend helpers and spherical fractional-occupation UKS machinery;
 - `profiles/`: radial grids, density-profile evaluation, build plans, QA helpers, and release-artifact writers.
 
-The current code does not yet create `exporters/` or `cli/` packages because no Multiwfn exporters or final user-facing generator commands are implemented in this stage. Historical top-level import modules remain as thin compatibility re-export shims, but new package code and maintainer scripts should prefer the subpackage imports.
+The current code does not yet create `exporters/` or `cli/` packages because no Multiwfn exporters or final user-facing generator commands are implemented in this stage. The active v2 code uses the subpackage imports directly; historical top-level compatibility modules were removed rather than preserved as a parallel API.
 
 The public scripts in `scripts/` are small workflow entry points around this
 package code. Their detailed command-line options are documented in
