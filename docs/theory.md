@@ -47,7 +47,7 @@ density.
 
 The production model is named in `data/profile_datasets.yaml` as
 `self_consistent_fractional_occupation_spherical_uks`. It is implemented as a
-small PySCF UKS subclass in `src/atomref_proatoms/spherical_uks.py`.
+small PySCF UKS subclass in `src/atomref_proatoms/engines/spherical_uks.py`.
 
 For each spin channel and angular momentum `l`, the curated state table provides
 the number of electrons assigned to that angular-momentum shell. During the SCF

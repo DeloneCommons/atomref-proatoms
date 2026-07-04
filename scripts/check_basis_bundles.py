@@ -19,7 +19,7 @@ _SRC = _REPO_ROOT / "src"
 if _SRC.exists():
     sys.path.insert(0, str(_SRC))
 
-from atomref_proatoms.basis import (  # noqa: E402
+from atomref_proatoms.dataio.basis import (  # noqa: E402
     get_pyscf_basis_parser,
     list_basis_bundles,
     load_basis_nw_text,

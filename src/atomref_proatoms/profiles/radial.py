@@ -19,7 +19,7 @@ from .grids import (
     gauss_legendre_log_grid,
     weighted_mean_and_std,
 )
-from .schemas import (
+from ..dataio.schemas import (
     DENSITY_MODEL,
     PROFILE_METADATA_SCHEMA_VERSION,
     REQUIRED_PROFILE_METADATA_FIELDS,

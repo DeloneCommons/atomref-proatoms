@@ -8,8 +8,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .basis import ELEMENTS
-from .schemas import (
+from ..dataio.basis import ELEMENTS
+from ..dataio.schemas import (
     ALLOWED_ATOM_STATE_SCHEMA_VERSIONS,
     ALLOWED_OCCUPATION_POLICIES,
     ALLOWED_SPIN_MODELS,

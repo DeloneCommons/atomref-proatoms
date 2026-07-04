@@ -654,7 +654,7 @@ def check_curated_states(states_file: Path) -> int:
     src = repo_root / "src"
     if src.exists() and str(src) not in sys.path:
         sys.path.insert(0, str(src))
-    from atomref_proatoms.states import (  # noqa: PLC0415
+    from atomref_proatoms.states.state_tables import (  # noqa: PLC0415
         load_atom_states,
         selection_count_summary,
         validate_state_collection,
