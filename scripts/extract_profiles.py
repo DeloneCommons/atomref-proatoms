@@ -17,23 +17,8 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from atomref_proatoms.profiles.artifacts import (  # noqa: E402
-    profile_density_column,
-    qa_overall_pass,
-    write_profile_dataset_artifacts,
-    write_qa_dataset_artifacts,
-    write_qa_overview,
-    write_radii_dataset_artifacts,
-)
 from atomref_proatoms.dataio.basis import list_basis_bundles, sha256_file  # noqa: E402
-from atomref_proatoms.profiles.build_plan import (  # noqa: E402
-    ALL_PROFILE_DATASETS,
-    build_jobs_for_datasets,
-    filter_build_jobs,
-    format_build_plan,
-)
 from atomref_proatoms.dataio.datasets import DATASET_IDS, load_profile_dataset_config  # noqa: E402
-from atomref_proatoms.profiles.grids import log_radial_grid  # noqa: E402
 from atomref_proatoms.dataio.paths import (  # noqa: E402
     BASIS_ROOT,
     PROFILE_DATASETS_FILE,
@@ -43,12 +28,6 @@ from atomref_proatoms.dataio.paths import (  # noqa: E402
     qa_root,
     radii_root,
     repo_relative_path,
-)
-from atomref_proatoms.profiles.radial import density_profile_from_mf, derived_radii  # noqa: E402
-from atomref_proatoms.profiles.qa import (  # noqa: E402
-    electron_count_tolerance,
-    linear_dependency_diagnostics_from_log,
-    qa_result_from_profile,
 )
 from atomref_proatoms.engines.pyscf_backend import (  # noqa: E402
     SCF_REUSE_FINGERPRINT_KEYS,
@@ -61,6 +40,27 @@ from atomref_proatoms.engines.pyscf_backend import (  # noqa: E402
     scf_state_record_digest,
     stable_json_digest,
 )
+from atomref_proatoms.profiles.artifacts import (  # noqa: E402
+    profile_density_column,
+    qa_overall_pass,
+    write_profile_dataset_artifacts,
+    write_qa_dataset_artifacts,
+    write_qa_overview,
+    write_radii_dataset_artifacts,
+)
+from atomref_proatoms.profiles.build_plan import (  # noqa: E402
+    ALL_PROFILE_DATASETS,
+    build_jobs_for_datasets,
+    filter_build_jobs,
+    format_build_plan,
+)
+from atomref_proatoms.profiles.grids import log_radial_grid  # noqa: E402
+from atomref_proatoms.profiles.qa import (  # noqa: E402
+    electron_count_tolerance,
+    linear_dependency_diagnostics_from_log,
+    qa_result_from_profile,
+)
+from atomref_proatoms.profiles.radial import density_profile_from_mf, derived_radii  # noqa: E402
 from atomref_proatoms.states.state_tables import AtomState, load_atom_states  # noqa: E402
 
 PROFILE_DATASET_SCHEMA_VERSION = "atomref.proatoms.profile_dataset.v1"

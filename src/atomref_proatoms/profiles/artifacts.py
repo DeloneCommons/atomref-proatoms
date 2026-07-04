@@ -12,9 +12,9 @@ from pathlib import Path
 from typing import Any
 
 from ..dataio.paths import repo_relative_path
-from .radial import DEFAULT_DENSITY_CUTOFFS, derived_radii
 from ..dataio.schemas import DENSITY_MODEL, PROFILE_METADATA_SCHEMA_VERSION
 from ..states.state_tables import AtomState, state_digest
+from .radial import DEFAULT_DENSITY_CUTOFFS, derived_radii
 
 
 def json_safe(value: Any) -> Any:
@@ -27,7 +27,7 @@ def json_safe(value: Any) -> Any:
 
     if isinstance(value, dict):
         return {str(key): json_safe(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
+    if isinstance(value, list | tuple):
         return [json_safe(item) for item in value]
     if isinstance(value, bool) or value is None or isinstance(value, str):
         return value

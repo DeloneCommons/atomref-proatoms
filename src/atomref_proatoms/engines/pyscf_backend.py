@@ -18,13 +18,13 @@ from numpy.typing import NDArray
 from ..dataio.basis import BasisBundle, load_basis_nw_text, sha256_file
 from ..dataio.datasets import ProfileDatasetConfig, assert_dataset_basis_match
 from ..dataio.paths import repo_relative_path
+from ..states.state_tables import AtomState, state_digest
 from .spherical_uks import (
     apply_x2c_if_requested,
     configure_dft_grid,
     make_spherical_uks,
     validate_spherical_ao_layout,
 )
-from ..states.state_tables import AtomState, state_digest
 
 DEFAULT_XC = "PBE0"
 DEFAULT_USE_X2C = True

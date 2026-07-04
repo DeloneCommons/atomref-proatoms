@@ -9,6 +9,12 @@ from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 
+from ..dataio.schemas import (
+    DENSITY_MODEL,
+    PROFILE_METADATA_SCHEMA_VERSION,
+    REQUIRED_PROFILE_METADATA_FIELDS,
+    REQUIRED_PROFILE_METHOD_FIELDS,
+)
 from .grids import (
     QA_N_ANG,
     QA_N_R,
@@ -18,12 +24,6 @@ from .grids import (
     default_profile_grid,
     gauss_legendre_log_grid,
     weighted_mean_and_std,
-)
-from ..dataio.schemas import (
-    DENSITY_MODEL,
-    PROFILE_METADATA_SCHEMA_VERSION,
-    REQUIRED_PROFILE_METADATA_FIELDS,
-    REQUIRED_PROFILE_METHOD_FIELDS,
 )
 
 DEFAULT_DENSITY_CUTOFFS = (0.003, 0.001, 0.0001)

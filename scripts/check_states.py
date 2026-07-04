@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+from collections.abc import Sequence
 from pathlib import Path
 from types import ModuleType
-from typing import Sequence
 
 
 def _load_state_builder() -> ModuleType:

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import importlib.util
 
-
 REMOVED_TOP_LEVEL_MODULES = (
     "atomref_proatoms.artifacts",
     "atomref_proatoms.basis",

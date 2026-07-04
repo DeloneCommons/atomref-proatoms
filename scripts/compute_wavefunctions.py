@@ -14,15 +14,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from atomref_proatoms.profiles.artifacts import write_json  # noqa: E402
 from atomref_proatoms.dataio.basis import list_basis_bundles  # noqa: E402
-from atomref_proatoms.profiles.build_plan import (  # noqa: E402
-    ALL_PROFILE_DATASETS,
-    ProfileBuildJob,
-    build_jobs_for_datasets,
-    filter_build_jobs,
-    format_build_plan,
-)
 from atomref_proatoms.dataio.datasets import DATASET_IDS, load_profile_dataset_config  # noqa: E402
 from atomref_proatoms.dataio.paths import (  # noqa: E402
     BASIS_ROOT,
@@ -40,6 +32,14 @@ from atomref_proatoms.engines.pyscf_backend import (  # noqa: E402
     scf_fingerprints,
     scf_metadata,
     write_scf_npz,
+)
+from atomref_proatoms.profiles.artifacts import write_json  # noqa: E402
+from atomref_proatoms.profiles.build_plan import (  # noqa: E402
+    ALL_PROFILE_DATASETS,
+    ProfileBuildJob,
+    build_jobs_for_datasets,
+    filter_build_jobs,
+    format_build_plan,
 )
 from atomref_proatoms.states.state_tables import AtomState, load_atom_states  # noqa: E402
 

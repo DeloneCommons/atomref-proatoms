@@ -62,13 +62,21 @@ def _load_json(path: Path, errors: list[str]) -> dict[str, Any] | None:
 def _root_dataset_dirs(root: Path) -> set[str]:
     if not root.exists():
         return set()
-    return {path.name for path in root.iterdir() if path.is_dir() and not path.name.startswith(".")}
+    return {
+        path.name
+        for path in root.iterdir()
+        if path.is_dir() and not path.name.startswith(".")
+    }
 
 
 def _root_files(root: Path) -> set[str]:
     if not root.exists():
         return set()
-    return {path.name for path in root.iterdir() if path.is_file() and not path.name.startswith(".")}
+    return {
+        path.name
+        for path in root.iterdir()
+        if path.is_file() and not path.name.startswith(".")
+    }
 
 
 def _format_set(values: Sequence[str] | set[str]) -> str:
@@ -85,7 +93,9 @@ def _check_root_files(root: Path, *, allowed: set[str], errors: list[str]) -> No
         )
 
 
-def _group_jobs_by_dataset(jobs: Sequence[ProfileBuildJob]) -> dict[str, tuple[ProfileBuildJob, ...]]:
+def _group_jobs_by_dataset(
+    jobs: Sequence[ProfileBuildJob],
+) -> dict[str, tuple[ProfileBuildJob, ...]]:
     grouped: dict[str, list[ProfileBuildJob]] = {}
     for job in jobs:
         grouped.setdefault(job.dataset_id, []).append(job)
@@ -148,9 +158,15 @@ def _check_common_metadata(
             f"got {metadata.get('profile_data_version')!r}"
         )
     if metadata.get("dataset_id") != dataset_id:
-        errors.append(f"{label}: dataset_id must be {dataset_id!r}, got {metadata.get('dataset_id')!r}")
+        errors.append(
+            f"{label}: dataset_id must be {dataset_id!r}, "
+            f"got {metadata.get('dataset_id')!r}"
+        )
     if metadata.get("basis_id") != basis_id:
-        errors.append(f"{label}: basis_id must be {basis_id!r}, got {metadata.get('basis_id')!r}")
+        errors.append(
+            f"{label}: basis_id must be {basis_id!r}, "
+            f"got {metadata.get('basis_id')!r}"
+        )
 
 
 def _check_profiles_dataset(
@@ -181,7 +197,8 @@ def _check_profiles_dataset(
         expected_n = int(config.profile_grid.get("n", 0) or 0)
         if expected_n and row_count != expected_n:
             errors.append(
-                f"{repo_relative_path(profiles_csv)}: expected {expected_n} radial rows, got {row_count}"
+                f"{repo_relative_path(profiles_csv)}: expected {expected_n} radial rows, "
+                f"got {row_count}"
             )
 
     metadata = _load_json(metadata_json, errors)
@@ -197,12 +214,23 @@ def _check_profiles_dataset(
         basis_id=basis_id,
         errors=errors,
     )
-    state_keys = set(metadata.get("states", {})) if isinstance(metadata.get("states"), Mapping) else set()
+    state_keys = (
+        set(metadata.get("states", {}))
+        if isinstance(metadata.get("states"), Mapping)
+        else set()
+    )
     if state_keys != set(expected_state_ids):
         errors.append(f"{repo_relative_path(metadata_json)}: states do not match active build plan")
-    column_keys = set(metadata.get("columns", {})) if isinstance(metadata.get("columns"), Mapping) else set()
+    column_keys = (
+        set(metadata.get("columns", {}))
+        if isinstance(metadata.get("columns"), Mapping)
+        else set()
+    )
     if column_keys != set(expected_columns):
-        errors.append(f"{repo_relative_path(metadata_json)}: columns do not match profiles.csv/build plan")
+        errors.append(
+            f"{repo_relative_path(metadata_json)}: columns do not match "
+            "profiles.csv/build plan"
+        )
     related = metadata.get("related_artifacts", {})
     if isinstance(related, Mapping):
         expected_related = {
@@ -289,11 +317,21 @@ def _check_qa_dataset(
     if rows is not None:
         state_ids = [row.get("state_id", "") for row in rows]
         if state_ids != expected_state_ids:
-            errors.append(f"{repo_relative_path(qa_csv)}: state rows do not match active build plan")
+            errors.append(
+                f"{repo_relative_path(qa_csv)}: state rows do not match "
+                "active build plan"
+            )
         if require_qa_pass:
-            failed = [row.get("state_id", "") for row in rows if not _truthy_csv_value(row.get("overall_pass", ""))]
+            failed = [
+                row.get("state_id", "")
+                for row in rows
+                if not _truthy_csv_value(row.get("overall_pass", ""))
+            ]
             if failed:
-                errors.append(f"{repo_relative_path(qa_csv)}: QA failures present for {_format_set(failed)}")
+                errors.append(
+                    f"{repo_relative_path(qa_csv)}: QA failures present for "
+                    f"{_format_set(failed)}"
+                )
     metadata = _load_json(metadata_json, errors)
     if metadata is None:
         return
@@ -314,7 +352,8 @@ def _check_qa_dataset(
         )
     if require_qa_pass and metadata.get("failed_count") not in {0, None}:
         errors.append(
-            f"{repo_relative_path(metadata_json)}: failed_count must be 0, got {metadata.get('failed_count')!r}"
+            f"{repo_relative_path(metadata_json)}: failed_count must be 0, "
+            f"got {metadata.get('failed_count')!r}"
         )
 
 
@@ -334,7 +373,10 @@ def _check_qa_overview(
     if rows is not None:
         row_ids = [row.get("dataset_id", "") for row in rows]
         if row_ids != list(expected_dataset_ids):
-            errors.append(f"{repo_relative_path(summary_csv)}: dataset rows do not match active datasets")
+            errors.append(
+                f"{repo_relative_path(summary_csv)}: dataset rows do not match "
+                "active datasets"
+            )
         for row in rows:
             dataset_id = row.get("dataset_id", "")
             expected_count = expected_counts.get(dataset_id)
@@ -429,10 +471,15 @@ def check_generated_artifacts(
     generated_union = profile_dirs | radii_dirs | qa_dirs
     unexpected = generated_union - expected_all
     if unexpected:
-        errors.append(f"generated dataset directories not in active config: {_format_set(unexpected)}")
+        errors.append(
+            "generated dataset directories not in active config: "
+            f"{_format_set(unexpected)}"
+        )
 
     if allow_partial:
-        expected_dirs = tuple(dataset_id for dataset_id in config.dataset_ids if dataset_id in generated_union)
+        expected_dirs = tuple(
+            dataset_id for dataset_id in config.dataset_ids if dataset_id in generated_union
+        )
     else:
         expected_dirs = config.dataset_ids
         missing = expected_all - generated_union
@@ -448,9 +495,15 @@ def check_generated_artifacts(
         extra = actual - expected_set
         missing = expected_set - actual
         if extra:
-            errors.append(f"{repo_relative_path(root)}: unexpected {label} dataset dirs {_format_set(extra)}")
+            errors.append(
+                f"{repo_relative_path(root)}: unexpected {label} dataset dirs "
+                f"{_format_set(extra)}"
+            )
         if missing:
-            errors.append(f"{repo_relative_path(root)}: missing {label} dataset dirs {_format_set(missing)}")
+            errors.append(
+                f"{repo_relative_path(root)}: missing {label} dataset dirs "
+                f"{_format_set(missing)}"
+            )
 
     _check_root_files(profiles_root, allowed={ROOT_README}, errors=errors)
     _check_root_files(radii_root, allowed={ROOT_README}, errors=errors)

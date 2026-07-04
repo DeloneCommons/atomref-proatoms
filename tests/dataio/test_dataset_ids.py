@@ -63,24 +63,40 @@ def test_dataset_basis_mapping_is_explicit() -> None:
 def test_primary_datasets_are_not_split_by_charge_class() -> None:
     assert PRIMARY_PROFILE_DATASETS == (PRIMARY_X2C_QZVPALL, PRIMARY_DYALL_V4Z)
     assert state_allowed_in_dataset(PRIMARY_X2C_QZVPALL, z=53, charge=0)
-    assert state_allowed_in_dataset(PRIMARY_X2C_QZVPALL, z=53, charge=-1, state_role="bound_experimental")
+    assert state_allowed_in_dataset(
+        PRIMARY_X2C_QZVPALL, z=53, charge=-1, state_role="bound_experimental"
+    )
     assert state_allowed_in_dataset(PRIMARY_X2C_QZVPALL, z=53, charge=1)
     assert not state_allowed_in_dataset(PRIMARY_X2C_QZVPALL, z=87, charge=0)
     assert state_allowed_in_dataset(PRIMARY_DYALL_V4Z, z=92, charge=3)
-    assert state_allowed_in_dataset(PRIMARY_DYALL_V4Z, z=6, charge=-3, state_role="formal_multianion")
+    assert state_allowed_in_dataset(
+        PRIMARY_DYALL_V4Z, z=6, charge=-3, state_role="formal_multianion"
+    )
     assert not state_allowed_in_dataset(PRIMARY_DYALL_V4Z, z=104, charge=0)
 
 
 def test_diffuse_sensitivity_datasets_are_anion_only() -> None:
     assert ANION_SENSITIVITY_DATASETS == (ANION_X2C_QZVPALL_S, ANION_DYALL_AV4Z)
-    assert state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=-1, state_role="bound_experimental")
-    assert state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=6, charge=-3, state_role="formal_multianion")
+    assert state_allowed_in_dataset(
+        ANION_X2C_QZVPALL_S, z=53, charge=-1, state_role="bound_experimental"
+    )
+    assert state_allowed_in_dataset(
+        ANION_X2C_QZVPALL_S, z=6, charge=-3, state_role="formal_multianion"
+    )
     assert not state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=0)
     assert not state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=1)
-    assert state_allowed_in_dataset(ANION_DYALL_AV4Z, z=56, charge=-1, state_role="formal_monoanion")
-    assert state_allowed_in_dataset(ANION_DYALL_AV4Z, z=72, charge=-1, state_role="bound_experimental")
-    assert not state_allowed_in_dataset(ANION_DYALL_AV4Z, z=57, charge=-1, state_role="bound_experimental")
-    assert not state_allowed_in_dataset(ANION_DYALL_AV4Z, z=92, charge=-1, state_role="bound_experimental")
+    assert state_allowed_in_dataset(
+        ANION_DYALL_AV4Z, z=56, charge=-1, state_role="formal_monoanion"
+    )
+    assert state_allowed_in_dataset(
+        ANION_DYALL_AV4Z, z=72, charge=-1, state_role="bound_experimental"
+    )
+    assert not state_allowed_in_dataset(
+        ANION_DYALL_AV4Z, z=57, charge=-1, state_role="bound_experimental"
+    )
+    assert not state_allowed_in_dataset(
+        ANION_DYALL_AV4Z, z=92, charge=-1, state_role="bound_experimental"
+    )
 
 
 def test_dataset_state_role_scopes_are_explicit() -> None:

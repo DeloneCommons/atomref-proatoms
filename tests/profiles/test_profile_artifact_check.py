@@ -6,8 +6,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
-
 from atomref_proatoms.dataio.paths import STATES_FILE
 from atomref_proatoms.profiles.artifact_check import check_generated_artifacts
 from atomref_proatoms.states.state_tables import load_atom_states
@@ -207,8 +205,7 @@ def test_check_profile_artifacts_script_passes_before_generation() -> None:
         [sys.executable, "scripts/check_profile_artifacts.py"],
         cwd=ROOT,
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         check=False,
     )
 

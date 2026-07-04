@@ -207,7 +207,10 @@ def validate_state_collection(states: list[AtomState]) -> list[str]:
     summary = selection_count_summary(states)
     schema_versions = {str(state.record["schema_version"]) for state in states}
     if schema_versions != {ATOM_STATE_SCHEMA_VERSION}:
-        errors.append(f"State collection has mixed or unsupported schema versions: {schema_versions}")
+        errors.append(
+            "State collection has mixed or unsupported schema versions: "
+            f"{schema_versions}"
+        )
         return errors
 
     expected_summary = {
