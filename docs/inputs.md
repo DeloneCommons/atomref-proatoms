@@ -53,11 +53,11 @@ source table is part of the active v2 state-preparation layer.
 
 A formal-anion preparation table is stored at
 `data/states/curated/formal_atoms_ions.csv`. It contains formal references for
-required monoanions without accepted physical/reference rows and for the v2
+required H-Rn monoanions without accepted physical/reference rows and for the v2
 p-block multianion policy. Purely formal actinide fallback monoanions are out of
-the initial v2 scope; source-backed actinide monoanions are retained in the
-Ning--Lu source-status table for future extension but do not enter the initial
-H-Rn anion compute set. Every formal row is marked
+the initial v2 scope. The source-backed Fr-U rows from the Ning--Lu table are
+included only in the primary dyall-v4z H-Lr dataset and retain their original
+physical/provisional/theory-only status. Every formal row is marked
 `physical_status = not_claimed`; these records are stockholder/Hirshfeld-I-like
 density references, not stable isolated atomic-anion claims.
 
@@ -133,7 +133,7 @@ data/states/curated/atom_states_v2.json
 data/states/curated/atom_states_summary_v2.json
 ```
 
-The v2 output combines NIST neutral/cation rows, accepted Ning--Lu monoanion
+The v2 output combines NIST neutral/cation rows, accepted H-Rn and source-backed Fr-U Ning--Lu monoanion
 rows, and explicitly formal anion rows. The v2 JSON uses curated ground
 multiplicities and a spherical l-count occupation convention rather than the
 earlier configuration-only Hund high-spin rule.

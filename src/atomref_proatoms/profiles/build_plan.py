@@ -51,6 +51,7 @@ def build_jobs_for_dataset(
     for state in states:
         if not (
             scope.covers_z(state.z)
+            and scope.allows_symbol(state.symbol)
             and scope.allows_charge(state.charge)
             and str(state.record["state_role"]) in scope.include_state_roles
         ):

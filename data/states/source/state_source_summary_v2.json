@@ -87,7 +87,7 @@
     }
   },
   "selection": {
-    "row_count": 495,
+    "row_count": 501,
     "columns": [
       "z",
       "symbol",
@@ -99,28 +99,28 @@
       "physical_status",
       "include_reason"
     ],
-    "sha256": "328063c96494898f85b23d448ae42ade0b7f54e543b508baa4c127af201798d0",
+    "sha256": "dd81048623fe6f1b93da34668ca34ddb238a53c895cb6b8fb4d1dd700bc651fd",
     "by_charge": {
-      "-1": 80,
+      "-3": 6,
+      "-2": 20,
+      "-1": 86,
       "0": 103,
       "1": 102,
       "2": 95,
-      "-2": 20,
-      "3": 89,
-      "-3": 6
+      "3": 89
     },
     "source_table_counts": {
-      "source/ning2022/ning2022_monoanions.csv": 66,
+      "source/ning2022/ning2022_monoanions.csv": 72,
       "source/nist_gsie/nist_neutral_cation_states.csv": 389,
       "curated/formal_atoms_ions.csv": 40
     },
-    "note": "Active v2 compute-state selection combining NIST neutral/cation rows, accepted H-Rn Ning--Lu monoanion rows, and formal anion rows; H+, He2+, He3+, group-18 anions, accepted monoanions beyond Rn, halogen dianions, and purely formal actinide fallback monoanions are excluded."
+    "note": "Active v2 compute-state selection combining NIST neutral/cation rows, accepted H-Rn Ning--Lu monoanion rows, source-backed Fr-U Ning--Lu monoanion rows for the primary dyall-v4z branch, and formal anion rows; H+, He2+, He3+, group-18 anions, transuranic monoanions, halogen dianions, and purely formal actinide fallback monoanions are excluded."
   },
   "curated_output": {
     "json_file": "data/states/curated/atom_states_v2.json",
     "csv_file": "data/states/curated/atom_states_v2.csv",
     "summary_file": "data/states/curated/atom_states_summary_v2.json",
-    "row_count": 495,
+    "row_count": 501,
     "csv_columns": [
       "state_id",
       "z",
@@ -140,9 +140,9 @@
       "rule_reason",
       "notes"
     ],
-    "json_sha256": "512b4d4dfebf9bc92c3a3bcb499655bb96159301ea34fd32fe8f93511522b65c",
-    "csv_sha256": "e460daf5ad6b9af319d5a24abb5e4fc1c048d8daf8aa3c3a1d45791ba9e1e0c8",
-    "summary_sha256": "34a0b7498913aedd7066d59948fd8763b126ef731e1182268e812e7b02d36064",
+    "json_sha256": "832c8bf0e023cb5398b76d0e0bbe0f5b6d2e85b94ca1542676f38435b3e67dae",
+    "csv_sha256": "a41036bfb36c6d015a4803e618ccde9ff5545afa17b630f59cff2a8fd13a690b",
+    "summary_sha256": "214bcad274318be427e72c36c8cf36824adfd7db5e68b364d51fec5b9a82fe09",
     "spin_model": "curated_ground_multiplicity",
     "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
   },

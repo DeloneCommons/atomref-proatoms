@@ -214,25 +214,25 @@ def validate_state_collection(states: list[AtomState]) -> list[str]:
         return errors
 
     expected_summary = {
-        "state_count": 495,
+        "state_count": 501,
         "neutral_count": 103,
         "cation_count": 286,
-        "anion_count": 106,
+        "anion_count": 112,
         "by_category": {
             "formal_anion_reference": 40,
-            "ning2022_monoanion_reference": 66,
+            "ning2022_monoanion_reference": 72,
             "nist_reference": 389,
         },
         "by_charge": {
             "-3": 6,
             "-2": 20,
-            "-1": 80,
+            "-1": 86,
             "0": 103,
             "1": 102,
             "2": 95,
             "3": 89,
         },
-        "by_spin_variant": {"curated_multiplicity": 495},
+        "by_spin_variant": {"curated_multiplicity": 501},
     }
 
     for key, expected in expected_summary.items():

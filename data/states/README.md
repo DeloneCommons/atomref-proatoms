@@ -54,13 +54,13 @@ A review-friendly CSV subset is also written to:
 data/states/curated/atom_states_v2.csv
 ```
 
-The active v2 table contains 495 states:
+The active v2 table contains 501 states:
 
 ```text
 charge counts:
   -3: 6
   -2: 20
-  -1: 80
+  -1: 86
    0: 103
   +1: 102
   +2: 95
@@ -68,7 +68,7 @@ charge counts:
 
 state categories:
   nist_reference: 389
-  ning2022_monoanion_reference: 66
+  ning2022_monoanion_reference: 72
   formal_anion_reference: 40
 ```
 
@@ -188,10 +188,14 @@ physical_status:
   unbound_or_metastable
 ```
 
-Only `bound_experimental` and `bound_provisional` monoanion rows enter the active
-v2 compute table as physical/provisional monoanion references. Theory-only,
-metastable-only, unbound, or otherwise excluded rows remain in the source table
-for auditing and are not silently promoted to physical reference states.
+For H-Rn, only `bound_experimental` and `bound_provisional` monoanion rows
+enter the active v2 compute table as physical/provisional monoanion references.
+For the seventh-period Fr-U extension, the corresponding source-backed
+Ning--Lu rows are included in the primary dyall-v4z H-Lr dataset, including
+rows whose source status is `diagnostic_theory`; their `physical_status` remains
+`theoretical_only` when appropriate. Other theory-only, metastable-only, unbound,
+or otherwise excluded rows remain in the source table for auditing and are not
+silently promoted to physical reference states.
 
 ## Formal anions
 
@@ -251,8 +255,11 @@ cations:
 
 monoanions:
   -1 for H-Rn except group 18
-  accepted Ning--Lu rows are physical/provisional references
-  missing or nonaccepted required rows are explicit formal monoanions
+  accepted H-Rn Ning--Lu rows are physical/provisional references
+  missing or nonaccepted required H-Rn rows are explicit formal monoanions
+  source-backed Ning--Lu Fr-U monoanion rows are included in the primary
+    dyall-v4z H-Lr dataset, including theory-only/provisional rows with
+    their original physical_status retained
   no purely formal actinide fallback monoanions in the initial compute scope
 
 multianions:

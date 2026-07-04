@@ -34,6 +34,7 @@ class DatasetScope:
     z_intervals: tuple[tuple[int, int], ...]
     include_state_roles: tuple[str, ...]
     diffuse: bool
+    exclude_symbols: tuple[str, ...] = ()
 
     @property
     def allow_neutral(self) -> bool:
@@ -49,6 +50,9 @@ class DatasetScope:
 
     def covers_z(self, z_value: int) -> bool:
         return any(start <= z_value <= end for start, end in self.z_intervals)
+
+    def allows_symbol(self, symbol: str | None) -> bool:
+        return symbol is None or symbol not in self.exclude_symbols
 
     def allows_charge(self, charge: int) -> bool:
         if charge == 0:
@@ -108,6 +112,9 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
     roles_raw = record["include_state_roles"]
     if not isinstance(roles_raw, list) or not roles_raw:
         raise ValueError(f"dataset {record['dataset_id']}: include_state_roles must be non-empty")
+    exclude_symbols_raw = record.get("exclude_symbols", [])
+    if not isinstance(exclude_symbols_raw, list):
+        raise ValueError(f"dataset {record['dataset_id']}: exclude_symbols must be a list")
     return DatasetScope(
         dataset_id=str(record["dataset_id"]),
         basis_id=str(record["basis_id"]),
@@ -117,6 +124,7 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
         z_intervals=tuple(intervals),
         include_state_roles=tuple(str(role) for role in roles_raw),
         diffuse=bool(record["diffuse"]),
+        exclude_symbols=tuple(str(symbol) for symbol in exclude_symbols_raw),
     )
 
 
@@ -238,11 +246,17 @@ def assert_dataset_basis_match(dataset_id: str, basis_id: str) -> None:
 
 
 def state_allowed_in_dataset(
-    dataset_id: str, *, z: int, charge: int, state_role: str = "reference"
+    dataset_id: str,
+    *,
+    z: int,
+    charge: int,
+    state_role: str = "reference",
+    symbol: str | None = None,
 ) -> bool:
     scope = dataset_scope(dataset_id)
     return (
         scope.covers_z(z)
+        and scope.allows_symbol(symbol)
         and scope.allows_charge(charge)
         and state_role in scope.include_state_roles
     )

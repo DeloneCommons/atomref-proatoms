@@ -14728,6 +14728,44 @@
   },
   {
     "schema_version": "atomref.proatoms.state.v2",
+    "state_id": "Fr_qm1_mult1_ning2022",
+    "symbol": "Fr",
+    "z": 87,
+    "charge": -1,
+    "electron_count": 88,
+    "configuration": "[Rn] 7s2",
+    "ground_level": "1S0",
+    "spin_2s": 0,
+    "multiplicity": 1,
+    "alpha_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 15,
+      "3": 7
+    },
+    "beta_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 15,
+      "3": 7
+    },
+    "spin_model": "curated_ground_multiplicity",
+    "spin_variant": "curated_multiplicity",
+    "state_role": "diagnostic_theory",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+    "state_category": "ning2022_monoanion_reference",
+    "curation_status": "provisional",
+    "physical_status": "theoretical_only",
+    "state_source": "ning2022",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
+    "nist_ie_provenance": "",
+    "rule_reason": "",
+    "notes": [
+      "calculated recommendation only; no experimental EA in the review"
+    ]
+  },
+  {
+    "schema_version": "atomref.proatoms.state.v2",
     "state_id": "Fr_q0_mult2_nist",
     "symbol": "Fr",
     "z": 87,
@@ -14797,6 +14835,44 @@
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
+  },
+  {
+    "schema_version": "atomref.proatoms.state.v2",
+    "state_id": "Ra_qm1_mult2_ning2022",
+    "symbol": "Ra",
+    "z": 88,
+    "charge": -1,
+    "electron_count": 89,
+    "configuration": "[Rn] 7s2 7p1",
+    "ground_level": "2P1/2",
+    "spin_2s": 1,
+    "multiplicity": 2,
+    "alpha_l_counts": {
+      "0": 7,
+      "1": 16,
+      "2": 15,
+      "3": 7
+    },
+    "beta_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 15,
+      "3": 7
+    },
+    "spin_model": "curated_ground_multiplicity",
+    "spin_variant": "curated_multiplicity",
+    "state_role": "bound_provisional",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+    "state_category": "ning2022_monoanion_reference",
+    "curation_status": "provisional",
+    "physical_status": "provisional_experimental",
+    "state_source": "ning2022",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
+    "nist_ie_provenance": "",
+    "rule_reason": "",
+    "notes": [
+      "AMS estimate; no detailed assigned spectrum in the review table"
+    ]
   },
   {
     "schema_version": "atomref.proatoms.state.v2",
@@ -14905,6 +14981,44 @@
     "nist_ie_provenance": "theoretical",
     "rule_reason": "",
     "notes": []
+  },
+  {
+    "schema_version": "atomref.proatoms.state.v2",
+    "state_id": "Ac_qm1_mult3_ning2022",
+    "symbol": "Ac",
+    "z": 89,
+    "charge": -1,
+    "electron_count": 90,
+    "configuration": "[Rn] 6d1 7s2 7p1",
+    "ground_level": "3F2",
+    "spin_2s": 2,
+    "multiplicity": 3,
+    "alpha_l_counts": {
+      "0": 7,
+      "1": 16,
+      "2": 16,
+      "3": 7
+    },
+    "beta_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 15,
+      "3": 7
+    },
+    "spin_model": "curated_ground_multiplicity",
+    "spin_variant": "curated_multiplicity",
+    "state_role": "diagnostic_theory",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+    "state_category": "ning2022_monoanion_reference",
+    "curation_status": "provisional",
+    "physical_status": "theoretical_only",
+    "state_source": "ning2022",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
+    "nist_ie_provenance": "",
+    "rule_reason": "",
+    "notes": [
+      "calculated recommendation only; no experimental EA in the review"
+    ]
   },
   {
     "schema_version": "atomref.proatoms.state.v2",
@@ -15052,6 +15166,44 @@
   },
   {
     "schema_version": "atomref.proatoms.state.v2",
+    "state_id": "Th_qm1_mult4_ning2022",
+    "symbol": "Th",
+    "z": 90,
+    "charge": -1,
+    "electron_count": 91,
+    "configuration": "[Rn] 6d3 7s2",
+    "ground_level": "4F3/2",
+    "spin_2s": 3,
+    "multiplicity": 4,
+    "alpha_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 18,
+      "3": 7
+    },
+    "beta_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 15,
+      "3": 7
+    },
+    "spin_model": "curated_ground_multiplicity",
+    "spin_variant": "curated_multiplicity",
+    "state_role": "bound_experimental",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+    "state_category": "ning2022_monoanion_reference",
+    "curation_status": "curated",
+    "physical_status": "experimental_or_evaluated",
+    "state_source": "ning2022",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
+    "nist_ie_provenance": "",
+    "rule_reason": "",
+    "notes": [
+      "multiple bound anion states exist; table row is the recommended ground state"
+    ]
+  },
+  {
+    "schema_version": "atomref.proatoms.state.v2",
     "state_id": "Th_q0_mult3_nist",
     "symbol": "Th",
     "z": 90,
@@ -15196,6 +15348,44 @@
   },
   {
     "schema_version": "atomref.proatoms.state.v2",
+    "state_id": "Pa_qm1_mult5_ning2022",
+    "symbol": "Pa",
+    "z": 91,
+    "charge": -1,
+    "electron_count": 92,
+    "configuration": "[Rn] 5f2 6d1 7s2 7p1",
+    "ground_level": "5L6",
+    "spin_2s": 4,
+    "multiplicity": 5,
+    "alpha_l_counts": {
+      "0": 7,
+      "1": 16,
+      "2": 16,
+      "3": 9
+    },
+    "beta_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 15,
+      "3": 7
+    },
+    "spin_model": "curated_ground_multiplicity",
+    "spin_variant": "curated_multiplicity",
+    "state_role": "diagnostic_theory",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+    "state_category": "ning2022_monoanion_reference",
+    "curation_status": "provisional",
+    "physical_status": "theoretical_only",
+    "state_source": "ning2022",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
+    "nist_ie_provenance": "",
+    "rule_reason": "",
+    "notes": [
+      "calculated recommendation and experimental lower limit only; no assigned experimental ground state in the review"
+    ]
+  },
+  {
+    "schema_version": "atomref.proatoms.state.v2",
     "state_id": "Pa_q0_mult4_nist",
     "symbol": "Pa",
     "z": 91,
@@ -15337,6 +15527,44 @@
     "nist_ie_provenance": "semiempirical",
     "rule_reason": "",
     "notes": []
+  },
+  {
+    "schema_version": "atomref.proatoms.state.v2",
+    "state_id": "U_qm1_mult6_ning2022",
+    "symbol": "U",
+    "z": 92,
+    "charge": -1,
+    "electron_count": 93,
+    "configuration": "[Rn] 5f3 6d1 7s2 7p1",
+    "ground_level": "6M13/2",
+    "spin_2s": 5,
+    "multiplicity": 6,
+    "alpha_l_counts": {
+      "0": 7,
+      "1": 16,
+      "2": 16,
+      "3": 10
+    },
+    "beta_l_counts": {
+      "0": 7,
+      "1": 15,
+      "2": 15,
+      "3": 7
+    },
+    "spin_model": "curated_ground_multiplicity",
+    "spin_variant": "curated_multiplicity",
+    "state_role": "bound_experimental",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+    "state_category": "ning2022_monoanion_reference",
+    "curation_status": "curated",
+    "physical_status": "experimental_or_evaluated",
+    "state_source": "ning2022",
+    "source_table": "source/ning2022/ning2022_monoanions.csv",
+    "nist_ie_provenance": "",
+    "rule_reason": "",
+    "notes": [
+      "multiple bound anion states exist; table row is the recommended ground state"
+    ]
   },
   {
     "schema_version": "atomref.proatoms.state.v2",

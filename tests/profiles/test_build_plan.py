@@ -42,7 +42,7 @@ def test_build_plan_dataset_counts_match_v2_scope_policy() -> None:
     }
     assert counts == {
         PRIMARY_X2C_QZVPALL: 430,
-        PRIMARY_DYALL_V4Z: 495,
+        PRIMARY_DYALL_V4Z: 501,
         ANION_X2C_QZVPALL_S: 106,
         ANION_DYALL_AV4Z: 91,
     }
@@ -61,6 +61,7 @@ def test_build_plan_preserves_state_order_with_dataset_blocks() -> None:
     assert jobs[431].state_id == "H_q0_mult2_nist"
     assert jobs[431].dataset_id == PRIMARY_DYALL_V4Z
     assert jobs[-1].state_id == "Lr_qp3_mult1_nist"
+    assert any(job.state_id == "U_qm1_mult6_ning2022" for job in jobs)
 
 
 def test_anion_sensitivity_dataset_order_and_scope() -> None:
@@ -77,8 +78,8 @@ def test_anion_sensitivity_dataset_order_and_scope() -> None:
 def test_build_plan_summary_counts_charge_classes() -> None:
     jobs = build_jobs_for_datasets(_states())
     summary = build_plan_summary(jobs)
-    assert summary["job_count"] == 1122
-    assert summary["by_charge_class"] == {"neutral": 189, "cation": 524, "anion": 409}
+    assert summary["job_count"] == 1128
+    assert summary["by_charge_class"] == {"neutral": 189, "cation": 524, "anion": 415}
     formatted = format_build_plan(jobs)
     assert PRIMARY_DYALL_V4Z in formatted
     assert ANION_DYALL_AV4Z in formatted
@@ -106,9 +107,10 @@ def test_compute_wavefunctions_list_cli() -> None:
         text=True,
     )
     assert "Profile data version: 2.0.0" in result.stdout
-    assert "Build jobs: 495" in result.stdout
+    assert "Build jobs: 501" in result.stdout
     assert PRIMARY_DYALL_V4Z in result.stdout
     assert "Lr_qp3_mult1_nist" in result.stdout
+    assert "U_qm1_mult6_ning2022" in result.stdout
     assert "Dry run completed before PySCF import/SCF execution" in result.stdout
 
 

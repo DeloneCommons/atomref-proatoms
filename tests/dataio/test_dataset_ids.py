@@ -31,6 +31,7 @@ ALL_CURATED_ROLES = {
     "reference_uncertain",
     "bound_experimental",
     "bound_provisional",
+    "diagnostic_theory",
     "formal_monoanion",
     "formal_multianion",
 }
@@ -72,6 +73,12 @@ def test_primary_datasets_are_not_split_by_charge_class() -> None:
     assert state_allowed_in_dataset(
         PRIMARY_DYALL_V4Z, z=6, charge=-3, state_role="formal_multianion"
     )
+    assert state_allowed_in_dataset(
+        PRIMARY_DYALL_V4Z, z=92, charge=-1, state_role="bound_experimental", symbol="U"
+    )
+    assert state_allowed_in_dataset(
+        PRIMARY_DYALL_V4Z, z=91, charge=-1, state_role="diagnostic_theory", symbol="Pa"
+    )
     assert not state_allowed_in_dataset(PRIMARY_DYALL_V4Z, z=104, charge=0)
 
 
@@ -95,7 +102,10 @@ def test_diffuse_sensitivity_datasets_are_anion_only() -> None:
         ANION_DYALL_AV4Z, z=57, charge=-1, state_role="bound_experimental"
     )
     assert not state_allowed_in_dataset(
-        ANION_DYALL_AV4Z, z=92, charge=-1, state_role="bound_experimental"
+        ANION_DYALL_AV4Z, z=92, charge=-1, state_role="bound_experimental", symbol="U"
+    )
+    assert not state_allowed_in_dataset(
+        ANION_DYALL_AV4Z, z=88, charge=-1, state_role="bound_provisional", symbol="Ra"
     )
 
 

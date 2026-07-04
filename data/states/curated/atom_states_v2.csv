@@ -429,23 +429,29 @@ Rn_q0_mult1_nist,86,Rn,0,86,[Hg] 6p6,1S0,1,0,nist_reference,reference,experiment
 Rn_qp1_mult2_nist,86,Rn,1,85,[Hg] 6p5,2P°3/2,2,1,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,theoretical,,
 Rn_qp2_mult3_nist,86,Rn,2,84,[Hg] 6p4,3P2,3,2,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
 Rn_qp3_mult4_nist,86,Rn,3,83,[Hg] 6p3,4S°3/2,4,3,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,theoretical,,
+Fr_qm1_mult1_ning2022,87,Fr,-1,88,[Rn] 7s2,1S0,1,0,ning2022_monoanion_reference,diagnostic_theory,theoretical_only,ning2022,source/ning2022/ning2022_monoanions.csv,,,calculated recommendation only; no experimental EA in the review
 Fr_q0_mult2_nist,87,Fr,0,87,[Rn] 7s1,2S1/2,2,1,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 Fr_qp1_mult1_nist,87,Fr,1,86,[Hg] 6p6,1S0,1,0,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
+Ra_qm1_mult2_ning2022,88,Ra,-1,89,[Rn] 7s2 7p1,2P1/2,2,1,ning2022_monoanion_reference,bound_provisional,provisional_experimental,ning2022,source/ning2022/ning2022_monoanions.csv,,,AMS estimate; no detailed assigned spectrum in the review table
 Ra_q0_mult1_nist,88,Ra,0,88,[Rn] 7s2,1S0,1,0,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 Ra_qp1_mult2_nist,88,Ra,1,87,[Rn] 7s1,2S1/2,2,1,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 Ra_qp2_mult1_nist,88,Ra,2,86,[Hg] 6p6,1S0,1,0,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,theoretical,,
+Ac_qm1_mult3_ning2022,89,Ac,-1,90,[Rn] 6d1 7s2 7p1,3F2,3,2,ning2022_monoanion_reference,diagnostic_theory,theoretical_only,ning2022,source/ning2022/ning2022_monoanions.csv,,,calculated recommendation only; no experimental EA in the review
 Ac_q0_mult2_nist,89,Ac,0,89,[Rn] 6d1 7s2,2D3/2,2,1,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 Ac_qp1_mult1_nist,89,Ac,1,88,[Rn] 7s2,1S0,1,0,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
 Ac_qp2_mult2_nist,89,Ac,2,87,[Rn] 7s1,2S1/2,2,1,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
 Ac_qp3_mult1_nist,89,Ac,3,86,[Hg] 6p6,1S0,1,0,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
+Th_qm1_mult4_ning2022,90,Th,-1,91,[Rn] 6d3 7s2,4F3/2,4,3,ning2022_monoanion_reference,bound_experimental,experimental_or_evaluated,ning2022,source/ning2022/ning2022_monoanions.csv,,,multiple bound anion states exist; table row is the recommended ground state
 Th_q0_mult3_nist,90,Th,0,90,[Rn] 6d2 7s2,3F2,3,2,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 Th_qp1_mult2_nist,90,Th,1,89,[Rn] 6d1 7s2,2D3/2,2,1,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 Th_qp2_mult3_nist,90,Th,2,88,[Rn] 5f1 6d1,3H°4,3,2,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
 Th_qp3_mult2_nist,90,Th,3,87,[Rn] 5f1,2F°5/2,2,1,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
+Pa_qm1_mult5_ning2022,91,Pa,-1,92,[Rn] 5f2 6d1 7s2 7p1,5L6,5,4,ning2022_monoanion_reference,diagnostic_theory,theoretical_only,ning2022,source/ning2022/ning2022_monoanions.csv,,,calculated recommendation and experimental lower limit only; no assigned experimental ground state in the review
 Pa_q0_mult4_nist,91,Pa,0,91,[Rn] 5f2 6d1 7s2,4K11/2,4,3,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
 Pa_qp1_mult3_nist,91,Pa,1,90,[Rn] 5f2 7s2,3H4,3,2,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
 Pa_qp2_mult4_nist,91,Pa,2,89,[Rn] 5f2 6d1,4I11/2,4,3,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
 Pa_qp3_mult3_nist,91,Pa,3,88,[Rn] 5f2,3H4,3,2,nist_reference,reference_uncertain,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,semiempirical,,
+U_qm1_mult6_ning2022,92,U,-1,93,[Rn] 5f3 6d1 7s2 7p1,6M13/2,6,5,ning2022_monoanion_reference,bound_experimental,experimental_or_evaluated,ning2022,source/ning2022/ning2022_monoanions.csv,,,multiple bound anion states exist; table row is the recommended ground state
 U_q0_mult5_nist,92,U,0,92,[Rn] 5f3 6d1 7s2,5L°6,5,4,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 U_qp1_mult4_nist,92,U,1,91,[Rn] 5f3 7s2,4I°9/2,4,3,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,
 U_qp2_mult5_nist,92,U,2,90,[Rn] 5f4,5I4,5,4,nist_reference,reference,experimental_or_evaluated,nist_gsie,source/nist_gsie/nist_neutral_cation_states.csv,evaluated,,

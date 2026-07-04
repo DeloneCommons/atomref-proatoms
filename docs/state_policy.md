@@ -20,13 +20,13 @@ stated policy.
 ## Active v2 state scope
 
 The active v2 state table is `data/states/curated/atom_states_v2.json`. It is
-built from compact source/status tables and contains 495 states:
+built from compact source/status tables and contains 501 states:
 
 ```text
 charge counts:
   -3: 6
   -2: 20
-  -1: 80
+  -1: 86
    0: 103
   +1: 102
   +2: 95
@@ -34,7 +34,7 @@ charge counts:
 
 state categories:
   nist_reference: 389
-  ning2022_monoanion_reference: 66
+  ning2022_monoanion_reference: 72
   formal_anion_reference: 40
 ```
 
@@ -50,10 +50,11 @@ The source hierarchy is deliberately conservative:
 |---|---|---|
 | Neutral atoms | NIST GSIE compact source table | `nist_reference` |
 | Cations | NIST GSIE compact source table | `nist_reference` |
-| Accepted/provisional monoanions | Ning--Lu 2022 compact source/status table | `ning2022_monoanion_reference` |
-| Required monoanions without an accepted physical/provisional row | Explicit formal table | `formal_anion_reference` |
+| Accepted/provisional H-Rn monoanions | Ning--Lu 2022 compact source/status table | `ning2022_monoanion_reference` |
+| Source-backed Fr-U monoanions | Ning--Lu 2022 compact source/status table, with original physical/theory status retained | `ning2022_monoanion_reference` |
+| Required H-Rn monoanions without an accepted physical/provisional row | Explicit formal table | `formal_anion_reference` |
 | Multianions | Explicit formal table | `formal_anion_reference` |
-| Theory-only, unbound, metastable-only, or otherwise problematic anion rows | Retained as source/status rows only unless intentionally formalized | not silently promoted |
+| Other theory-only, unbound, metastable-only, or otherwise problematic anion rows | Retained as source/status rows only unless intentionally formalized | not silently promoted |
 
 NIST is used for neutral atoms and positive ions because it provides curated
 atomic/ionic ground-state configuration and level information. The active table
@@ -83,8 +84,11 @@ cations:
 
 monoanions:
   -1 for H-Rn except group 18
-  accepted Ning--Lu rows are physical/provisional references
-  missing or nonaccepted required rows are explicit formal monoanions
+  accepted H-Rn Ning--Lu rows are physical/provisional references
+  missing or nonaccepted required H-Rn rows are explicit formal monoanions
+  source-backed Ning--Lu Fr-U monoanion rows are included in the primary
+    dyall-v4z H-Lr dataset, including theory-only/provisional rows with
+    their original physical_status retained
   no purely formal actinide fallback monoanions in the initial compute scope
 
 multianions:

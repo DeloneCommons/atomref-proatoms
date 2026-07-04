@@ -17,7 +17,7 @@ def test_check_states_script_validates_active_v2_table() -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    assert "OK: checked 495 atom states" in result.stdout
+    assert "OK: checked 501 atom states" in result.stdout
     assert "formal_anion_reference=40" in result.stdout
-    assert "ning2022_monoanion_reference=66" in result.stdout
+    assert "ning2022_monoanion_reference=72" in result.stdout
     assert "nist_reference=389" in result.stdout

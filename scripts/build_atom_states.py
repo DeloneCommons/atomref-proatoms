@@ -166,7 +166,11 @@ GROUP_1 = {"H", "Li", "Na", "K", "Rb", "Cs", "Fr"}
 GROUP_2 = {"Be", "Mg", "Ca", "Sr", "Ba", "Ra"}
 GROUP_18 = {"He", "Ne", "Ar", "Kr", "Xe", "Rn"}
 V2_MAX_Z = 103
-V2_ANION_MAX_Z = 86
+V2_STANDARD_MONOANION_MAX_Z = 86
+V2_SOURCE_BACKED_PERIOD7_MONOANION_MAX_Z = 92
+V2_SOURCE_BACKED_PERIOD7_MONOANIONS = {"Fr", "Ra", "Ac", "Th", "Pa", "U"}
+V2_ACCEPTED_NING2022_ROLES = {"bound_experimental", "bound_provisional"}
+V2_PERIOD7_NING2022_ROLES = {"bound_experimental", "bound_provisional", "diagnostic_theory"}
 V2_SCHEMA_VERSION = "atomref.proatoms.state.v2"
 V2_SUMMARY_SCHEMA_VERSION = "atomref.proatoms.state_build_summary.v2"
 V2_SPIN_MODEL = "curated_ground_multiplicity"
@@ -361,12 +365,26 @@ def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[
 
     for row in ning_rows:
         symbol = row["symbol"]
-        if int(row["z"]) > V2_ANION_MAX_Z:
-            continue
+        z_value = int(row["z"])
+        role = row["state_role"]
         if symbol in GROUP_18:
             continue
-        if row["state_role"] not in {"bound_experimental", "bound_provisional"}:
+
+        include_reason = ""
+        if z_value <= V2_STANDARD_MONOANION_MAX_Z:
+            if role not in V2_ACCEPTED_NING2022_ROLES:
+                continue
+            include_reason = "accepted_physical_or_provisional_monoanion"
+        elif (
+            symbol in V2_SOURCE_BACKED_PERIOD7_MONOANIONS
+            and z_value <= V2_SOURCE_BACKED_PERIOD7_MONOANION_MAX_Z
+        ):
+            if role not in V2_PERIOD7_NING2022_ROLES:
+                continue
+            include_reason = "source_backed_period7_monoanion_policy"
+        else:
             continue
+
         selection_rows.append(
             {
                 "z": row["z"],
@@ -375,9 +393,9 @@ def build_v2_selection_rows(data_dir: Path) -> tuple[list[dict[str, str]], dict[
                 "electron_count": row["electron_count"],
                 "state_source": "ning2022",
                 "source_table": NING2022_SOURCE_TABLE_LABEL,
-                "state_role": row["state_role"],
+                "state_role": role,
                 "physical_status": row["physical_status"],
-                "include_reason": "accepted_physical_or_provisional_monoanion",
+                "include_reason": include_reason,
             }
         )
 
@@ -551,7 +569,9 @@ def build_summary_v2(
         "policy_notes": [
             "H+ and He2+/He3+ are not included because they are not "
             "electron-bearing NIST source rows.",
-            "Purely formal actinide fallback monoanions are out of the initial v2 scope.",
+            "Source-backed Ning--Lu Fr--U monoanions are included in the "
+            "primary dyall-v4z H-Lr dataset; purely formal actinide fallback "
+            "monoanions remain out of the initial v2 scope.",
             "Group-18 anions are excluded from the v2 anion policy.",
         ],
         "diagnostics": diagnostics,

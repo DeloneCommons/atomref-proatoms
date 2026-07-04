@@ -19,25 +19,25 @@ NIST_SOURCE_FILE = (
 def test_current_state_table_loads_and_matches_expected_counts() -> None:
     states = load_atom_states(STATES_FILE)
     summary = selection_count_summary(states)
-    assert summary["state_count"] == 495
+    assert summary["state_count"] == 501
     assert summary["neutral_count"] == 103
     assert summary["cation_count"] == 286
-    assert summary["anion_count"] == 106
+    assert summary["anion_count"] == 112
     assert summary["by_category"] == {
         "formal_anion_reference": 40,
-        "ning2022_monoanion_reference": 66,
+        "ning2022_monoanion_reference": 72,
         "nist_reference": 389,
     }
     assert summary["by_charge"] == {
         "-3": 6,
         "-2": 20,
-        "-1": 80,
+        "-1": 86,
         "0": 103,
         "1": 102,
         "2": 95,
         "3": 89,
     }
-    assert summary["by_spin_variant"] == {"curated_multiplicity": 495}
+    assert summary["by_spin_variant"] == {"curated_multiplicity": 501}
     assert validate_state_collection(states) == []
 
 
@@ -305,7 +305,7 @@ def test_v2_required_states_table_matches_charge_policy() -> None:
     with V2_SELECTION_FILE.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
 
-    assert len(rows) == 495
+    assert len(rows) == 501
     assert rows[0].keys() == {
         "z",
         "symbol",
@@ -325,7 +325,7 @@ def test_v2_required_states_table_matches_charge_policy() -> None:
     assert Counter(row["charge"] for row in rows) == {
         "-3": 6,
         "-2": 20,
-        "-1": 80,
+        "-1": 86,
         "0": 103,
         "1": 102,
         "2": 95,
@@ -342,13 +342,14 @@ def test_v2_required_states_table_matches_charge_policy() -> None:
     assert ("H", "1") not in keys
     assert ("He", "2") not in keys
     assert ("He", "3") not in keys
-    assert ("Ac", "-1") not in keys
-    assert ("Pa", "-1") not in keys
+    assert ("Fr", "-1") in keys
+    assert ("Ra", "-1") in keys
+    assert ("Ac", "-1") in keys
+    assert ("Th", "-1") in keys
+    assert ("Pa", "-1") in keys
+    assert ("U", "-1") in keys
+    assert ("Np", "-1") not in keys
     assert ("Lr", "-1") not in keys
-    assert ("Fr", "-1") not in keys
-    assert ("Ra", "-1") not in keys
-    assert ("Th", "-1") not in keys
-    assert ("U", "-1") not in keys
     assert ("F", "-2") not in keys
     assert ("Cl", "-2") not in keys
     assert ("Br", "-2") not in keys
@@ -360,16 +361,16 @@ def test_v2_curated_json_loads_with_curated_multiplicities() -> None:
     states = load_atom_states(V2_STATES_JSON_FILE)
     summary = selection_count_summary(states)
 
-    assert summary["state_count"] == 495
+    assert summary["state_count"] == 501
     assert summary["neutral_count"] == 103
     assert summary["cation_count"] == 286
-    assert summary["anion_count"] == 106
+    assert summary["anion_count"] == 112
     assert summary["by_category"] == {
         "formal_anion_reference": 40,
-        "ning2022_monoanion_reference": 66,
+        "ning2022_monoanion_reference": 72,
         "nist_reference": 389,
     }
-    assert summary["by_spin_variant"] == {"curated_multiplicity": 495}
+    assert summary["by_spin_variant"] == {"curated_multiplicity": 501}
 
     by_key = {(state.symbol, state.charge): state for state in states}
     ce = by_key[("Ce", 0)]
@@ -392,11 +393,11 @@ def test_v2_summary_records_policy_exclusions() -> None:
 
     summary = json.loads(V2_STATES_SUMMARY_FILE.read_text(encoding="utf-8"))
     assert summary["schema_version"] == "atomref.proatoms.state_build_summary.v2"
-    assert summary["state_count"] == 495
+    assert summary["state_count"] == 501
     assert summary["by_source"] == {
         "formal_rule": 34,
         "manual_curated": 6,
-        "ning2022": 66,
+        "ning2022": 72,
         "nist_gsie": 389,
     }
     assert summary["diagnostics"] == {
@@ -424,7 +425,7 @@ def test_v2_review_csv_is_json_subset_without_l_counts() -> None:
     with V2_STATES_CSV_FILE.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
 
-    assert len(rows) == 495
+    assert len(rows) == 501
     assert rows[0].keys() == {
         "state_id",
         "z",
