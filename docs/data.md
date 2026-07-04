@@ -104,8 +104,9 @@ The directory-level details are documented in `data/qa/README.md`.
 
 Profile, radii, and QA tables are generated artifacts. Do not hand-edit them.
 Change the source/configuration layer instead, regenerate with
-`scripts/extract_profiles.py`, inspect `data/qa/qa_report.md`, and run
-`python scripts/check_profile_artifacts.py --require-generated` before release.
+`scripts/extract_profiles.py`, inspect `data/qa/qa_report.md`, optionally run
+`python scripts/check_basis_sensitivity.py --force` for diffuse-basis anion sensitivity,
+and run `python scripts/check_profile_artifacts.py --require-generated` before release.
 
 The expensive local SCF material is stored under:
 

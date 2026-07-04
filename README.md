@@ -87,6 +87,7 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
@@ -102,8 +103,10 @@ python -m pip install -e ".[generator,test,dev]"
 `compute_wavefunctions.py` writes local artifacts such as `scf.chk`, `scf.npz`,
 `scf.json`, and `scf.log` under `local-data/scf/<dataset_id>/<state_id>/`.
 `extract_profiles.py` reads those local artifacts and writes the tracked profile,
-radii, and QA outputs. `check_profile_artifacts.py --require-generated` is the
-release-gate consistency check for committed profile/radii/QA artifacts.
+radii, and QA outputs. `check_basis_sensitivity.py` adds optional diffuse-basis
+anion sensitivity diagnostics under the QA root. `check_profile_artifacts.py
+--require-generated` is the release-gate consistency check for committed
+profile/radii/QA artifacts.
 
 ## Documentation
 

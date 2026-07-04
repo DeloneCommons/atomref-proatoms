@@ -29,14 +29,17 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
 `check_states.py` and `check_basis_bundles.py` validate compact tracked inputs. The third command creates
 or reuses ignored local SCF artifacts. The fourth command extracts tracked
-profile, radii, and QA artifacts from complete local SCF material. The final
-checker confirms that generated artifact directories match the active v2 dataset
-configuration, profile-data version, and QA summaries.
+profile, radii, and QA artifacts from complete local SCF material. The fifth
+command records optional diffuse-basis sensitivity diagnostics for anion branches
+when both compared profile datasets are present. The final checker confirms that
+generated artifact directories match the active v2 dataset configuration,
+profile-data version, and QA summaries.
 
 ## Inspection commands
 

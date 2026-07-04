@@ -337,3 +337,48 @@ def test_check_generated_artifacts_require_generated_flag_fails_empty(tmp_path: 
 
     assert not result.ok
     assert result.errors == ("no generated profile/radii/QA dataset directories found",)
+
+
+def test_check_generated_artifacts_accepts_optional_basis_sensitivity_qa(tmp_path: Path) -> None:
+    config, states, profiles_root, radii_root, qa_root = _write_valid_artifacts(tmp_path)
+    sensitivity_dir = qa_root / "basis_sensitivity"
+    sensitivity_dir.mkdir()
+    _write_rows(
+        sensitivity_dir / "basis_sensitivity.csv",
+        ["comparison_id", "state_id", "status"],
+        [{"comparison_id": "base__vs__diffuse", "state_id": STATE_ID, "status": "OK"}],
+    )
+    _write_rows(
+        sensitivity_dir / "basis_sensitivity_summary.csv",
+        ["comparison_id", "common_state_count", "outlier_count"],
+        [{"comparison_id": "base__vs__diffuse", "common_state_count": 1, "outlier_count": 0}],
+    )
+    _write_rows(
+        sensitivity_dir / "basis_sensitivity_outliers.csv",
+        ["comparison_id", "state_id", "status"],
+        [],
+    )
+    (sensitivity_dir / "metadata.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "atomref.proatoms.basis_sensitivity_qa.v1",
+                "profile_data_version": "2.0.0",
+                "row_count": 1,
+                "summary_count": 1,
+                "outlier_count": 0,
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = check_generated_artifacts(
+        config_path=config,
+        states_file=states,
+        profiles_root=profiles_root,
+        radii_root=radii_root,
+        qa_root=qa_root,
+    )
+
+    assert result.ok, result.errors

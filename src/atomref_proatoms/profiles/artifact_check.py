@@ -33,10 +33,16 @@ from .artifacts import (
     RADII_DATASET_SCHEMA_VERSION,
     profile_density_column,
 )
+from .basis_sensitivity import (
+    BASIS_SENSITIVITY_DIRNAME,
+    BASIS_SENSITIVITY_FILES,
+    BASIS_SENSITIVITY_SCHEMA_VERSION,
+)
 from .build_plan import ProfileBuildJob, build_jobs_for_datasets
 
 ROOT_README = "README.md"
 QA_OVERVIEW_FILES = {"qa_summary.csv", "qa_report.md", "metadata.json"}
+SPECIAL_QA_DIRS = {BASIS_SENSITIVITY_DIRNAME}
 
 
 @dataclass(frozen=True)
@@ -524,6 +530,52 @@ def _check_qa_overview(
         )
 
 
+def _metadata_int(metadata: Mapping[str, Any], key: str) -> int:
+    value = metadata.get(key)
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return -1
+
+
+def _check_basis_sensitivity_qa(
+    directory: Path, *, config: ProfileDatasetConfig, errors: list[str]
+) -> None:
+    """Validate optional diffuse-basis sensitivity QA artifacts when present."""
+
+    if not _require_files(directory, sorted(BASIS_SENSITIVITY_FILES), errors):
+        return
+    metadata = _load_json(directory / "metadata.json", errors)
+    if metadata is None:
+        return
+    label = repo_relative_path(directory / "metadata.json")
+    if metadata.get("schema_version") != BASIS_SENSITIVITY_SCHEMA_VERSION:
+        errors.append(
+            f"{label}: schema_version must be {BASIS_SENSITIVITY_SCHEMA_VERSION!r}, "
+            f"got {metadata.get('schema_version')!r}"
+        )
+    if metadata.get("profile_data_version") != config.profile_data_version:
+        errors.append(
+            f"{label}: profile_data_version must be {config.profile_data_version!r}, "
+            f"got {metadata.get('profile_data_version')!r}"
+        )
+    expected_counts = {
+        "basis_sensitivity.csv": _metadata_int(metadata, "row_count"),
+        "basis_sensitivity_summary.csv": _metadata_int(metadata, "summary_count"),
+        "basis_sensitivity_outliers.csv": _metadata_int(metadata, "outlier_count"),
+    }
+    for filename, expected_count in expected_counts.items():
+        header_count = _read_csv_header_and_row_count(directory / filename, errors)
+        if header_count is None:
+            continue
+        _header, row_count = header_count
+        if expected_count >= 0 and row_count != expected_count:
+            errors.append(
+                f"{repo_relative_path(directory / filename)}: expected {expected_count} rows, "
+                f"got {row_count}"
+            )
+
+
 def _expected_scf_settings_digest(config: ProfileDatasetConfig) -> str:
     defaults = config.defaults
     relativity = str(defaults.get("relativity", "sf-X2C-1e"))
@@ -588,7 +640,9 @@ def check_generated_artifacts(
     expected_all = set(config.dataset_ids)
     profile_dirs = _root_dataset_dirs(profiles_root)
     radii_dirs = _root_dataset_dirs(radii_root)
-    qa_dirs = _root_dataset_dirs(qa_root)
+    qa_all_dirs = _root_dataset_dirs(qa_root)
+    basis_sensitivity_present = BASIS_SENSITIVITY_DIRNAME in qa_all_dirs
+    qa_dirs = qa_all_dirs - SPECIAL_QA_DIRS
     generated_any = bool(profile_dirs or radii_dirs or qa_dirs)
     errors: list[str] = []
 
@@ -596,6 +650,12 @@ def check_generated_artifacts(
         _check_root_files(profiles_root, allowed={ROOT_README}, errors=errors)
         _check_root_files(radii_root, allowed={ROOT_README}, errors=errors)
         _check_root_files(qa_root, allowed={ROOT_README}, errors=errors)
+        if basis_sensitivity_present:
+            _check_basis_sensitivity_qa(
+                qa_root / BASIS_SENSITIVITY_DIRNAME,
+                config=config,
+                errors=errors,
+            )
         if not allow_empty:
             errors.append("no generated profile/radii/QA dataset directories found")
         return GeneratedArtifactCheck(
@@ -647,6 +707,12 @@ def check_generated_artifacts(
     _check_root_files(profiles_root, allowed={ROOT_README}, errors=errors)
     _check_root_files(radii_root, allowed={ROOT_README}, errors=errors)
     _check_root_files(qa_root, allowed={ROOT_README, *QA_OVERVIEW_FILES}, errors=errors)
+    if basis_sensitivity_present:
+        _check_basis_sensitivity_qa(
+            qa_root / BASIS_SENSITIVITY_DIRNAME,
+            config=config,
+            errors=errors,
+        )
 
     checked_counts: dict[str, int] = {}
     for dataset_id in expected_dirs:

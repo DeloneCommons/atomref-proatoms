@@ -24,10 +24,19 @@ data/qa/<dataset_id>/
 data/qa/qa_summary.csv
 data/qa/qa_report.md
 data/qa/metadata.json
+
+data/qa/basis_sensitivity/
+  basis_sensitivity.csv
+  basis_sensitivity_summary.csv
+  basis_sensitivity_outliers.csv
+  metadata.json
 ```
 
 Per-dataset `qa.csv` files contain one row per generated state. The top-level
-summary and Markdown report aggregate dataset-level pass/fail status.
+summary and Markdown report aggregate dataset-level pass/fail status. The
+optional `basis_sensitivity/` table compares primary and diffuse anion basis
+branches where both generated profile datasets are present; its warning rows are
+diagnostics, not automatic release failures.
 
 ## QA metrics
 
@@ -72,6 +81,15 @@ on the angular QA grid. The corresponding tolerance is reported as
 parsed from SCF logs when PySCF reports basis-set linear-dependency handling.
 These fields are diagnostics rather than automatic release failures.
 
+### Diffuse-basis sensitivity
+
+`basis_sensitivity/basis_sensitivity.csv` compares radial densities for matched
+states in the configured primary/diffuse anion branches. It records integrated
+L1 density differences, electron-count deltas, electron-quantile radius shifts,
+cutoff-radius shifts, and tail-electron differences. Rows marked `WARN` are
+outliers for manual inspection; they do not make `check_profile_artifacts.py`
+fail by themselves.
+
 ## Regeneration
 
 QA tables are generated artifacts and should not be hand-edited. They are
@@ -80,6 +98,7 @@ consistency, by:
 
 ```bash
 python scripts/extract_profiles.py --force --check
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 

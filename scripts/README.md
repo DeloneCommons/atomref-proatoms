@@ -12,6 +12,7 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
@@ -29,6 +30,7 @@ artifacts require the generator dependency set.
 | `check_basis_bundles.py` | Validate frozen basis bundles, checksums, NWChem spherical headers, coverage metadata, and optional PySCF parseability. | terminal validation report |
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
+| `check_basis_sensitivity.py` | Compare primary and diffuse anion profile branches where both generated datasets are present. | `data/qa/basis_sensitivity/` |
 | `check_profile_artifacts.py` | Validate generated profile/radii/QA artifact directories against the active v2 dataset config. | terminal validation report |
 
 ## `check_states.py`
@@ -101,6 +103,42 @@ step is reported as skipped.
 Options:
 
 - `--basis-root`: basis bundle root; default is `data/basis_sets`.
+
+## `check_basis_sensitivity.py`
+
+Common commands:
+
+```bash
+python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_sensitivity.py --profiles-root local-data/profiles --qa-root local-data/qa --force
+```
+
+This optional QA step compares radial density profiles for configured primary/diffuse
+anion basis pairs. It currently compares `x2c-QZVPall` vs `x2c-QZVPall-s` and
+`dyall-v4z` vs `dyall-av4z` when both corresponding generated profile datasets
+are present. The output is diagnostic: large basis-sensitivity rows are written as
+warnings/outliers, not as automatic release failures.
+
+Outputs:
+
+```text
+data/qa/basis_sensitivity/basis_sensitivity.csv
+data/qa/basis_sensitivity/basis_sensitivity_summary.csv
+data/qa/basis_sensitivity/basis_sensitivity_outliers.csv
+data/qa/basis_sensitivity/metadata.json
+```
+
+Options:
+
+- `--config`: active dataset YAML; default is `data/profile_datasets.yaml`.
+- `--profiles-root`: generated profile artifact root; default is `data/profiles`.
+- `--qa-root`: generated QA artifact root; default is `data/qa`.
+- `--force`: overwrite existing basis-sensitivity QA outputs.
+- `--dry-run`: list configured comparison pairs and whether their profile
+  directories are present.
+- `--warn-relative-l1`: warning threshold for integrated relative L1 density
+  difference.
+- `--warn-delta-radius-angstrom`: warning threshold for radius shifts in Å.
 
 ## `check_profile_artifacts.py`
 
