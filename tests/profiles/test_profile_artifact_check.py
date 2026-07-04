@@ -7,17 +7,24 @@ import sys
 from pathlib import Path
 
 from atomref_proatoms.dataio.paths import STATES_FILE
+from atomref_proatoms.engines.pyscf_backend import (
+    SCFSettings,
+    scf_state_record_digest,
+    stable_json_digest,
+)
 from atomref_proatoms.profiles.artifact_check import check_generated_artifacts
 from atomref_proatoms.states.state_tables import load_atom_states
 
 ROOT = Path(__file__).resolve().parents[2]
 DATASET_ID = "test_dataset"
 BASIS_ID = "test-basis"
+BASIS_SHA256 = "a" * 64
+STATE_ID = "H_q0_mult2_nist"
 
 
 def _h_state_record() -> dict[str, object]:
     for state in load_atom_states(STATES_FILE):
-        if state.state_id == "H_q0_mult2_nist":
+        if state.state_id == STATE_ID:
             return dict(state.record)
     raise AssertionError("H state not found")
 
@@ -105,14 +112,48 @@ def _write_valid_artifacts(tmp_path: Path) -> tuple[Path, Path, Path, Path, Path
             {"r_bohr": 0.2, "rho_e_bohr3__H_q0_mult2_nist": 0.5},
         ],
     )
+    state_record = _h_state_record()
+    scf_settings_sha256 = stable_json_digest(SCFSettings().to_fingerprint_json())
+    scf_fingerprints = {
+        "basis_sha256": BASIS_SHA256,
+        "state_record_sha256": scf_state_record_digest(state_record),
+        "scf_settings_sha256": scf_settings_sha256,
+        "engine_version": "2.13.1",
+        "density_model": "self_consistent_fractional_occupation_spherical_uks",
+        "scf_type": "UKS",
+    }
     profile_metadata = {
         "schema_version": "atomref.proatoms.profile_dataset.v1",
         "profile_data_version": "2.0.0",
         "dataset_id": DATASET_ID,
         "basis_id": BASIS_ID,
+        "basis_sha256": BASIS_SHA256,
         "density_model": "self_consistent_fractional_occupation_spherical_uks",
-        "columns": {"rho_e_bohr3__H_q0_mult2_nist": {"state_id": "H_q0_mult2_nist"}},
-        "states": {"H_q0_mult2_nist": {"symbol": "H"}},
+        "method": {
+            "engine": "pyscf",
+            "engine_version": "2.13.1",
+            "scf_type": "UKS",
+            "xc": "PBE0",
+            "relativity": "sf-X2C-1e",
+            "basis_id": BASIS_ID,
+            "basis_sha256": BASIS_SHA256,
+        },
+        "profile_grid": {
+            "type": "log",
+            "r_min_bohr": 1.0e-6,
+            "r_max_bohr": 60.0,
+            "n": 2,
+        },
+        "qa_grid": {
+            "type": "gauss_legendre_log_r",
+            "r_min_bohr": 1.0e-7,
+            "r_max_bohr": 120.0,
+            "n": 4,
+            "angular_points": 8,
+        },
+        "cutoffs_e_bohr3": [0.003, 0.001],
+        "columns": {"rho_e_bohr3__H_q0_mult2_nist": {"state_id": STATE_ID}},
+        "states": {STATE_ID: {"symbol": "H"}},
         "related_artifacts": {
             "profiles_csv": str(profile_dir / "profiles.csv"),
             "profile_metadata_json": str(profile_dir / "metadata.json"),
@@ -120,6 +161,12 @@ def _write_valid_artifacts(tmp_path: Path) -> tuple[Path, Path, Path, Path, Path
             "radii_metadata_json": str(radii_root / DATASET_ID / "metadata.json"),
             "qa_csv": str(qa_root / DATASET_ID / "qa.csv"),
             "qa_metadata_json": str(qa_root / DATASET_ID / "metadata.json"),
+        },
+        "scf_artifacts": {
+            STATE_ID: {
+                "results": {"converged": True},
+                "fingerprints": scf_fingerprints,
+            }
         },
     }
     (profile_dir / "metadata.json").write_text(
@@ -244,6 +291,27 @@ def test_check_generated_artifacts_accepts_complete_matching_artifacts(tmp_path:
     assert result.ok, result.errors
     assert result.checked_dataset_ids == (DATASET_ID,)
     assert result.state_count == 1
+
+
+def test_check_generated_artifacts_rejects_stale_scf_state_fingerprint(
+    tmp_path: Path,
+) -> None:
+    config, states, profiles_root, radii_root, qa_root = _write_valid_artifacts(tmp_path)
+    metadata_path = profiles_root / DATASET_ID / "metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["scf_artifacts"][STATE_ID]["fingerprints"]["state_record_sha256"] = "0" * 64
+    metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+
+    result = check_generated_artifacts(
+        config_path=config,
+        states_file=states,
+        profiles_root=profiles_root,
+        radii_root=radii_root,
+        qa_root=qa_root,
+    )
+
+    assert not result.ok
+    assert any("state_record_sha256" in error for error in result.errors)
 
 
 def test_check_generated_artifacts_require_generated_flag_fails_empty(tmp_path: Path) -> None:

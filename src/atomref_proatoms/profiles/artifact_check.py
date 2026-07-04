@@ -9,8 +9,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ..dataio.basis import list_basis_bundles
 from ..dataio.datasets import ProfileDatasetConfig, load_profile_dataset_config
 from ..dataio.paths import (
+    BASIS_ROOT,
     PROFILE_DATASETS_FILE,
     PROFILES_ROOT,
     QA_ROOT,
@@ -19,7 +21,12 @@ from ..dataio.paths import (
     repo_relative_path,
 )
 from ..dataio.schemas import PROFILE_DATASET_MANIFEST_SCHEMA_VERSION
-from ..states.state_tables import load_atom_states
+from ..engines.pyscf_backend import (
+    SCF_REUSE_FINGERPRINT_KEYS,
+    SCFSettings,
+    stable_json_digest,
+)
+from ..states.state_tables import load_atom_states, state_digest
 from .artifacts import (
     QA_DATASET_SCHEMA_VERSION,
     QA_OVERVIEW_SCHEMA_VERSION,
@@ -177,6 +184,8 @@ def _check_profiles_dataset(
     qa_root: Path,
     jobs: tuple[ProfileBuildJob, ...],
     config: ProfileDatasetConfig,
+    basis_sha256_by_id: Mapping[str, str],
+    state_record_sha256_by_id: Mapping[str, str],
     errors: list[str],
 ) -> None:
     profiles_csv = dataset_dir / "profiles.csv"
@@ -214,13 +223,55 @@ def _check_profiles_dataset(
         basis_id=basis_id,
         errors=errors,
     )
+    if metadata.get("density_model") != config.defaults.get("density_model"):
+        errors.append(
+            f"{repo_relative_path(metadata_json)}: density_model does not match active config"
+        )
+    if metadata.get("profile_grid") != dict(config.profile_grid):
+        errors.append(f"{repo_relative_path(metadata_json)}: profile_grid does not match config")
+    if metadata.get("qa_grid") != dict(config.qa_grid):
+        errors.append(f"{repo_relative_path(metadata_json)}: qa_grid does not match config")
+    if metadata.get("cutoffs_e_bohr3") != list(config.cutoffs_e_bohr3):
+        errors.append(
+            f"{repo_relative_path(metadata_json)}: cutoffs_e_bohr3 does not match config"
+        )
+
+    current_basis_sha = basis_sha256_by_id.get(basis_id)
+    if current_basis_sha is not None and metadata.get("basis_sha256") != current_basis_sha:
+        errors.append(
+            f"{repo_relative_path(metadata_json)}: basis_sha256 must be "
+            f"{current_basis_sha!r}, got {metadata.get('basis_sha256')!r}"
+        )
+    method = metadata.get("method", {})
+    if isinstance(method, Mapping):
+        expected_method = {
+            "engine": str(config.defaults.get("engine", "pyscf")),
+            "engine_version": str(config.defaults.get("expected_engine_version", "")),
+            "scf_type": str(config.defaults.get("scf_type", "")),
+            "xc": str(config.defaults.get("xc", "")),
+            "relativity": str(config.defaults.get("relativity", "sf-X2C-1e")),
+            "basis_id": basis_id,
+        }
+        if current_basis_sha is not None:
+            expected_method["basis_sha256"] = current_basis_sha
+        for key, expected in expected_method.items():
+            if expected and method.get(key) != expected:
+                errors.append(
+                    f"{repo_relative_path(metadata_json)}: method[{key!r}] must be "
+                    f"{expected!r}, got {method.get(key)!r}"
+                )
+    else:
+        errors.append(f"{repo_relative_path(metadata_json)}: method must be an object")
+
     state_keys = (
         set(metadata.get("states", {}))
         if isinstance(metadata.get("states"), Mapping)
         else set()
     )
     if state_keys != set(expected_state_ids):
-        errors.append(f"{repo_relative_path(metadata_json)}: states do not match active build plan")
+        errors.append(
+            f"{repo_relative_path(metadata_json)}: states do not match active build plan"
+        )
     column_keys = (
         set(metadata.get("columns", {}))
         if isinstance(metadata.get("columns"), Mapping)
@@ -246,6 +297,54 @@ def _check_profiles_dataset(
                 errors.append(
                     f"{repo_relative_path(metadata_json)}: related_artifacts[{key!r}] "
                     f"must be {value!r}, got {related.get(key)!r}"
+                )
+    else:
+        errors.append(f"{repo_relative_path(metadata_json)}: related_artifacts must be an object")
+
+    scf_artifacts = metadata.get("scf_artifacts", {})
+    if not isinstance(scf_artifacts, Mapping):
+        errors.append(f"{repo_relative_path(metadata_json)}: scf_artifacts must be an object")
+        return
+    artifact_keys = set(scf_artifacts)
+    if artifact_keys != set(expected_state_ids):
+        errors.append(
+            f"{repo_relative_path(metadata_json)}: scf_artifacts do not match active build plan"
+        )
+    expected_fingerprints = _expected_reuse_fingerprints(
+        config=config,
+        basis_sha256=current_basis_sha,
+    )
+    for state_id in expected_state_ids:
+        artifact = scf_artifacts.get(state_id, {})
+        if not isinstance(artifact, Mapping):
+            errors.append(
+                f"{repo_relative_path(metadata_json)}: scf_artifacts[{state_id!r}] "
+                "must be an object"
+            )
+            continue
+        results = artifact.get("results", {})
+        if not isinstance(results, Mapping) or results.get("converged") is not True:
+            errors.append(
+                f"{repo_relative_path(metadata_json)}: scf_artifacts[{state_id!r}] "
+                "does not record a converged SCF"
+            )
+        fingerprints = artifact.get("fingerprints", {})
+        if not isinstance(fingerprints, Mapping):
+            errors.append(
+                f"{repo_relative_path(metadata_json)}: scf_artifacts[{state_id!r}] "
+                "fingerprints must be an object"
+            )
+            continue
+        state_digest_expected = state_record_sha256_by_id.get(state_id)
+        per_state_expected = dict(expected_fingerprints)
+        if state_digest_expected is not None:
+            per_state_expected["state_record_sha256"] = state_digest_expected
+        for key in SCF_REUSE_FINGERPRINT_KEYS:
+            if key in per_state_expected and fingerprints.get(key) != per_state_expected[key]:
+                errors.append(
+                    f"{repo_relative_path(metadata_json)}: scf_artifacts[{state_id!r}] "
+                    f"fingerprint {key!r} must be {per_state_expected[key]!r}, "
+                    f"got {fingerprints.get(key)!r}"
                 )
 
 
@@ -274,7 +373,9 @@ def _check_radii_dataset(
     expected_state_ids = [job.state_id for job in jobs]
     state_ids = _csv_state_ids(radii_csv, errors)
     if state_ids is not None and state_ids != expected_state_ids:
-        errors.append(f"{repo_relative_path(radii_csv)}: state rows do not match active build plan")
+        errors.append(
+            f"{repo_relative_path(radii_csv)}: state rows do not match active build plan"
+        )
     metadata = _load_json(metadata_json, errors)
     if metadata is None:
         return
@@ -423,6 +524,42 @@ def _check_qa_overview(
         )
 
 
+def _expected_scf_settings_digest(config: ProfileDatasetConfig) -> str:
+    defaults = config.defaults
+    relativity = str(defaults.get("relativity", "sf-X2C-1e"))
+    settings = SCFSettings(
+        xc=str(defaults.get("xc", "PBE0")),
+        use_x2c=relativity != "none",
+        conv_tol=float(defaults.get("conv_tol", 1e-9)),
+        max_cycle=int(defaults.get("max_cycle", 100)),
+        grid_level=int(defaults.get("grid_level", 4)),
+    )
+    return stable_json_digest(settings.to_fingerprint_json())
+
+
+def _expected_reuse_fingerprints(
+    *, config: ProfileDatasetConfig, basis_sha256: str | None
+) -> dict[str, str]:
+    expected = {
+        "scf_settings_sha256": _expected_scf_settings_digest(config),
+        "engine_version": str(config.defaults.get("expected_engine_version", "")),
+        "density_model": str(config.defaults.get("density_model", "")),
+        "scf_type": str(config.defaults.get("scf_type", "")),
+    }
+    if basis_sha256 is not None:
+        expected["basis_sha256"] = basis_sha256
+    return expected
+
+
+def _basis_sha256_by_id(errors: list[str]) -> dict[str, str]:
+    try:
+        bundles = list_basis_bundles(BASIS_ROOT)
+    except Exception as exc:
+        errors.append(f"Could not validate current basis bundle fingerprints: {exc}")
+        return {}
+    return {bundle.basis_id: bundle.basis_sha256 for bundle in bundles}
+
+
 def check_generated_artifacts(
     *,
     config_path: Path = PROFILE_DATASETS_FILE,
@@ -444,6 +581,7 @@ def check_generated_artifacts(
 
     config = load_profile_dataset_config(config_path)
     states = load_atom_states(states_file)
+    state_record_sha256_by_id = {state.state_id: state_digest(state.record) for state in states}
     jobs_by_dataset = _group_jobs_by_dataset(
         build_jobs_for_datasets(states, dataset_ids=config.dataset_ids, config=config)
     )
@@ -468,6 +606,7 @@ def check_generated_artifacts(
             errors=tuple(errors),
         )
 
+    basis_sha256_by_id = _basis_sha256_by_id(errors)
     generated_union = profile_dirs | radii_dirs | qa_dirs
     unexpected = generated_union - expected_all
     if unexpected:
@@ -523,6 +662,8 @@ def check_generated_artifacts(
             qa_root=qa_root,
             jobs=jobs,
             config=config,
+            basis_sha256_by_id=basis_sha256_by_id,
+            state_record_sha256_by_id=state_record_sha256_by_id,
             errors=errors,
         )
         _check_radii_dataset(

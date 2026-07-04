@@ -33,7 +33,14 @@ DEFAULT_MAX_CYCLE = 100
 DEFAULT_GRID_LEVEL = 4
 DEFAULT_GRID_PRUNE = None
 SCF_ARTIFACT_SCHEMA_VERSION = "atomref.proatoms.scf_artifact.v1"
-SCF_REUSE_FINGERPRINT_KEYS = ("basis_sha256", "state_record_sha256", "scf_settings_sha256")
+SCF_REUSE_FINGERPRINT_KEYS = (
+    "basis_sha256",
+    "state_record_sha256",
+    "scf_settings_sha256",
+    "engine_version",
+    "density_model",
+    "scf_type",
+)
 
 
 @dataclass(frozen=True)
@@ -304,9 +311,12 @@ def load_mol_from_chk(chk_path: Path) -> Any:
 
 
 def scf_artifacts_complete(paths: SCFArtifactPaths) -> bool:
-    """Return true when all required files for one SCF artifact are present."""
+    """Return true when all required files for one SCF artifact are present and non-empty."""
 
-    return all(path.exists() and path.is_file() for path in paths.required_files())
+    return all(
+        path.exists() and path.is_file() and path.stat().st_size > 0
+        for path in paths.required_files()
+    )
 
 
 def scf_state_record_digest(record: dict[str, Any]) -> str:
@@ -322,6 +332,7 @@ def scf_fingerprints(
     state: AtomState,
     bundle: BasisBundle,
     settings: SCFSettings,
+    pyscf_version: str | None = None,
 ) -> dict[str, str]:
     """Return fingerprints that define reusable local SCF artifacts.
 
@@ -331,12 +342,25 @@ def scf_fingerprints(
     across release-version bumps and scope-only YAML edits.
     """
 
-    _ = config_path, config
+    _ = config_path
+    defaults = getattr(config, "defaults", {})
+    expected_engine_version = ""
+    if isinstance(defaults, dict):
+        expected_engine_version = str(defaults.get("expected_engine_version", ""))
+    engine_version = str(pyscf_version if pyscf_version is not None else expected_engine_version)
+    density_model = ""
+    scf_type = ""
+    if isinstance(defaults, dict):
+        density_model = str(defaults.get("density_model", ""))
+        scf_type = str(defaults.get("scf_type", ""))
     return {
         "basis_sha256": bundle.basis_sha256,
         "basis_manifest_sha256": sha256_file(bundle.path / "manifest.json"),
         "state_record_sha256": scf_state_record_digest(state.record),
         "scf_settings_sha256": stable_json_digest(settings.to_fingerprint_json()),
+        "engine_version": engine_version,
+        "density_model": density_model,
+        "scf_type": scf_type,
     }
 
 
@@ -360,6 +384,7 @@ def scf_metadata(
         state=state,
         bundle=bundle,
         settings=settings,
+        pyscf_version=pyscf_version,
     )
     return {
         "schema_version": SCF_ARTIFACT_SCHEMA_VERSION,
@@ -422,11 +447,21 @@ def scf_artifact_is_reusable(
     the basis, state record, and numerical SCF settings are unchanged.
     """
 
-    if not all(path.exists() for path in paths.required_files()):
+    if not scf_artifacts_complete(paths):
         return False
     try:
         metadata = read_scf_metadata(paths.metadata)
     except Exception:
+        return False
+    if metadata.get("schema_version") != SCF_ARTIFACT_SCHEMA_VERSION:
+        return False
+    if (
+        metadata.get("dataset_id") != paths.dataset_id
+        or metadata.get("state_id") != paths.state_id
+    ):
+        return False
+    results = metadata.get("results", {})
+    if not isinstance(results, dict) or results.get("converged") is not True:
         return False
     actual = metadata.get("fingerprints")
     if not isinstance(actual, dict):

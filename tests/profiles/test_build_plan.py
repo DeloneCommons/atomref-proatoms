@@ -154,5 +154,5 @@ def test_extract_profiles_dry_run_does_not_import_pyscf_or_read_checkpoints(tmp_
         text=True,
     )
     assert "Build jobs: 1" in result.stdout
-    assert "requires" in result.stdout
+    assert "required SCF artifacts" in result.stdout
     assert "Dry run completed before PySCF import/checkpoint reading" in result.stdout

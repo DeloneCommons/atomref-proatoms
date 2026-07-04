@@ -95,7 +95,9 @@ def parse_args() -> argparse.Namespace:
         default=SCF_ROOT,
         help="Local SCF artifact root; defaults to local-data/scf.",
     )
-    parser.add_argument("--resume", action="store_true", help="Reuse matching local SCF artifacts.")
+    parser.add_argument(
+        "--resume", action="store_true", help="Reuse matching local SCF artifacts."
+    )
     parser.add_argument(
         "--force",
         action="store_true",
@@ -197,7 +199,7 @@ def _print_plan(args: argparse.Namespace, jobs: tuple[ProfileBuildJob, ...], con
     print(f"SCF artifact root: {repo_relative_path(args.scf_root)}")
     print(
         format_build_plan(
-            jobs, show_jobs=args.show_jobs or args.list or args.dry_run, config=config
+            jobs, show_jobs=args.show_jobs or args.list, config=config
         )
     )
 
@@ -221,6 +223,7 @@ def _compute_one_job(
         state=state,
         bundle=bundle,
         settings=settings,
+        pyscf_version=pyscf_version,
     )
     if args.resume and not args.force and scf_artifact_is_reusable(paths, fingerprints):
         return "skipped_reusable"
@@ -254,6 +257,11 @@ def _compute_one_job(
         log_text=log_text,
     )
     write_json(paths.metadata, metadata)
+    if not bool(metadata.get("results", {}).get("converged")):
+        raise RuntimeError(
+            "SCF did not converge; diagnostic artifacts were written to "
+            f"{repo_relative_path(paths.state_dir)}"
+        )
     return "computed"
 
 

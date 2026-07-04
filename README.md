@@ -90,8 +90,9 @@ python scripts/extract_profiles.py --force --check
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
-`compute_wavefunctions.py --list`, `compute_wavefunctions.py --dry-run`, and
-`extract_profiles.py --list` inspect the active build plan without running SCF.
+`compute_wavefunctions.py --list`, `compute_wavefunctions.py --dry-run`,
+`extract_profiles.py --list`, and `extract_profiles.py --dry-run` inspect the
+active build plan without running SCF. Add `--show-jobs` for per-state job lines.
 Actual SCF generation requires the optional generator dependencies:
 
 ```bash

@@ -30,6 +30,7 @@ from atomref_proatoms.dataio.paths import (  # noqa: E402
     repo_relative_path,
 )
 from atomref_proatoms.engines.pyscf_backend import (  # noqa: E402
+    SCF_ARTIFACT_SCHEMA_VERSION,
     SCF_REUSE_FINGERPRINT_KEYS,
     SCFSettings,
     load_mol_from_chk,
@@ -150,6 +151,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="Override angular grid size for stored-profile density evaluation.",
     )
+    parser.add_argument(
+        "--show-jobs",
+        action="store_true",
+        help="With --list or --dry-run, print every selected state/dataset job.",
+    )
     return parser.parse_args(argv)
 
 
@@ -204,7 +210,7 @@ def _print_plan(args: argparse.Namespace, jobs: tuple[Any, ...], config: Any) ->
     print(f"Dataset config: {repo_relative_path(args.config)}")
     print(f"SCF artifact root: {repo_relative_path(args.scf_root)}")
     print(f"Profile output root: {repo_relative_path(args.output_root)}")
-    print(format_build_plan(jobs, show_jobs=args.list or args.dry_run, config=config))
+    print(format_build_plan(jobs, show_jobs=args.show_jobs or args.list, config=config))
 
 
 def _check_fingerprint(
@@ -241,12 +247,38 @@ def _validate_scf_metadata(
     config: Any,
     config_sha256: str,
 ) -> None:
+    if metadata.get("schema_version") != SCF_ARTIFACT_SCHEMA_VERSION:
+        raise ValueError(
+            "SCF metadata schema_version mismatch: "
+            f"{metadata.get('schema_version')!r}"
+        )
     if metadata.get("dataset_id") != dataset_id:
         raise ValueError(f"SCF metadata dataset_id mismatch: {metadata.get('dataset_id')!r}")
     if metadata.get("state_id") != state.state_id:
         raise ValueError(f"SCF metadata state_id mismatch: {metadata.get('state_id')!r}")
     if metadata.get("basis_id") != basis_id:
         raise ValueError(f"SCF metadata basis_id mismatch: {metadata.get('basis_id')!r}")
+    if metadata.get("density_model") != config.defaults.get("density_model"):
+        raise ValueError("SCF metadata density_model does not match the active dataset config")
+    method = metadata.get("method", {})
+    if not isinstance(method, Mapping):
+        raise ValueError("SCF metadata method must be an object")
+    expected_method = {
+        "engine": str(config.defaults.get("engine", "pyscf")),
+        "engine_version": str(config.defaults.get("expected_engine_version", "")),
+        "scf_type": str(config.defaults.get("scf_type", "")),
+        "xc": str(config.defaults.get("xc", "")),
+        "relativity": str(config.defaults.get("relativity", "sf-X2C-1e")),
+    }
+    for key, expected in expected_method.items():
+        if expected and method.get(key) != expected:
+            raise ValueError(
+                f"SCF metadata method[{key!r}] mismatch: expected {expected!r}, "
+                f"got {method.get(key)!r}"
+            )
+    results = metadata.get("results", {})
+    if not isinstance(results, Mapping) or results.get("converged") is not True:
+        raise ValueError("SCF metadata does not describe a converged SCF artifact")
     basis = metadata.get("basis", {})
     if not isinstance(basis, Mapping) or basis.get("basis_sha256") != basis_sha256:
         raise ValueError("SCF metadata basis SHA does not match the current basis bundle")
@@ -266,6 +298,24 @@ def _validate_scf_metadata(
         metadata,
         key="scf_settings_sha256",
         expected=_expected_scf_settings_digest(config),
+        label=state.state_id,
+    )
+    _check_fingerprint(
+        metadata,
+        key="engine_version",
+        expected=str(config.defaults.get("expected_engine_version", "")),
+        label=state.state_id,
+    )
+    _check_fingerprint(
+        metadata,
+        key="density_model",
+        expected=str(config.defaults.get("density_model", "")),
+        label=state.state_id,
+    )
+    _check_fingerprint(
+        metadata,
+        key="scf_type",
+        expected=str(config.defaults.get("scf_type", "")),
         label=state.state_id,
     )
 
@@ -653,10 +703,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.dry_run or args.list:
         if args.dry_run:
             for dataset_id, dataset_jobs in jobs_by_dataset.items():
-                print(f"Output dataset: {repo_relative_path(args.output_root / dataset_id)}")
-                for job in dataset_jobs:
-                    paths = scf_artifact_paths(args.scf_root, job.dataset_id, job.state_id)
-                    print(f"  requires {repo_relative_path(paths.state_dir)}")
+                print(
+                    f"Output dataset: {repo_relative_path(args.output_root / dataset_id)} "
+                    f"({len(dataset_jobs)} required SCF artifacts)"
+                )
+                if args.show_jobs:
+                    for job in dataset_jobs:
+                        paths = scf_artifact_paths(args.scf_root, job.dataset_id, job.state_id)
+                        print(f"  requires {repo_relative_path(paths.state_dir)}")
             print("Dry run completed before PySCF import/checkpoint reading.")
         return 0
 

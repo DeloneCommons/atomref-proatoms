@@ -166,7 +166,7 @@ Selection options:
 
 Execution options:
 
-- `--resume`: reuse matching complete local SCF artifacts.
+- `--resume`: reuse matching complete, converged local SCF artifacts.
 - `--force`: regenerate even when reusable artifacts exist.
 - `--continue-on-error`: continue remaining selected jobs after a failed SCF.
 - `--quiet-scf-log`: write PySCF output to `scf.log` without echoing it to
@@ -235,8 +235,11 @@ Execution and QA options:
 
 - `--force`: overwrite existing dataset outputs.
 - `--check`: check written or existing datasets after extraction.
-- `--dry-run`: validate and print required SCF artifacts before importing PySCF.
+- `--dry-run`: validate and print a summary of required SCF artifacts before
+  importing PySCF.
 - `--list`: print the selected extraction plan and exit.
+- `--show-jobs`: with `--list` or `--dry-run`, print every selected
+  state/dataset job.
 - `--no-profile-qa`: skip independent electron-count QA during extraction.
 - `--continue-on-error`: continue remaining datasets after one extraction
   failure.

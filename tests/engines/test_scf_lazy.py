@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
 
 import numpy as np
@@ -7,10 +8,14 @@ import pytest
 
 from atomref_proatoms.dataio.basis import BasisBundle
 from atomref_proatoms.engines.pyscf_backend import (
+    SCF_ARTIFACT_SCHEMA_VERSION,
     SCF_REUSE_FINGERPRINT_KEYS,
     SCFSettings,
     import_pyscf_modules,
     load_scf_npz,
+    scf_artifact_is_reusable,
+    scf_artifact_paths,
+    scf_artifacts_complete,
     scf_fingerprints,
     scf_state_record_digest,
 )
@@ -108,3 +113,30 @@ def test_scf_state_fingerprint_tracks_active_v2_state_definition() -> None:
     changed_record = {**record, "multiplicity": 1}
 
     assert scf_state_record_digest(changed_record) != scf_state_record_digest(record)
+
+
+def test_scf_artifact_reuse_requires_complete_nonempty_files_and_convergence(tmp_path) -> None:
+    paths = scf_artifact_paths(tmp_path, "dataset", "state")
+    paths.state_dir.mkdir(parents=True)
+    expected = {key: f"expected-{key}" for key in SCF_REUSE_FINGERPRINT_KEYS}
+
+    for path in paths.required_files():
+        path.write_text("x", encoding="utf-8")
+    metadata = {
+        "schema_version": SCF_ARTIFACT_SCHEMA_VERSION,
+        "dataset_id": "dataset",
+        "state_id": "state",
+        "results": {"converged": True},
+        "fingerprints": dict(expected),
+    }
+    paths.metadata.write_text(json.dumps(metadata), encoding="utf-8")
+
+    assert scf_artifacts_complete(paths)
+    assert scf_artifact_is_reusable(paths, expected)
+
+    metadata["results"]["converged"] = False
+    paths.metadata.write_text(json.dumps(metadata), encoding="utf-8")
+    assert not scf_artifact_is_reusable(paths, expected)
+
+    paths.npz.write_text("", encoding="utf-8")
+    assert not scf_artifacts_complete(paths)

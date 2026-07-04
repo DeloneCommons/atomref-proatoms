@@ -50,7 +50,8 @@ python scripts/extract_profiles.py --dry-run
 ```
 
 They are useful for reviewing selected datasets and states on machines without
-PySCF.
+PySCF. Use `--show-jobs` with `--list` or `--dry-run` when per-state job lines
+are needed; summary mode is the default for full v2 plans.
 
 ## Generator dependencies
 
@@ -82,7 +83,8 @@ refuses to create release artifacts with a different PySCF version unless
 - aggregate QA files under `data/qa/`.
 
 Generated profile, radii, and QA files should be committed together after the
-QA report and `check_profile_artifacts.py --require-generated` have passed. In the current v2 preparation snapshot, no final
+QA report and `check_profile_artifacts.py --require-generated` have passed. In
+the current v2 preparation snapshot, no final
 v2 profile/radii/QA tables are committed yet; only the dataset specification and
 input/state layers are active.
 
