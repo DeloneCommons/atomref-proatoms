@@ -31,6 +31,8 @@ def test_scf_settings_defaults_are_production_defaults() -> None:
     assert settings.use_x2c is True
     assert settings.conv_tol == pytest.approx(1e-9)
     assert settings.max_cycle == 300
+    assert settings.diis_space == 12
+    assert settings.diis_start_cycle == 1
 
 
 def test_scf_reuse_fingerprint_excludes_max_cycle() -> None:

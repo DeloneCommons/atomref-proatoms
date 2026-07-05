@@ -251,6 +251,8 @@ def _expected_scf_settings_digest(config: Any) -> str:
         use_x2c=relativity != "none",
         conv_tol=float(defaults.get("conv_tol", 1e-9)),
         max_cycle=int(defaults.get("max_cycle", 300)),
+        diis_space=int(defaults.get("diis_space", 12)),
+        diis_start_cycle=int(defaults.get("diis_start_cycle", 1)),
         grid_level=int(defaults.get("grid_level", 4)),
     )
     return scf_settings_reuse_digest(settings.to_fingerprint_json())

@@ -11,6 +11,8 @@ defaults:
   spherical_basis: true
   conv_tol: 1.0e-9
   max_cycle: 300
+  diis_space: 12
+  diis_start_cycle: 1
   grid_level: 4
 
 profile_grid:

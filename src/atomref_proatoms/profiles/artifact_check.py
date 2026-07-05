@@ -599,6 +599,8 @@ def _scf_settings_from_config(
         max_cycle=int(
             max_cycle if max_cycle is not None else defaults.get("max_cycle", 300)
         ),
+        diis_space=int(defaults.get("diis_space", 12)),
+        diis_start_cycle=int(defaults.get("diis_start_cycle", 1)),
         grid_level=int(defaults.get("grid_level", 4)),
     )
 

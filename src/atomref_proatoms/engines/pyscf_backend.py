@@ -31,13 +31,25 @@ DEFAULT_XC = "PBE0"
 DEFAULT_USE_X2C = True
 DEFAULT_CONV_TOL = 1e-9
 DEFAULT_MAX_CYCLE = 300
+DEFAULT_DIIS_SPACE = 12
+DEFAULT_DIIS_START_CYCLE = 1
 DEFAULT_GRID_LEVEL = 4
 DEFAULT_GRID_PRUNE = None
 SCF_ARTIFACT_SCHEMA_VERSION = "atomref.proatoms.scf_artifact.v1"
 # Keys that define reuse identity of a converged SCF artifact.  Runtime controls
 # that only affect how long/verbosely SCF is attempted, such as max_cycle, are
 # recorded in metadata but intentionally not part of this reuse fingerprint.
-SCF_SETTINGS_REUSE_KEYS = ("xc", "use_x2c", "conv_tol", "grid_level", "grid_prune")
+# DIIS settings are included because they can affect which fixed point an
+# ill-conditioned atomic SCF reaches.
+SCF_SETTINGS_REUSE_KEYS = (
+    "xc",
+    "use_x2c",
+    "conv_tol",
+    "diis_space",
+    "diis_start_cycle",
+    "grid_level",
+    "grid_prune",
+)
 SCF_REUSE_FINGERPRINT_KEYS = (
     "basis_sha256",
     "state_record_sha256",
@@ -56,6 +68,8 @@ class SCFSettings:
     use_x2c: bool = DEFAULT_USE_X2C
     conv_tol: float = DEFAULT_CONV_TOL
     max_cycle: int = DEFAULT_MAX_CYCLE
+    diis_space: int = DEFAULT_DIIS_SPACE
+    diis_start_cycle: int = DEFAULT_DIIS_START_CYCLE
     grid_level: int = DEFAULT_GRID_LEVEL
     grid_prune: Any = DEFAULT_GRID_PRUNE
     verbose: int = 3
@@ -75,6 +89,8 @@ class SCFSettings:
             "use_x2c": self.use_x2c,
             "conv_tol": self.conv_tol,
             "max_cycle": self.max_cycle,
+            "diis_space": self.diis_space,
+            "diis_start_cycle": self.diis_start_cycle,
             "grid_level": self.grid_level,
             "grid_prune": self.grid_prune,
         }
@@ -253,8 +269,16 @@ def run_spherical_uks(
         mf.chkfile = str(run_settings.chkfile)
     mf.conv_tol = run_settings.conv_tol
     mf.max_cycle = run_settings.max_cycle
+    mf.diis_space = run_settings.diis_space
+    mf.diis_start_cycle = run_settings.diis_start_cycle
     configure_dft_grid(mf, level=run_settings.grid_level, prune=run_settings.grid_prune)
     mf = apply_x2c_if_requested(mf, use_x2c=run_settings.use_x2c)
+    # Reapply convergence controls after optional decoration so the active
+    # PySCF mean-field object definitely carries the production settings.
+    mf.conv_tol = run_settings.conv_tol
+    mf.max_cycle = run_settings.max_cycle
+    mf.diis_space = run_settings.diis_space
+    mf.diis_start_cycle = run_settings.diis_start_cycle
     mf.kernel()
     return SCFRun(mf=mf, basis=basis_use, settings=run_settings)
 

@@ -107,6 +107,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--xc", default=None, help="Override XC functional from the YAML default.")
     parser.add_argument("--conv-tol", type=float, default=None, help="Override SCF conv_tol.")
     parser.add_argument("--max-cycle", type=int, default=None, help="Override maximum SCF cycles.")
+    parser.add_argument("--diis-space", type=int, default=None, help="Override PySCF DIIS space.")
+    parser.add_argument(
+        "--diis-start-cycle",
+        type=int,
+        default=None,
+        help="Override the SCF cycle where DIIS acceleration starts.",
+    )
     parser.add_argument(
         "--grid-level", type=int, default=None, help="Override PySCF DFT grid level."
     )
@@ -185,6 +192,14 @@ def _settings_from_args(
         max_cycle=int(
             args.max_cycle if args.max_cycle is not None else defaults.get("max_cycle", 300)
         ),
+        diis_space=int(
+            args.diis_space if args.diis_space is not None else defaults.get("diis_space", 12)
+        ),
+        diis_start_cycle=int(
+            args.diis_start_cycle
+            if args.diis_start_cycle is not None
+            else defaults.get("diis_start_cycle", 1)
+        ),
         grid_level=int(
             args.grid_level if args.grid_level is not None else defaults.get("grid_level", 4)
         ),
@@ -235,6 +250,8 @@ def _compute_one_job(
         use_x2c=settings.use_x2c,
         conv_tol=settings.conv_tol,
         max_cycle=settings.max_cycle,
+        diis_space=settings.diis_space,
+        diis_start_cycle=settings.diis_start_cycle,
         grid_level=settings.grid_level,
         grid_prune=settings.grid_prune,
         verbose=settings.verbose,
