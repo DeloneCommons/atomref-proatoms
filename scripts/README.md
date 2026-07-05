@@ -114,31 +114,61 @@ python scripts/check_basis_sensitivity.py --profiles-root local-data/profiles --
 ```
 
 This optional QA step compares radial density profiles for configured primary/diffuse
-anion basis pairs. It currently compares `x2c-QZVPall` vs `x2c-QZVPall-s` and
-`dyall-v4z` vs `dyall-av4z` when both corresponding generated profile datasets
-are present. The output is diagnostic: large basis-sensitivity rows are written as
-warnings/outliers, not as automatic release failures.
+anion basis pairs. By default it writes the primary scientific comparison,
+`dyall-v4z` vs `dyall-av4z`, when both corresponding generated profile datasets
+are present. The secondary `x2c-QZVPall` vs `x2c-QZVPall-s` comparison is retained
+as an optional diagnostic and is written only when `--include-x2c-optional` is
+passed. Large basis-sensitivity rows are written as warnings/outliers, not as
+automatic release failures.
 
 Outputs:
 
 ```text
-data/qa/basis_sensitivity/basis_sensitivity.csv
-data/qa/basis_sensitivity/basis_sensitivity_summary.csv
-data/qa/basis_sensitivity/basis_sensitivity_outliers.csv
-data/qa/basis_sensitivity/metadata.json
+data/qa/basis_sensitivity/
+  basis_sensitivity.csv
+  basis_sensitivity_summary.csv
+  basis_sensitivity_outliers.csv
+  basis_sensitivity_metric_distributions.csv
+  metadata.json
+
+  dyall-v4z/
+    basis_sensitivity.csv
+    basis_sensitivity_summary.csv
+    basis_sensitivity_outliers.csv
+    basis_sensitivity_metric_distributions.csv
+
+  x2c-QZVPall/                         # only with --include-x2c-optional
+    basis_sensitivity.csv
+    basis_sensitivity_summary.csv
+    basis_sensitivity_outliers.csv
+    basis_sensitivity_metric_distributions.csv
 ```
+
+The pair-specific subdirectories are named after the base/basic basis set in the
+comparison. The root-level files are aggregate compatibility outputs. With the
+default dyall-only run, the aggregate files contain the same rows as
+`dyall-v4z/basis_sensitivity.csv`.
 
 Options:
 
 - `--config`: active dataset YAML; default is `data/profile_datasets.yaml`.
+- `--states-file`: active curated state JSON; default is
+  `data/states/curated/atom_states_v2.json`.
 - `--profiles-root`: generated profile artifact root; default is `data/profiles`.
 - `--qa-root`: generated QA artifact root; default is `data/qa`.
+- `--include-x2c-optional`: also write the secondary x2c diagnostic pair.
+- `--allow-incomplete`: allow missing selected dataset directories or expected
+  states during local debugging.
 - `--force`: overwrite existing basis-sensitivity QA outputs.
 - `--dry-run`: list configured comparison pairs and whether their profile
   directories are present.
-- `--warn-relative-l1`: warning threshold for integrated relative L1 density
-  difference.
-- `--warn-delta-radius-angstrom`: warning threshold for radius shifts in Å.
+- `--watch-relative-l1`, `--outlier-relative-l1`: moderate/high sensitivity
+  thresholds for relative radial-distribution L1 delta.
+- `--watch-cumulative-electrons`, `--outlier-cumulative-electrons`:
+  moderate/high sensitivity thresholds for sup `|N_diffuse(<r)-N_base(<r)|`.
+- `--watch-mean-shift-angstrom`, `--outlier-mean-shift-angstrom`:
+  moderate/high sensitivity thresholds for cumulative-difference mean radial
+  shift.
 
 ## `check_profile_artifacts.py`
 

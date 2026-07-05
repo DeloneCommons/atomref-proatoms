@@ -408,3 +408,72 @@ def test_check_generated_artifacts_accepts_optional_basis_sensitivity_qa(tmp_pat
     )
 
     assert result.ok, result.errors
+
+
+def test_check_generated_artifacts_accepts_v2_nested_basis_sensitivity_qa(tmp_path: Path) -> None:
+    config, states, profiles_root, radii_root, qa_root = _write_valid_artifacts(tmp_path)
+    sensitivity_dir = qa_root / "basis_sensitivity"
+    pair_dir = sensitivity_dir / "dyall-v4z"
+    sensitivity_dir.mkdir()
+    pair_dir.mkdir()
+    for root in (sensitivity_dir, pair_dir):
+        _write_rows(
+            root / "basis_sensitivity.csv",
+            ["comparison_id", "state_id", "status"],
+            [{"comparison_id": "base__vs__diffuse", "state_id": STATE_ID, "status": "OK"}],
+        )
+        _write_rows(
+            root / "basis_sensitivity_summary.csv",
+            ["comparison_id", "common_state_count", "outlier_count"],
+            [{"comparison_id": "base__vs__diffuse", "common_state_count": 1, "outlier_count": 0}],
+        )
+        _write_rows(
+            root / "basis_sensitivity_outliers.csv",
+            ["comparison_id", "state_id", "status"],
+            [],
+        )
+        _write_rows(
+            root / "basis_sensitivity_metric_distributions.csv",
+            ["comparison_id", "metric", "n"],
+            [{"comparison_id": "base__vs__diffuse", "metric": "relative_l1_delta", "n": 1}],
+        )
+    (sensitivity_dir / "metadata.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "atomref.proatoms.basis_sensitivity_qa.v2",
+                "profile_data_version": "2.0.0",
+                "row_count": 1,
+                "summary_count": 1,
+                "outlier_count": 0,
+                "metric_distribution_count": 1,
+                "pair_outputs": {
+                    "basis_sensitivity_dyall": {
+                        "output_dir": str(pair_dir),
+                        "rows_csv": str(pair_dir / "basis_sensitivity.csv"),
+                        "summary_csv": str(pair_dir / "basis_sensitivity_summary.csv"),
+                        "outliers_csv": str(pair_dir / "basis_sensitivity_outliers.csv"),
+                        "metric_distributions_csv": str(
+                            pair_dir / "basis_sensitivity_metric_distributions.csv"
+                        ),
+                        "row_count": 1,
+                        "summary_count": 1,
+                        "outlier_count": 0,
+                        "metric_distribution_count": 1,
+                    }
+                },
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = check_generated_artifacts(
+        config_path=config,
+        states_file=states,
+        profiles_root=profiles_root,
+        radii_root=radii_root,
+        qa_root=qa_root,
+    )
+
+    assert result.ok, result.errors

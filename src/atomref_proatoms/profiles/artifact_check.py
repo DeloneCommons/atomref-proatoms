@@ -17,6 +17,7 @@ from ..dataio.paths import (
     PROFILES_ROOT,
     QA_ROOT,
     RADII_ROOT,
+    ROOT,
     STATES_FILE,
     repo_relative_path,
 )
@@ -38,6 +39,8 @@ from .basis_sensitivity import (
     BASIS_SENSITIVITY_DIRNAME,
     BASIS_SENSITIVITY_FILES,
     BASIS_SENSITIVITY_SCHEMA_VERSION,
+    LEGACY_BASIS_SENSITIVITY_FILES,
+    LEGACY_BASIS_SENSITIVITY_SCHEMA_VERSION,
 )
 from .build_plan import ProfileBuildJob, build_jobs_for_datasets
 
@@ -549,42 +552,96 @@ def _metadata_int(metadata: Mapping[str, Any], key: str) -> int:
         return -1
 
 
+def _metadata_output_path(directory: Path, value: str) -> Path:
+    path = Path(value)
+    if path.is_absolute():
+        return path
+    repo_path = ROOT / path
+    if repo_path.exists() or path.parts[:1] in (("data",), ("local-data",)):
+        return repo_path
+    return directory / path
+
+
+def _check_counted_csv(path: Path, expected_count: int, *, errors: list[str]) -> None:
+    header_count = _read_csv_header_and_row_count(path, errors)
+    if header_count is None:
+        return
+    _header, row_count = header_count
+    if expected_count >= 0 and row_count != expected_count:
+        errors.append(
+            f"{repo_relative_path(path)}: expected {expected_count} rows, "
+            f"got {row_count}"
+        )
+
+
 def _check_basis_sensitivity_qa(
     directory: Path, *, config: ProfileDatasetConfig, errors: list[str]
 ) -> None:
     """Validate optional diffuse-basis sensitivity QA artifacts when present."""
 
-    if not _require_files(directory, sorted(BASIS_SENSITIVITY_FILES), errors):
+    metadata_path = directory / "metadata.json"
+    if not metadata_path.is_file():
+        errors.append(f"missing {repo_relative_path(metadata_path)}")
         return
-    metadata = _load_json(directory / "metadata.json", errors)
+    metadata = _load_json(metadata_path, errors)
     if metadata is None:
         return
-    label = repo_relative_path(directory / "metadata.json")
-    if metadata.get("schema_version") != BASIS_SENSITIVITY_SCHEMA_VERSION:
+    label = repo_relative_path(metadata_path)
+    schema_version = metadata.get("schema_version")
+    allowed_schema_versions = {
+        BASIS_SENSITIVITY_SCHEMA_VERSION,
+        LEGACY_BASIS_SENSITIVITY_SCHEMA_VERSION,
+    }
+    if schema_version not in allowed_schema_versions:
         errors.append(
-            f"{label}: schema_version must be {BASIS_SENSITIVITY_SCHEMA_VERSION!r}, "
-            f"got {metadata.get('schema_version')!r}"
+            f"{label}: schema_version must be one of "
+            f"{sorted(allowed_schema_versions)!r}, got {schema_version!r}"
         )
+        return
+    required_files = (
+        LEGACY_BASIS_SENSITIVITY_FILES
+        if schema_version == LEGACY_BASIS_SENSITIVITY_SCHEMA_VERSION
+        else BASIS_SENSITIVITY_FILES
+    )
+    if not _require_files(directory, sorted(required_files), errors):
+        return
     if metadata.get("profile_data_version") != config.profile_data_version:
         errors.append(
             f"{label}: profile_data_version must be {config.profile_data_version!r}, "
             f"got {metadata.get('profile_data_version')!r}"
         )
+
     expected_counts = {
-        "basis_sensitivity.csv": _metadata_int(metadata, "row_count"),
-        "basis_sensitivity_summary.csv": _metadata_int(metadata, "summary_count"),
-        "basis_sensitivity_outliers.csv": _metadata_int(metadata, "outlier_count"),
+        directory / "basis_sensitivity.csv": _metadata_int(metadata, "row_count"),
+        directory / "basis_sensitivity_summary.csv": _metadata_int(metadata, "summary_count"),
+        directory / "basis_sensitivity_outliers.csv": _metadata_int(metadata, "outlier_count"),
     }
-    for filename, expected_count in expected_counts.items():
-        header_count = _read_csv_header_and_row_count(directory / filename, errors)
-        if header_count is None:
-            continue
-        _header, row_count = header_count
-        if expected_count >= 0 and row_count != expected_count:
-            errors.append(
-                f"{repo_relative_path(directory / filename)}: expected {expected_count} rows, "
-                f"got {row_count}"
-            )
+    if schema_version == BASIS_SENSITIVITY_SCHEMA_VERSION:
+        expected_counts[directory / "basis_sensitivity_metric_distributions.csv"] = (
+            _metadata_int(metadata, "metric_distribution_count")
+        )
+        pair_outputs = metadata.get("pair_outputs", {})
+        if isinstance(pair_outputs, Mapping):
+            for output_meta in pair_outputs.values():
+                if not isinstance(output_meta, Mapping):
+                    continue
+                for path_key, count_key in (
+                    ("rows_csv", "row_count"),
+                    ("summary_csv", "summary_count"),
+                    ("outliers_csv", "outlier_count"),
+                    ("metric_distributions_csv", "metric_distribution_count"),
+                ):
+                    output_path = str(output_meta.get(path_key, ""))
+                    if not output_path:
+                        continue
+                    expected_counts[_metadata_output_path(directory, output_path)] = int(
+                        output_meta.get(count_key, -1)
+                    )
+        else:
+            errors.append(f"{label}: pair_outputs must be an object")
+
+    for path, expected_count in expected_counts.items():
+        _check_counted_csv(path, expected_count, errors=errors)
 
 
 def _scf_settings_from_config(

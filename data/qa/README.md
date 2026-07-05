@@ -29,14 +29,27 @@ data/qa/basis_sensitivity/
   basis_sensitivity.csv
   basis_sensitivity_summary.csv
   basis_sensitivity_outliers.csv
+  basis_sensitivity_metric_distributions.csv
   metadata.json
+  dyall-v4z/
+    basis_sensitivity.csv
+    basis_sensitivity_summary.csv
+    basis_sensitivity_outliers.csv
+    basis_sensitivity_metric_distributions.csv
+  x2c-QZVPall/                         # only with --include-x2c-optional
+    basis_sensitivity.csv
+    basis_sensitivity_summary.csv
+    basis_sensitivity_outliers.csv
+    basis_sensitivity_metric_distributions.csv
 ```
 
 Per-dataset `qa.csv` files contain one row per generated state. The top-level
 summary and Markdown report aggregate dataset-level pass/fail status. The
-optional `basis_sensitivity/` table compares primary and diffuse anion basis
-branches where both generated profile datasets are present; its warning rows are
-diagnostics, not automatic release failures.
+optional `basis_sensitivity/` tables compare primary and diffuse anion basis
+branches where both generated profile datasets are present; their warning rows
+are diagnostics, not automatic release failures. Pair-specific basis-sensitivity
+files are stored in subdirectories named after the base/basic basis set. The
+root-level files are aggregate compatibility outputs.
 
 ## QA metrics
 
@@ -83,12 +96,17 @@ These fields are diagnostics rather than automatic release failures.
 
 ### Diffuse-basis sensitivity
 
-`basis_sensitivity/basis_sensitivity.csv` compares radial densities for matched
-states in the configured primary/diffuse anion branches. It records integrated
-L1 density differences, electron-count deltas, electron-quantile radius shifts,
-cutoff-radius shifts, and tail-electron differences. Rows marked `WARN` are
-outliers for manual inspection; they do not make `check_profile_artifacts.py`
-fail by themselves.
+`basis_sensitivity/basis_sensitivity.csv` is the aggregate compatibility table.
+The default pair-specific table is
+`basis_sensitivity/dyall-v4z/basis_sensitivity.csv`, comparing `dyall-v4z` with
+`dyall-av4z`. If `check_basis_sensitivity.py --include-x2c-optional` is used,
+the secondary diagnostic pair is written to
+`basis_sensitivity/x2c-QZVPall/basis_sensitivity.csv`. These tables compare
+radial densities for matched states in the configured primary/diffuse anion
+branches. They record integrated L1 density differences, electron-count deltas,
+electron-quantile radius shifts, cutoff-radius shifts, and tail-electron
+differences. Rows marked `WARN` are outliers for manual inspection; they do not
+make `check_profile_artifacts.py` fail by themselves.
 
 ## Regeneration
 
