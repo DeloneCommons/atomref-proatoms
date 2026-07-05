@@ -125,10 +125,12 @@ data/qa/basis_sensitivity/
     basis_sensitivity_metric_distributions.csv
 ```
 
-The `dyall-v4z/` subdirectory is the primary scientific comparison: `dyall-v4z`
-versus `dyall-av4z` for matched anion states. The `x2c-QZVPall/` subdirectory is
-an optional diagnostic comparison: `x2c-QZVPall` versus `x2c-QZVPall-s`. The
-root-level CSV files are aggregate compatibility outputs.
+The `dyall-v4z/` subdirectory compares `dyall-v4z` with `dyall-av4z` for matched
+anion states. The `x2c-QZVPall/` subdirectory compares `x2c-QZVPall` with
+`x2c-QZVPall-s` for matched H-Rn anions. The root-level CSV files are aggregate
+compatibility outputs. The script interface currently uses
+`--include-x2c-optional` to emit the x2c comparison, but the committed x2c
+comparison is part of the data-layer sensitivity record.
 
 Current generated counts are:
 
@@ -141,7 +143,8 @@ Current generated counts are:
 The sensitivity metrics classify how much the radial density distribution changes
 when the diffuse/supplemented basis branch is used. Large sensitivity can be
 scientifically expected for some formal or highly charged anions and is not, by
-itself, a release blocker.
+itself, a release blocker. The narrative interpretation and recommended next
+analyses are summarized in the [scientific data-layer report](data_layer_report.md).
 
 ## Generated-artifact policy
 
@@ -151,6 +154,7 @@ Regenerate profiles, radii, QA, and the current basis-sensitivity QA with:
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/build_data_layer_report.py
 ```
 
 The expensive local SCF material is stored under:

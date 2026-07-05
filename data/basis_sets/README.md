@@ -1,33 +1,40 @@
 # Basis-set input data
 
-This directory contains the fixed basis-set input layer used by `atomref-proatoms`
-for spherical proatomic radial electron-density generation. The directory is not
-a general basis-set database: it contains the basis families selected for the
-current profile datasets plus auxiliary frozen inputs kept for
-basis-sensitivity work.
+This directory is the Methods-level basis-set input layer for the generated
+spherical proatomic densities. It is deliberately small: it contains only the
+large all-electron basis families used by the committed profile datasets and the
+companion supplemented/augmented branches needed to measure anion basis
+sensitivity.
+
+The selection principles are broad periodic-table coverage, compatibility with
+spin-free X2C all-electron calculations, and low radial basis-set incompleteness
+for density tails and cutoff radii. This is why the primary branches use
+quadruple-zeta all-electron bases rather than compact valence bases. Effective
+core potential and valence-only density conventions are different physical
+objects and are not mixed into this data layer.
 
 All basis definitions are stored in NWChem format with spherical/pure Gaussian
 basis functions. Generated profile metadata must record both the `basis_id` and
-the `dataset_id`; diffuse and non-diffuse basis branches must not be merged
-silently.
+the `dataset_id`; supplemented, augmented, and primary branches must not be
+merged silently.
 
 ## Basis-set selection rationale
 
 The primary H-Rn branch uses `x2c-QZVPall`. This Karlsruhe x2c quadruple-zeta
-basis family is a practical default for spin-free X2C all-electron calculations.
-The quadruple-zeta level is preferred over lower-zeta x2c-TZVPall-like
-alternatives because radial density tails and density-cutoff radii are sensitive
-to basis quality, while still keeping the dataset feasible for a reusable
-empirical proatom library.
+basis family is a practical default for spin-free X2C all-electron calculations
+through radon. The quadruple-zeta level is preferred over lower-zeta
+x2c-TZVPall-like alternatives because radial density tails and density-cutoff
+radii are sensitive to basis quality, while still keeping the dataset feasible
+for a reusable empirical proatom library.
 
 The primary heavy-element extension uses `dyall-v4z`. It provides continuous
-coverage through the actinide region and is therefore the default basis branch
-for the H-Lr dataset.
+large-basis coverage through the actinide region and is therefore the default
+basis branch for the H-Lr dataset.
 
 The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, are
-current anion-sensitivity inputs. They are intentionally separate from the
+committed anion-sensitivity branches. They are intentionally separate from the
 primary non-diffuse branches. In particular, `dyall-av4z` has discontinuous
-element coverage and should be treated as an available-element auxiliary basis,
+element coverage and should be treated as an available-element augmented branch,
 not as an H-Lr basis.
 
 ## Directory layout
@@ -95,9 +102,9 @@ the density generator and by the structural checker.
 | basis_id | role | basis coverage | n_elements | active dataset IDs |
 |---|---|---:|---:|---|
 | `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` |
-| `x2c-QZVPall-s` | auxiliary H-Rn anions | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` |
+| `x2c-QZVPall-s` | supplemented H-Rn anion branch | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` |
 | `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` |
-| `dyall-av4z` | auxiliary augmented basis / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` |
+| `dyall-av4z` | augmented anion branch / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` |
 
 The `dyall-av4z` row reports bundle coverage. The active anion-sensitivity
 dataset selects the available H-Ba and Hf-At anion states within the current

@@ -14,6 +14,7 @@ python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/build_data_layer_report.py
 ```
 
 `check_states.py`, `check_basis_bundles.py`, `check_profile_artifacts.py`,
@@ -30,8 +31,9 @@ artifacts require the generator dependency set.
 | `check_basis_bundles.py` | Validate frozen basis bundles, checksums, NWChem spherical headers, coverage metadata, and optional PySCF parseability. | terminal validation report |
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
-| `check_basis_sensitivity.py` | Compare primary and diffuse anion profile branches where both generated datasets are present. | `data/qa/basis_sensitivity/` |
+| `check_basis_sensitivity.py` | Compare primary and supplemented/augmented anion profile branches where both generated datasets are present. | `data/qa/basis_sensitivity/` |
 | `check_profile_artifacts.py` | Validate generated profile/radii/QA artifact directories against the active dataset config. | terminal validation report |
+| `build_data_layer_report.py` | Build a Methods-style scientific Markdown report from existing committed data artifacts. | `docs/data_layer_report.md` |
 
 ## `check_states.py`
 
@@ -111,13 +113,13 @@ python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_basis_sensitivity.py --profiles-root local-data/profiles --qa-root local-data/qa --include-x2c-optional --force
 ```
 
-This optional QA step compares radial density profiles for configured primary/diffuse
-anion basis pairs. By default it writes the primary scientific comparison,
-`dyall-v4z` vs `dyall-av4z`, when both corresponding generated profile datasets
-are present. The current release artifact set also includes the secondary
-`x2c-QZVPall` vs `x2c-QZVPall-s` diagnostic, which is written when
-`--include-x2c-optional` is passed. Large basis-sensitivity rows are written as warnings/outliers, not as
-automatic release failures.
+This QA step compares radial density profiles for configured primary and
+supplemented/augmented anion basis pairs. By default it writes the dyall-v4z
+versus dyall-av4z comparison when both corresponding generated profile datasets
+are present. The committed data layer also includes the x2c-QZVPall versus
+x2c-QZVPall-s comparison, currently emitted by passing the compatibility flag
+`--include-x2c-optional`. Large basis-sensitivity rows are written as
+warnings/outliers, not as automatic release failures.
 
 Outputs:
 
@@ -135,7 +137,7 @@ data/qa/basis_sensitivity/
     basis_sensitivity_outliers.csv
     basis_sensitivity_metric_distributions.csv
 
-  x2c-QZVPall/                         # only with --include-x2c-optional
+  x2c-QZVPall/                         # emitted when x2c comparison is requested
     basis_sensitivity.csv
     basis_sensitivity_summary.csv
     basis_sensitivity_outliers.csv
@@ -154,7 +156,7 @@ Options:
   `data/states/curated/atom_states_v2.json`.
 - `--profiles-root`: generated profile artifact root; default is `data/profiles`.
 - `--qa-root`: generated QA artifact root; default is `data/qa`.
-- `--include-x2c-optional`: also write the secondary x2c diagnostic pair.
+- `--include-x2c-optional`: compatibility flag that also writes the x2c-QZVPall versus x2c-QZVPall-s comparison.
 - `--allow-incomplete`: allow missing selected dataset directories or expected
   states during local debugging.
 - `--force`: overwrite existing basis-sensitivity QA outputs.
@@ -319,3 +321,19 @@ Execution and QA options:
 - Input data: `docs/inputs.md`.
 - State policy: `docs/state_policy.md`.
 - MkDocs overview: `docs/index.md`.
+
+## `build_data_layer_report.py`
+
+Common command:
+
+```bash
+python scripts/build_data_layer_report.py
+```
+
+This script reads existing profile, radii, QA, and basis-sensitivity artifacts
+and writes `docs/data_layer_report.md`. It is a reporting script only: it does
+not run SCF, extract profiles, change thresholds, or modify generated data.
+
+Options:
+
+- `--out`: Markdown output path; default is `docs/data_layer_report.md`.

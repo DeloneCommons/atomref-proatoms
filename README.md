@@ -3,83 +3,93 @@
 [![CI][ci-badge]][ci-workflow]
 [![Pages][pages-badge]][pages-workflow]
 
-`atomref-proatoms` provides reproducible spherical proatomic radial electron-density
-profiles for isolated atoms and ions. The project supplies consistent
-quantum-chemical reference data for atom-centered theoretical-chemistry,
-crystallographic, empirical density/radius, and promolecular-density models. It
-is not an atomic-spectroscopy benchmark and does not try to turn one set of
-atomic references into a universal replacement for method-specific calculations.
+`atomref-proatoms` publishes reproducible spherical proatomic radial electron-density
+profiles for isolated atoms and ions. The data are intended for atom-centered
+reference-density models: stockholder and Hirshfeld-like analyses, promolecular
+density construction, deformation-density inspection, empirical radius models,
+and related cheminformatics or crystallographic workflows that need a documented
+atomic reference convention.
 
-Atomic reference densities are often used as if a free atom were naturally a
-single radial object. For many open-shell atoms, an ordinary single-determinant
-SCF calculation instead selects particular magnetic components and gives an
-anisotropic density. Angularly averaging that density after convergence produces
-a radial table, but the SCF potential was still optimized for the anisotropic
-state. This project uses a stricter construction: the atomic SCF problem is
-solved with spherical fractional occupations and angular-momentum block averaging
-built into the mean-field model. The radial density is therefore the
-self-consistent spherical proatom density, not a post-processed average of a
-broken-symmetry atom.
+The central scientific choice is to define the proatom as a **self-consistent
+spherical density**, not as an angular average applied after an ordinary
+broken-symmetry open-shell calculation. In the generator, open-shell occupations
+are distributed over complete angular-momentum manifolds during the SCF cycle,
+and the atomic Fock problem is solved in angular-momentum-averaged radial blocks.
+The tabulated radial density is therefore the density of the spherical ensemble
+used in the mean-field model itself.
 
-The current state layer combines NIST-derived neutral/cation states, Ning--Lu
-2022 physical/provisional monoanion states, and explicitly formal anion
-references for the charged-state scope. The curated state table is
-`data/states/curated/atom_states_v2.json`, with its selection table in
+The current data layer combines NIST-derived neutral/cation states, a compact
+Ning--Lu 2022 monoanion status layer, and explicitly formal anion references.
+Formal anions are included for stockholder/Hirshfeld-I-like reference-density
+coverage; they are not claims of stable isolated atomic anions. The state table is
+`data/states/curated/atom_states_v2.json`, and the selected generation scope is
 `data/states/selection/required_states_v2.csv`.
 
-The current profile-generation settings are declared in
-`data/profile_datasets.yaml`. They define two primary charged-state datasets
-(`x2c-QZVPall` H-Rn and `dyall-v4z` H-Lr) plus two separate anion-sensitivity
-datasets (`x2c-QZVPall-s` H-Rn and `dyall-av4z` where available). The profile
-data version is `2.0.0`.
+The profile-generation protocol is declared in `data/profile_datasets.yaml`:
+PBE0, spin-free one-electron X2C, self-consistent spherical fractional-occupation
+UKS, pure all-electron Gaussian basis functions, a logarithmic release grid, and
+an independent log-radius QA quadrature. The profile data version is `2.0.0`.
 
-## What is included
+## Scientific contents
 
-The repository contains:
-
-- curated atomic-state inputs in `data/states/`;
-- frozen Basis Set Exchange NWChem spherical basis exports in `data/basis_sets/`;
-- the profile dataset specification in `data/profile_datasets.yaml`;
-- workflow scripts in `scripts/`;
-- validation and loading utilities in `src/atomref_proatoms/`;
-- generated profile, radii, and QA tables under `data/profiles/`, `data/radii/`,
-  and `data/qa/` when release artifacts are present.
-
-The current generated artifact set has four profile/radii/QA datasets and 1128
+The committed data layer contains four profile/radii/QA datasets and 1128
 dataset-state rows:
 
 | dataset ID | basis | selected rows | role |
 |---|---|---:|---|
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | `x2c-QZVPall` | 430 | primary H-Rn |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | `dyall-v4z` | 501 | primary H-Lr |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` | `x2c-QZVPall-s` | 106 | anion sensitivity |
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` | `dyall-av4z` | 91 | anion sensitivity |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` | `x2c-QZVPall-s` | 106 | supplemented H-Rn anions |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` | `dyall-av4z` | 91 | augmented selected anions |
 
-The expensive SCF checkpoints, arrays, and logs live under ignored
-`local-data/scf/` directories and are used only for regeneration.
+The two primary basis branches are large all-electron quadruple-zeta families
+chosen for broad periodic-table coverage and reduced radial basis-set error. The
+supplemented/augmented anion branches are separate sensitivity branches and
+retain their own basis identities. Generated artifacts are stored under:
 
-For artifact formats and column conventions, see the [data-products guide](docs/data.md).
-For state and basis provenance, see the [input-data guide](docs/inputs.md).
-For scientific state-policy interpretation, see the [state-policy guide](docs/state_policy.md).
-For the command-line workflow, see the [workflow guide](docs/workflow.md).
+```text
+data/profiles/<dataset_id>/profiles.csv
+data/radii/<dataset_id>/radii.csv
+data/qa/<dataset_id>/qa.csv
+```
 
-## Quick checks
+The expensive SCF checkpoints, arrays, and logs are regeneration inputs under
+ignored `local-data/scf/` paths and are not part of the committed release tables.
 
-Default validation does not require internet access and does not download basis
-sets. From the repository root:
+## Quality-assurance summary
+
+Every committed profile row passes the current release gate. The gate verifies
+SCF completion, independent electron-count integration, angular sphericity,
+finite density values, tail coverage, and cutoff-radius consistency. The current
+maximum independent electron-count error is about `2.5e-12` electrons, and the
+maximum relative angular density standard deviation above the QA density floor is
+about `1.6e-14`.
+
+Diffuse/supplemented basis sensitivity is stored under
+`data/qa/basis_sensitivity/`. The dyall augmented comparison shows large and
+scientifically meaningful tail sensitivity for a small set of formal/high-charge
+anions; the x2c supplemented comparison is very small for the current anion set.
+These sensitivity rows are scientific diagnostics, not release failures.
+
+For a compact Methods-style summary of QA, basis comparisons, and recommended
+next analyses, see the [scientific data-layer report](docs/data_layer_report.md).
+
+## How to inspect the data
+
+The fastest consistency checks are:
 
 ```bash
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
-python scripts/check_profile_artifacts.py
+python scripts/check_profile_artifacts.py --require-generated
 pytest
 ```
 
 `check_basis_bundles.py` is fully offline by default. If PySCF is installed, it
-also runs optional representative parse smoke checks for the frozen basis files.
-If PySCF is absent, those smoke checks are reported as skipped.
+also runs representative parse smoke checks for the frozen basis files; otherwise
+those smoke checks are reported as skipped.
 
-The lightweight package layer must remain importable without PySCF:
+The lightweight package layer remains importable without PySCF:
 
 ```bash
 python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
@@ -87,9 +97,11 @@ python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 
 ## Regeneration workflow
 
-The profile-generation workflow is:
+Full regeneration requires the optional generator dependencies and complete local
+SCF execution:
 
 ```bash
+python -m pip install -e ".[generator,test,dev]"
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
@@ -98,43 +110,26 @@ python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
-`compute_wavefunctions.py --list`, `compute_wavefunctions.py --dry-run`,
-`extract_profiles.py --list`, and `extract_profiles.py --dry-run` inspect the
-active build plan without running SCF. Add `--show-jobs` for per-state job lines.
-Actual SCF generation requires the optional generator dependencies:
+The `--list` and `--dry-run` options on `compute_wavefunctions.py` and
+`extract_profiles.py` inspect the active build plan without running SCF or
+rewriting generated artifacts. `scripts/build_data_layer_report.py` only reads
+committed tables and regenerates `docs/data_layer_report.md`.
 
-```bash
-python -m pip install -e ".[generator,test,dev]"
-```
+## Documentation map
 
-`compute_wavefunctions.py` writes local artifacts such as `scf.chk`, `scf.npz`,
-`scf.json`, and `scf.log` under `local-data/scf/<dataset_id>/<state_id>/`.
-`extract_profiles.py` reads those local artifacts and writes the profile, radii,
-and QA outputs. `check_basis_sensitivity.py` adds diffuse-basis anion
-sensitivity diagnostics under the QA root. `check_profile_artifacts.py
---require-generated` is the release-gate consistency check for profile/radii/QA
-artifacts.
-
-## Documentation
-
-The documentation is organized as a MkDocs site:
-
-- [Scientific model](docs/theory.md): spherical fractional-occupation proatoms
-  and the difference from post-SCF angular averaging.
-- [Data products](docs/data.md): dataset scopes and generated artifact contracts.
+- [Scientific model](docs/theory.md): spherical fractional-occupation proatoms,
+  radial profiles, cutoff radii, and independent QA integration.
+- [Scientific data-layer report](docs/data_layer_report.md): generated narrative
+  summary of QA, basis comparisons, sensitivity patterns, and pending analyses.
+- [Data products](docs/data.md): profile, radii, QA, and basis-sensitivity file
+  contracts.
 - [Input data](docs/inputs.md): basis bundles and atomic-state curation.
-- [State policy](docs/state_policy.md): state-source hierarchy, formal anion meaning, and interpretation limits.
+- [State policy](docs/state_policy.md): state-source hierarchy, formal anion
+  meaning, and interpretation limits.
 - [Workflow](docs/workflow.md): scripts, package layout, and regeneration steps.
-- [Notebooks](docs/notebooks/README.md): executable reports for inspecting the
-  generated data and illustrating the method.
+- [Notebooks](docs/notebooks/README.md): artifact-inspection and sphericalization
+  demonstration notebooks.
 - [License](docs/license.md) and [AI assistance note](docs/ai_note.md).
-
-Build the local documentation site with:
-
-```bash
-python -m pip install -e ".[docs]"
-NO_MKDOCS_2_WARNING=1 mkdocs serve
-```
 
 ## Lightweight consumers
 

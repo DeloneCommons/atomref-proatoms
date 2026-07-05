@@ -1,12 +1,16 @@
 # Density-cutoff radii
 
 This directory stores density-cutoff radii derived from the generated spherical
-radial profile datasets.
+radial profile datasets. A cutoff radius is the outer radial position where the
+spherical free-atom density reaches a declared density threshold,
+\(\rho(r)=\rho_\mathrm{cut}\). These radii are compact size descriptors attached
+to the same state, basis, method, and sphericalization convention as the
+corresponding profiles.
 
-A cutoff radius is the interpolated radial position at which a spherical
-free-atom density profile reaches a declared density threshold. These radii
-provide compact, reproducible size descriptors associated with the same state,
-basis, method, and sphericalization conventions as the corresponding profiles.
+The radii are not empirical van der Waals or covalent radii. They are reproducible
+isodensity radii of the computed all-electron spherical reference density. This
+makes them useful for comparing basis branches, charge states, and anion tail
+sensitivity under a controlled proatomic convention.
 
 ## Dataset layout
 
@@ -38,15 +42,33 @@ r_iso_<cutoff>_e_bohr3_angstrom
 The source profile table and source profile metadata are recorded in
 `metadata.json`.
 
-## Cutoff interpretation
+## Numerical definition
 
-The 0.003 and 0.001 electron/bohr³ cutoff radii are the primary practical size
-descriptors. The 0.0001 electron/bohr³ cutoff probes the low-density tail and is
-mainly useful for tail diagnostics and sensitivity inspection.
+The radius is computed from the tabulated radial profile by locating the outermost
+crossing from `rho >= cutoff` to `rho <= cutoff`. When the neighboring density
+values are positive, the interpolation is linear in `log(rho)`, which is more
+stable for approximately exponential atomic tails than direct linear density
+interpolation. QA checks require finite radii and monotonic ordering with respect
+to the density cutoff.
 
-Radii are obtained from the tabulated radial profile by interpolation on the
-monotone outer-density crossing. QA checks verify that reported radii are finite
-when expected and monotonic with respect to the density cutoff.
+The current density cutoffs are:
+
+| cutoff (e/bohr³) | primary interpretation |
+|---:|---|
+| 0.003 | compact valence/outer-size descriptor |
+| 0.001 | lower-density valence/tail descriptor |
+| 0.0001 | far-tail sensitivity and interpolation diagnostic |
+
+The 0.003 and 0.001 electron/bohr³ radii are the most chemically robust practical
+size descriptors. The 0.0001 electron/bohr³ cutoff is intentionally retained
+because formal and weakly bound anions can differ mainly in the far tail.
+
+## Basis-comparison use
+
+Cutoff radii are often more interpretable than integrated quantile radii for
+quick basis comparisons, because they answer a direct isodensity question. The
+scientific data-layer report uses them to compare the primary `x2c-QZVPall` and
+`dyall-v4z` branches and to summarize supplemented/diffuse anion sensitivity.
 
 ## Regeneration
 
@@ -62,5 +84,6 @@ python scripts/check_profile_artifacts.py --require-generated
 ## Related documentation
 
 - Density-cutoff radius definition: `docs/theory.md`.
+- Scientific data-layer report: `docs/data_layer_report.md`.
 - Released artifact contract: `docs/data.md`.
 - Regeneration workflow: `docs/workflow.md`.

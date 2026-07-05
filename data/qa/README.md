@@ -1,12 +1,53 @@
 # Quality-assurance tables
 
-This directory stores release-gate QA artifacts for the generated spherical
-proatomic profile datasets.
+This directory stores the quality-assurance layer for the generated spherical
+proatomic profile datasets. The QA layer is the release Methods record for the
+numerical density product: it explains how the profiles were checked after SCF,
+how density-derived radii were validated, how basis-set linear-dependency
+handling was recorded, and how supplemented/diffuse anion branches were compared
+with their primary-basis counterparts.
 
-The QA layer checks that each generated density table is numerically finite,
-integrates to the expected electron count within the configured tolerance,
-remains sufficiently spherical on an angular test grid, and produces consistent
+The QA goal is not to prove that one basis set is universally correct. It is to
+verify that the committed spherical profiles are internally consistent generated
+artifacts, and to quantify where anion densities are sensitive to basis-set tail
+flexibility.
+
+## What is being checked
+
+The production density model is a self-consistent spherical fractional-occupation
+UKS calculation. Sphericity is imposed during SCF by equal occupation of complete
+angular-momentum manifolds; the profile is not merely an angular average of an
+ordinary anisotropic open-shell atom. The companion notebook
+`docs/notebooks/spherical_vs_post_average_demo.ipynb` gives a small neutral-carbon
+example of why that distinction matters: ordinary UKS plus post-SCF angular
+averaging and the spherical fractional-occupation model can integrate to the same
+electron count while giving visibly different valence/tail density curves and
 cutoff radii.
+
+After profile extraction, each generated density is checked on an angular grid.
+The profile generator evaluates the density at each stored radius over an angular
+quadrature, stores the angular mean as `rho_e_bohr3`, and records the angular
+standard deviation. The QA column `max_rel_angular_sigma` reports the largest
+`std_ang(rho) / rho` above the low-density floor. Values near `1e-14` in the
+current data show that the stored profiles are spherical to numerical precision.
+
+Electron-count QA uses a separate quadrature from the release profile grid. The
+independent check integrates the angularly averaged density using a
+Gauss-Legendre grid in `log(r)` from `1e-7` to `120` bohr with 400 radial points
+and 110 angular points. Thus the electron-count gate is not a self-check on the
+same 1200-point profile mesh.
+
+The SCF settings used for the current generation pass are deliberately tolerant
+of difficult diffuse anions:
+
+```text
+max_cycle = 300
+diis_space = 12
+diis_start_cycle = 1
+```
+
+All selected SCF jobs in the committed data layer converged and all profile rows
+passed the numerical QA gates.
 
 ## Layout
 
@@ -32,7 +73,7 @@ data/qa/basis_sensitivity/
     basis_sensitivity_summary.csv
     basis_sensitivity_outliers.csv
     basis_sensitivity_metric_distributions.csv
-  x2c-QZVPall/                         # emitted with --include-x2c-optional
+  x2c-QZVPall/
     basis_sensitivity.csv
     basis_sensitivity_summary.csv
     basis_sensitivity_outliers.csv
@@ -40,12 +81,17 @@ data/qa/basis_sensitivity/
 ```
 
 Per-dataset `qa.csv` files contain one row per generated state. The top-level
-summary and Markdown report aggregate dataset-level pass/fail status. The
-`basis_sensitivity/` tables compare primary and diffuse/supplemented anion basis
-branches where both generated profile datasets are present; their warning rows
-are diagnostics, not automatic release failures. Pair-specific basis-sensitivity
-files are stored in subdirectories named after the base/basic basis set. The
-root-level files are aggregate compatibility outputs.
+summary and `qa_report.md` aggregate dataset-level pass/fail status. The
+basis-sensitivity tables compare matched anion states in primary and
+supplemented/augmented branches. Pair-specific files are stored in subdirectories
+named after the base basis set; root-level files are aggregate compatibility
+outputs.
+
+The current command-line entry point still uses `--include-x2c-optional` to emit
+the x2c supplemented-basis comparison. That flag name is retained for backward
+compatibility with the script interface; scientifically, the committed
+`x2c-QZVPall` versus `x2c-QZVPall-s` comparison is part of the data-layer
+sensitivity record.
 
 ## Current generated status
 
@@ -59,7 +105,13 @@ root-level files are aggregate compatibility outputs.
 The top-level QA metadata records four generated datasets, 1128 dataset-state
 rows, and zero release-gate failures.
 
-## QA metrics
+Linear-dependency warnings are expected for some large or supplemented atomic
+basis calculations. In the present data they concentrate in the dyall branches
+and in supplemented/augmented anion branches. They are retained as diagnostics
+because the corresponding SCF jobs converged and the extracted densities passed
+electron-count, angular-sphericity, tail-coverage, and radius-consistency gates.
+
+## Per-profile QA columns
 
 ### SCF completion
 
@@ -88,7 +140,9 @@ this is recorded as `tail_reaches_min_cutoff`.
 ### Cutoff-radius consistency
 
 `radii_monotonic` verifies that lower density cutoffs produce radii that are not
-smaller than higher density cutoffs.
+smaller than higher density cutoffs. The radii themselves are computed from the
+logarithmic profile grid by interpolation in `log(rho)` when neighboring density
+values are positive.
 
 ### Angular/spherical consistency
 
@@ -102,22 +156,12 @@ on the angular QA grid. The corresponding tolerance is reported as
 parsed from SCF logs when PySCF reports basis-set linear-dependency handling.
 These fields are diagnostics rather than automatic release failures.
 
-### Diffuse-basis sensitivity
+## Basis-sensitivity QA
 
-`basis_sensitivity/basis_sensitivity.csv` is the aggregate compatibility table.
-The primary pair-specific table is
-`basis_sensitivity/dyall-v4z/basis_sensitivity.csv`, comparing `dyall-v4z` with
-`dyall-av4z`. If `check_basis_sensitivity.py --include-x2c-optional` is used,
-the secondary diagnostic pair is written to
-`basis_sensitivity/x2c-QZVPall/basis_sensitivity.csv`. The current generated
-basis-sensitivity layer includes both comparisons.
-
-These tables compare radial densities for matched states in the configured
-primary/diffuse anion branches. They record integrated L1 density differences,
-electron-count deltas, electron-quantile radius shifts, cutoff-radius shifts,
-tail-electron differences, and cumulative electron-count distribution metrics.
-Rows marked with high sensitivity are outliers for manual inspection; they do
-not make `check_profile_artifacts.py` fail by themselves.
+The basis-sensitivity layer asks how much a matched anion radial density changes
+when a supplemented or augmented basis branch is used. It compares exact matched
+states by state ID and state-record digest; missing or mismatched rows are not
+silently hidden.
 
 Current basis-sensitivity counts:
 
@@ -133,6 +177,31 @@ x2c-QZVPall vs x2c-QZVPall-s:
   release-gate failures: 0
 ```
 
+The tables record integrated L1 radial-distribution differences,
+electron-count deltas, cumulative electron-count distribution shifts,
+electron-quantile radius shifts, density-cutoff radius shifts, tail-electron
+differences, and pointwise density diagnostics. The most interpretable release
+summary is in `docs/data_layer_report.md`.
+
+The dyall augmented comparison shows a clear chemical pattern: accepted physical
+monoanions are mostly low-sensitivity, while formal multianions and all q = -3
+formal rows are highly tail-sensitive. This is expected and useful information,
+not a release blocker. The x2c supplemented-basis comparison is much smaller for
+the committed H-Rn anion set.
+
+## Recommended interpretation
+
+Use QA failures as release blockers only for corruption-like problems: missing
+profiles, mismatched metadata, failed SCF, impossible electron counts, invalid
+grids, non-finite densities, or inconsistent radii. Use basis-sensitivity
+warnings as scientific guidance. Large diffuse sensitivity means that the tail of
+that reference density depends strongly on basis flexibility; it does not mean the
+row is unusable, especially for explicitly formal anions.
+
+Do not silently replace only available primary-branch anions with augmented
+values. If tail sensitivity matters, report the primary and supplemented/diffuse
+basis branches separately or construct a separate explicitly named branch.
+
 ## Regeneration
 
 QA tables are generated artifacts and should not be hand-edited. They are
@@ -143,14 +212,17 @@ consistency, by:
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/build_data_layer_report.py
 ```
 
-The compact report in `qa_report.md`, together with
+The compact `qa_report.md`, together with
 `check_profile_artifacts.py --require-generated`, is the primary release-gate
-summary after a profile generation run.
+summary after a profile generation run. The generated `docs/data_layer_report.md`
+is the narrative scientific report.
 
 ## Related documentation
 
+- Scientific data-layer report: `docs/data_layer_report.md`.
 - Independent electron-count QA model: `docs/theory.md`.
 - Released artifact contract: `docs/data.md`.
 - Regeneration workflow: `docs/workflow.md`.

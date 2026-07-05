@@ -6,6 +6,18 @@ physical/provisional monoanion, and formal-anion reference states with
 deterministic charge, electron count, configuration, spin, spherical occupation,
 and state-source metadata.
 
+The state layer is the spectroscopic and chemical-reference part of the Methods.
+Neutral atoms and cations are selected from compact NIST-derived ground-state
+records; physical/provisional monoanions are selected from a compact Ning--Lu
+2022 status table; missing or deliberately nonphysical charged references are
+made explicit as formal stockholder/Hirshfeld-I-like states. The goal is not to
+solve a new atomic spectroscopy problem with the project-level DFT model, but to
+make every proatomic density traceable to a declared source or a declared formal
+rule.
+
+The sections below describe the source tables, the generated compute-state table,
+the charge-selection policy, and the spherical occupation conventions used by the
+SCF generator.
 
 ## Directory layout
 

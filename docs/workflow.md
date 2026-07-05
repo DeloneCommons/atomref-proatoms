@@ -32,15 +32,18 @@ python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/build_data_layer_report.py
 ```
 
 `check_states.py` and `check_basis_bundles.py` validate compact tracked inputs.
 The third command creates or reuses ignored local SCF artifacts. The fourth
 command extracts profile, radii, and QA artifacts from complete local SCF
-material. The fifth command records diffuse-basis sensitivity diagnostics for
-anion branches when both compared profile datasets are present. The final checker
-confirms that generated artifact directories match the active dataset
-configuration, profile-data version, and QA summaries.
+material. The fifth command records supplemented/diffuse anion basis-sensitivity metrics
+when the compared profile datasets are present. The artifact checker confirms
+that generated artifact directories match the active dataset configuration,
+profile-data version, and QA summaries. The final command rebuilds the narrative
+scientific data-layer report from committed CSV/JSON artifacts; it does not run
+SCF or rewrite the profile/radii/QA data.
 
 ## Inspection commands
 
@@ -88,7 +91,9 @@ refuses to create release artifacts with a different PySCF version unless
 - aggregate QA files under `data/qa/`.
 
 `check_basis_sensitivity.py --include-x2c-optional --force` writes the current
-basis-sensitivity QA layer:
+basis-sensitivity QA layer. The x2c flag name is a script-interface compatibility
+name; the committed x2c-QZVPall versus x2c-QZVPall-s comparison is part of the
+current sensitivity record.
 
 ```text
 data/qa/basis_sensitivity/
@@ -102,7 +107,8 @@ data/qa/basis_sensitivity/
 ```
 
 Generated profile, radii, and QA files should be committed together after the QA
-report and `check_profile_artifacts.py --require-generated` have passed. Local
+report and `check_profile_artifacts.py --require-generated` have passed. The
+narrative report can then be refreshed with `build_data_layer_report.py`. Local
 SCF artifacts under `local-data/` remain ignored and are not part of the public
 release tables.
 

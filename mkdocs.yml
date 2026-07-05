@@ -24,6 +24,7 @@ nav:
   - Overview: index.md
   - Scientific model: theory.md
   - Data products: data.md
+  - Scientific data-layer report: data_layer_report.md
   - Input data: inputs.md
   - State policy: state_policy.md
   - Workflow: workflow.md

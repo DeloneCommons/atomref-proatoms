@@ -1,8 +1,16 @@
 # Generated radial profile datasets
 
-This directory stores released spherical proatomic radial electron-density
-profiles. Profiles are generated from the current state table and the dataset
-scopes declared in `data/profile_datasets.yaml`.
+This directory stores the released spherical proatomic radial electron-density
+profiles. These files are the primary scientific data product of the repository:
+for each selected atom or ion, the table gives the spin-summed spherical density
+\(\rho(r)\) generated from the declared state, basis, relativistic convention,
+and self-consistent spherical fractional-occupation UKS model.
+
+The profile tables are not hand-fitted atomic radii and not post-SCF angular
+averages of ordinary open-shell atoms. The underlying SCF density is constrained
+to be spherical through angular-momentum-resolved fractional occupations; the
+stored profile is the radial representation of that self-consistent spherical
+reference density.
 
 ## Dataset scopes
 
@@ -24,7 +32,9 @@ pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2
 
 The two primary datasets are deliberately not split into separate neutral,
 cation, and anion products. Charge/state membership is part of the dataset scope
-record and generated metadata.
+record and generated metadata. The supplemented/augmented anion branches are
+separate profile datasets with their own basis identities, not replacements for
+columns in the primary branches.
 
 ## Dataset layout
 
@@ -46,7 +56,11 @@ r_bohr,rho_e_bohr3__<state_id>,rho_e_bohr3__<state_id>,...
 
 The radius unit is bohr. Electron density is reported as electrons/bohr³. Column
 names are deterministic and are based on curated state IDs. The stored radial grid
-has 1200 rows for every generated dataset.
+has 1200 logarithmic rows from `1e-6` to `60` bohr for every generated dataset.
+
+This grid is the release representation. Independent QA integration uses a
+separate Gauss-Legendre grid in log-radius, so a profile can pass only if it is
+consistent under a second numerical integration scheme.
 
 ## Metadata
 
@@ -58,6 +72,17 @@ artifact paths, and release provenance.
 The local SCF artifacts referenced in metadata are stored under ignored
 `local-data/scf/` directories and are not tracked in the release repository. They
 are the regeneration source for these profiles.
+
+## Interpretation
+
+Use a profile column only together with its dataset metadata. A row such as a
+formal multianion profile is a formal spherical reference density for
+stockholder-like workflows, not an experimental isolated-ion claim. A density in
+a supplemented or augmented branch should be cited with that branch's `basis_id`
+in any downstream analysis.
+
+For the current scientific QA and basis-sensitivity summary, see
+`docs/data_layer_report.md` and `data/qa/README.md`.
 
 ## Regeneration
 
@@ -81,5 +106,6 @@ python scripts/extract_profiles.py --dry-run
 ## Related documentation
 
 - Scientific density model: `docs/theory.md`.
+- Scientific data-layer report: `docs/data_layer_report.md`.
 - Released artifact contract: `docs/data.md`.
 - Regeneration workflow: `docs/workflow.md`.
