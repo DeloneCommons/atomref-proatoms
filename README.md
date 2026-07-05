@@ -31,7 +31,7 @@ The current profile-generation settings are declared in
 `data/profile_datasets.yaml`. They define two primary charged-state datasets
 (`x2c-QZVPall` H-Rn and `dyall-v4z` H-Lr) plus two separate anion-sensitivity
 datasets (`x2c-QZVPall-s` H-Rn and `dyall-av4z` where available). The profile
-artifact schema version is `2.0.0`.
+data version is `2.0.0`.
 
 ## What is included
 

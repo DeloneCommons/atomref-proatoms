@@ -3,7 +3,7 @@
 This directory contains the fixed basis-set input layer used by `atomref-proatoms`
 for spherical proatomic radial electron-density generation. The directory is not
 a general basis-set database: it contains the basis families selected for the
-the current profile datasets plus auxiliary frozen inputs kept for
+current profile datasets plus auxiliary frozen inputs kept for
 basis-sensitivity work.
 
 All basis definitions are stored in NWChem format with spherical/pure Gaussian
@@ -92,12 +92,16 @@ the density generator and by the structural checker.
 
 ## Bundle summary
 
-| basis_id | role | coverage | n_elements | active dataset IDs |
+| basis_id | role | basis coverage | n_elements | active dataset IDs |
 |---|---|---:|---:|---|
 | `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` |
 | `x2c-QZVPall-s` | auxiliary H-Rn anions | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` |
 | `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` |
-| `dyall-av4z` | auxiliary augmented anions / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` |
+| `dyall-av4z` | auxiliary augmented basis / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` |
+
+The `dyall-av4z` row reports bundle coverage. The active anion-sensitivity
+dataset selects the available H-Ba and Hf-At anion states within the current
+profile scope; Fr and Ra are explicitly excluded from that generated branch.
 
 ## Validation
 

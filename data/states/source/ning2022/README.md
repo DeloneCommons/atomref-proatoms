@@ -25,5 +25,5 @@ numerics. Rows accepted as physical/provisional monoanion references can enter t
 compute table. In addition, the source-backed Fr-U rows enter the primary
 dyall-v4z H-Lr dataset with their original physical/provisional/theory-only
 status retained. Other theory-only, unbound, metastable-only, or otherwise
-problematic rows remain visible here for auditing but are not silently upgraded
+problematic rows remain visible here for auditing but are not silently promoted
 to physical reference states.

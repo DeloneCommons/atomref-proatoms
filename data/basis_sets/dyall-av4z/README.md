@@ -12,9 +12,12 @@ radial-density generation.
 - Active dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2`.
 
 The active profile configuration uses this basis for anion sensitivity where
-the basis is available within the H-Lr state range. Its coverage is discontinuous
-and excludes the lanthanide and actinide blocks, so it must not be described as
-an H-Lr basis.
+the basis is available within the current state range. The generated
+`pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` dataset selects H-Ba and
+Hf-At anion states and explicitly excludes Fr and Ra. The bundle itself also
+contains basis functions beyond that generated profile scope; its coverage is
+discontinuous and excludes the lanthanide and actinide blocks, so it must not be
+described as an H-Lr basis.
 
 ## Bundle metadata
 
