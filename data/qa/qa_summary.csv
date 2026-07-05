@@ -1,0 +1,5 @@
+dataset_id,basis_id,state_count,passed_count,failed_count,max_abs_electron_count_error_qa,max_rel_angular_sigma,linear_dependency_warning_count
+pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2,x2c-QZVPall,430,430,0,2.3021584638627246e-12,1.5606725293217067e-14,0
+pbe0_sfx2c_dyallv4z_h-lr_spherical_v2,dyall-v4z,501,501,0,2.4300561562995426e-12,3.750386237570473e-15,266
+pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2,x2c-QZVPall-s,106,106,0,2.3305801732931286e-12,3.850761724935769e-15,19
+pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2,dyall-av4z,91,91,0,2.2737367544323206e-12,2.6859409053502363e-15,36

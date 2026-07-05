@@ -1,0 +1,28 @@
+{
+  "schema_version": "atomref.proatoms.radii_dataset.v1",
+  "profile_data_version": "2.0.0",
+  "dataset_id": "pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2",
+  "basis_id": "x2c-QZVPall-s",
+  "units": {
+    "r_bohr": "bohr",
+    "r_angstrom": "angstrom",
+    "rho_cutoff": "electron/bohr^3"
+  },
+  "cutoffs_e_bohr3": [
+    0.003,
+    0.001,
+    0.0001
+  ],
+  "files": {
+    "radii_csv": "data/radii/pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2/radii.csv",
+    "metadata_json": "data/radii/pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2/metadata.json"
+  },
+  "sources": {
+    "profiles_csv": "data/profiles/pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2/profiles.csv",
+    "profile_metadata_json": "data/profiles/pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2/metadata.json"
+  },
+  "row_count": 106,
+  "provenance": {
+    "profile_datasets_yaml_sha256": "22a043f4e65ac0926a82d37b566d428a9f3f6d6d639586a25cd63c86c26eadba"
+  }
+}
