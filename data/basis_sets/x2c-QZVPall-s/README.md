@@ -9,9 +9,9 @@ radial-density generation.
 - Role: auxiliary H-Rn supplemented x2c basis retained for basis-sensitivity work.
 - Coverage: H-Rn.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Active v2 dataset identifiers: `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2`.
+- Active dataset identifiers: `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2`.
 
-The active v2 profile configuration uses this basis for the H-Rn anion
+The active profile configuration uses this basis for the H-Rn anion
 sensitivity branch. Results produced with it remain separately identified by
 dataset and basis identifiers.
 
@@ -19,7 +19,7 @@ dataset and basis identifiers.
 
 The canonical metadata record is `manifest.json`. It includes the upstream BSE
 basis name, exact BSE API URL, BSE export version, upstream basis version,
-retrieval date, coverage intervals, active v2 dataset identifiers, and
+retrieval date, coverage intervals, active dataset identifiers, and
 redistribution note. The exact source URL is recorded as `source.source_api_url`
 in `manifest.json`.
 

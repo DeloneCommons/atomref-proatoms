@@ -3,7 +3,7 @@
 This directory contains the fixed basis-set input layer used by `atomref-proatoms`
 for spherical proatomic radial electron-density generation. The directory is not
 a general basis-set database: it contains the basis families selected for the
-first neutral production datasets plus auxiliary frozen inputs kept for
+the current profile datasets plus auxiliary frozen inputs kept for
 basis-sensitivity work.
 
 All basis definitions are stored in NWChem format with spherical/pure Gaussian
@@ -25,7 +25,7 @@ coverage through the actinide region and is therefore the default basis branch
 for the H-Lr dataset.
 
 The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, are
-active v2 anion-sensitivity inputs. They are intentionally separate from the
+current anion-sensitivity inputs. They are intentionally separate from the
 primary non-diffuse branches. In particular, `dyall-av4z` has discontinuous
 element coverage and should be treated as an available-element auxiliary basis,
 not as an H-Lr basis.
@@ -82,7 +82,7 @@ exact BSE API URL used for each exported basis is recorded in the corresponding
 
 For each bundle, the manifest records the upstream basis name, BSE export
 version, upstream basis version, retrieval date, basis-file checksum, element
-coverage intervals, active v2 dataset identifiers, redistribution note, and the
+coverage intervals, active dataset identifiers, redistribution note, and the
 expected spherical NWChem header. The basis-file checksum is the basis-data
 identity used by this project; documentation and metadata edits do not change the
 basis-data identity.
@@ -92,7 +92,7 @@ the density generator and by the structural checker.
 
 ## Bundle summary
 
-| basis_id | role | coverage | n_elements | active v2 dataset IDs |
+| basis_id | role | coverage | n_elements | active dataset IDs |
 |---|---|---:|---:|---|
 | `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` |
 | `x2c-QZVPall-s` | auxiliary H-Rn anions | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` |

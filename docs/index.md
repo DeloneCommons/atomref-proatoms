@@ -14,10 +14,10 @@ constraint is imposed inside the atomic SCF model through fractional occupations
 and angular-momentum block averaging. The tabulated density is therefore the
 self-consistent spherical proatom density intended by the dataset definition.
 
-The active state layer is v2 and contains neutral, cationic, accepted
-monoanion, and explicitly formal anion references. Existing profile-generation
-settings are declared in `data/profile_datasets.yaml`; full v2 SCF/profile
-generation is a later workflow step.
+The current state layer contains neutral, cationic, accepted monoanion, and
+explicitly formal anion references. Profile-generation settings are declared in
+`data/profile_datasets.yaml`, and the generated release artifacts are checked by
+`python scripts/check_profile_artifacts.py --require-generated`.
 
 ## Documentation sections
 
@@ -25,7 +25,7 @@ generation is a later workflow step.
   construction, radial grids, cutoff radii, and QA model.
 - [Data products](data.md) describes the released profile, radii, and QA files.
 - [Input data](inputs.md) describes the basis-set bundles and atomic-state table.
-- [State policy](state_policy.md) explains the v2 state-source hierarchy, formal anion labels, and interpretation limits.
+- [State policy](state_policy.md) explains the state-source hierarchy, formal anion labels, and interpretation limits.
 - [Workflow](workflow.md) documents the scripts and regeneration commands.
 - [Notebooks](notebooks/README.md) collect practical reports and method demos.
 - [License](license.md) and [AI assistance note](ai_note.md) record repository
@@ -36,6 +36,7 @@ generation is a later workflow step.
 ```bash
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
+python scripts/check_profile_artifacts.py
 pytest
 ```
 

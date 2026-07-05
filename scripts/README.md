@@ -12,7 +12,7 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
@@ -25,13 +25,13 @@ artifacts require the generator dependency set.
 
 | script | purpose | primary outputs |
 |---|---|---|
-| `check_states.py` | Validate the active v2 curated atomic-state table without rewriting generated state outputs. | terminal validation report |
-| `build_atom_states.py` | Build the active v2 curated atomic-state table from compact source/status CSV files. | `data/states/selection/required_states_v2.csv`, `data/states/curated/atom_states_v2.csv`, `data/states/curated/atom_states_v2.json`, `data/states/curated/atom_states_summary_v2.json` |
+| `check_states.py` | Validate the current curated atomic-state table without rewriting generated state outputs. | terminal validation report |
+| `build_atom_states.py` | Build the current curated atomic-state table from compact source/status CSV files. | `data/states/selection/required_states_v2.csv`, `data/states/curated/atom_states_v2.csv`, `data/states/curated/atom_states_v2.json`, `data/states/curated/atom_states_summary_v2.json` |
 | `check_basis_bundles.py` | Validate frozen basis bundles, checksums, NWChem spherical headers, coverage metadata, and optional PySCF parseability. | terminal validation report |
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
 | `check_basis_sensitivity.py` | Compare primary and diffuse anion profile branches where both generated datasets are present. | `data/qa/basis_sensitivity/` |
-| `check_profile_artifacts.py` | Validate generated profile/radii/QA artifact directories against the active v2 dataset config. | terminal validation report |
+| `check_profile_artifacts.py` | Validate generated profile/radii/QA artifact directories against the active dataset config. | terminal validation report |
 
 ## `check_states.py`
 
@@ -42,7 +42,7 @@ python scripts/check_states.py
 ```
 
 This is the clearest validation command for users and CI jobs that only need to
-confirm the active v2 state table. It delegates to the same state-table validator
+confirm the current state table. It delegates to the same state-table validator
 used by the builder and does not rewrite any generated state outputs.
 
 Options:
@@ -80,12 +80,10 @@ Options:
 
 - `--data-dir`: directory containing `source/`, `selection/`, and `curated/`;
   default is `data/states`.
-- `--check`: validate the existing curated v2 JSON without rewriting it.
+- `--check`: validate the existing curated JSON without rewriting it.
 
-The builder is v2-only in the active codebase. `--check` remains available for
-maintainer compatibility, but `scripts/check_states.py` is the preferred
-user-facing validation command. Historical v1 state files are kept at
-release/tag/archive level, not as live source-tree functionality.
+`--check` remains available for maintainer compatibility, but
+`scripts/check_states.py` is the preferred user-facing validation command.
 
 ## `check_basis_bundles.py`
 
@@ -109,16 +107,16 @@ Options:
 Common commands:
 
 ```bash
-python scripts/check_basis_sensitivity.py --force
-python scripts/check_basis_sensitivity.py --profiles-root local-data/profiles --qa-root local-data/qa --force
+python scripts/check_basis_sensitivity.py --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --profiles-root local-data/profiles --qa-root local-data/qa --include-x2c-optional --force
 ```
 
 This optional QA step compares radial density profiles for configured primary/diffuse
 anion basis pairs. By default it writes the primary scientific comparison,
 `dyall-v4z` vs `dyall-av4z`, when both corresponding generated profile datasets
-are present. The secondary `x2c-QZVPall` vs `x2c-QZVPall-s` comparison is retained
-as an optional diagnostic and is written only when `--include-x2c-optional` is
-passed. Large basis-sensitivity rows are written as warnings/outliers, not as
+are present. The current release artifact set also includes the secondary
+`x2c-QZVPall` vs `x2c-QZVPall-s` diagnostic, which is written when
+`--include-x2c-optional` is passed. Large basis-sensitivity rows are written as warnings/outliers, not as
 automatic release failures.
 
 Outputs:
@@ -248,7 +246,7 @@ Method/debug options:
 - `--no-x2c`: disable scalar X2C for debugging.
 - `--xc`: override the configured exchange-correlation functional.
 - `--conv-tol`: override SCF convergence tolerance.
-- `--max-cycle`: override maximum SCF cycles; the v2 dataset default is 300.
+- `--max-cycle`: override maximum SCF cycles; the dataset default is 300.
 - `--grid-level`: override PySCF DFT grid level.
 - `--verbose`: set PySCF verbosity.
 

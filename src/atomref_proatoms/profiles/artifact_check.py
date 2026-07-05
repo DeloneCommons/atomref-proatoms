@@ -295,18 +295,34 @@ def _check_profiles_dataset(
     related = metadata.get("related_artifacts", {})
     if isinstance(related, Mapping):
         expected_related = {
-            "profiles_csv": repo_relative_path(profiles_csv),
-            "profile_metadata_json": repo_relative_path(metadata_json),
-            "radii_csv": repo_relative_path(radii_root / dataset_id / "radii.csv"),
-            "radii_metadata_json": repo_relative_path(radii_root / dataset_id / "metadata.json"),
-            "qa_csv": repo_relative_path(qa_root / dataset_id / "qa.csv"),
-            "qa_metadata_json": repo_relative_path(qa_root / dataset_id / "metadata.json"),
+            "profiles_csv": _acceptable_related_paths(
+                profiles_csv, PROFILES_ROOT / dataset_id / "profiles.csv"
+            ),
+            "profile_metadata_json": _acceptable_related_paths(
+                metadata_json, PROFILES_ROOT / dataset_id / "metadata.json"
+            ),
+            "radii_csv": _acceptable_related_paths(
+                radii_root / dataset_id / "radii.csv",
+                RADII_ROOT / dataset_id / "radii.csv",
+            ),
+            "radii_metadata_json": _acceptable_related_paths(
+                radii_root / dataset_id / "metadata.json",
+                RADII_ROOT / dataset_id / "metadata.json",
+            ),
+            "qa_csv": _acceptable_related_paths(
+                qa_root / dataset_id / "qa.csv", QA_ROOT / dataset_id / "qa.csv"
+            ),
+            "qa_metadata_json": _acceptable_related_paths(
+                qa_root / dataset_id / "metadata.json",
+                QA_ROOT / dataset_id / "metadata.json",
+            ),
         }
-        for key, value in expected_related.items():
-            if related.get(key) != value:
+        for key, values in expected_related.items():
+            actual = related.get(key)
+            if actual not in values:
                 errors.append(
                     f"{repo_relative_path(metadata_json)}: related_artifacts[{key!r}] "
-                    f"must be {value!r}, got {related.get(key)!r}"
+                    f"must be one of {sorted(values)!r}, got {actual!r}"
                 )
     else:
         errors.append(f"{repo_relative_path(metadata_json)}: related_artifacts must be an object")
@@ -556,10 +572,21 @@ def _metadata_output_path(directory: Path, value: str) -> Path:
     path = Path(value)
     if path.is_absolute():
         return path
+    parts = path.parts
+    for prefix in (
+        ("data", "qa", BASIS_SENSITIVITY_DIRNAME),
+        ("local-data", "qa", BASIS_SENSITIVITY_DIRNAME),
+    ):
+        if parts[: len(prefix)] == prefix:
+            return directory.joinpath(*parts[len(prefix) :])
     repo_path = ROOT / path
     if repo_path.exists() or path.parts[:1] in (("data",), ("local-data",)):
         return repo_path
     return directory / path
+
+
+def _acceptable_related_paths(actual_path: Path, canonical_path: Path) -> set[str]:
+    return {repo_relative_path(actual_path), repo_relative_path(canonical_path)}
 
 
 def _check_counted_csv(path: Path, expected_count: int, *, errors: list[str]) -> None:
@@ -670,7 +697,7 @@ def _expected_scf_settings_digest(config: ProfileDatasetConfig) -> str:
 def _expected_scf_settings_digests(config: ProfileDatasetConfig) -> set[str]:
     """Return accepted current and legacy SCF-settings digests.
 
-    Older v2 pre-release artifacts included ``max_cycle`` in the digest.  The
+    Older pre-release artifacts included ``max_cycle`` in the digest.  The
     current digest excludes it because it is a convergence-attempt limit rather
     than part of the converged SCF solution.
     """
@@ -717,7 +744,7 @@ def check_generated_artifacts(
     allow_partial: bool = False,
     require_qa_pass: bool = True,
 ) -> GeneratedArtifactCheck:
-    """Validate generated profile, radii, and QA artifacts against active v2 config.
+    """Validate generated profile, radii, and QA artifacts against active config.
 
     The checker is intentionally safe before generation: an entirely empty generated
     artifact layer passes by default.  Once any generated dataset directory exists,

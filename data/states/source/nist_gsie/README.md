@@ -1,7 +1,7 @@
 # NIST GSIE neutral/cation source table
 
-`nist_neutral_cation_states.csv` is the compact source table used by the active
-v2 state builder for neutral atoms and cations. It was prepared from the NIST
+`nist_neutral_cation_states.csv` is the compact source table used by the current
+state builder for neutral atoms and cations. It was prepared from the NIST
 Atomic Spectra Database Ground States and Ionization Energies interface.
 
 Retained fields are deliberately small and auditable:
@@ -25,6 +25,6 @@ values are `semiempirical`, and parenthesized values are `theoretical`.
 
 `ground_level` is the retained NIST label used for multiplicity curation.
 `ground_multiplicity` was parsed from simple LS-like labels where possible. Seven
-v2-domain non-LS/jj-style labels were assigned manually and are documented in
+current-domain non-LS/jj-style labels were assigned manually and are documented in
 `data/states/source/state_source_summary_v2.json` and `data/states/README.md`.
-Rows outside the v2 neutral/cation policy domain may keep blank multiplicities.
+Rows outside the current neutral/cation policy domain may keep blank multiplicities.

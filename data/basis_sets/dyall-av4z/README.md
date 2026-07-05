@@ -9,9 +9,9 @@ radial-density generation.
 - Role: auxiliary augmented Dyall quadruple-zeta basis retained for basis-sensitivity work.
 - Coverage: H-Ba, Hf-Ra, Rf-Og.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Active v2 dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2`.
+- Active dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2`.
 
-The active v2 profile configuration uses this basis for anion sensitivity where
+The active profile configuration uses this basis for anion sensitivity where
 the basis is available within the H-Lr state range. Its coverage is discontinuous
 and excludes the lanthanide and actinide blocks, so it must not be described as
 an H-Lr basis.
@@ -20,7 +20,7 @@ an H-Lr basis.
 
 The canonical metadata record is `manifest.json`. It includes the upstream BSE
 basis name, exact BSE API URL, BSE export version, upstream basis version,
-retrieval date, coverage intervals, active v2 dataset identifiers, and
+retrieval date, coverage intervals, active dataset identifiers, and
 redistribution note. The exact source URL is recorded as `source.source_api_url`
 in `manifest.json`.
 

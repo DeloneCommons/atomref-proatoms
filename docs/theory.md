@@ -79,13 +79,13 @@ unrestricted PBE0, spin-free one-electron X2C (`sf-X2C-1e`), pure/spherical
 Gaussian basis functions, SCF convergence tolerance `1e-9`, and PySCF DFT grid
 level `4`.
 
-Two all-electron scalar-relativistic basis branches are active:
+Two all-electron scalar-relativistic primary basis branches are active:
 
 - `x2c-QZVPall` for the H-Rn dataset.
 - `dyall-v4z` for the H-Lr dataset.
 
 The basis files are frozen in `data/basis_sets/`; their checksums are part of the
-release identity. The active state table is frozen in `data/states/curated/`, and
+release identity. The current state table is frozen in `data/states/curated/`, and
 dataset selections are declared in `data/profile_datasets.yaml`.
 
 Effective-core and valence-only density conventions are not mixed silently into
@@ -142,7 +142,7 @@ averaged density with Gauss-Legendre quadrature in $t = \log(r)$:
 N = \int 4\pi r(t)^3 \rho(r(t))\,dt, \qquad r(t) = \exp(t).
 \]
 
-The active QA grid uses:
+The current QA grid uses:
 
 - `r_min = 1e-7 bohr`
 - `r_max = 120 bohr`

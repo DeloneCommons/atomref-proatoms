@@ -7,17 +7,18 @@ profiles.
 
 ## Package layout
 
-The Python package in `src/atomref_proatoms/` is organized into v2 subpackages with explicit boundaries:
+The Python package in `src/atomref_proatoms/` is organized into subpackages with
+explicit boundaries:
 
 - `dataio/`: source-tree paths, schema constants, basis bundles, and profile-dataset configuration;
 - `states/`: curated atomic-state records, validation, summaries, and state-table loading;
 - `engines/`: PySCF-facing backend helpers and spherical fractional-occupation UKS machinery;
 - `profiles/`: radial grids, density-profile evaluation, build plans, QA helpers, and release-artifact writers.
 
-The current code does not yet create `exporters/` or `cli/` packages because no Multiwfn exporters or final user-facing generator commands are implemented in this stage. The active v2 code uses the subpackage imports directly; historical top-level compatibility modules were removed rather than preserved as a parallel API.
-
-The public scripts in `scripts/` are small workflow entry points around this
-package code. Their detailed command-line options are documented in
+The current code does not yet create `exporters/` or `cli/` packages because no
+Multiwfn exporters or final user-facing generator commands are implemented in
+this data layer. The public scripts in `scripts/` are small workflow entry points
+around the package code. Their detailed command-line options are documented in
 `scripts/README.md`.
 
 ## Standard workflow
@@ -29,17 +30,17 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
-`check_states.py` and `check_basis_bundles.py` validate compact tracked inputs. The third command creates
-or reuses ignored local SCF artifacts. The fourth command extracts tracked
-profile, radii, and QA artifacts from complete local SCF material. The fifth
-command records optional diffuse-basis sensitivity diagnostics for anion branches
-when both compared profile datasets are present. The final checker confirms that
-generated artifact directories match the active v2 dataset configuration,
-profile-data version, and QA summaries.
+`check_states.py` and `check_basis_bundles.py` validate compact tracked inputs.
+The third command creates or reuses ignored local SCF artifacts. The fourth
+command extracts profile, radii, and QA artifacts from complete local SCF
+material. The fifth command records diffuse-basis sensitivity diagnostics for
+anion branches when both compared profile datasets are present. The final checker
+confirms that generated artifact directories match the active dataset
+configuration, profile-data version, and QA summaries.
 
 ## Inspection commands
 
@@ -50,11 +51,12 @@ python scripts/compute_wavefunctions.py --list
 python scripts/compute_wavefunctions.py --dry-run
 python scripts/extract_profiles.py --list
 python scripts/extract_profiles.py --dry-run
+python scripts/check_basis_sensitivity.py --dry-run
 ```
 
 They are useful for reviewing selected datasets and states on machines without
 PySCF. Use `--show-jobs` with `--list` or `--dry-run` when per-state job lines
-are needed; summary mode is the default for full v2 plans.
+are needed; summary mode is the default for full plans.
 
 ## Generator dependencies
 
@@ -85,11 +87,24 @@ refuses to create release artifacts with a different PySCF version unless
 - `data/qa/<dataset_id>/qa.csv` and `metadata.json`;
 - aggregate QA files under `data/qa/`.
 
-Generated profile, radii, and QA files should be committed together after the
-QA report and `check_profile_artifacts.py --require-generated` have passed. In
-the current v2 preparation snapshot, no final
-v2 profile/radii/QA tables are committed yet; only the dataset specification and
-input/state layers are active.
+`check_basis_sensitivity.py --include-x2c-optional --force` writes the current
+basis-sensitivity QA layer:
+
+```text
+data/qa/basis_sensitivity/
+  basis_sensitivity.csv
+  basis_sensitivity_summary.csv
+  basis_sensitivity_outliers.csv
+  basis_sensitivity_metric_distributions.csv
+  metadata.json
+  dyall-v4z/
+  x2c-QZVPall/
+```
+
+Generated profile, radii, and QA files should be committed together after the QA
+report and `check_profile_artifacts.py --require-generated` have passed. Local
+SCF artifacts under `local-data/` remain ignored and are not part of the public
+release tables.
 
 ## Documentation build
 

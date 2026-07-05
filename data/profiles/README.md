@@ -1,36 +1,32 @@
 # Generated radial profile datasets
 
-This directory is the target location for released spherical proatomic radial
-electron-density profiles. Profiles are generated from the active v2 state table
-and the dataset scopes declared in `data/profile_datasets.yaml`.
+This directory stores released spherical proatomic radial electron-density
+profiles. Profiles are generated from the current state table and the dataset
+scopes declared in `data/profile_datasets.yaml`.
 
-No final v2 profile tables are committed in this preparation snapshot. The old
-neutral-only v1 profile artifacts were removed from the active tree; v1 remains
-available from historical tags/releases/archives.
+## Dataset scopes
 
-## Active v2 dataset scopes
-
-The active v2 profile configuration declares four dataset scopes:
+The current profile configuration declares four dataset scopes:
 
 ```text
 pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2
-  x2c-QZVPall, H-Rn, all curated v2 states
+  x2c-QZVPall, H-Rn, all curated states, 430 density columns
 
 pbe0_sfx2c_dyallv4z_h-lr_spherical_v2
-  dyall-v4z, H-Lr, all curated v2 states
+  dyall-v4z, H-Lr, all curated states, 501 density columns
 
 pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2
-  x2c-QZVPall-s, H-Rn, anions only
+  x2c-QZVPall-s, H-Rn, anions only, 106 density columns
 
 pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2
-  dyall-av4z, H-Ba and Hf-Ra within the active H-Lr state range, anions only
+  dyall-av4z, selected H-Ba and Hf-At anions, 91 density columns
 ```
 
 The two primary datasets are deliberately not split into separate neutral,
 cation, and anion products. Charge/state membership is part of the dataset scope
 record and generated metadata.
 
-## Dataset layout after generation
+## Dataset layout
 
 Each generated dataset is written as one wide CSV plus one aggregate metadata
 JSON:
@@ -49,7 +45,8 @@ r_bohr,rho_e_bohr3__<state_id>,rho_e_bohr3__<state_id>,...
 ```
 
 The radius unit is bohr. Electron density is reported as electrons/bohr³. Column
-names are deterministic and are based on curated state IDs.
+names are deterministic and are based on curated state IDs. The stored radial grid
+has 1200 rows for every generated dataset.
 
 ## Metadata
 
@@ -70,6 +67,7 @@ consistency gate with:
 
 ```bash
 python scripts/extract_profiles.py --force --check
+python scripts/check_basis_sensitivity.py --include-x2c-optional --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 

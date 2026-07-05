@@ -116,7 +116,7 @@ def write_profile_dataset_artifacts(
     densities_by_state_id: Mapping[str, Sequence[float] | Any],
     metadata: Mapping[str, Any],
 ) -> tuple[Path, Path]:
-    """Write the v1 dataset-level ``profiles.csv`` and ``metadata.json`` artifacts."""
+    """Write the dataset-level ``profiles.csv`` and ``metadata.json`` artifacts."""
 
     profiles_path = dataset_dir / "profiles.csv"
     metadata_path = dataset_dir / "metadata.json"

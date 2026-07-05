@@ -29,7 +29,7 @@ nav:
   - Workflow: workflow.md
   - How it works:
       - Notebook guide: notebooks/README.md
-      - Release artifact inspection: notebooks/proatomic_profiles_v1.ipynb
+      - Release artifact inspection: notebooks/proatomic_profiles.ipynb
       - Sphericalization demo: notebooks/spherical_vs_post_average_demo.ipynb
   - Attribution:
       - License: license.md

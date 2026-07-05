@@ -1,13 +1,11 @@
 # Atomic state input data
 
-This directory contains the active v2 atomic-state layer for
+This directory contains the current atomic-state layer for
 `atomref-proatoms`. It defines generator-ready neutral, cationic,
 physical/provisional monoanion, and formal-anion reference states with
 deterministic charge, electron count, configuration, spin, spherical occupation,
 and state-source metadata.
 
-v1 state files are not retained in the active data tree. Historical v1 states and
-artifacts are available from the v1 Git tags, releases, and archives.
 
 ## Directory layout
 
@@ -36,11 +34,11 @@ data/states/
     atom_states_summary_v2.json
 ```
 
-`source/` stores compact source/status inputs. `selection/` stores the active v2
+`source/` stores compact source/status inputs. `selection/` stores the current
 compute-state selection. `curated/` stores the formal-anion preparation table and
-the generator-ready v2 state products written by `scripts/build_atom_states.py`.
+the generator-ready state products written by `scripts/build_atom_states.py`.
 
-## Active v2 state table
+## Current state table
 
 The active curated table is:
 
@@ -54,7 +52,7 @@ A review-friendly CSV subset is also written to:
 data/states/curated/atom_states_v2.csv
 ```
 
-The active v2 table contains 501 states:
+The current table contains 501 states:
 
 ```text
 charge counts:
@@ -81,7 +79,7 @@ python scripts/check_states.py
 `python scripts/build_atom_states.py --check` remains available as a maintainer
 compatibility path, but `check_states.py` is the clearer user-facing command.
 
-To regenerate the v2 selection and curated outputs from the compact source
+To regenerate the selection and curated outputs from the compact source
 layers:
 
 ```bash
@@ -127,7 +125,7 @@ missing        empty value, if present
 
 `ground_level` is the retained NIST label used for spin curation. Most
 `ground_multiplicity` values were parsed from simple LS-like labels with a
-leading term multiplicity, for example `4S°3/2 -> 4`. Seven v2-domain
+leading term multiplicity, for example `4S°3/2 -> 4`. Seven current-domain
 neutral/cation rows with non-LS or jj-style labels were assigned manually from
 LS-equivalent/Hund-consistent multiplicities:
 
@@ -141,7 +139,7 @@ Tm+  (7/2,1/2)°4  -> 3
 Pb   (1/2,1/2)0   -> 3
 ```
 
-Rows outside the v2 neutral/cation policy domain may retain blank multiplicities.
+Rows outside the current neutral/cation policy domain may retain blank multiplicities.
 Future selections that reach such rows should curate the multiplicity explicitly
 instead of silently guessing.
 
@@ -189,7 +187,7 @@ physical_status:
 ```
 
 For H-Rn, only `bound_experimental` and `bound_provisional` monoanion rows
-enter the active v2 compute table as physical/provisional monoanion references.
+enter the current compute table as physical/provisional monoanion references.
 For the seventh-period Fr-U extension, the corresponding source-backed
 Ning--Lu rows are included in the primary dyall-v4z H-Lr dataset, including
 rows whose source status is `diagnostic_theory`; their `physical_status` remains
@@ -230,9 +228,9 @@ formal trianions:
 ```
 
 Halogen dianions, group-18 anions, d/f multianions, and purely formal actinide
-fallback monoanions are outside the initial v2 compute scope.
+fallback monoanions are outside the current compute scope.
 
-## v2 charge-selection policy
+## Charge-selection policy
 
 The active state selection is stored in:
 
@@ -250,7 +248,7 @@ cations:
   group 1: +1
   group 2: +1, +2
   all other elements H-Lr: +1, +2, +3
-  no +4 cations in the initial v2 dataset
+  no +4 cations in the current dataset
   zero-electron edge cases such as H+, He2+, and He3+ are excluded
 
 monoanions:
@@ -260,13 +258,13 @@ monoanions:
   source-backed Ning--Lu Fr-U monoanion rows are included in the primary
     dyall-v4z H-Lr dataset, including theory-only/provisional rows with
     their original physical_status retained
-  no purely formal actinide fallback monoanions in the initial compute scope
+  no purely formal actinide fallback monoanions in the current compute scope
 
 multianions:
   -2 for H-Rn p-elements in groups 13-16
   -3 for C and pnictogens: C, N, P, As, Sb, Bi
   all multianions are formal references
-  no d/f multianions in the initial v2 dataset
+  no d/f multianions in the current dataset
 ```
 
 ## Generated-state conventions

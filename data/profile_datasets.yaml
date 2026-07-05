@@ -52,7 +52,7 @@ datasets:
   - dataset_id: pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2
     role: primary_h_rn_all_curated_states
     basis_id: x2c-QZVPall
-    coverage_label: H-Rn all curated v2 states
+    coverage_label: H-Rn all curated states
     z_intervals: [[1, 86]]
     include_charges: all
     include_state_roles:
@@ -68,7 +68,7 @@ datasets:
   - dataset_id: pbe0_sfx2c_dyallv4z_h-lr_spherical_v2
     role: primary_h_lr_all_curated_states
     basis_id: dyall-v4z
-    coverage_label: H-Lr all curated v2 states
+    coverage_label: H-Lr all curated states
     z_intervals: [[1, 103]]
     include_charges: all
     include_state_roles:
@@ -97,7 +97,7 @@ datasets:
   - dataset_id: pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2
     role: anion_sensitivity_available_dyall_av4z
     basis_id: dyall-av4z
-    coverage_label: H-Ba and Hf-Ra anions with dyall-av4z; seventh-period monoanions excluded from diffuse branch
+    coverage_label: H-Ba and Hf-At selected anions with dyall-av4z; Fr and Ra excluded from diffuse branch
     z_intervals: [[1, 56], [72, 88]]
     include_charges: negative_only
     include_state_roles:

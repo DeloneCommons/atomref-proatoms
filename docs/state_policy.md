@@ -1,6 +1,6 @@
 # State policy and interpretation
 
-This page records the active v2 atomic-state policy used by the tracked state
+This page records the atomic-state policy used by the tracked state
 layer. It is a scientific and data-curation policy, not a claim that the project
 can determine the unique lowest-energy isolated atom or ion for every method,
 basis, and molecular environment.
@@ -17,9 +17,9 @@ promolecular workflows is a reference gauge. It should be described as a
 source-traceable or explicitly formal reference density generated under the
 stated policy.
 
-## Active v2 state scope
+## Current state scope
 
-The active v2 state table is `data/states/curated/atom_states_v2.json`. It is
+The current state table is `data/states/curated/atom_states_v2.json`. It is
 built from compact source/status tables and contains 501 states:
 
 ```text
@@ -38,9 +38,6 @@ state categories:
   formal_anion_reference: 40
 ```
 
-The active codebase is v2-only. Historical v1 state/data artifacts are retained
-at Git tag, release, or archive level rather than as live source-tree
-functionality.
 
 ## Source hierarchy
 
@@ -69,7 +66,7 @@ numeric values because those are not needed by the current generator state layer
 
 ## Charge policy
 
-The current v2 state selection is:
+The current state selection is:
 
 ```text
 neutral atoms:
@@ -79,7 +76,7 @@ cations:
   group 1: +1
   group 2: +1, +2
   all other elements H-Lr: +1, +2, +3
-  no +4 cations in the initial v2 dataset
+  no +4 cations in the current dataset
   zero-electron edge cases such as H+, He2+, and He3+ are excluded
 
 monoanions:
@@ -89,13 +86,13 @@ monoanions:
   source-backed Ning--Lu Fr-U monoanion rows are included in the primary
     dyall-v4z H-Lr dataset, including theory-only/provisional rows with
     their original physical_status retained
-  no purely formal actinide fallback monoanions in the initial compute scope
+  no purely formal actinide fallback monoanions in the current compute scope
 
 multianions:
   -2 for H-Rn p-elements in groups 13-16
   -3 for C and pnictogens: C, N, P, As, Sb, Bi
   all multianions are formal references
-  no d/f multianions in the initial v2 dataset
+  no d/f multianions in the current dataset
 ```
 
 ## Formal anions
@@ -119,7 +116,7 @@ A method-energy-selected free atom or ion can be useful for a deliberately
 method-internal reference convention. It is not automatically more correct for
 general proatomic density work.
 
-The active v2 production policy avoids automatic energy-minimized state selection
+The production policy avoids automatic energy-minimized state selection
 because:
 
 - the isolated free atom is not the atom in a molecule or crystal;
@@ -190,7 +187,7 @@ Recommended wording:
 
 ```text
 We used spherical reference proatoms generated under the documented
-atomref-proatoms v2 state policy. Neutral and cationic states are NIST-derived;
+atomref-proatoms state policy. Neutral and cationic states are NIST-derived;
 accepted monoanions use the Ning--Lu 2022 anion-status layer; formal anions are
 explicitly labeled stockholder-reference states and are not claimed as stable
 isolated atomic anions.
@@ -208,7 +205,7 @@ Validate the active state layer without regenerating it:
 python scripts/check_states.py
 ```
 
-Regenerate the v2 selection and curated outputs only after compact source tables
+Regenerate the selection and curated outputs only after compact source tables
 change:
 
 ```bash

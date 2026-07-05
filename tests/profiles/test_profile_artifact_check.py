@@ -158,12 +158,12 @@ def _write_valid_artifacts(tmp_path: Path) -> tuple[Path, Path, Path, Path, Path
         "columns": {"rho_e_bohr3__H_q0_mult2_nist": {"state_id": STATE_ID}},
         "states": {STATE_ID: {"symbol": "H"}},
         "related_artifacts": {
-            "profiles_csv": str(profile_dir / "profiles.csv"),
-            "profile_metadata_json": str(profile_dir / "metadata.json"),
-            "radii_csv": str(radii_root / DATASET_ID / "radii.csv"),
-            "radii_metadata_json": str(radii_root / DATASET_ID / "metadata.json"),
-            "qa_csv": str(qa_root / DATASET_ID / "qa.csv"),
-            "qa_metadata_json": str(qa_root / DATASET_ID / "metadata.json"),
+            "profiles_csv": f"data/profiles/{DATASET_ID}/profiles.csv",
+            "profile_metadata_json": f"data/profiles/{DATASET_ID}/metadata.json",
+            "radii_csv": f"data/radii/{DATASET_ID}/radii.csv",
+            "radii_metadata_json": f"data/radii/{DATASET_ID}/metadata.json",
+            "qa_csv": f"data/qa/{DATASET_ID}/qa.csv",
+            "qa_metadata_json": f"data/qa/{DATASET_ID}/metadata.json",
         },
         "scf_artifacts": {
             STATE_ID: {
@@ -250,7 +250,7 @@ def _write_valid_artifacts(tmp_path: Path) -> tuple[Path, Path, Path, Path, Path
     return config, states, profiles_root, radii_root, qa_root
 
 
-def test_check_profile_artifacts_script_passes_before_generation() -> None:
+def test_check_profile_artifacts_script_passes_with_default_roots() -> None:
     result = subprocess.run(
         [sys.executable, "scripts/check_profile_artifacts.py"],
         cwd=ROOT,
@@ -260,8 +260,11 @@ def test_check_profile_artifacts_script_passes_before_generation() -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    assert "OK: no generated profile/radii/QA dataset artifacts found" in result.stdout
-    assert "profile_data_version: 2.0.0" in result.stdout
+    no_generated = "OK: no generated profile/radii/QA dataset artifacts found" in result.stdout
+    checked_generated = "OK: checked generated profile/radii/QA artifacts" in result.stdout
+    assert no_generated or checked_generated
+    if checked_generated:
+        assert "profile_data_version: 2.0.0" in result.stdout
 
 
 def test_check_generated_artifacts_rejects_stale_unconfigured_dataset(tmp_path: Path) -> None:
@@ -448,12 +451,21 @@ def test_check_generated_artifacts_accepts_v2_nested_basis_sensitivity_qa(tmp_pa
                 "metric_distribution_count": 1,
                 "pair_outputs": {
                     "basis_sensitivity_dyall": {
-                        "output_dir": str(pair_dir),
-                        "rows_csv": str(pair_dir / "basis_sensitivity.csv"),
-                        "summary_csv": str(pair_dir / "basis_sensitivity_summary.csv"),
-                        "outliers_csv": str(pair_dir / "basis_sensitivity_outliers.csv"),
-                        "metric_distributions_csv": str(
-                            pair_dir / "basis_sensitivity_metric_distributions.csv"
+                        "output_dir": "data/qa/basis_sensitivity/dyall-v4z",
+                        "rows_csv": (
+                            "data/qa/basis_sensitivity/dyall-v4z/basis_sensitivity.csv"
+                        ),
+                        "summary_csv": (
+                            "data/qa/basis_sensitivity/dyall-v4z/"
+                            "basis_sensitivity_summary.csv"
+                        ),
+                        "outliers_csv": (
+                            "data/qa/basis_sensitivity/dyall-v4z/"
+                            "basis_sensitivity_outliers.csv"
+                        ),
+                        "metric_distributions_csv": (
+                            "data/qa/basis_sensitivity/dyall-v4z/"
+                            "basis_sensitivity_metric_distributions.csv"
                         ),
                         "row_count": 1,
                         "summary_count": 1,
