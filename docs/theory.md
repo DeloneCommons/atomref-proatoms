@@ -44,23 +44,17 @@ The stored density is
 
 not a spin-density profile. Spin diagnostics may be retained as provenance, but \(\langle S^2\rangle\) is not used as a validation target for fractional-occupation spherical ensembles.
 
-## Electronic-structure convention
+## Density-cutoff radii as level-surface descriptors
 
-The current profiles use PBE0, spin-free one-electron X2C, unrestricted Kohn--Sham SCF, PySCF `2.13.1`, pure/spherical Gaussian basis functions, SCF convergence tolerance \(10^{-9}\), PySCF DFT grid level `4`, `max_cycle = 300`, `diis_space = 12`, and `diis_start_cycle = 1`.
-
-The all-electron convention is part of the profile identity. Effective-core or valence-only densities should not be mixed silently with these branches. A different basis, relativistic treatment, core convention, state policy, or density model should receive a separate dataset identifier.
-
-## Radial grid and cutoff radii
-
-The released profile tables use a 1200-point logarithmic grid from \(10^{-6}\) to 60 bohr. This grid resolves both near-nuclear density and low-density tails compactly. It is the release representation, not the only quadrature used for validation.
-
-A density-cutoff radius is the outermost interpolated radius satisfying
+A density-cutoff radius is the outermost radius satisfying
 
 \[
 \rho_A(R_\rho)=\rho_\mathrm{cut}.
 \]
 
-The current cutoffs are \(0.003\), \(0.001\), and \(0.0001\) electrons/bohr\(^3\). The first two are practical size descriptors. The smallest cutoff is retained mainly as a tail/interpolation diagnostic because it is more sensitive to diffuse basis functions and formal anion behavior.
+For a general molecular density, an isodensity value defines a surface. For a spherical proatom, that surface collapses to a single radial descriptor. This makes density-cutoff radii useful for comparing atomic reference gauges: they translate changes in low-density tails into length shifts without pretending to be empirical covalent, ionic, or van der Waals radii.
+
+The chemically robust cutoffs are those that describe the outer valence region without relying too strongly on the far asymptotic tail. Much lower cutoffs are still useful as diagnostics, especially for supplemented or augmented bases and for formal anion references. The specific cutoff values, interpolation rule, release grid, and independent QA quadrature are implementation choices described in Methods.
 
 ## Reference-gauge interpretation
 

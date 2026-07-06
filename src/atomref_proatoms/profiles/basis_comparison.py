@@ -436,7 +436,7 @@ def build_primary_basis_comparisons(
             "interpretation": {
                 "comparison_kind": (
                     "Primary basis-family comparison over exact matched states. It is not a "
-                    "diffuse/supplemented basis-sensitivity comparison."
+                    "supplemented/augmented basis-sensitivity comparison."
                 ),
                 "integrity_status": (
                     "PASS/FAIL metadata, grid, digest, density, "

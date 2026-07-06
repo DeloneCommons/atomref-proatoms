@@ -120,8 +120,10 @@ supplemented/augmented basis pairs. It emits every configured dyall and x2c
 comparison by default when the corresponding generated profile datasets are
 present. The current comparison rows are matched by exact state IDs/digests and
 cover neutral and anion states in the supplemented/augmented branches; cations are
-not part of these tail-sensitivity branches. Large basis-sensitivity rows are
-written as warnings/outliers, not as automatic release failures.
+not part of these supporting branches. `x2c-QZVPall-s` is an
+NMR-shielding-oriented supplemented branch, while `dyall-av4z` is the available
+augmented Dyall branch. Large basis-sensitivity rows are written as
+warnings/outliers, not as automatic release failures.
 
 Outputs:
 
@@ -165,7 +167,7 @@ Options:
 - `--watch-relative-l1`, `--outlier-relative-l1`: moderate/high sensitivity
   thresholds for relative radial-distribution L1 delta.
 - `--watch-cumulative-electrons`, `--outlier-cumulative-electrons`:
-  moderate/high sensitivity thresholds for sup `|N_diffuse(<r)-N_base(<r)|`.
+  moderate/high sensitivity thresholds for sup `|N_supporting(<r)-N_base(<r)|`.
 - `--watch-mean-shift-angstrom`, `--outlier-mean-shift-angstrom`:
   moderate/high sensitivity thresholds for cumulative-difference mean radial
   shift.
@@ -182,7 +184,7 @@ python scripts/check_basis_comparisons.py --dry-run
 
 This step writes the primary basis-family comparison artifacts. It currently
 compares `x2c-QZVPall` with `dyall-v4z` over the H-Rn overlap. It is not a
-diffuse-basis sensitivity comparison. Rows are matched by exact `state_id` and
+supplemented/augmented basis-sensitivity comparison. Rows are matched by exact `state_id` and
 state-record digest, and signed deltas are `dyall-v4z` minus `x2c-QZVPall`.
 
 Outputs:

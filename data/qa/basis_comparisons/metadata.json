@@ -47,7 +47,7 @@
     "max_electron_count_error": 0.005
   },
   "interpretation": {
-    "comparison_kind": "Primary basis-family comparison over exact matched states. It is not a diffuse/supplemented basis-sensitivity comparison.",
+    "comparison_kind": "Primary basis-family comparison over exact matched states. It is not a supplemented/augmented basis-sensitivity comparison.",
     "integrity_status": "PASS/FAIL metadata, grid, digest, density, or electron-count gate",
     "comparison_tier": "low/moderate/high scientific difference classification",
     "outliers_csv": "Rows with high basis-family differences or integrity failures; high basis-family difference is not by itself a release blocker."

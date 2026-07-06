@@ -609,7 +609,7 @@ def _check_counted_csv(path: Path, expected_count: int, *, errors: list[str]) ->
 def _check_basis_sensitivity_qa(
     directory: Path, *, config: ProfileDatasetConfig, errors: list[str]
 ) -> None:
-    """Validate optional diffuse-basis sensitivity QA artifacts when present."""
+    """Validate optional supplemented/augmented basis-sensitivity QA artifacts."""
 
     metadata_path = directory / "metadata.json"
     if not metadata_path.is_file():

@@ -45,10 +45,10 @@ The source hierarchy is deliberately conservative:
 
 | Situation | Active source policy | Active category |
 |---|---|---|
-| Neutral atoms | NIST GSIE compact source table | `nist_reference` |
-| Cations | NIST GSIE compact source table | `nist_reference` |
-| Accepted/provisional H-Rn monoanions | Ning--Lu 2022 compact source/status table | `ning2022_monoanion_reference` |
-| Source-backed Fr-U monoanions | Ning--Lu 2022 compact source/status table, with original physical/theory status retained | `ning2022_monoanion_reference` |
+| Neutral atoms | [NIST GSIE](https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html) compact source table | `nist_reference` |
+| Cations | [NIST GSIE](https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html) compact source table | `nist_reference` |
+| Accepted/provisional H-Rn monoanions | [Ning--Lu 2022](https://doi.org/10.1063/5.0080243) compact source/status table | `ning2022_monoanion_reference` |
+| Source-backed Fr-U monoanions | [Ning--Lu 2022](https://doi.org/10.1063/5.0080243) compact source/status table, with original physical/theory status retained | `ning2022_monoanion_reference` |
 | Required H-Rn monoanions without an accepted physical/provisional row | Explicit formal table | `formal_anion_reference` |
 | Multianions | Explicit formal table | `formal_anion_reference` |
 | Other theory-only, unbound, metastable-only, or otherwise problematic anion rows | Retained as source/status rows only unless intentionally formalized | not silently promoted |

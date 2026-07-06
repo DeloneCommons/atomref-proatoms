@@ -25,8 +25,8 @@ select a subset of these states by charge and state role.
 
 ### Source convention
 
-Neutral and positive-ion state labels are prepared from the NIST Atomic Spectra
-Database Ground States and Ionization Energies interface, NIST Standard
+Neutral and positive-ion state labels are prepared from the [NIST Atomic Spectra
+Database Ground States and Ionization Energies interface](https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html), NIST Standard
 Reference Database 78. This repository keeps compact configuration labels needed
 for generator reproducibility, NIST ground-level labels, parsed simple
 LS-term multiplicities, a small set of manual domain-specific multiplicity assignments
@@ -45,7 +45,7 @@ rows are outside the intended neutral/cation computation scope.
 
 A compact monoanion source table is stored at
 `data/states/source/ning2022/ning2022_monoanions.csv`. It is curated from Ning and Lu
-2022 and retains only state labels plus status flags for H-U monoanions. It does
+2022 ([DOI: 10.1063/5.0080243](https://doi.org/10.1063/5.0080243)) and retains only state labels plus status flags for H-U monoanions. It does
 not store electron-affinity values or numerical uncertainties. Rows may be
 flagged as accepted experimental/evaluated monoanions, provisional experimental
 monoanions, theory-only diagnostics, or excluded/unbound/problematic cases. This
@@ -75,16 +75,18 @@ reference notes, and a bundle README.
 Basis branches currently declared for profile generation:
 
 | basis ID | role | active dataset scope |
-|---|---|---:|
+|---|---|---|
 | `x2c-QZVPall` | primary H-Rn scalar-relativistic branch | all curated states, H-Rn |
 | `dyall-v4z` | primary H-Lr heavy-element branch | all curated states, H-Lr |
-| `x2c-QZVPall-s` | supplemented x2c branch | neutral and anion states, H-Rn; cations excluded |
+| `x2c-QZVPall-s` | NMR-shielding-oriented supplemented x2c branch | neutral and anion states, H-Rn; cations excluded |
 | `dyall-av4z` | augmented dyall branch | neutral and anion states in H-Ba and Hf-Ra where covered; cations excluded |
 
 The two primary datasets are not split into separate atom/cation/anion products.
 The supplemented/augmented branches likewise keep neutral and anion rows together
 under one basis identity, while excluding cations because their compact densities
-are not the focus of the tail-sensitivity comparison.
+are not the focus of the tail-sensitivity comparison. `x2c-QZVPall-s` is not a
+general diffuse tail basis; `dyall-av4z` is the available-element augmented
+branch.
 
 The basis text checksum is the basis-data identity. Ordinary validation is
 offline and checks required files, checksums, NWChem spherical headers, manifest

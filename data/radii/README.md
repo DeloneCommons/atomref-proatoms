@@ -1,16 +1,16 @@
 # Density-cutoff radii
 
 This directory stores density-cutoff radii derived from the generated spherical
-radial profile datasets. A cutoff radius is the outer radial position where the
-spherical free-atom density reaches a declared density threshold,
-\(\rho(r)=\rho_\mathrm{cut}\). These radii are compact size descriptors attached
-to the same state, basis, method, and sphericalization convention as the
-corresponding profiles.
+radial profile datasets. It is a data contract page: it describes table layout,
+column names, numerical interpolation, and regeneration. For the conceptual
+meaning of cutoff radii, see `docs/theory.md`; for the current interpretation,
+see `docs/results.md` and `docs/discussion.md`.
 
-The radii are not empirical van der Waals or covalent radii. They are reproducible
-isodensity radii of the computed all-electron spherical reference density. This
-makes them useful for comparing basis branches, charge states, and anion tail
-sensitivity under a controlled proatomic convention.
+A cutoff radius is the outer radial position where the spherical free-atom
+density reaches a declared density threshold,
+\(\rho(r)=\rho_\mathrm{cut}\). The radii are not empirical van der Waals or
+covalent radii. They are reproducible isodensity radii of the computed
+all-electron spherical reference density.
 
 ## Dataset layout
 

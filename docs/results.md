@@ -2,7 +2,7 @@
 
 ## Dataset inventory
 
-The current data layer contains four generated profile/radii/QA datasets. The two primary datasets cover all curated states within their element ranges. The supplemented/augmented branches contain neutral and anion states only; cations are not repeated because compact positive ions are not the main target of diffuse-tail sensitivity analysis.
+The current data layer contains four generated profile/radii/QA datasets. The two primary datasets cover all curated states within their element ranges. The supplemented/augmented branches contain neutral and anion states only; cations are not repeated because compact positive ions are not the main target of basis-tail sensitivity analysis.
 
 <!-- BEGIN AUTO:table:dataset_inventory -->
 | dataset ID | basis | branch role | state scope | profile rows | QA rows |
@@ -71,7 +71,7 @@ Because the profile branches overlap, the generated-row counts are larger than t
 | formal_multianion | 104 |
 <!-- END AUTO:table:generated_rows_by_role -->
 
-The generated layer therefore exposes the formal anion rows explicitly rather than hiding them in a generic anion class. This is useful for sensitivity analysis because the formal rows are exactly where diffuse-tail behavior is expected to be most delicate.
+The generated layer therefore exposes the formal anion rows explicitly rather than hiding them in a generic anion class. This is useful for sensitivity analysis because the formal rows are exactly where low-density tail behavior is expected to be most delicate.
 
 ## Validation outcomes
 
@@ -86,7 +86,7 @@ The validation summary below reports one row per generated dataset. `max |ΔN|` 
 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | `dyall-av4z` | 166 | 0 | 2.30e-12 | 2.68e-15 | 68 |
 <!-- END AUTO:table:qa_validation_summary -->
 
-All generated rows pass the current validation criteria. The electron-count and angular-sphericity errors are near numerical precision. Linear-dependency warnings are most common in the large Dyall branches and especially in diffuse/augmented settings, but they do not coincide with validation failures in the committed data layer.
+All generated rows pass the current validation criteria. The electron-count and angular-sphericity errors are near numerical precision. Linear-dependency warnings are most common in the large Dyall branches and in the supporting comparison branches, but they do not coincide with validation failures in the committed data layer.
 
 <!-- BEGIN AUTO:table:linear_dependency_summary -->
 | basis | QA rows | LD-warning rows | fraction |
@@ -153,7 +153,7 @@ The outlier row is shown explicitly so that downstream users can decide whether 
 
 ## Supplemented/augmented basis sensitivity
 
-The supplemented/augmented comparison uses the same matched-state contract but compares a primary branch with a more diffuse or supplemented branch. The current neutral-plus-anion supporting branches are unified by basis identity rather than split into separate neutral and anion datasets.
+The supplemented/augmented comparison uses the same matched-state contract but compares a primary branch with its supporting branch. The current neutral-plus-anion supporting branches are unified by basis identity rather than split into separate neutral and anion datasets. The two comparisons are not equivalent: `dyall-av4z` is an augmented Dyall branch, whereas `x2c-QZVPall-s` is an NMR-shielding-oriented supplemented x2c branch rather than a standard diffuse tail basis.
 
 <!-- BEGIN AUTO:table:basis_sensitivity_summary -->
 | comparison | matched states | integrity/validation failures | low | moderate | high | outliers | max relative L1 | max sup \|ΔN(r)\| / e | max \|ΔR_cut\| / Å |
@@ -162,7 +162,7 @@ The supplemented/augmented comparison uses the same matched-state contract but c
 | `x2c-QZVPall` → `x2c-QZVPall-s` | 192 | 0 | 192 | 0 | 0 | 0 | 0.014 | 0.033 | 0.020 |
 <!-- END AUTO:table:basis_sensitivity_summary -->
 
-The x2c supplemented branch is uniformly low-sensitivity in the current data. The Dyall augmented branch has 14 high-sensitivity rows, all in formal anion references. This pattern is visible when the data are grouped by charge.
+The x2c supplemented branch is uniformly low-sensitivity in the current data, which is consistent with treating it as a branch that most density-reference users can ignore. The Dyall augmented branch has 14 high-sensitivity rows, all in formal anion references. This pattern is visible when the data are grouped by charge.
 
 <!-- BEGIN AUTO:table:basis_sensitivity_by_charge -->
 | comparison | charge | n | low | moderate | high | median rel. L1 | p95 rel. L1 | max rel. L1 | max sup \|ΔN(r)\| / e | max \|ΔR_cut\| / Å |
@@ -222,6 +222,6 @@ The high-sensitivity Dyall augmented rows are listed below. They are mainly ligh
 
 ## Practical result
 
-The current data layer supports a clear default policy. Use the primary branches for reproducible default analyses: `x2c-QZVPall` for H--Rn when that element range is sufficient, and `dyall-v4z` for the broader H--Lr branch. Use `x2c-QZVPall-s` and `dyall-av4z` when a study explicitly needs a supplemented/augmented reference gauge or when the conclusion depends on anion-tail sensitivity.
+The current data layer supports a clear default policy. Use the primary branches for reproducible default analyses: `x2c-QZVPall` for H--Rn when that element range is sufficient, and `dyall-v4z` for the broader H--Lr branch. Most users can ignore `x2c-QZVPall-s`; it is retained as an auditable supplemented comparison branch, not as the recommended tail-convergence reference. When low-density tails are central to the scientific question, prefer the Dyall primary/augmented comparison where its element coverage exists, and report formal-anion sensitivity explicitly.
 
-The supplemented/augmented branches should not be silently substituted into the primary dataset. They are separate reference gauges. Their value is precisely that they make diffuse-tail sensitivity observable and auditable.
+The supplemented/augmented branches should not be silently substituted into the primary dataset. They are separate reference gauges. Their value is precisely that they make basis-tail sensitivity observable and auditable.

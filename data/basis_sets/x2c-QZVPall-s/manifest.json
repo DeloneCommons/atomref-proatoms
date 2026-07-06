@@ -47,7 +47,8 @@
     "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
   },
   "notes": [
-    "Auxiliary supplemented x2c branch retained as frozen input data for basis-sensitivity studies.",
-    "Active v2 anion sensitivity profile dataset uses this basis for anions in its declared coverage."
+    "Supplemented x2c branch retained as frozen input data for neutral/anion basis-comparison studies.",
+    "The upstream BSE description identifies this as an NMR-shielding-oriented basis, not a conventional diffuse tail basis.",
+    "The active profile dataset uses this basis for neutral and anion states in its declared H-Rn coverage; cations are excluded."
   ]
 }

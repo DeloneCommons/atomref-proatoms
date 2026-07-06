@@ -4,7 +4,7 @@
 
 `atomref-proatoms` is a reproducible data layer for spherical atomic and ionic reference densities. The current release provides self-consistent spherical PBE0/sf-X2C radial electron densities for neutral atoms, cations, curated monoanions, and explicitly formal anion references under a fixed state, basis, SCF, profile-extraction, radii, and validation policy. The profiles are intended as documented proatomic reference gauges for stockholder, Hirshfeld-like, promolecular, deformation-density, descriptor, and related real-space workflows. They are not claimed to be universal isolated-atom ground states for every approximate Hamiltonian, basis set, or molecular environment.
 
-The current data layer contains 1289 generated dataset-state rows across four basis branches. The primary branches are `x2c-QZVPall` for H--Rn and `dyall-v4z` for H--Lr. The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, contain neutral and anion rows used to quantify diffuse-tail sensitivity; cations are deliberately not duplicated in these branches. All committed rows pass the current validation criteria.
+The current data layer contains 1289 generated dataset-state rows across four basis branches. The primary branches are `x2c-QZVPall` for H--Rn and `dyall-v4z` for H--Lr. The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, contain neutral and anion rows used to quantify branch and tail sensitivity; cations are deliberately not duplicated in these branches. All committed rows pass the current validation criteria.
 
 ## How to read these docs
 

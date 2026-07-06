@@ -14,7 +14,7 @@ tables, and run the validation checks.
 ## Profile datasets
 
 | dataset ID | basis | coverage | selected rows | selected states |
-|---|---|---:|---:|---|
+|---|---|---|---:|---|
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | `x2c-QZVPall` | H-Rn | 430 | all curated states in range |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | `dyall-v4z` | H-Lr | 501 | all curated states in range |
 | `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | `x2c-QZVPall-s` | H-Rn | 192 | neutrals and anions; cations excluded |
@@ -24,8 +24,11 @@ The primary datasets are deliberately not split into separate neutral, cation,
 and anion products. The supplemented/augmented branches follow the same rule for
 the states they support: each branch groups its neutral and anion rows under one
 basis identity, while cations are excluded because they are compact and less
-relevant to diffuse-tail sensitivity. `dyall-av4z` has discontinuous coverage;
-its generated branch contains H-Ba/Hf-Ra neutrals plus selected anions in the same available intervals, including Fr and Ra monoanions.
+relevant to tail-sensitivity comparisons. `x2c-QZVPall-s` is an
+NMR-shielding-oriented supplemented branch rather than a generic diffuse basis.
+`dyall-av4z` has discontinuous coverage; its generated branch contains
+H-Ba/Hf-Ra neutrals plus selected anions in the same available intervals,
+including Fr and Ra monoanions.
 
 The dataset ID is part of the public data identity. It encodes the method family,
 basis family, element coverage, spherical density convention, and major data
@@ -101,9 +104,9 @@ failures when the generated density passes the numerical QA gate.
 
 The directory-level details are documented in `data/qa/README.md`.
 
-## Diffuse-basis sensitivity QA
+## Basis-sensitivity QA
 
-Diffuse-basis sensitivity QA is stored below:
+Supplemented/augmented basis-sensitivity QA is stored below:
 
 ```text
 data/qa/basis_sensitivity/
@@ -142,9 +145,9 @@ Current generated basis-sensitivity counts are:
 | aggregate | 358 | 324 | 20 | 14 | 0 |
 
 The sensitivity metrics classify how much the radial density distribution changes
-when the diffuse/supplemented basis branch is used. Large sensitivity can be
-scientifically expected for some formal or highly charged anions and is not, by
-itself, a validation blocker. The narrative interpretation and recommended next
+when the supporting basis branch is used. Large sensitivity can be scientifically
+expected for some formal or highly charged anions and is not, by itself, a
+validation blocker. The narrative interpretation and recommended next
 analyses are summarized in the [Results](results.md).
 
 ## Primary basis-family comparison QA

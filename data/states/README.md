@@ -6,18 +6,19 @@ physical/provisional monoanion, and formal-anion reference states with
 deterministic charge, electron count, configuration, spin, spherical occupation,
 and state-source metadata.
 
-The state layer is the spectroscopic and chemical-reference part of the Methods.
-Neutral atoms and cations are selected from compact NIST-derived ground-state
-records; physical/provisional monoanions are selected from a compact Ning--Lu
-2022 status table; missing or deliberately nonphysical charged references are
-made explicit as formal stockholder/Hirshfeld-I-like states. The goal is not to
-solve a new atomic spectroscopy problem with the project-level DFT model, but to
-make every proatomic density traceable to a declared source or a declared formal
-rule.
+This README is primarily a file and schema guide. The scientific state-policy
+discussion lives in `docs/introduction.md`, `docs/methods.md`, and
+`docs/state_policy.md`; the sections below describe the compact source tables,
+the generated compute-state table, the charge-selection policy, and the spherical
+occupation conventions used by the SCF generator.
 
-The sections below describe the source tables, the generated compute-state table,
-the charge-selection policy, and the spherical occupation conventions used by the
-SCF generator.
+Neutral atoms and cations are selected from compact NIST-derived ground-state
+records. Physical or provisional monoanions are selected from a compact
+Ning--Lu 2022 status table. Missing or deliberately nonphysical charged
+references are made explicit as formal stockholder/Hirshfeld-I-like states. The
+goal is not to solve a new atomic spectroscopy problem with the project-level
+DFT model, but to make every proatomic density traceable to a declared source or
+a declared formal rule.
 
 ## Directory layout
 
@@ -100,15 +101,13 @@ python scripts/build_atom_states.py
 
 ## Neutral and cation source layer
 
-Neutral atoms and cations are sourced from the compact NIST GSIE table:
+Neutral atoms and cations are sourced from a compact table prepared from the [NIST Atomic Spectra Database Ground States and Ionization Energies interface](https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html):
 
 ```text
 data/states/source/nist_gsie/nist_neutral_cation_states.csv
 ```
 
-The table was prepared from the NIST Atomic Spectra Database Ground States and
-Ionization Energies interface. The raw source snapshots were preparation
-material only and are not committed.
+The raw source snapshots were preparation material only and are not committed.
 
 Retained fields are:
 
@@ -164,7 +163,8 @@ data/states/source/ning2022/ning2022_monoanions.csv
 ```
 
 It is curated from Ning and Lu, *Electron Affinities of Atoms and Structures of
-Atomic Negative Ions*, J. Phys. Chem. Ref. Data 51, 021502 (2022). The table
+Atomic Negative Ions*, J. Phys. Chem. Ref. Data 51, 021502 (2022),
+[DOI: 10.1063/5.0080243](https://doi.org/10.1063/5.0080243). The table
 keeps state labels and status flags, not electron-affinity values.
 
 Retained fields are:

@@ -2,7 +2,7 @@
 
 `ning2022_monoanions.csv` is the compact monoanion source/status layer curated
 from Ning and Lu, *Electron Affinities of Atoms and Structures of Atomic Negative
-Ions*, J. Phys. Chem. Ref. Data 51, 021502 (2022).
+Ions*, J. Phys. Chem. Ref. Data 51, 021502 (2022), [DOI: 10.1063/5.0080243](https://doi.org/10.1063/5.0080243).
 
 Retained fields are:
 

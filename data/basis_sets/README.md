@@ -1,17 +1,14 @@
 # Basis-set input data
 
-This directory is the Methods-level basis-set input layer for the generated
-spherical proatomic densities. It is deliberately small: it contains only the
-large all-electron basis families used by the committed profile datasets and the
-companion supplemented/augmented branches needed to measure anion basis
-sensitivity.
+This directory stores the frozen orbital basis inputs consumed by the profile
+generator. It is a data dictionary and provenance page: for scientific discussion
+of why these branches were selected, see `docs/methods.md`, `docs/results.md`,
+and `docs/discussion.md`.
 
-The selection principles are broad periodic-table coverage, compatibility with
-spin-free X2C all-electron calculations, and low radial basis-set incompleteness
-for density tails and cutoff radii. This is why the primary branches use
-quadruple-zeta all-electron bases rather than compact valence bases. Effective
-core potential and valence-only density conventions are different physical
-objects and are not mixed into this data layer.
+The basis layer is deliberately small. It contains two primary all-electron
+quadruple-zeta-like branches and two supporting branches used for neutral/anion
+basis comparisons. Effective-core or valence-only basis conventions are different
+density definitions and are not mixed into this data layer.
 
 All basis definitions are stored in NWChem format with spherical/pure Gaussian
 basis functions. Generated profile metadata must record both the `basis_id` and
@@ -31,11 +28,13 @@ The primary heavy-element extension uses `dyall-v4z`. It provides continuous
 large-basis coverage through the actinide region and is therefore the default
 basis branch for the H-Lr dataset.
 
-The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, are
-committed anion-sensitivity branches. They are intentionally separate from the
-primary non-diffuse branches. In particular, `dyall-av4z` has discontinuous
-element coverage and should be treated as an available-element augmented branch,
-not as an H-Lr basis.
+The supporting branches, `x2c-QZVPall-s` and `dyall-av4z`, are committed
+neutral/anion comparison branches. They are intentionally separate from the
+primary non-diffuse branches. `x2c-QZVPall-s` is described in the BSE header as
+an all-electron relativistic polarized quadruple-zeta basis for one-component
+NMR shielding, so it should not be treated as a generic diffuse tail basis. In
+contrast, `dyall-av4z` is the augmented Dyall branch; its bundle coverage is
+discontinuous and should be treated as available-element coverage, not as H-Lr.
 
 ## Directory layout
 
@@ -102,12 +101,13 @@ the density generator and by the structural checker.
 | basis_id | role | basis coverage | n_elements | active dataset IDs |
 |---|---|---:|---:|---|
 | `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` |
-| `x2c-QZVPall-s` | supplemented H-Rn neutral/anion branch | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` |
+| `x2c-QZVPall-s` | NMR-shielding-oriented supplemented H-Rn neutral/anion branch | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` |
 | `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` |
 | `dyall-av4z` | augmented neutral/anion branch / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` |
 
-The `dyall-av4z` row reports bundle coverage. The active supplemented branch
-uses this basis for H-Ba/Hf-Ra neutral atoms plus selected anion states in the same available intervals, including Fr and Ra monoanions.
+The `dyall-av4z` row reports bundle coverage. The active augmented branch uses
+this basis for H-Ba/Hf-Ra neutral atoms plus selected anion states in the same
+available intervals, including Fr and Ra monoanions.
 
 ## Validation
 

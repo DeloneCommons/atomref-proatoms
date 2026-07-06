@@ -120,7 +120,9 @@ committed tables and refreshes `docs/tables/`, `docs/figures/`, and marked block
 ## Documentation map
 
 - [Scientific model](docs/theory.md): spherical fractional-occupation proatoms,
-  radial profiles, cutoff radii, and independent QA integration.
+  radial distributions, cutoff-radius definitions, and reference-gauge interpretation.
+- [Methods](docs/methods.md): state sources, basis branches, electronic-structure
+  settings, radial grids, validation, and comparison metrics.
 - [Results](docs/results.md): paper-style summary of QA, basis comparisons, sensitivity patterns, and practical recommendations.
 - [Data products](docs/data.md): profile, radii, QA, basis-sensitivity, and
   primary-basis-comparison file contracts.

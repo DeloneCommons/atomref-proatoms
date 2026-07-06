@@ -1,16 +1,16 @@
 # Generated radial profile datasets
 
 This directory stores the released spherical proatomic radial electron-density
-profiles. These files are the primary scientific data product of the repository:
-for each selected atom or ion, the table gives the spin-summed spherical density
-\(\rho(r)\) generated from the declared state, basis, relativistic convention,
-and self-consistent spherical fractional-occupation UKS model.
+profiles. It is a data contract page: it describes file layout, column naming,
+metadata, validation links, and regeneration commands. For the scientific model
+and interpretation, see `docs/theory.md`, `docs/methods.md`, and
+`docs/results.md`.
 
-The profile tables are not hand-fitted atomic radii and not post-SCF angular
-averages of ordinary open-shell atoms. The underlying SCF density is constrained
-to be spherical through angular-momentum-resolved fractional occupations; the
-stored profile is the radial representation of that self-consistent spherical
-reference density.
+For each selected atom or ion, the table gives the spin-summed spherical density
+\(\rho(r)\) generated from the declared state, basis, relativistic convention,
+and self-consistent spherical fractional-occupation UKS model. The profile
+tables are not hand-fitted atomic radii and not post-SCF angular averages of
+ordinary open-shell atoms.
 
 ## Dataset scopes
 

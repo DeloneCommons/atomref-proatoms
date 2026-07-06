@@ -4,9 +4,9 @@
 
 The state layer is a curated proatomic reference-state table, not a complete atomic spectroscopy database. Each generated state has a deterministic `state_id`, element, charge, electron count, multiplicity, configuration label, state role, source category, occupation policy, and state-record digest.
 
-Neutral atoms and cations are prepared from compact NIST-derived source tables. The generated state layer stores the information needed for reproducibility but does not redistribute raw NIST pages, numerical ionization energies, uncertainty tables, or bibliographic rows.
+Neutral atoms and cations are prepared from compact source tables derived from the [NIST Atomic Spectra Database Ground States and Ionization Energies interface](https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html). The generated state layer stores the information needed for reproducibility but does not redistribute raw NIST pages, numerical ionization energies, uncertainty tables, or bibliographic rows.
 
-Monoanions are curated separately because anion evidence is not captured by a simple NIST-only rule. Accepted or provisional monoanions are drawn from a compact Ning--Lu 2022 status layer and project curation. Rows whose evidence is theory-only, excluded, unbound, metastable-only, or otherwise problematic are not silently promoted to production physical anions. Formal monoanions and formal multianions are explicitly labeled as reference-density rows.
+Monoanions are curated separately because anion evidence is not captured by a simple NIST-only rule. Accepted or provisional monoanions are drawn from a compact status layer derived from the Ning--Lu review ([Ning and Lu, 2022](https://doi.org/10.1063/5.0080243)) and project curation. Rows whose evidence is theory-only, excluded, unbound, metastable-only, or otherwise problematic are not silently promoted to production physical anions. Formal monoanions and formal multianions are explicitly labeled as reference-density rows.
 
 The state roles used in the generated layer are:
 
@@ -26,11 +26,17 @@ The fixed basis universe is:
 | `x2c-QZVPall-s` | supplemented x2c branch | H--Rn neutral and anion states, cations excluded |
 | `dyall-av4z` | augmented Dyall branch | H--Ba and Hf--Ra neutral and anion states where covered, cations excluded |
 
-The primary branches define the default reference gauges. The supplemented/augmented branches are basis-distinct data products used to quantify diffuse-tail sensitivity and to provide explicitly selected alternative gauges for tail-sensitive analyses. They are not split into separate neutral and anion dataset IDs because the basis branch, not the charge class, is the data identity.
+The primary branches define the default reference gauges. The supplemented/augmented branches are basis-distinct data products used to quantify tail sensitivity and to provide explicitly selected alternative gauges for tail-sensitive analyses. They are not split into separate neutral and anion dataset IDs because the basis branch, not the charge class, is the data identity.
+
+The `x2c-QZVPall-s` branch needs a specific caveat. Its Basis Set Exchange header describes it as an all-electron relativistic polarized quadruple-zeta basis for one-component NMR shielding, from the same Karlsruhe x2c basis-set work as `x2c-QZVPall` ([Franzke et al., 2020](https://doi.org/10.1021/acs.jctc.0c00546)). It is retained here as a supplemented comparison branch, not as a conventional diffuse tail-optimized basis. The `dyall-av4z` branch is the actual augmented Dyall branch, with discontinuous element coverage inherited from the available basis bundle.
+
+## Electronic-structure convention
+
+All current profiles use PBE0 ([Adamo and Barone, 1999](https://doi.org/10.1063/1.478522)), spin-free one-electron X2C, unrestricted Kohn--Sham SCF, PySCF `2.13.1`, and pure/spherical Gaussian basis functions. The all-electron convention is part of the profile identity: effective-core or valence-only densities should not be mixed silently with these data. A different basis, relativistic treatment, core convention, state policy, or density model should receive a separate dataset identifier.
 
 ## SCF generation
 
-For each selected state and basis branch, the generator runs a one-center self-consistent spherical fractional-occupation UKS calculation with PBE0 and spin-free one-electron X2C. The SCF defaults are deliberately conservative:
+For each selected state and basis branch, the generator runs a one-center self-consistent spherical fractional-occupation UKS calculation under this electronic-structure convention. The SCF defaults are deliberately conservative:
 
 ```text
 conv_tol = 1.0e-9
@@ -40,7 +46,7 @@ diis_start_cycle = 1
 grid_level = 4
 ```
 
-The increased cycle count and DIIS settings are applied uniformly so that difficult diffuse or highly anionic cases are not handled by undocumented local exceptions. The generated metadata record the engine, expected engine version, basis checksum, SCF settings, state digest, and local SCF artifact paths.
+The increased cycle count and DIIS settings are applied uniformly so that difficult augmented-basis or highly anionic cases are not handled by undocumented local exceptions. The generated metadata record the engine, expected engine version, basis checksum, SCF settings, state digest, and local SCF artifact paths.
 
 ## Profile extraction
 
@@ -52,11 +58,13 @@ rho_e_bohr3__<state_id>
 
 The associated metadata records the profile-data version, basis identity, grid, method, density cutoffs, state list, column map, checksums, and related radii/QA paths. Profile extraction also writes radii and QA tables for the same dataset so that profile, radius, and validation rows remain synchronized.
 
-## Density-cutoff radii
+## Radial grids and density-cutoff radii
+
+The released profile tables use a 1200-point logarithmic grid from \(10^{-6}\) to 60 bohr. This grid resolves both near-nuclear density and low-density tails compactly; it is the release representation, not the only quadrature used for validation.
 
 For each profile, the radii layer computes the outermost interpolated crossing of the density cutoffs \(0.003\), \(0.001\), and \(0.0001\) electrons/bohr\(^3\). Interpolation uses the logarithm of density when both neighboring values are positive. The radii are reported in bohr and ångström.
 
-The cutoff radii are not experimental atomic radii. They are reproducible density-level descriptors of the selected spherical reference gauge. They are useful because they convert tail behavior into intuitive length shifts.
+The cutoff radii are not experimental atomic radii. They are reproducible density-level descriptors of the selected spherical reference gauge. The two higher cutoffs are practical outer-size descriptors; the \(0.0001\) electrons/bohr\(^3\) cutoff is intentionally retained as a far-tail and interpolation diagnostic.
 
 ## Validation criteria
 

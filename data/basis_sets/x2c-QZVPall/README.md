@@ -38,5 +38,4 @@ acdfcd7694d0de10703ff9194e3190f6859a51dabd23a8dfb68b7e3ec44b1d21
 
 ## References
 
-Franzke, Spiske, Pollak, and Weigend, J. Chem. Theory Comput. 2020, 16, 5658-5674. DOI:
-10.1021/acs.jctc.0c00546.
+Franzke, Spiske, Pollak, and Weigend, J. Chem. Theory Comput. 2020, 16, 5658-5674, [DOI: 10.1021/acs.jctc.0c00546](https://doi.org/10.1021/acs.jctc.0c00546).

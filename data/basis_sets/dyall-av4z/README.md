@@ -36,5 +36,4 @@ f5a4a4c03a9b08ba6c40ff409f91d89196ba96dcd620dc563f4b1cd103213e96
 
 ## References
 
-Dyall basis-set archive, Zenodo Version 1, DOI: 10.5281/zenodo.7574629, plus the
-original Dyall references listed in this bundle.
+Dyall basis-set archive, Zenodo Version 1, [DOI: 10.5281/zenodo.7574629](https://doi.org/10.5281/zenodo.7574629), plus the original Dyall references listed in this bundle.

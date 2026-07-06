@@ -677,7 +677,14 @@ def relative_l1_by_charge_svg() -> str:
                 f'height="{h:.1f}" fill="{shades[si]}" stroke="#333"/>'
             )
     parts.append(svg_text(left + plot_w / 2, height - 14, "charge", size=12))
-    parts.append(svg_text(18, top + plot_h / 2, "p95 rel. L1", size=12, anchor="middle"))
+    y_axis_label_x = 22.0
+    y_axis_label_y = top + plot_h / 2
+    parts.append(
+        f'<text x="{y_axis_label_x:.1f}" y="{y_axis_label_y:.1f}" '
+        'font-family="sans-serif" font-size="12" text-anchor="middle" '
+        f'transform="rotate(-90 {y_axis_label_x:.1f} {y_axis_label_y:.1f})">'
+        'p95 rel. L1</text>'
+    )
     legend_x = 116
     legend_y = 48
     for i, (label, _, _) in enumerate(series):

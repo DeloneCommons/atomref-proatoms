@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build diffuse-basis sensitivity QA from generated profile datasets."""
+"""Build supplemented/augmented basis-sensitivity QA from generated profiles."""
 
 from __future__ import annotations
 
@@ -91,13 +91,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--watch-cumulative-electrons",
         type=float,
         default=DEFAULT_MAX_CUMULATIVE_DELTA_WATCH_ELECTRONS,
-        help="Moderate-sensitivity threshold for sup |N_diffuse(<r)-N_base(<r)| in electrons.",
+        help="Moderate-sensitivity threshold for sup |N_supporting(<r)-N_base(<r)| in electrons.",
     )
     parser.add_argument(
         "--outlier-cumulative-electrons",
         type=float,
         default=DEFAULT_MAX_CUMULATIVE_DELTA_OUTLIER_ELECTRONS,
-        help="High-sensitivity threshold for sup |N_diffuse(<r)-N_base(<r)| in electrons.",
+        help="High-sensitivity threshold for sup |N_supporting(<r)-N_base(<r)| in electrons.",
     )
     parser.add_argument(
         "--watch-mean-shift-angstrom",
@@ -124,12 +124,12 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Profile root: {repo_relative_path(args.profiles_root)}")
     print(f"QA output root: {repo_relative_path(args.qa_root)}")
     print("Basis-sensitivity pairs:")
-    for base_dataset_id, diffuse_dataset_id in pairs:
+    for base_dataset_id, supporting_dataset_id in pairs:
         base_present = (args.profiles_root / base_dataset_id).is_dir()
-        diffuse_present = (args.profiles_root / diffuse_dataset_id).is_dir()
+        supporting_present = (args.profiles_root / supporting_dataset_id).is_dir()
         print(
-            f"  {base_dataset_id} -> {diffuse_dataset_id} "
-            f"(base_present={base_present}, diffuse_present={diffuse_present})"
+            f"  {base_dataset_id} -> {supporting_dataset_id} "
+            f"(base_present={base_present}, supporting_present={supporting_present})"
         )
     if args.dry_run:
         return 0
@@ -168,9 +168,11 @@ def main(argv: list[str] | None = None) -> int:
     if result.skipped_pairs:
         print("Skipped comparison pairs:")
         for skipped in result.skipped_pairs:
-            print(
-                "  {base_dataset_id} -> {diffuse_dataset_id}: {reason}".format(**skipped)
+            base = skipped.get("base_dataset_id", "<unknown>")
+            supporting = skipped.get(
+                "supporting_dataset_id", skipped.get("diffuse_dataset_id", "<unknown>")
             )
+            print(f"  {base} -> {supporting}: {skipped.get('reason', '<unknown>')}")
     return 0
 
 

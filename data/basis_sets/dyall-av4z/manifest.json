@@ -57,8 +57,8 @@
     "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
   },
   "notes": [
-    "Auxiliary augmented Dyall branch retained as frozen input data for basis-sensitivity studies.",
-    "The basis coverage is discontinuous; it skips La-Lu and Ac-Lr.",
-    "Active v2 anion sensitivity profile dataset uses this basis for anions in its declared coverage."
+    "Augmented Dyall branch retained as frozen input data for neutral/anion basis-comparison studies.",
+    "The active profile dataset uses this basis for neutral and anion states in its declared H-Ba/Hf-Ra coverage where selected; cations are excluded.",
+    "The bundle coverage is discontinuous and should not be described as H-Lr."
   ]
 }

@@ -38,7 +38,7 @@
 <rect x="701.0" y="304.0" width="19.2" height="0.0" fill="#8c8c8c" stroke="#333"/>
 <rect x="724.4" y="304.0" width="19.2" height="0.0" fill="#f2f2f2" stroke="#333"/>
 <text x="417.0" y="346.0" font-family="sans-serif" font-size="12" text-anchor="middle">charge</text>
-<text x="18.0" y="189.0" font-family="sans-serif" font-size="12" text-anchor="middle">p95 rel. L1</text>
+<text x="22.0" y="189.0" font-family="sans-serif" font-size="12" text-anchor="middle" transform="rotate(-90 22.0 189.0)">p95 rel. L1</text>
 <rect x="116" y="38" width="12" height="12" fill="#d9d9d9" stroke="#333"/>
 <text x="134.0" y="48.0" font-family="sans-serif" font-size="10" text-anchor="start">x2c-QZVPall → dyall-v4z</text>
 <rect x="116" y="56" width="12" height="12" fill="#8c8c8c" stroke="#333"/>

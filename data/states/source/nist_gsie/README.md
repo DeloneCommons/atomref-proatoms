@@ -2,7 +2,7 @@
 
 `nist_neutral_cation_states.csv` is the compact source table used by the current
 state builder for neutral atoms and cations. It was prepared from the NIST
-Atomic Spectra Database Ground States and Ionization Energies interface.
+[Atomic Spectra Database Ground States and Ionization Energies interface](https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html).
 
 Retained fields are deliberately small and auditable:
 

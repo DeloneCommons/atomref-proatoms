@@ -1,17 +1,15 @@
 # Quality-assurance tables
 
-This directory stores the quality-assurance layer for the generated spherical
-proatomic profile datasets. The QA layer is the release Methods record for the
-numerical density product: it explains how the profiles were checked after SCF,
-how density-derived radii were validated, how basis-set linear-dependency
-handling was recorded, how supplemented/augmented neutral-plus-anion branches were compared
-with their primary-basis counterparts, and how the two primary basis families
-compare over their shared state coverage.
+This directory stores the quality-assurance and comparison tables for the
+generated spherical proatomic profile datasets. It is a data contract page:
+it describes layouts, columns, current row counts, regeneration commands, and
+the difference between hard validation checks and scientific diagnostics. The
+paper-style interpretation is in `docs/results.md` and `docs/discussion.md`.
 
 The QA goal is not to prove that one basis set is universally correct. It is to
 verify that the committed spherical profiles are internally consistent generated
-artifacts, and to quantify where anion densities are sensitive to basis-set tail
-flexibility.
+data products and to quantify where neutral or anion densities are sensitive to
+basis-branch choices.
 
 ## What is being checked
 
@@ -39,7 +37,7 @@ and 110 angular points. Thus the electron-count gate is not a self-check on the
 same 1200-point profile mesh.
 
 The SCF settings used for the current generation pass are deliberately tolerant
-of difficult diffuse anions:
+of difficult augmented-basis or highly anionic cases:
 
 ```text
 max_cycle = 300
@@ -193,8 +191,10 @@ summary is in `docs/results.md`.
 The dyall augmented comparison shows a clear chemical pattern: accepted physical
 monoanions are mostly low-sensitivity, while formal multianions and all q = -3
 formal rows are highly tail-sensitive. This is expected and useful information,
-not a validation blocker. The x2c supplemented-basis comparison is much smaller for
-the committed H-Rn neutral/anion set.
+not a validation blocker. The x2c supplemented-basis comparison is much smaller
+for the committed H-Rn neutral/anion set; this is consistent with the fact that
+`x2c-QZVPall-s` is an NMR-shielding-oriented supplemented branch rather than a
+standard diffuse tail basis.
 
 
 ## Primary basis-family comparison QA
@@ -216,7 +216,7 @@ statement about diffuse functions.
 Use QA failures as validation blockers only for corruption-like problems: missing
 profiles, mismatched metadata, failed SCF, impossible electron counts, invalid
 grids, non-finite densities, or inconsistent radii. Use basis-sensitivity
-warnings as scientific guidance. Large diffuse sensitivity means that the tail of
+warnings as scientific guidance. Large basis-tail sensitivity means that the tail of
 that reference density depends strongly on basis flexibility; it does not mean the
 row is unusable, especially for explicitly formal anions.
 

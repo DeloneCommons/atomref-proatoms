@@ -1,4 +1,4 @@
-"""Diffuse-basis profile-sensitivity QA for generated profile datasets."""
+"""Supplemented/augmented basis profile-sensitivity QA for generated profiles."""
 
 from __future__ import annotations
 

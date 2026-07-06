@@ -2,7 +2,7 @@
 
 ## Proatoms as reference gauges
 
-Many atom-centered density analyses require a free-atom reference density. In stockholder and Hirshfeld-like schemes, promolecular-density constructions, deformation-density plots, and real-space descriptors, the reference proatom defines the radial background assigned to each element and charge state. The proatom is therefore a gauge: changing it changes atom-centered shells, tails, and integrated charge-transfer magnitudes, but it does not by itself create directional bond accumulation or other anisotropic interatomic features.
+Many atom-centered density analyses require a free-atom reference density. In stockholder and Hirshfeld-like schemes, promolecular-density constructions, deformation-density plots, and real-space descriptors, the reference proatom defines the radial background assigned to each element and charge state. The original Hirshfeld stockholder construction is one important example of this use of free-atom density references ([Hirshfeld, 1977](https://doi.org/10.1007/BF00549096)). The proatom is therefore a gauge: changing it changes atom-centered shells, tails, and integrated charge-transfer magnitudes, but it does not by itself create directional bond accumulation or other anisotropic interatomic features.
 
 This project provides a source-traceable and reproducible gauge for such workflows. The central data product is a spherical radial electron-density profile, accompanied by state, basis, method, grid, radii, and validation metadata. The aim is not to choose a chemically privileged atom for every molecular environment. The aim is to make the chosen atomic reference explicit, auditable, and stable across downstream analyses.
 
@@ -14,17 +14,17 @@ Closed-shell free atoms are spherical in the usual single-determinant picture, b
 
 ## State-source problem
 
-Neutral atoms and positive ions can be anchored primarily to evaluated spectroscopic state data. In the present data layer, neutral/cation state labels are prepared from compact NIST-derived source tables. The stored state records retain compact configurations, ground-level labels, multiplicities or curated multiplicity assignments, and ionization-energy provenance classes needed for reproducible generation.
+Neutral atoms and positive ions can be anchored primarily to evaluated spectroscopic state data. In the present data layer, neutral/cation state labels are prepared from compact source tables derived from the [NIST Atomic Spectra Database Ground States and Ionization Energies interface](https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html). The stored state records retain compact configurations, ground-level labels, multiplicities or curated multiplicity assignments, and ionization-energy provenance classes needed for reproducible generation.
 
-Atomic anions require a different treatment. Negative-ion evidence is uneven across the periodic table, and weakly bound, metastable, controversial, or theory-only cases cannot be treated as a single uniform class. The monoanion layer therefore uses a compact Ning--Lu 2022 status table together with explicit project curation. Accepted and provisional monoanions are separated from theory-only diagnostics, excluded/problematic entries, and formal rows introduced only to support reference-density workflows.
+Atomic anions require a different treatment. Negative-ion evidence is uneven across the periodic table, and weakly bound, metastable, controversial, or theory-only cases cannot be treated as a single uniform class. The monoanion layer therefore uses a compact status table derived from the Ning--Lu review of atomic electron affinities and negative-ion levels ([Ning and Lu, 2022](https://doi.org/10.1063/5.0080243)) together with explicit project curation. Accepted and provisional monoanions are separated from theory-only diagnostics, excluded/problematic entries, and formal rows introduced only to support reference-density workflows.
 
 For charges below -1, and for required monoanions without an accepted physical row, the dataset uses explicitly formal anion references. These rows are included because stockholder/Hirshfeld-I-like workflows often need an anionic reference density for every atom that can appear in an iterative charge model. They are not claims of stable isolated atomic multianions or experimental negative-ion ground states.
 
 ## Basis branches and scientific questions
 
-The current data layer uses four fixed all-electron scalar-relativistic basis branches. Two are primary branches: `x2c-QZVPall` over H--Rn and `dyall-v4z` over H--Lr. Two are supplemented/augmented branches used for neutral and anion tail-sensitivity analysis: `x2c-QZVPall-s` and `dyall-av4z`.
+The current data layer uses four fixed all-electron scalar-relativistic basis branches. Two are primary branches: `x2c-QZVPall` over H--Rn and `dyall-v4z` over H--Lr. Two are supporting branches used for neutral and anion basis-sensitivity analysis: `x2c-QZVPall-s` and `dyall-av4z`. The former is a supplemented x2c branch, while the latter is the augmented Dyall branch.
 
-This organization answers five questions:
+This branch structure and validation layer define the five questions answered in the Results and Discussion:
 
 1. Which spherical atomic and ionic reference densities are provided?
 2. Which state, basis, SCF, profile, radii, and validation policies produced them?

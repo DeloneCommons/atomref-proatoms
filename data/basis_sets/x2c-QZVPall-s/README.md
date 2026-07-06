@@ -6,14 +6,17 @@ radial-density generation.
 
 ## Scope
 
-- Role: supplemented H-Rn x2c basis branch used for neutral/anion basis-sensitivity work.
+- Role: NMR-shielding-oriented supplemented H-Rn x2c branch used for neutral/anion comparison work.
 - Coverage: H-Rn.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
 - Active dataset identifiers: `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2`.
 
-The active profile configuration uses this basis for the H-Rn neutral/anion
-supplemented branch, with cations excluded. Results produced with it remain
-separately identified by dataset and basis identifiers.
+The BSE header describes this basis as an all-electron relativistic polarized
+quadruple-zeta basis for one-component NMR shielding. The active profile
+configuration uses it for the H-Rn neutral/anion supplemented branch, with
+cations excluded. Results produced with it remain separately identified by
+dataset and basis identifiers; the branch should not be treated as a conventional
+diffuse tail basis.
 
 ## Bundle metadata
 
@@ -34,5 +37,4 @@ f11e108ed19a8e72a6a9858e7f427972c5e4fd47fdc753290b9b83aa2d5f8dec
 
 ## References
 
-Franzke, Spiske, Pollak, and Weigend, J. Chem. Theory Comput. 2020, 16, 5658-5674. DOI:
-10.1021/acs.jctc.0c00546.
+Franzke, Spiske, Pollak, and Weigend, J. Chem. Theory Comput. 2020, 16, 5658-5674, [DOI: 10.1021/acs.jctc.0c00546](https://doi.org/10.1021/acs.jctc.0c00546).
