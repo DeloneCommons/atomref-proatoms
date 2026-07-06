@@ -8,6 +8,8 @@ theme:
   features:
     - navigation.sections
     - navigation.top
+    - navigation.tracking
+    - toc.follow
     - content.code.copy
 
 plugins:
@@ -21,18 +23,22 @@ extra_javascript:
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
-  - Overview: index.md
-  - Scientific model: theory.md
-  - Data products: data.md
-  - Scientific data-layer report: data_layer_report.md
-  - Input data: inputs.md
-  - State policy: state_policy.md
-  - Workflow: workflow.md
-  - How it works:
+  - Abstract and scope: index.md
+  - Introduction: introduction.md
+  - Theory: theory.md
+  - Methods: methods.md
+  - Results: results.md
+  - Discussion: discussion.md
+  - Conclusions: conclusions.md
+  - Other: other.md
+  - Reference:
+      - Data products: data.md
+      - Input data: inputs.md
+      - State policy details: state_policy.md
+      - Workflow and validation: workflow.md
       - Notebook guide: notebooks/README.md
-      - Release artifact inspection: notebooks/proatomic_profiles.ipynb
+      - Profile-table inspection: notebooks/proatomic_profiles.ipynb
       - Sphericalization demo: notebooks/spherical_vs_post_average_demo.ipynb
-  - Attribution:
       - License: license.md
       - AI assistance note: ai_note.md
 
@@ -41,5 +47,6 @@ markdown_extensions:
   - tables
   - toc:
       permalink: true
+      toc_depth: 3
   - pymdownx.arithmatex:
       generic: true

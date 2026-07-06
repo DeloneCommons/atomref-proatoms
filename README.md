@@ -32,8 +32,7 @@ an independent log-radius QA quadrature. The profile data version is `2.0.0`.
 
 ## Scientific contents
 
-After regenerating the supplemented/augmented branches, the data layer contains four
-profile/radii/QA datasets and 1289 dataset-state rows:
+The data layer contains four profile/radii/QA datasets and 1289 dataset-state rows:
 
 | dataset ID | basis | selected rows | role |
 |---|---|---:|---|
@@ -45,7 +44,7 @@ profile/radii/QA datasets and 1289 dataset-state rows:
 The two primary basis branches are large all-electron quadruple-zeta families
 chosen for broad periodic-table coverage and reduced radial basis-set error. The
 supplemented/augmented branches are not split by neutral/anion charge class;
-they retain their own basis identities and deliberately exclude cations. Generated artifacts are stored under:
+they retain their own basis identities and deliberately exclude cations. Generated data files are stored under:
 
 ```text
 data/profiles/<dataset_id>/profiles.csv
@@ -58,7 +57,7 @@ ignored `local-data/scf/` paths and are not part of the committed release tables
 
 ## Quality-assurance summary
 
-Every committed profile row passes the current release gate. The gate verifies
+Every committed profile row passes the current validation criteria. The validation layer verifies
 SCF completion, independent electron-count integration, angular sphericity,
 finite density values, tail coverage, and cutoff-radius consistency. The current
 maximum independent electron-count error is about `2.5e-12` electrons, and the
@@ -66,15 +65,15 @@ maximum relative angular density standard deviation above the QA density floor i
 about `1.6e-14`.
 
 Diffuse/supplemented basis sensitivity is stored under
-`data/qa/basis_sensitivity/`. The dyall augmented comparison is expected to show large and
-scientifically meaningful tail sensitivity for a small set of formal/high-charge
-anions; the x2c supplemented comparison has so far been small for the anion set.
-The newly unified supplemented branches make the neutral baseline part of the same
-comparison product rather than a separate helper dataset.
-These sensitivity rows are scientific diagnostics, not release failures.
+`data/qa/basis_sensitivity/`: dyall-v4z → dyall-av4z has 166 matched
+neutral/anion rows with 14 high-sensitivity formal-anion outliers, while
+x2c-QZVPall → x2c-QZVPall-s has 192 matched neutral/anion rows and no high
+outliers. The primary basis-family comparison is stored under
+`data/qa/basis_comparisons/` and matches 430 H-Rn states between x2c-QZVPall and
+dyall-v4z. These comparison rows are scientific diagnostics, not release failures.
 
 For a compact Methods-style summary of QA, basis comparisons, and recommended
-next analyses, see the [scientific data-layer report](docs/data_layer_report.md).
+next analyses, see the [Results](docs/results.md).
 
 ## How to inspect the data
 
@@ -109,33 +108,33 @@ python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
 The `--list` and `--dry-run` options on `compute_wavefunctions.py` and
 `extract_profiles.py` inspect the active build plan without running SCF or
-rewriting generated artifacts. `scripts/build_data_layer_report.py` only reads
-committed tables and regenerates `docs/data_layer_report.md`.
+rewriting generated artifacts. `scripts/prepare_docs.py --write` only reads
+committed tables and refreshes `docs/tables/`, `docs/figures/`, and marked blocks in `docs/results.md`.
 
 ## Documentation map
 
 - [Scientific model](docs/theory.md): spherical fractional-occupation proatoms,
   radial profiles, cutoff radii, and independent QA integration.
-- [Scientific data-layer report](docs/data_layer_report.md): generated narrative
-  summary of QA, basis comparisons, sensitivity patterns, and pending analyses.
-- [Data products](docs/data.md): profile, radii, QA, and basis-sensitivity file
-  contracts.
+- [Results](docs/results.md): paper-style summary of QA, basis comparisons, sensitivity patterns, and practical recommendations.
+- [Data products](docs/data.md): profile, radii, QA, basis-sensitivity, and
+  primary-basis-comparison file contracts.
 - [Input data](docs/inputs.md): basis bundles and atomic-state curation.
 - [State policy](docs/state_policy.md): state-source hierarchy, formal anion
   meaning, and interpretation limits.
 - [Workflow](docs/workflow.md): scripts, package layout, and regeneration steps.
-- [Notebooks](docs/notebooks/README.md): artifact-inspection and sphericalization
+- [Notebooks](docs/notebooks/README.md): profile-inspection and sphericalization
   demonstration notebooks.
 - [License](docs/license.md) and [AI assistance note](docs/ai_note.md).
 
 ## Lightweight consumers
 
-This repository is the data-generation and release-artifact project. Lightweight
+This repository is the data-generation and publication-data project. Lightweight
 runtime packages may consume compact generated snapshots from `data/profiles/`,
 `data/radii/`, and `data/qa/`, but they should not depend on PySCF, Basis Set
 Exchange tooling, external quantum-chemistry programs, or generator internals.

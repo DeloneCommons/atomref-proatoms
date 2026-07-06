@@ -35,6 +35,11 @@ from .artifacts import (
     RADII_DATASET_SCHEMA_VERSION,
     profile_density_column,
 )
+from .basis_comparison import (
+    BASIS_COMPARISON_FILES,
+    BASIS_COMPARISON_SCHEMA_VERSION,
+    BASIS_COMPARISONS_DIRNAME,
+)
 from .basis_sensitivity import (
     BASIS_SENSITIVITY_DIRNAME,
     BASIS_SENSITIVITY_FILES,
@@ -46,7 +51,7 @@ from .build_plan import ProfileBuildJob, build_jobs_for_datasets
 
 ROOT_README = "README.md"
 QA_OVERVIEW_FILES = {"qa_summary.csv", "qa_report.md", "metadata.json"}
-SPECIAL_QA_DIRS = {BASIS_SENSITIVITY_DIRNAME}
+SPECIAL_QA_DIRS = {BASIS_SENSITIVITY_DIRNAME, BASIS_COMPARISONS_DIRNAME}
 
 
 @dataclass(frozen=True)
@@ -671,6 +676,78 @@ def _check_basis_sensitivity_qa(
         _check_counted_csv(path, expected_count, errors=errors)
 
 
+
+def _check_basis_comparison_qa(
+    directory: Path, *, config: ProfileDatasetConfig, errors: list[str]
+) -> None:
+    """Validate primary basis-comparison QA artifacts when present."""
+
+    if not _require_files(directory, sorted(BASIS_COMPARISON_FILES), errors):
+        return
+    metadata_path = directory / "metadata.json"
+    metadata = _load_json(metadata_path, errors)
+    if metadata is None:
+        return
+    label = repo_relative_path(metadata_path)
+    if metadata.get("schema_version") != BASIS_COMPARISON_SCHEMA_VERSION:
+        errors.append(
+            f"{label}: schema_version must be {BASIS_COMPARISON_SCHEMA_VERSION!r}, "
+            f"got {metadata.get('schema_version')!r}"
+        )
+        return
+    if metadata.get("profile_data_version") != config.profile_data_version:
+        errors.append(
+            f"{label}: profile_data_version must be {config.profile_data_version!r}, "
+            f"got {metadata.get('profile_data_version')!r}"
+        )
+
+    pair_outputs = metadata.get("pair_outputs", {})
+    if not isinstance(pair_outputs, Mapping):
+        errors.append(f"{label}: pair_outputs must be an object")
+        return
+
+    expected_counts: dict[Path, int] = {}
+    observed_totals = {
+        "row_count": 0,
+        "summary_count": 0,
+        "outlier_count": 0,
+        "metric_distribution_count": 0,
+    }
+    for output_meta in pair_outputs.values():
+        if not isinstance(output_meta, Mapping):
+            errors.append(f"{label}: pair_outputs entries must be objects")
+            continue
+        for path_key, count_key in (
+            ("rows_csv", "row_count"),
+            ("summary_csv", "summary_count"),
+            ("outliers_csv", "outlier_count"),
+            ("metric_distributions_csv", "metric_distribution_count"),
+        ):
+            output_path = str(output_meta.get(path_key, ""))
+            if not output_path:
+                errors.append(f"{label}: pair output missing {path_key!r}")
+                continue
+            try:
+                expected_count = int(output_meta.get(count_key, -1))
+            except (TypeError, ValueError):
+                expected_count = -1
+            expected_counts[_metadata_output_path(directory, output_path)] = expected_count
+            observed_totals[count_key] += max(expected_count, 0)
+
+    for key, observed_total in observed_totals.items():
+        try:
+            expected_total = int(metadata.get(key, -1))
+        except (TypeError, ValueError):
+            expected_total = -1
+        if expected_total >= 0 and observed_total != expected_total:
+            errors.append(
+                f"{label}: {key} must equal summed pair outputs "
+                f"({observed_total}), got {metadata.get(key)!r}"
+            )
+
+    for path, expected_count in expected_counts.items():
+        _check_counted_csv(path, expected_count, errors=errors)
+
 def _scf_settings_from_config(
     config: ProfileDatasetConfig, *, max_cycle: int | None = None
 ) -> SCFSettings:
@@ -763,6 +840,7 @@ def check_generated_artifacts(
     radii_dirs = _root_dataset_dirs(radii_root)
     qa_all_dirs = _root_dataset_dirs(qa_root)
     basis_sensitivity_present = BASIS_SENSITIVITY_DIRNAME in qa_all_dirs
+    basis_comparisons_present = BASIS_COMPARISONS_DIRNAME in qa_all_dirs
     qa_dirs = qa_all_dirs - SPECIAL_QA_DIRS
     generated_any = bool(profile_dirs or radii_dirs or qa_dirs)
     errors: list[str] = []
@@ -774,6 +852,12 @@ def check_generated_artifacts(
         if basis_sensitivity_present:
             _check_basis_sensitivity_qa(
                 qa_root / BASIS_SENSITIVITY_DIRNAME,
+                config=config,
+                errors=errors,
+            )
+        if basis_comparisons_present:
+            _check_basis_comparison_qa(
+                qa_root / BASIS_COMPARISONS_DIRNAME,
                 config=config,
                 errors=errors,
             )
@@ -831,6 +915,12 @@ def check_generated_artifacts(
     if basis_sensitivity_present:
         _check_basis_sensitivity_qa(
             qa_root / BASIS_SENSITIVITY_DIRNAME,
+            config=config,
+            errors=errors,
+        )
+    if basis_comparisons_present:
+        _check_basis_comparison_qa(
+            qa_root / BASIS_COMPARISONS_DIRNAME,
             config=config,
             errors=errors,
         )

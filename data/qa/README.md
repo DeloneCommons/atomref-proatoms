@@ -4,8 +4,9 @@ This directory stores the quality-assurance layer for the generated spherical
 proatomic profile datasets. The QA layer is the release Methods record for the
 numerical density product: it explains how the profiles were checked after SCF,
 how density-derived radii were validated, how basis-set linear-dependency
-handling was recorded, and how supplemented/diffuse anion branches were compared
-with their primary-basis counterparts.
+handling was recorded, how supplemented/augmented neutral-plus-anion branches were compared
+with their primary-basis counterparts, and how the two primary basis families
+compare over their shared state coverage.
 
 The QA goal is not to prove that one basis set is universally correct. It is to
 verify that the committed spherical profiles are internally consistent generated
@@ -78,29 +79,38 @@ data/qa/basis_sensitivity/
     basis_sensitivity_summary.csv
     basis_sensitivity_outliers.csv
     basis_sensitivity_metric_distributions.csv
+
+data/qa/basis_comparisons/
+  metadata.json
+  x2c-QZVPall__dyall-v4z/
+    basis_comparison.csv
+    basis_comparison_summary.csv
+    basis_comparison_outliers.csv
+    basis_comparison_metric_distributions.csv
 ```
 
 Per-dataset `qa.csv` files contain one row per generated state. The top-level
 summary and `qa_report.md` aggregate dataset-level pass/fail status. The
 basis-sensitivity tables compare matched neutral and anion states in primary and
-supplemented/augmented branches. Pair-specific files are stored in subdirectories
+supplemented/augmented branches. The `basis_comparisons/` product compares the
+two primary basis families over their H-Rn overlap; it is not a diffuse-basis
+sensitivity test. Pair-specific files are stored in subdirectories
 named after the base basis set; root-level files are aggregate compatibility
 outputs. `check_basis_sensitivity.py` emits every configured dyall and x2c
 comparison by default when the corresponding generated profile datasets are
 present.
 
-## Expected generated status after regenerating unified supplemented branches
+## Current generated status
 
 | dataset ID | rows | failed rows | linear-dependency warning count |
 |---|---:|---:|---:|
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | 430 | 0 | 0 |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | 501 | 0 | 266 |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | 192 | 0 expected | to be regenerated |
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | 164 | 0 expected | to be regenerated |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | 192 | 0 | 38 |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | 166 | 0 | 68 |
 
-After regenerating the unified supplemented/augmented branches, the top-level QA
-metadata should record four generated datasets, 1287 dataset-state rows, and zero
-release-gate failures.
+The top-level QA metadata records four generated datasets, 1289 dataset-state
+rows, and zero validation failures.
 
 Linear-dependency warnings are expected for some large or supplemented atomic
 basis calculations. In the present data they concentrate in the dyall branches
@@ -155,7 +165,7 @@ These fields are diagnostics rather than automatic release failures.
 
 ## Basis-sensitivity QA
 
-The basis-sensitivity layer asks how much a matched anion radial density changes
+The basis-sensitivity layer asks how much a matched neutral or anion radial density changes
 when a supplemented or augmented basis branch is used. It compares exact matched
 states by state ID and state-record digest; missing or mismatched rows are not
 silently hidden.
@@ -164,31 +174,46 @@ Current basis-sensitivity counts:
 
 ```text
 dyall-v4z vs dyall-av4z:
-  rows: 91
+  rows: 166
   high-sensitivity outliers: 14
-  release-gate failures: 0
+  validation failures: 0
 
 x2c-QZVPall vs x2c-QZVPall-s:
-  rows: 106
+  rows: 192
   high-sensitivity outliers: 0
-  release-gate failures: 0
+  validation failures: 0
 ```
 
 The tables record integrated L1 radial-distribution differences,
 electron-count deltas, cumulative electron-count distribution shifts,
 electron-quantile radius shifts, density-cutoff radius shifts, tail-electron
 differences, and pointwise density diagnostics. The most interpretable release
-summary is in `docs/data_layer_report.md`.
+summary is in `docs/results.md`.
 
 The dyall augmented comparison shows a clear chemical pattern: accepted physical
 monoanions are mostly low-sensitivity, while formal multianions and all q = -3
 formal rows are highly tail-sensitive. This is expected and useful information,
-not a release blocker. The x2c supplemented-basis comparison is much smaller for
+not a validation blocker. The x2c supplemented-basis comparison is much smaller for
 the committed H-Rn neutral/anion set.
+
+
+## Primary basis-family comparison QA
+
+The primary basis-comparison layer asks how much the two primary basis families
+differ over their H-Rn overlap. It matches exact states by `state_id` and
+state-record digest. The current `x2c-QZVPall__dyall-v4z` comparison contains
+430 matched rows, one high-difference formal multianion outlier, and zero
+integrity failures. Signed metric deltas are `dyall-v4z` minus `x2c-QZVPall`.
+
+The comparison uses the same radial-distribution L1, cumulative electron-count,
+mean radial shift, density-cutoff radius, tail-electron, moment, and diagnostic
+pointwise-density metrics as the supplemented/augmented sensitivity layer. The
+interpretation is different: it is a primary basis-family comparison, not a
+statement about diffuse functions.
 
 ## Recommended interpretation
 
-Use QA failures as release blockers only for corruption-like problems: missing
+Use QA failures as validation blockers only for corruption-like problems: missing
 profiles, mismatched metadata, failed SCF, impossible electron counts, invalid
 grids, non-finite densities, or inconsistent radii. Use basis-sensitivity
 warnings as scientific guidance. Large diffuse sensitivity means that the tail of
@@ -201,25 +226,25 @@ branches separately or construct a separate explicitly named branch.
 
 ## Regeneration
 
-QA tables are generated artifacts and should not be hand-edited. They are
+QA tables are generated data products and should not be hand-edited. They are
 regenerated together with profiles and radii, then checked for active-dataset
 consistency, by:
 
 ```bash
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
-python scripts/build_data_layer_report.py
+python scripts/prepare_docs.py --write
 ```
 
 The compact `qa_report.md`, together with
-`check_profile_artifacts.py --require-generated`, is the primary release-gate
-summary after a profile generation run. The generated `docs/data_layer_report.md`
-is the narrative scientific report.
+`check_profile_artifacts.py --require-generated`, is the primary validation
+summary after a profile generation run. The generated blocks in `docs/results.md` are the paper-style scientific Results tables and figures.
 
 ## Related documentation
 
-- Scientific data-layer report: `docs/data_layer_report.md`.
+- Results: `docs/results.md`.
 - Independent electron-count QA model: `docs/theory.md`.
-- Released artifact contract: `docs/data.md`.
+- Released data contract: `docs/data.md`.
 - Regeneration workflow: `docs/workflow.md`.

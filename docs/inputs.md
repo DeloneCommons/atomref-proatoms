@@ -78,11 +78,13 @@ Basis branches currently declared for profile generation:
 |---|---|---:|
 | `x2c-QZVPall` | primary H-Rn scalar-relativistic branch | all curated states, H-Rn |
 | `dyall-v4z` | primary H-Lr heavy-element branch | all curated states, H-Lr |
-| `x2c-QZVPall-s` | supplemented x2c branch | anions, H-Rn |
-| `dyall-av4z` | augmented dyall branch | anions where available within H-Lr |
+| `x2c-QZVPall-s` | supplemented x2c branch | neutral and anion states, H-Rn; cations excluded |
+| `dyall-av4z` | augmented dyall branch | neutral and anion states in H-Ba and Hf-Ra where covered; cations excluded |
 
 The two primary datasets are not split into separate atom/cation/anion products.
-The supplemented/augmented branches are separate anion datasets used to quantify basis-set tail sensitivity while preserving basis identity.
+The supplemented/augmented branches likewise keep neutral and anion rows together
+under one basis identity, while excluding cations because their compact densities
+are not the focus of the tail-sensitivity comparison.
 
 The basis text checksum is the basis-data identity. Ordinary validation is
 offline and checks required files, checksums, NWChem spherical headers, manifest

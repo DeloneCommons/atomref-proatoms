@@ -181,21 +181,9 @@ Requires caution or sensitivity checks:
 - subtle heavy-atom tail features;
 - conclusions that change when the proatom reference state changes.
 
-## Publication-safe wording
+## Reuse guidance
 
-Recommended wording:
-
-```text
-We used spherical reference proatoms generated under the documented
-atomref-proatoms state policy. Neutral and cationic states are NIST-derived;
-accepted monoanions use the Ning--Lu 2022 anion-status layer; formal anions are
-explicitly labeled stockholder-reference states and are not claimed as stable
-isolated atomic anions.
-```
-
-Avoid wording that says every proatom is the lowest-energy isolated atom or ion
-at the user's method/basis, or that formal multianions are stable isolated atomic
-ground states.
+When these data are used in another analysis, the state policy should be described as part of the reference-density convention. The essential points are that neutral and cationic rows are NIST-derived, accepted monoanions use the Ning--Lu 2022 anion-status layer, and formal anions are explicitly labeled reference-density rows. Formal multianions and nonaccepted formal monoanions should not be described as stable isolated atomic ground states.
 
 ## Validation
 

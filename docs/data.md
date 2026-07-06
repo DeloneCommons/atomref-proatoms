@@ -6,10 +6,10 @@ electronic-structure settings, radial grid, QA grid, density cutoffs, selected
 basis families, element coverage, charge-class selection, and state-role
 selection.
 
-The generated release artifacts live under `data/profiles/`, `data/radii/`, and
-`data/qa/`. Profile, radii, and QA tables are generated artifacts: do not
+The generated data files live under `data/profiles/`, `data/radii/`, and
+`data/qa/`. Profile, radii, and QA tables are generated data products: do not
 hand-edit them. Change the source/configuration layer instead, regenerate the
-artifacts, and run the release-gate checks.
+tables, and run the validation checks.
 
 ## Profile datasets
 
@@ -53,8 +53,8 @@ stored release grid has 1200 logarithmic radial points from `1e-6` to `60` bohr.
 
 `metadata.json` records the dataset identity, profile-data version, basis ID and
 basis checksum, density model, method settings, radial grid, QA grid, density
-cutoffs, state list, column map, related artifact paths, and generator
-provenance. The local SCF artifact paths recorded in metadata are regeneration
+cutoffs, state list, column map, related data paths, and generator
+provenance. The local SCF paths recorded in metadata are regeneration
 provenance; those files are intentionally ignored by Git.
 
 The directory-level details are documented in `data/profiles/README.md`.
@@ -79,7 +79,7 @@ interpolation diagnostic.
 
 The directory-level details are documented in `data/radii/README.md`.
 
-## QA artifacts
+## QA data
 
 Each generated QA dataset contains:
 
@@ -92,11 +92,11 @@ The aggregate QA layer contains:
 - `data/qa/qa_report.md`
 - `data/qa/metadata.json`
 
-The current generated QA summary contains four datasets, 1128 dataset-state rows,
-and zero release-gate failures. The QA layer records SCF completion, independent
+The current generated QA summary contains four datasets, 1289 dataset-state rows,
+and zero validation failures. The QA layer records SCF completion, independent
 electron-count integration, finite-density checks, tail coverage, cutoff-radius
 consistency, angular sphericity, and linear-dependency diagnostics.
-Linear-dependency warnings are reported as diagnostics; they are not release
+Linear-dependency warnings are reported as diagnostics; they are not validation
 failures when the generated density passes the numerical QA gate.
 
 The directory-level details are documented in `data/qa/README.md`.
@@ -133,29 +133,50 @@ CSV files are aggregate compatibility outputs. `check_basis_sensitivity.py` emit
 every configured supplemented/augmented comparison by default when the
 corresponding generated profile datasets are present.
 
-Expected generated counts after regenerating unified supplemented branches are:
+Current generated basis-sensitivity counts are:
 
-| comparison | rows | high-sensitivity outliers | release-gate failures |
-|---|---:|---:|---:|
-| `dyall-v4z` vs `dyall-av4z` | 166 | to be recalibrated after regeneration | 0 expected |
-| `x2c-QZVPall` vs `x2c-QZVPall-s` | 192 | to be recalibrated after regeneration | 0 expected |
-| aggregate | 356 | to be recalibrated after regeneration | 0 expected |
+| comparison | rows | low | moderate | high-sensitivity outliers | validation failures |
+|---|---:|---:|---:|---:|---:|
+| `dyall-v4z` vs `dyall-av4z` | 166 | 132 | 20 | 14 | 0 |
+| `x2c-QZVPall` vs `x2c-QZVPall-s` | 192 | 192 | 0 | 0 | 0 |
+| aggregate | 358 | 324 | 20 | 14 | 0 |
 
 The sensitivity metrics classify how much the radial density distribution changes
 when the diffuse/supplemented basis branch is used. Large sensitivity can be
 scientifically expected for some formal or highly charged anions and is not, by
-itself, a release blocker. The narrative interpretation and recommended next
-analyses are summarized in the [scientific data-layer report](data_layer_report.md).
+itself, a validation blocker. The narrative interpretation and recommended next
+analyses are summarized in the [Results](results.md).
 
-## Generated-artifact policy
+## Primary basis-family comparison QA
 
-Regenerate profiles, radii, QA, and the current basis-sensitivity QA with:
+The primary basis-family comparison is stored below:
+
+```text
+data/qa/basis_comparisons/
+  metadata.json
+  x2c-QZVPall__dyall-v4z/
+    basis_comparison.csv
+    basis_comparison_summary.csv
+    basis_comparison_outliers.csv
+    basis_comparison_metric_distributions.csv
+```
+
+This comparison is not a diffuse-basis sensitivity test. It compares the primary
+`x2c-QZVPall` and `dyall-v4z` branches over their H-Rn overlap, matching exact
+`state_id` values and state-record digests. The current data product contains 430
+matched rows, zero integrity failures, and one high-difference formal multianion
+outlier. Signed deltas are `dyall-v4z` minus `x2c-QZVPall`.
+
+## Regeneration policy
+
+Regenerate profiles, radii, QA, basis-sensitivity QA, primary-basis-comparison QA, and documentation-derived outputs with:
 
 ```bash
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
-python scripts/build_data_layer_report.py
+python scripts/prepare_docs.py --write
 ```
 
 The expensive local SCF material is stored under:

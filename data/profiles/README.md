@@ -27,8 +27,8 @@ pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2
   x2c-QZVPall-s, H-Rn, neutrals and anions, 192 density columns
 
 pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2
-  dyall-av4z, H-Ba/Hf-Ra neutrals plus selected H-Ba/Hf-At anions,
-  164 density columns
+  dyall-av4z, H-Ba/Hf-Ra neutral and anion states where covered,
+  166 density columns
 ```
 
 The primary datasets are deliberately not split into separate neutral, cation,
@@ -84,7 +84,7 @@ a supplemented or augmented branch should be cited with that branch's `basis_id`
 in any downstream analysis.
 
 For the current scientific QA and basis-sensitivity summary, see
-`docs/data_layer_report.md` and `data/qa/README.md`.
+`docs/results.md` and `data/qa/README.md`.
 
 ## Regeneration
 
@@ -95,6 +95,7 @@ consistency gate with:
 ```bash
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
@@ -108,6 +109,6 @@ python scripts/extract_profiles.py --dry-run
 ## Related documentation
 
 - Scientific density model: `docs/theory.md`.
-- Scientific data-layer report: `docs/data_layer_report.md`.
+- Results: `docs/results.md`.
 - Released artifact contract: `docs/data.md`.
 - Regeneration workflow: `docs/workflow.md`.

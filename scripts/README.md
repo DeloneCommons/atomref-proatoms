@@ -13,8 +13,9 @@ python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
-python scripts/build_data_layer_report.py
+python scripts/prepare_docs.py --write
 ```
 
 `check_states.py`, `check_basis_bundles.py`, `check_profile_artifacts.py`,
@@ -32,8 +33,9 @@ artifacts require the generator dependency set.
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
 | `check_basis_sensitivity.py` | Compare primary and supplemented/augmented profile branches for matched neutral and anion states where both generated datasets are present. | `data/qa/basis_sensitivity/` |
-| `check_profile_artifacts.py` | Validate generated profile/radii/QA artifact directories against the active dataset config. | terminal validation report |
-| `build_data_layer_report.py` | Build a Methods-style scientific Markdown report from existing committed data artifacts. | `docs/data_layer_report.md` |
+| `check_basis_comparisons.py` | Compare the two primary basis families over the H-Rn overlap by exact state ID and state-record digest. | `data/qa/basis_comparisons/` |
+| `check_profile_artifacts.py` | Validate generated profile/radii/QA data directories against the active dataset config. | terminal validation report |
+| `prepare_docs.py` | Refresh paper-style documentation table fragments, SVG figures, and marked Results blocks from committed data. | `docs/tables/`, `docs/figures/`, `docs/results.md` |
 
 ## `check_states.py`
 
@@ -167,6 +169,39 @@ Options:
 - `--watch-mean-shift-angstrom`, `--outlier-mean-shift-angstrom`:
   moderate/high sensitivity thresholds for cumulative-difference mean radial
   shift.
+
+
+## `check_basis_comparisons.py`
+
+Common commands:
+
+```bash
+python scripts/check_basis_comparisons.py --force
+python scripts/check_basis_comparisons.py --dry-run
+```
+
+This step writes the primary basis-family comparison artifacts. It currently
+compares `x2c-QZVPall` with `dyall-v4z` over the H-Rn overlap. It is not a
+diffuse-basis sensitivity comparison. Rows are matched by exact `state_id` and
+state-record digest, and signed deltas are `dyall-v4z` minus `x2c-QZVPall`.
+
+Outputs:
+
+```text
+data/qa/basis_comparisons/
+  metadata.json
+  x2c-QZVPall__dyall-v4z/
+    basis_comparison.csv
+    basis_comparison_summary.csv
+    basis_comparison_outliers.csv
+    basis_comparison_metric_distributions.csv
+```
+
+Options mirror the scientific-difference thresholds in `check_basis_sensitivity.py`:
+`--watch-relative-l1`, `--outlier-relative-l1`,
+`--watch-cumulative-electrons`, `--outlier-cumulative-electrons`,
+`--watch-mean-shift-angstrom`, and `--outlier-mean-shift-angstrom`. Use
+`--allow-incomplete` only for local debugging.
 
 ## `check_profile_artifacts.py`
 
@@ -320,18 +355,17 @@ Execution and QA options:
 - State policy: `docs/state_policy.md`.
 - MkDocs overview: `docs/index.md`.
 
-## `build_data_layer_report.py`
+## `prepare_docs.py`
 
 Common command:
 
 ```bash
-python scripts/build_data_layer_report.py
+python scripts/prepare_docs.py --write
 ```
 
-This script reads existing profile, radii, QA, and basis-sensitivity artifacts
-and writes `docs/data_layer_report.md`. It is a reporting script only: it does
-not run SCF, extract profiles, change thresholds, or modify generated data.
+This script reads existing profile, radii, QA, basis-sensitivity, and primary-basis-comparison CSV/JSON/YAML files. It writes reusable Markdown table fragments under `docs/tables/`, compact SVG figures under `docs/figures/`, and the marked auto-generated blocks in `docs/results.md`. The scientific prose remains in Markdown; the script does not run SCF, extract profiles, change thresholds, or modify generated profile/radii/QA/comparison data.
 
 Options:
 
-- `--out`: Markdown output path; default is `docs/data_layer_report.md`.
+- `--write`: refresh the derived documentation outputs.
+- `--check`: fail if `docs/tables/`, `docs/figures/`, or marked Results blocks are stale.

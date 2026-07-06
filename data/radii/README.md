@@ -28,8 +28,8 @@ Current row counts are:
 |---|---:|
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | 430 |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | 501 |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | 106 |
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | 91 |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | 192 |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | 166 |
 
 `radii.csv` contains one row per generated state. For each cutoff declared in
 `data/profile_datasets.yaml`, radii are reported in bohr and ångström:
@@ -67,8 +67,10 @@ because formal and weakly bound anions can differ mainly in the far tail.
 
 Cutoff radii are often more interpretable than integrated quantile radii for
 quick basis comparisons, because they answer a direct isodensity question. The
-scientific data-layer report uses them to compare the primary `x2c-QZVPall` and
-`dyall-v4z` branches and to summarize supplemented/diffuse anion sensitivity.
+Results and `data/qa/basis_comparisons/` use them to compare
+the primary `x2c-QZVPall` and `dyall-v4z` branches. The
+`data/qa/basis_sensitivity/` layer uses them to summarize supplemented/augmented
+neutral-plus-anion sensitivity.
 
 ## Regeneration
 
@@ -78,12 +80,13 @@ alongside profiles and QA tables, then checked for active-dataset consistency, w
 ```bash
 python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 
 ## Related documentation
 
 - Density-cutoff radius definition: `docs/theory.md`.
-- Scientific data-layer report: `docs/data_layer_report.md`.
+- Results: `docs/results.md`.
 - Released artifact contract: `docs/data.md`.
 - Regeneration workflow: `docs/workflow.md`.
