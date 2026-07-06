@@ -25,7 +25,7 @@ committed generated profile satisfies the spherical-model numerical gates.
 
 ## Release-gate QA summary
 
-All four committed profile datasets pass the release gate. Across 1128
+All four committed profile datasets pass the release gate. Across 1289
 dataset-state rows, the largest independent electron-count error is
 2.430e-12 electrons and the largest angular
 standard-deviation ratio above the density floor is 1.561e-14.
@@ -34,8 +34,8 @@ standard-deviation ratio above the density floor is 1.561e-14.
 |---|---|---|---|---|---|
 | `x2c-QZVPall` | 430 | 0 | 2.302e-12 | 1.561e-14 | 0 |
 | `dyall-v4z` | 501 | 0 | 2.430e-12 | 3.750e-15 | 266 |
-| `x2c-QZVPall-s` | 106 | 0 | 2.331e-12 | 3.851e-15 | 19 |
-| `dyall-av4z` | 91 | 0 | 2.274e-12 | 2.686e-15 | 36 |
+| `x2c-QZVPall-s` | 192 | 0 | 2.331e-12 | 3.826e-15 | 38 |
+| `dyall-av4z` | 166 | 0 | 2.302e-12 | 2.678e-15 | 68 |
 
 The electron-count values are obtained with an independent Gauss-Legendre
 quadrature in log-radius, not by simply reusing the stored 1200-point profile
@@ -55,10 +55,10 @@ all-electron basis sets with diffuse functions.
 
 | dataset | rows with LD | warnings | vectors removed | Z span |
 |---|---|---|---|---|
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | 36 | 36 | 36 | 44-85 |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | 68 | 68 | 68 | 44-88 |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | 266 | 266 | 310 | 44-103 |
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | 0 | 0 | 0 | NA |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | 19 | 19 | 83 | 19-57 |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | 38 | 38 | 166 | 19-57 |
 
 These counts should be watched if new basis families or more diffuse branches are
 added. A future report can add a per-element figure, but the present tables are
@@ -108,8 +108,8 @@ Summary counts:
 
 | comparison | rows | low | moderate | high |
 |---|---|---|---|---|
-| `dyall-v4z` → `dyall-av4z` | 91 | 58 | 19 | 14 |
-| `x2c-QZVPall` → `x2c-QZVPall-s` | 106 | 106 | 0 | 0 |
+| `dyall-v4z` → `dyall-av4z` | 166 | 132 | 20 | 14 |
+| `x2c-QZVPall` → `x2c-QZVPall-s` | 192 | 192 | 0 | 0 |
 
 ### dyall-v4z → dyall-av4z
 
@@ -119,18 +119,21 @@ scientific sensitivity signal, not a corruption signal.
 
 | dyall-v4z → dyall-av4z metric | median | p90 | p95 | max |
 |---|---|---|---|---|
-| rel. L1 D(r) | 0.0121 | 0.1148 | 0.2213 | 0.3834 |
-| max \|ΔN(<r)\| e | 0.1465 | 1.0468 | 1.3698 | 1.6607 |
-| mean radial shift Å | 0.0203 | 0.1729 | 0.3047 | 0.5288 |
-| max cutoff shift Å | 0.1821 | 1.6191 | 1.6671 | 2.1275 |
+| rel. L1 D(r) | 0.0012 | 0.0575 | 0.1151 | 0.3834 |
+| max \|ΔN(<r)\| e | 0.0296 | 0.8796 | 1.0744 | 1.6607 |
+| mean radial shift Å | 0.0022 | 0.1170 | 0.2015 | 0.5288 |
+| max cutoff shift Å | 0.0166 | 1.5204 | 1.6298 | 2.1275 |
 
 Grouped by state role:
 
 | state role | rows | high | median rel. L1 | median max \|ΔN\| e | median shift Å | median max cutoff shift Å |
 |---|---|---|---|---|---|---|
 | bound_experimental | 56 | 0 | 0.0036 | 0.0529 | 0.0077 | 0.0569 |
+| bound_provisional | 1 | 0 | 0.0138 | 0.5797 | 0.0527 | 0.5237 |
+| diagnostic_theory | 1 | 0 | 5.1859e-04 | 0.0226 | 0.0017 | 0.0062 |
 | formal_monoanion | 9 | 1 | 0.0290 | 0.5384 | 0.0785 | 1.1900 |
 | formal_multianion | 26 | 13 | 0.0549 | 0.9638 | 0.0858 | 1.5512 |
+| reference | 73 | 0 | 1.8973e-05 | 1.6508e-04 | 1.3977e-05 | 4.0968e-04 |
 
 Grouped by charge:
 
@@ -138,7 +141,8 @@ Grouped by charge:
 |---|---|---|---|---|---|---|
 | -3 | 6 | 6 | 0.1186 | 1.4002 | 0.1606 | 1.6671 |
 | -2 | 20 | 7 | 0.0528 | 0.8848 | 0.0828 | 1.3415 |
-| -1 | 65 | 1 | 0.0048 | 0.0719 | 0.0083 | 0.0615 |
+| -1 | 67 | 1 | 0.0048 | 0.0719 | 0.0083 | 0.0615 |
+| 0 | 73 | 0 | 1.8973e-05 | 1.6508e-04 | 1.3977e-05 | 4.0968e-04 |
 
 The high-sensitivity dyall rows are:
 
@@ -174,10 +178,10 @@ spherical anion profiles.
 
 | x2c-QZVPall → x2c-QZVPall-s metric | median | p90 | p95 | max |
 |---|---|---|---|---|
-| rel. L1 D(r) | 5.1992e-04 | 0.0028 | 0.0057 | 0.0138 |
-| max \|ΔN(<r)\| e | 0.0049 | 0.0099 | 0.0131 | 0.0326 |
-| mean radial shift Å | 5.0515e-05 | 8.8851e-04 | 0.0016 | 0.0052 |
-| max cutoff shift Å | 4.0254e-04 | 0.0060 | 0.0101 | 0.0197 |
+| rel. L1 D(r) | 5.1785e-04 | 0.0015 | 0.0031 | 0.0138 |
+| max \|ΔN(<r)\| e | 0.0047 | 0.0090 | 0.0104 | 0.0326 |
+| mean radial shift Å | 3.9624e-05 | 3.4264e-04 | 9.3266e-04 | 0.0052 |
+| max cutoff shift Å | 2.5749e-04 | 0.0048 | 0.0067 | 0.0197 |
 
 ## Current recommendation for users
 
