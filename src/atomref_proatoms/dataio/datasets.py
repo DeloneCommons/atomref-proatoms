@@ -16,10 +16,10 @@ PROFILE_DATA_VERSION = "2.0.0"
 
 PRIMARY_X2C_QZVPALL = "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2"
 PRIMARY_DYALL_V4Z = "pbe0_sfx2c_dyallv4z_h-lr_spherical_v2"
-ANION_X2C_QZVPALL_S = "pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2"
-ANION_DYALL_AV4Z = "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2"
+SUPPLEMENTED_X2C_QZVPALL_S = "pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2"
+AUGMENTED_DYALL_AV4Z = "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2"
 PRIMARY_PROFILE_DATASETS = (PRIMARY_X2C_QZVPALL, PRIMARY_DYALL_V4Z)
-ANION_SENSITIVITY_DATASETS = (ANION_X2C_QZVPALL_S, ANION_DYALL_AV4Z)
+SUPPLEMENTED_PROFILE_DATASETS = (SUPPLEMENTED_X2C_QZVPALL_S, AUGMENTED_DYALL_AV4Z)
 
 
 @dataclass(frozen=True)
@@ -35,10 +35,11 @@ class DatasetScope:
     include_state_roles: tuple[str, ...]
     diffuse: bool
     exclude_symbols: tuple[str, ...] = ()
+    exclude_symbols_for_anions: tuple[str, ...] = ()
 
     @property
     def allow_neutral(self) -> bool:
-        return self.include_charges in {"all", "neutral_only"}
+        return self.include_charges in {"all", "neutral_only", "neutral_and_negative"}
 
     @property
     def allow_cation(self) -> bool:
@@ -46,13 +47,19 @@ class DatasetScope:
 
     @property
     def allow_anion(self) -> bool:
-        return self.include_charges in {"all", "negative_only"}
+        return self.include_charges in {"all", "negative_only", "neutral_and_negative"}
 
     def covers_z(self, z_value: int) -> bool:
         return any(start <= z_value <= end for start, end in self.z_intervals)
 
-    def allows_symbol(self, symbol: str | None) -> bool:
-        return symbol is None or symbol not in self.exclude_symbols
+    def allows_symbol(self, symbol: str | None, *, charge: int | None = None) -> bool:
+        if symbol is None:
+            return True
+        if symbol in self.exclude_symbols:
+            return False
+        return not (
+            charge is not None and charge < 0 and symbol in self.exclude_symbols_for_anions
+        )
 
     def allows_charge(self, charge: int) -> bool:
         if charge == 0:
@@ -104,10 +111,10 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
             raise ValueError(f"dataset {record['dataset_id']}: invalid z interval {item!r}")
         intervals.append((start, end))
     include_charges = str(record["include_charges"])
-    if include_charges not in {"all", "neutral_only", "negative_only"}:
+    if include_charges not in {"all", "neutral_only", "negative_only", "neutral_and_negative"}:
         raise ValueError(
             f"dataset {record['dataset_id']}: include_charges must be 'all', "
-            "'neutral_only', or 'negative_only'"
+            "'neutral_only', 'negative_only', or 'neutral_and_negative'"
         )
     roles_raw = record["include_state_roles"]
     if not isinstance(roles_raw, list) or not roles_raw:
@@ -115,6 +122,11 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
     exclude_symbols_raw = record.get("exclude_symbols", [])
     if not isinstance(exclude_symbols_raw, list):
         raise ValueError(f"dataset {record['dataset_id']}: exclude_symbols must be a list")
+    exclude_symbols_for_anions_raw = record.get("exclude_symbols_for_anions", [])
+    if not isinstance(exclude_symbols_for_anions_raw, list):
+        raise ValueError(
+            f"dataset {record['dataset_id']}: exclude_symbols_for_anions must be a list"
+        )
     return DatasetScope(
         dataset_id=str(record["dataset_id"]),
         basis_id=str(record["basis_id"]),
@@ -125,6 +137,9 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
         include_state_roles=tuple(str(role) for role in roles_raw),
         diffuse=bool(record["diffuse"]),
         exclude_symbols=tuple(str(symbol) for symbol in exclude_symbols_raw),
+        exclude_symbols_for_anions=tuple(
+            str(symbol) for symbol in exclude_symbols_for_anions_raw
+        ),
     )
 
 
@@ -256,7 +271,7 @@ def state_allowed_in_dataset(
     scope = dataset_scope(dataset_id)
     return (
         scope.covers_z(z)
-        and scope.allows_symbol(symbol)
+        and scope.allows_symbol(symbol, charge=charge)
         and scope.allows_charge(charge)
         and state_role in scope.include_state_roles
     )

@@ -23,18 +23,20 @@ pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2
 pbe0_sfx2c_dyallv4z_h-lr_spherical_v2
   dyall-v4z, H-Lr, all curated states, 501 density columns
 
-pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2
-  x2c-QZVPall-s, H-Rn, anions only, 106 density columns
+pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2
+  x2c-QZVPall-s, H-Rn, neutrals and anions, 192 density columns
 
-pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2
-  dyall-av4z, selected H-Ba and Hf-At anions, 91 density columns
+pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2
+  dyall-av4z, H-Ba/Hf-Ra neutrals plus selected H-Ba/Hf-At anions,
+  164 density columns
 ```
 
-The two primary datasets are deliberately not split into separate neutral,
-cation, and anion products. Charge/state membership is part of the dataset scope
-record and generated metadata. The supplemented/augmented anion branches are
-separate profile datasets with their own basis identities, not replacements for
-columns in the primary branches.
+The primary datasets are deliberately not split into separate neutral, cation,
+and anion products. The supplemented/augmented branches follow the same design
+for the states they support: neutral and anion rows are grouped under one basis
+identity, while cations are excluded from these tail-sensitivity branches.
+Charge/state membership is part of the dataset scope record and generated
+metadata.
 
 ## Dataset layout
 
@@ -92,7 +94,7 @@ consistency gate with:
 
 ```bash
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 

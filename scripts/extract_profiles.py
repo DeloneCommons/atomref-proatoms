@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import sys
 from collections.abc import Mapping
 from pathlib import Path
@@ -450,6 +451,28 @@ def _dataset_qa_summary(
         ),
     }
 
+
+def _read_qa_rows(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="", encoding="utf-8") as handle:
+        return list(csv.DictReader(handle))
+
+
+def _all_existing_qa_summaries(*, qa_root: Path, config: Any) -> list[dict[str, Any]]:
+    summaries: list[dict[str, Any]] = []
+    for dataset_id in config.dataset_ids:
+        qa_csv = qa_root / dataset_id / "qa.csv"
+        if not qa_csv.is_file():
+            continue
+        summaries.append(
+            _dataset_qa_summary(
+                dataset_id,
+                basis_id=config.scope(dataset_id).basis_id,
+                qa_rows=_read_qa_rows(qa_csv),
+            )
+        )
+    return summaries
+
+
 def _extract_dataset(
     *,
     dataset_id: str,
@@ -769,11 +792,12 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR: {dataset_id}: {exc}", file=sys.stderr)
             if not args.continue_on_error:
                 return 1
-    if qa_summaries:
+    all_qa_summaries = _all_existing_qa_summaries(qa_root=args.qa_root, config=config)
+    if all_qa_summaries:
         overview = write_qa_overview(
             args.qa_root,
             profile_data_version=config.profile_data_version,
-            dataset_summaries=qa_summaries,
+            dataset_summaries=all_qa_summaries,
         )
         print(
             "QA overview: wrote "

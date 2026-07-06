@@ -6,15 +6,15 @@ import pytest
 
 from atomref_proatoms.dataio.basis import basis_covers_z, list_basis_bundles
 from atomref_proatoms.dataio.datasets import (
-    ANION_DYALL_AV4Z,
-    ANION_SENSITIVITY_DATASETS,
-    ANION_X2C_QZVPALL_S,
+    AUGMENTED_DYALL_AV4Z,
     DATASET_IDS,
     PRIMARY_DYALL_V4Z,
     PRIMARY_PROFILE_DATASETS,
     PRIMARY_X2C_QZVPALL,
     PROFILE_DATA_VERSION,
     PROFILE_DATASETS_SCHEMA_VERSION,
+    SUPPLEMENTED_PROFILE_DATASETS,
+    SUPPLEMENTED_X2C_QZVPALL_S,
     assert_dataset_basis_match,
     expected_basis_for_dataset,
     load_profile_dataset_config,
@@ -35,9 +35,12 @@ ALL_CURATED_ROLES = {
     "formal_monoanion",
     "formal_multianion",
 }
-ANION_ROLES = {
+SUPPLEMENTED_ROLES = {
+    "reference",
+    "reference_uncertain",
     "bound_experimental",
     "bound_provisional",
+    "diagnostic_theory",
     "formal_monoanion",
     "formal_multianion",
 }
@@ -55,8 +58,8 @@ def test_profile_dataset_yaml_is_the_active_dataset_contract() -> None:
 def test_dataset_basis_mapping_is_explicit() -> None:
     assert expected_basis_for_dataset(PRIMARY_X2C_QZVPALL) == "x2c-QZVPall"
     assert expected_basis_for_dataset(PRIMARY_DYALL_V4Z) == "dyall-v4z"
-    assert expected_basis_for_dataset(ANION_X2C_QZVPALL_S) == "x2c-QZVPall-s"
-    assert expected_basis_for_dataset(ANION_DYALL_AV4Z) == "dyall-av4z"
+    assert expected_basis_for_dataset(SUPPLEMENTED_X2C_QZVPALL_S) == "x2c-QZVPall-s"
+    assert expected_basis_for_dataset(AUGMENTED_DYALL_AV4Z) == "dyall-av4z"
     assert len(DATASET_IDS) == 4
     assert all(dataset_id.endswith("_v2") for dataset_id in DATASET_IDS)
 
@@ -82,30 +85,34 @@ def test_primary_datasets_are_not_split_by_charge_class() -> None:
     assert not state_allowed_in_dataset(PRIMARY_DYALL_V4Z, z=104, charge=0)
 
 
-def test_diffuse_sensitivity_datasets_are_anion_only() -> None:
-    assert ANION_SENSITIVITY_DATASETS == (ANION_X2C_QZVPALL_S, ANION_DYALL_AV4Z)
+def test_supplemented_datasets_include_neutrals_and_anions() -> None:
+    assert SUPPLEMENTED_PROFILE_DATASETS == (SUPPLEMENTED_X2C_QZVPALL_S, AUGMENTED_DYALL_AV4Z)
     assert state_allowed_in_dataset(
-        ANION_X2C_QZVPALL_S, z=53, charge=-1, state_role="bound_experimental"
+        SUPPLEMENTED_X2C_QZVPALL_S, z=53, charge=-1, state_role="bound_experimental"
     )
     assert state_allowed_in_dataset(
-        ANION_X2C_QZVPALL_S, z=6, charge=-3, state_role="formal_multianion"
+        SUPPLEMENTED_X2C_QZVPALL_S, z=6, charge=-3, state_role="formal_multianion"
     )
-    assert not state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=0)
-    assert not state_allowed_in_dataset(ANION_X2C_QZVPALL_S, z=53, charge=1)
+    assert state_allowed_in_dataset(SUPPLEMENTED_X2C_QZVPALL_S, z=53, charge=0)
+    assert not state_allowed_in_dataset(SUPPLEMENTED_X2C_QZVPALL_S, z=53, charge=1)
     assert state_allowed_in_dataset(
-        ANION_DYALL_AV4Z, z=56, charge=-1, state_role="formal_monoanion"
+        AUGMENTED_DYALL_AV4Z, z=56, charge=-1, state_role="formal_monoanion"
     )
     assert state_allowed_in_dataset(
-        ANION_DYALL_AV4Z, z=72, charge=-1, state_role="bound_experimental"
+        AUGMENTED_DYALL_AV4Z, z=72, charge=-1, state_role="bound_experimental"
     )
     assert not state_allowed_in_dataset(
-        ANION_DYALL_AV4Z, z=57, charge=-1, state_role="bound_experimental"
+        AUGMENTED_DYALL_AV4Z, z=57, charge=-1, state_role="bound_experimental"
     )
     assert not state_allowed_in_dataset(
-        ANION_DYALL_AV4Z, z=92, charge=-1, state_role="bound_experimental", symbol="U"
+        AUGMENTED_DYALL_AV4Z, z=92, charge=-1, state_role="bound_experimental", symbol="U"
     )
-    assert not state_allowed_in_dataset(
-        ANION_DYALL_AV4Z, z=88, charge=-1, state_role="bound_provisional", symbol="Ra"
+    assert state_allowed_in_dataset(AUGMENTED_DYALL_AV4Z, z=88, charge=0, symbol="Ra")
+    assert state_allowed_in_dataset(
+        AUGMENTED_DYALL_AV4Z, z=87, charge=-1, state_role="diagnostic_theory", symbol="Fr"
+    )
+    assert state_allowed_in_dataset(
+        AUGMENTED_DYALL_AV4Z, z=88, charge=-1, state_role="bound_provisional", symbol="Ra"
     )
 
 
@@ -113,8 +120,8 @@ def test_dataset_state_role_scopes_are_explicit() -> None:
     config = load_profile_dataset_config(CONFIG)
     for dataset_id in PRIMARY_PROFILE_DATASETS:
         assert set(config.scope(dataset_id).include_state_roles) == ALL_CURATED_ROLES
-    for dataset_id in ANION_SENSITIVITY_DATASETS:
-        assert set(config.scope(dataset_id).include_state_roles) == ANION_ROLES
+    for dataset_id in SUPPLEMENTED_PROFILE_DATASETS:
+        assert set(config.scope(dataset_id).include_state_roles) == SUPPLEMENTED_ROLES
 
 
 def test_dataset_coverage_is_within_declared_basis_coverage() -> None:

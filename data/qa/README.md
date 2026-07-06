@@ -82,28 +82,25 @@ data/qa/basis_sensitivity/
 
 Per-dataset `qa.csv` files contain one row per generated state. The top-level
 summary and `qa_report.md` aggregate dataset-level pass/fail status. The
-basis-sensitivity tables compare matched anion states in primary and
+basis-sensitivity tables compare matched neutral and anion states in primary and
 supplemented/augmented branches. Pair-specific files are stored in subdirectories
 named after the base basis set; root-level files are aggregate compatibility
-outputs.
+outputs. `check_basis_sensitivity.py` emits every configured dyall and x2c
+comparison by default when the corresponding generated profile datasets are
+present.
 
-The current command-line entry point still uses `--include-x2c-optional` to emit
-the x2c supplemented-basis comparison. That flag name is retained for backward
-compatibility with the script interface; scientifically, the committed
-`x2c-QZVPall` versus `x2c-QZVPall-s` comparison is part of the data-layer
-sensitivity record.
-
-## Current generated status
+## Expected generated status after regenerating unified supplemented branches
 
 | dataset ID | rows | failed rows | linear-dependency warning count |
 |---|---:|---:|---:|
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | 430 | 0 | 0 |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | 501 | 0 | 266 |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` | 106 | 0 | 19 |
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` | 91 | 0 | 36 |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | 192 | 0 expected | to be regenerated |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | 164 | 0 expected | to be regenerated |
 
-The top-level QA metadata records four generated datasets, 1128 dataset-state
-rows, and zero release-gate failures.
+After regenerating the unified supplemented/augmented branches, the top-level QA
+metadata should record four generated datasets, 1287 dataset-state rows, and zero
+release-gate failures.
 
 Linear-dependency warnings are expected for some large or supplemented atomic
 basis calculations. In the present data they concentrate in the dyall branches
@@ -187,7 +184,7 @@ The dyall augmented comparison shows a clear chemical pattern: accepted physical
 monoanions are mostly low-sensitivity, while formal multianions and all q = -3
 formal rows are highly tail-sensitive. This is expected and useful information,
 not a release blocker. The x2c supplemented-basis comparison is much smaller for
-the committed H-Rn anion set.
+the committed H-Rn neutral/anion set.
 
 ## Recommended interpretation
 
@@ -198,9 +195,9 @@ warnings as scientific guidance. Large diffuse sensitivity means that the tail o
 that reference density depends strongly on basis flexibility; it does not mean the
 row is unusable, especially for explicitly formal anions.
 
-Do not silently replace only available primary-branch anions with augmented
-values. If tail sensitivity matters, report the primary and supplemented/diffuse
-basis branches separately or construct a separate explicitly named branch.
+Do not silently replace primary-branch rows with supplemented/augmented values.
+If tail sensitivity matters, report the primary and supplemented/augmented basis
+branches separately or construct a separate explicitly named branch.
 
 ## Regeneration
 
@@ -210,7 +207,7 @@ consistency, by:
 
 ```bash
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 python scripts/build_data_layer_report.py
 ```

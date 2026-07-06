@@ -491,28 +491,21 @@ than the formal-anion tail effects.
 These items should be discussed and implemented in order. They are not required
 for the current committed data layer.
 
-1. **Promote the x2c supplemented comparison to first-class naming.** The current
-   command-line flag still says `--include-x2c-optional` for compatibility, while
-   the committed data include the x2c comparison. A later code patch should either
-   emit both basis-pair comparisons by default or rename the flag to wording that
-   does not imply scientific second-class status. This will change generated QA
-   metadata and should be done deliberately.
-2. **Add a primary-basis comparison report artifact.** A non-release-gate script
+1. **Add a primary-basis comparison report artifact.** A non-release-gate script
    should compare matched x2c-QZVPall and dyall-v4z states by state ID/digest,
    using the same radial-distribution, cumulative, moment, tail-electron, and
    cutoff-radius metrics already used for diffuse sensitivity.
-3. **Compute neutral-only supplemented/diffuse baselines.** The most useful added
-   SCF datasets would be neutral-only `x2c-QZVPall-s` for H-Rn and neutral-only
-   `dyall-av4z` for its available coverage. Cations are not a priority because
-   their densities are more compact and because the current basis sensitivity is
-   dominated by anion tails. Neutral baselines would quantify the small-change
-   reference scale for stable atoms before interpreting larger anion shifts.
-4. **Only after the neutral baselines, decide whether any diffuse branch should be
+2. **Use the unified supplemented/augmented branches to interpret neutral versus
+   anion sensitivity.** Cations are not a priority because their densities are
+   more compact and because the current basis sensitivity is dominated by anion
+   tails. The unified branches quantify the small-change reference scale for
+   stable neutral atoms before interpreting larger anion shifts.
+3. **Only after the neutral baselines, decide whether any diffuse branch should be
    released as a recommended application branch.** The current evidence argues
    against replacing primary anion profiles wholesale. If a future branch is
    recommended for tail-sensitive anions, it should remain a separate dataset with
    its own basis ID and manifest.
-5. **Add figures after the comparison metrics are stable.** Useful figures would
+4. **Add figures after the comparison metrics are stable.** Useful figures would
    include cutoff-radius shift versus charge, dyall diffuse sensitivity by group,
    and representative radial-distribution/cumulative-difference curves for low,
    moderate, and high sensitivity rows.

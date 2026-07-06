@@ -15,10 +15,10 @@ import numpy as np
 from numpy.typing import NDArray
 
 from ..dataio.datasets import (
-    ANION_DYALL_AV4Z,
-    ANION_X2C_QZVPALL_S,
+    AUGMENTED_DYALL_AV4Z,
     PRIMARY_DYALL_V4Z,
     PRIMARY_X2C_QZVPALL,
+    SUPPLEMENTED_X2C_QZVPALL_S,
     ProfileDatasetConfig,
     load_profile_dataset_config,
 )
@@ -54,21 +54,18 @@ LEGACY_BASIS_SENSITIVITY_FILES = {
     "metadata.json",
 }
 
-PRIMARY_COMPARISON_PAIRS: tuple[tuple[str, str], ...] = (
-    (PRIMARY_DYALL_V4Z, ANION_DYALL_AV4Z),
+DEFAULT_COMPARISON_PAIRS: tuple[tuple[str, str], ...] = (
+    (PRIMARY_DYALL_V4Z, AUGMENTED_DYALL_AV4Z),
+    (PRIMARY_X2C_QZVPALL, SUPPLEMENTED_X2C_QZVPALL_S),
 )
-OPTIONAL_COMPARISON_PAIRS: tuple[tuple[str, str], ...] = (
-    (PRIMARY_X2C_QZVPALL, ANION_X2C_QZVPALL_S),
-)
-DEFAULT_COMPARISON_PAIRS = PRIMARY_COMPARISON_PAIRS
 
 PAIR_OUTPUT_STEMS = {
-    (PRIMARY_DYALL_V4Z, ANION_DYALL_AV4Z): "basis_sensitivity_dyall",
-    (PRIMARY_X2C_QZVPALL, ANION_X2C_QZVPALL_S): "basis_sensitivity_x2c_optional",
+    (PRIMARY_DYALL_V4Z, AUGMENTED_DYALL_AV4Z): "basis_sensitivity_dyall",
+    (PRIMARY_X2C_QZVPALL, SUPPLEMENTED_X2C_QZVPALL_S): "basis_sensitivity_x2c",
 }
 PAIR_KINDS = {
-    (PRIMARY_DYALL_V4Z, ANION_DYALL_AV4Z): "primary_dyall_diffuse_augmentation",
-    (PRIMARY_X2C_QZVPALL, ANION_X2C_QZVPALL_S): "optional_x2c_qzvpall_s_diagnostic",
+    (PRIMARY_DYALL_V4Z, AUGMENTED_DYALL_AV4Z): "dyall_augmented_basis_sensitivity",
+    (PRIMARY_X2C_QZVPALL, SUPPLEMENTED_X2C_QZVPALL_S): "x2c_supplemented_basis_sensitivity",
 }
 
 DEFAULT_QUANTILES = (0.50, 0.90, 0.95, 0.99, 0.995, 0.999, 0.9999)
@@ -885,18 +882,13 @@ def _is_outlier_row(row: Mapping[str, Any]) -> bool:
 def configured_basis_sensitivity_pairs(
     config: ProfileDatasetConfig, *, include_optional_x2c: bool = False
 ) -> tuple[tuple[str, str], ...]:
-    """Return basis-sensitivity pairs present in a dataset config.
+    """Return all configured supplemented/augmented basis-sensitivity pairs."""
 
-    The dyall-v4z/dyall-av4z anion comparison is the default scientific check.
-    The x2c-QZVPall/x2c-QZVPall-s comparison is intentionally opt-in because it is
-    an NMR-specialized diagnostic pair rather than the primary diffuse-augmentation test.
-    """
-
+    del include_optional_x2c
     configured = set(config.dataset_ids)
-    candidates = list(PRIMARY_COMPARISON_PAIRS)
-    if include_optional_x2c:
-        candidates.extend(OPTIONAL_COMPARISON_PAIRS)
-    return tuple(pair for pair in candidates if pair[0] in configured and pair[1] in configured)
+    return tuple(
+        pair for pair in DEFAULT_COMPARISON_PAIRS if pair[0] in configured and pair[1] in configured
+    )
 
 
 def build_basis_sensitivity_qa(
@@ -919,18 +911,16 @@ def build_basis_sensitivity_qa(
     mean_radial_shift_outlier_angstrom: float = DEFAULT_MEAN_RADIAL_SHIFT_OUTLIER_ANGSTROM,
     max_electron_count_error: float = DEFAULT_MAX_ELECTRON_COUNT_ERROR,
 ) -> BasisSensitivityResult:
-    """Build optional diffuse-basis profile-comparison QA artifacts."""
+    """Build supplemented/augmented basis profile-comparison QA artifacts."""
 
     if warn_relative_l1 is not None:
         relative_l1_watch = warn_relative_l1
     if warn_delta_radius_angstrom is not None:
         mean_radial_shift_watch_angstrom = warn_delta_radius_angstrom
 
+    del include_optional_x2c
     config = load_profile_dataset_config(config_path)
-    selected_pairs = tuple(
-        pairs
-        or configured_basis_sensitivity_pairs(config, include_optional_x2c=include_optional_x2c)
-    )
+    selected_pairs = tuple(pairs or configured_basis_sensitivity_pairs(config))
     if not selected_pairs:
         raise ValueError("no configured basis-sensitivity comparison pairs found")
     states = load_atom_states(states_file) if states_file is not None else None
@@ -1148,7 +1138,7 @@ def build_basis_sensitivity_qa(
                     "output_dirname": output_dirnames_by_stem.get(
                         _pair_output_stem(base, diffuse)
                     ),
-                    "required": _pair_key(base, diffuse) in PRIMARY_COMPARISON_PAIRS,
+                    "required": _pair_key(base, diffuse) in DEFAULT_COMPARISON_PAIRS,
                 }
                 for base, diffuse in selected_pairs
             ],
@@ -1167,8 +1157,8 @@ def build_basis_sensitivity_qa(
                 "max_electron_count_error": max_electron_count_error,
             },
             "interpretation": {
-                "primary_pair": "dyall-v4z vs dyall-av4z",
-                "optional_pair": "x2c-QZVPall vs x2c-QZVPall-s",
+                "dyall_pair": "dyall-v4z vs dyall-av4z",
+                "x2c_pair": "x2c-QZVPall vs x2c-QZVPall-s",
                 "release_gate_status": "PASS/FAIL corruption or metadata-integrity gate",
                 "sensitivity_tier": "low/moderate/high scientific sensitivity classification",
                 "outliers_csv": (
@@ -1178,13 +1168,9 @@ def build_basis_sensitivity_qa(
             },
             "notes": [
                 (
-                    "The dyall-v4z/dyall-av4z comparison is the primary "
-                    "diffuse-augmentation sensitivity check for anions."
-                ),
-                (
-                    "The x2c-QZVPall/x2c-QZVPall-s pair is optional and diagnostic; "
-                    "it is not used to summarize the dyall diffuse issue unless explicitly "
-                    "requested."
+                    "The dyall-v4z/dyall-av4z and x2c-QZVPall/x2c-QZVPall-s "
+                    "comparisons are generated for every matched state in their configured "
+                    "supplemented or augmented datasets."
                 ),
                 (
                     "Basis-sensitivity rows classify profile sensitivity. Large sensitivity "

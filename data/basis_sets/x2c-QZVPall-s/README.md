@@ -6,14 +6,14 @@ radial-density generation.
 
 ## Scope
 
-- Role: supplemented H-Rn x2c basis branch used for anion basis-sensitivity work.
+- Role: supplemented H-Rn x2c basis branch used for neutral/anion basis-sensitivity work.
 - Coverage: H-Rn.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Active dataset identifiers: `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2`.
+- Active dataset identifiers: `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2`.
 
-The active profile configuration uses this basis for the H-Rn anion
-sensitivity branch. Results produced with it remain separately identified by
-dataset and basis identifiers.
+The active profile configuration uses this basis for the H-Rn neutral/anion
+supplemented branch, with cations excluded. Results produced with it remain
+separately identified by dataset and basis identifiers.
 
 ## Bundle metadata
 

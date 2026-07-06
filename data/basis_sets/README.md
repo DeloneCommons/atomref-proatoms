@@ -102,13 +102,12 @@ the density generator and by the structural checker.
 | basis_id | role | basis coverage | n_elements | active dataset IDs |
 |---|---|---:|---:|---|
 | `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` |
-| `x2c-QZVPall-s` | supplemented H-Rn anion branch | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` |
+| `x2c-QZVPall-s` | supplemented H-Rn neutral/anion branch | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` |
 | `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` |
-| `dyall-av4z` | augmented anion branch / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` |
+| `dyall-av4z` | augmented neutral/anion branch / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` |
 
-The `dyall-av4z` row reports bundle coverage. The active anion-sensitivity
-dataset selects the available H-Ba and Hf-At anion states within the current
-profile scope; Fr and Ra are explicitly excluded from that generated branch.
+The `dyall-av4z` row reports bundle coverage. The active supplemented branch
+uses this basis for H-Ba/Hf-Ra neutral atoms plus selected anion states in the same available intervals, including Fr and Ra monoanions.
 
 ## Validation
 

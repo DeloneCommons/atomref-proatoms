@@ -47,6 +47,14 @@ state_role_sets:
     - bound_provisional
     - formal_monoanion
     - formal_multianion
+  nonpositive_sensitivity_v2:
+    - reference
+    - reference_uncertain
+    - bound_experimental
+    - bound_provisional
+    - diagnostic_theory
+    - formal_monoanion
+    - formal_multianion
 
 datasets:
   - dataset_id: pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2
@@ -81,31 +89,34 @@ datasets:
       - formal_multianion
     diffuse: false
 
-  - dataset_id: pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2
-    role: anion_sensitivity_h_rn
+  - dataset_id: pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2
+    role: supplemented_h_rn_neutral_and_anion_states
     basis_id: x2c-QZVPall-s
-    coverage_label: H-Rn anions with x2c-QZVPall-s
+    coverage_label: H-Rn neutral and anion states with x2c-QZVPall-s; cations excluded
     z_intervals: [[1, 86]]
-    include_charges: negative_only
+    include_charges: neutral_and_negative
     include_state_roles:
+      - reference
+      - reference_uncertain
       - bound_experimental
       - bound_provisional
+      - diagnostic_theory
       - formal_monoanion
       - formal_multianion
     diffuse: true
 
-  - dataset_id: pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2
-    role: anion_sensitivity_available_dyall_av4z
+  - dataset_id: pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2
+    role: augmented_available_dyall_av4z_neutral_and_anion_states
     basis_id: dyall-av4z
-    coverage_label: H-Ba and Hf-At selected anions with dyall-av4z; Fr and Ra excluded from diffuse branch
+    coverage_label: H-Ba and Hf-Ra neutral atoms plus selected anions in the same intervals with dyall-av4z; cations excluded
     z_intervals: [[1, 56], [72, 88]]
-    include_charges: negative_only
+    include_charges: neutral_and_negative
     include_state_roles:
+      - reference
+      - reference_uncertain
       - bound_experimental
       - bound_provisional
+      - diagnostic_theory
       - formal_monoanion
       - formal_multianion
-    exclude_symbols:
-      - Fr
-      - Ra
     diffuse: true

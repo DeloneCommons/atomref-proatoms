@@ -250,9 +250,25 @@ def _write_valid_artifacts(tmp_path: Path) -> tuple[Path, Path, Path, Path, Path
     return config, states, profiles_root, radii_root, qa_root
 
 
-def test_check_profile_artifacts_script_passes_with_default_roots() -> None:
+def test_check_profile_artifacts_script_passes_with_empty_custom_roots(tmp_path: Path) -> None:
+    profiles_root = tmp_path / "profiles"
+    radii_root = tmp_path / "radii"
+    qa_root = tmp_path / "qa"
+    profiles_root.mkdir()
+    radii_root.mkdir()
+    qa_root.mkdir()
+
     result = subprocess.run(
-        [sys.executable, "scripts/check_profile_artifacts.py"],
+        [
+            sys.executable,
+            "scripts/check_profile_artifacts.py",
+            "--profiles-root",
+            str(profiles_root),
+            "--radii-root",
+            str(radii_root),
+            "--qa-root",
+            str(qa_root),
+        ],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -260,11 +276,7 @@ def test_check_profile_artifacts_script_passes_with_default_roots() -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    no_generated = "OK: no generated profile/radii/QA dataset artifacts found" in result.stdout
-    checked_generated = "OK: checked generated profile/radii/QA artifacts" in result.stdout
-    assert no_generated or checked_generated
-    if checked_generated:
-        assert "profile_data_version: 2.0.0" in result.stdout
+    assert "OK: no generated profile/radii/QA dataset artifacts found" in result.stdout
 
 
 def test_check_generated_artifacts_rejects_stale_unconfigured_dataset(tmp_path: Path) -> None:

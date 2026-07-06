@@ -32,20 +32,20 @@ an independent log-radius QA quadrature. The profile data version is `2.0.0`.
 
 ## Scientific contents
 
-The committed data layer contains four profile/radii/QA datasets and 1128
-dataset-state rows:
+After regenerating the supplemented/augmented branches, the data layer contains four
+profile/radii/QA datasets and 1289 dataset-state rows:
 
 | dataset ID | basis | selected rows | role |
 |---|---|---:|---|
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | `x2c-QZVPall` | 430 | primary H-Rn |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | `dyall-v4z` | 501 | primary H-Lr |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` | `x2c-QZVPall-s` | 106 | supplemented H-Rn anions |
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` | `dyall-av4z` | 91 | augmented selected anions |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | `x2c-QZVPall-s` | 192 | supplemented H-Rn neutrals/anions |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | `dyall-av4z` | 166 | augmented selected neutrals/anions |
 
 The two primary basis branches are large all-electron quadruple-zeta families
 chosen for broad periodic-table coverage and reduced radial basis-set error. The
-supplemented/augmented anion branches are separate sensitivity branches and
-retain their own basis identities. Generated artifacts are stored under:
+supplemented/augmented branches are not split by neutral/anion charge class;
+they retain their own basis identities and deliberately exclude cations. Generated artifacts are stored under:
 
 ```text
 data/profiles/<dataset_id>/profiles.csv
@@ -66,9 +66,11 @@ maximum relative angular density standard deviation above the QA density floor i
 about `1.6e-14`.
 
 Diffuse/supplemented basis sensitivity is stored under
-`data/qa/basis_sensitivity/`. The dyall augmented comparison shows large and
+`data/qa/basis_sensitivity/`. The dyall augmented comparison is expected to show large and
 scientifically meaningful tail sensitivity for a small set of formal/high-charge
-anions; the x2c supplemented comparison is very small for the current anion set.
+anions; the x2c supplemented comparison has so far been small for the anion set.
+The newly unified supplemented branches make the neutral baseline part of the same
+comparison product rather than a separate helper dataset.
 These sensitivity rows are scientific diagnostics, not release failures.
 
 For a compact Methods-style summary of QA, basis comparisons, and recommended
@@ -106,7 +108,7 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 ```
 

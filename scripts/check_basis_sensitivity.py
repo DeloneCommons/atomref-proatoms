@@ -59,14 +59,6 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Generated QA artifact root; defaults to data/qa.",
     )
     parser.add_argument(
-        "--include-x2c-optional",
-        action="store_true",
-        help=(
-            "Also write the secondary x2c-QZVPall/x2c-QZVPall-s diagnostic pair. "
-            "The default QA output is the primary dyall-v4z/dyall-av4z comparison."
-        ),
-    )
-    parser.add_argument(
         "--allow-incomplete",
         action="store_true",
         help=(
@@ -125,9 +117,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     config = load_profile_dataset_config(args.config)
-    pairs = configured_basis_sensitivity_pairs(
-        config, include_optional_x2c=args.include_x2c_optional
-    )
+    pairs = configured_basis_sensitivity_pairs(config)
     print(f"Profile data version: {config.profile_data_version}")
     print(f"Dataset config: {repo_relative_path(args.config)}")
     print(f"State table: {repo_relative_path(args.states_file)}")
@@ -151,7 +141,6 @@ def main(argv: list[str] | None = None) -> int:
             profiles_root=args.profiles_root,
             qa_root=args.qa_root,
             pairs=pairs,
-            include_optional_x2c=args.include_x2c_optional,
             require_complete=not args.allow_incomplete,
             force=args.force,
             relative_l1_watch=args.watch_relative_l1,

@@ -30,7 +30,7 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 python scripts/build_data_layer_report.py
 ```
@@ -38,8 +38,8 @@ python scripts/build_data_layer_report.py
 `check_states.py` and `check_basis_bundles.py` validate compact tracked inputs.
 The third command creates or reuses ignored local SCF artifacts. The fourth
 command extracts profile, radii, and QA artifacts from complete local SCF
-material. The fifth command records supplemented/diffuse anion basis-sensitivity metrics
-when the compared profile datasets are present. The artifact checker confirms
+material. The fifth command records supplemented/augmented basis-sensitivity metrics for
+matched neutral and anion states when the compared profile datasets are present. The artifact checker confirms
 that generated artifact directories match the active dataset configuration,
 profile-data version, and QA summaries. The final command rebuilds the narrative
 scientific data-layer report from committed CSV/JSON artifacts; it does not run
@@ -90,10 +90,9 @@ refuses to create release artifacts with a different PySCF version unless
 - `data/qa/<dataset_id>/qa.csv` and `metadata.json`;
 - aggregate QA files under `data/qa/`.
 
-`check_basis_sensitivity.py --include-x2c-optional --force` writes the current
-basis-sensitivity QA layer. The x2c flag name is a script-interface compatibility
-name; the committed x2c-QZVPall versus x2c-QZVPall-s comparison is part of the
-current sensitivity record.
+`check_basis_sensitivity.py --force` writes the current basis-sensitivity QA
+layer. Both dyall-v4z versus dyall-av4z and x2c-QZVPall versus x2c-QZVPall-s are
+emitted by default when the corresponding generated profile datasets are present.
 
 ```text
 data/qa/basis_sensitivity/

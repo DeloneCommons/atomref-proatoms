@@ -12,7 +12,7 @@ python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 python scripts/build_data_layer_report.py
 ```
@@ -31,7 +31,7 @@ artifacts require the generator dependency set.
 | `check_basis_bundles.py` | Validate frozen basis bundles, checksums, NWChem spherical headers, coverage metadata, and optional PySCF parseability. | terminal validation report |
 | `compute_wavefunctions.py` | Run spherical fractional-occupation atomic UKS jobs for selected dataset/state pairs. | `local-data/scf/<dataset_id>/<state_id>/` |
 | `extract_profiles.py` | Extract radial profiles, cutoff radii, and QA tables from complete local SCF artifacts. | `data/profiles/`, `data/radii/`, `data/qa/` |
-| `check_basis_sensitivity.py` | Compare primary and supplemented/augmented anion profile branches where both generated datasets are present. | `data/qa/basis_sensitivity/` |
+| `check_basis_sensitivity.py` | Compare primary and supplemented/augmented profile branches for matched neutral and anion states where both generated datasets are present. | `data/qa/basis_sensitivity/` |
 | `check_profile_artifacts.py` | Validate generated profile/radii/QA artifact directories against the active dataset config. | terminal validation report |
 | `build_data_layer_report.py` | Build a Methods-style scientific Markdown report from existing committed data artifacts. | `docs/data_layer_report.md` |
 
@@ -109,17 +109,17 @@ Options:
 Common commands:
 
 ```bash
-python scripts/check_basis_sensitivity.py --include-x2c-optional --force
-python scripts/check_basis_sensitivity.py --profiles-root local-data/profiles --qa-root local-data/qa --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_sensitivity.py --profiles-root local-data/profiles --qa-root local-data/qa --force
 ```
 
 This QA step compares radial density profiles for configured primary and
-supplemented/augmented anion basis pairs. By default it writes the dyall-v4z
-versus dyall-av4z comparison when both corresponding generated profile datasets
-are present. The committed data layer also includes the x2c-QZVPall versus
-x2c-QZVPall-s comparison, currently emitted by passing the compatibility flag
-`--include-x2c-optional`. Large basis-sensitivity rows are written as
-warnings/outliers, not as automatic release failures.
+supplemented/augmented basis pairs. It emits every configured dyall and x2c
+comparison by default when the corresponding generated profile datasets are
+present. The current comparison rows are matched by exact state IDs/digests and
+cover neutral and anion states in the supplemented/augmented branches; cations are
+not part of these tail-sensitivity branches. Large basis-sensitivity rows are
+written as warnings/outliers, not as automatic release failures.
 
 Outputs:
 
@@ -137,7 +137,7 @@ data/qa/basis_sensitivity/
     basis_sensitivity_outliers.csv
     basis_sensitivity_metric_distributions.csv
 
-  x2c-QZVPall/                         # emitted when x2c comparison is requested
+  x2c-QZVPall/
     basis_sensitivity.csv
     basis_sensitivity_summary.csv
     basis_sensitivity_outliers.csv
@@ -145,9 +145,8 @@ data/qa/basis_sensitivity/
 ```
 
 The pair-specific subdirectories are named after the base/basic basis set in the
-comparison. The root-level files are aggregate compatibility outputs. With the
-default dyall-only run, the aggregate files contain the same rows as
-`dyall-v4z/basis_sensitivity.csv`.
+comparison. The root-level files are aggregate compatibility outputs containing
+all emitted comparison rows.
 
 Options:
 
@@ -156,7 +155,6 @@ Options:
   `data/states/curated/atom_states_v2.json`.
 - `--profiles-root`: generated profile artifact root; default is `data/profiles`.
 - `--qa-root`: generated QA artifact root; default is `data/qa`.
-- `--include-x2c-optional`: compatibility flag that also writes the x2c-QZVPall versus x2c-QZVPall-s comparison.
 - `--allow-incomplete`: allow missing selected dataset directories or expected
   states during local debugging.
 - `--force`: overwrite existing basis-sensitivity QA outputs.

@@ -17,14 +17,15 @@ artifacts, and run the release-gate checks.
 |---|---|---:|---:|---|
 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | `x2c-QZVPall` | H-Rn | 430 | all curated states in range |
 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | `dyall-v4z` | H-Lr | 501 | all curated states in range |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2` | `x2c-QZVPall-s` | H-Rn | 106 | anions only |
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` | `dyall-av4z` | H-Ba and Hf-At selected anions | 91 | anions only |
+| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | `x2c-QZVPall-s` | H-Rn | 192 | neutrals and anions; cations excluded |
+| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | `dyall-av4z` | H-Ba/Hf-Ra neutrals plus selected anions in the same intervals | 166 | neutrals and anions; cations excluded |
 
-The two primary datasets are deliberately not split into separate neutral,
-cation, and anion products. The supplemented/augmented branches are separate
-anion-sensitivity datasets. `dyall-av4z` has discontinuous coverage and no
-lanthanide/actinide augmented branch in the current release configuration; the
-selected rows are the available anion states in H-Ba and Hf-At.
+The primary datasets are deliberately not split into separate neutral, cation,
+and anion products. The supplemented/augmented branches follow the same rule for
+the states they support: each branch groups its neutral and anion rows under one
+basis identity, while cations are excluded because they are compact and less
+relevant to diffuse-tail sensitivity. `dyall-av4z` has discontinuous coverage;
+its generated branch contains H-Ba/Hf-Ra neutrals plus selected anions in the same available intervals, including Fr and Ra monoanions.
 
 The dataset ID is part of the public data identity. It encodes the method family,
 basis family, element coverage, spherical density convention, and major data
@@ -126,19 +127,19 @@ data/qa/basis_sensitivity/
 ```
 
 The `dyall-v4z/` subdirectory compares `dyall-v4z` with `dyall-av4z` for matched
-anion states. The `x2c-QZVPall/` subdirectory compares `x2c-QZVPall` with
-`x2c-QZVPall-s` for matched H-Rn anions. The root-level CSV files are aggregate
-compatibility outputs. The script interface currently uses
-`--include-x2c-optional` to emit the x2c comparison, but the committed x2c
-comparison is part of the data-layer sensitivity record.
+neutral and anion states. The `x2c-QZVPall/` subdirectory compares `x2c-QZVPall`
+with `x2c-QZVPall-s` for matched H-Rn neutral and anion states. The root-level
+CSV files are aggregate compatibility outputs. `check_basis_sensitivity.py` emits
+every configured supplemented/augmented comparison by default when the
+corresponding generated profile datasets are present.
 
-Current generated counts are:
+Expected generated counts after regenerating unified supplemented branches are:
 
 | comparison | rows | high-sensitivity outliers | release-gate failures |
 |---|---:|---:|---:|
-| `dyall-v4z` vs `dyall-av4z` | 91 | 14 | 0 |
-| `x2c-QZVPall` vs `x2c-QZVPall-s` | 106 | 0 | 0 |
-| aggregate | 197 | 14 | 0 |
+| `dyall-v4z` vs `dyall-av4z` | 166 | to be recalibrated after regeneration | 0 expected |
+| `x2c-QZVPall` vs `x2c-QZVPall-s` | 192 | to be recalibrated after regeneration | 0 expected |
+| aggregate | 356 | to be recalibrated after regeneration | 0 expected |
 
 The sensitivity metrics classify how much the radial density distribution changes
 when the diffuse/supplemented basis branch is used. Large sensitivity can be
@@ -152,7 +153,7 @@ Regenerate profiles, radii, QA, and the current basis-sensitivity QA with:
 
 ```bash
 python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --include-x2c-optional --force
+python scripts/check_basis_sensitivity.py --force
 python scripts/check_profile_artifacts.py --require-generated
 python scripts/build_data_layer_report.py
 ```

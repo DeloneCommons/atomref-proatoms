@@ -73,7 +73,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_x2cqzvpalls_h-rn_anions_spherical_v2"
+          "pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2"
         ]
       }
     },
@@ -157,7 +157,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2"
+          "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2"
         ]
       }
     }

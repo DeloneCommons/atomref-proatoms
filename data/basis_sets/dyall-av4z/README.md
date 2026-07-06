@@ -6,18 +6,16 @@ radial-density generation.
 
 ## Scope
 
-- Role: augmented Dyall quadruple-zeta branch used for anion basis-sensitivity work.
+- Role: augmented Dyall quadruple-zeta branch used for neutral/anion basis-sensitivity work.
 - Coverage: H-Ba, Hf-Ra, Rf-Og.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Active dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2`.
+- Active dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2`.
 
-The active profile configuration uses this basis for anion sensitivity where
-the basis is available within the current state range. The generated
-`pbe0_sfx2c_dyallav4z_h-ba_hf-ra_anions_spherical_v2` dataset selects H-Ba and
-Hf-At anion states and explicitly excludes Fr and Ra. The bundle itself also
-contains basis functions beyond that generated profile scope; its coverage is
-discontinuous and excludes the lanthanide and actinide blocks, so it must not be
-described as an H-Lr basis.
+The active profile configuration uses this basis for H-Ba/Hf-Ra neutral atoms
+and selected anions in the same available intervals, including Fr and Ra
+monoanions. The bundle itself also contains basis functions beyond that generated
+profile scope; its coverage is discontinuous and excludes the lanthanide and
+actinide blocks, so it must not be described as an H-Lr basis.
 
 ## Bundle metadata
 

@@ -7,10 +7,10 @@ from pathlib import Path
 import pytest
 
 from atomref_proatoms.dataio.datasets import (
-    ANION_DYALL_AV4Z,
-    ANION_X2C_QZVPALL_S,
+    AUGMENTED_DYALL_AV4Z,
     PRIMARY_DYALL_V4Z,
     PRIMARY_X2C_QZVPALL,
+    SUPPLEMENTED_X2C_QZVPALL_S,
 )
 from atomref_proatoms.profiles.artifacts import profile_density_column
 from atomref_proatoms.profiles.basis_sensitivity import (
@@ -89,7 +89,7 @@ def test_build_basis_sensitivity_qa_writes_primary_dyall_artifacts(tmp_path: Pat
     )
     _write_profile_dataset(
         profiles_root,
-        ANION_DYALL_AV4Z,
+        AUGMENTED_DYALL_AV4Z,
         "dyall-av4z",
         [4.0, 3.0, 2.0, 1.1, 0.6],
     )
@@ -97,7 +97,7 @@ def test_build_basis_sensitivity_qa_writes_primary_dyall_artifacts(tmp_path: Pat
     result = build_basis_sensitivity_qa(
         profiles_root=profiles_root,
         qa_root=qa_root,
-        pairs=((PRIMARY_DYALL_V4Z, ANION_DYALL_AV4Z),),
+        pairs=((PRIMARY_DYALL_V4Z, AUGMENTED_DYALL_AV4Z),),
         states_file=None,
         require_complete=False,
         force=True,
@@ -132,7 +132,7 @@ def test_build_basis_sensitivity_qa_writes_primary_dyall_artifacts(tmp_path: Pat
     assert rows[0]["max_abs_cumulative_delta_electrons"]
 
 
-def test_build_basis_sensitivity_qa_can_include_optional_x2c(tmp_path: Path) -> None:
+def test_build_basis_sensitivity_qa_writes_x2c_artifacts(tmp_path: Path) -> None:
     profiles_root = tmp_path / "profiles"
     _write_profile_dataset(
         profiles_root,
@@ -142,7 +142,7 @@ def test_build_basis_sensitivity_qa_can_include_optional_x2c(tmp_path: Path) -> 
     )
     _write_profile_dataset(
         profiles_root,
-        ANION_X2C_QZVPALL_S,
+        SUPPLEMENTED_X2C_QZVPALL_S,
         "x2c-QZVPall-s",
         [4.0, 3.0, 2.0, 1.1, 0.6],
     )
@@ -150,15 +150,15 @@ def test_build_basis_sensitivity_qa_can_include_optional_x2c(tmp_path: Path) -> 
     result = build_basis_sensitivity_qa(
         profiles_root=profiles_root,
         qa_root=tmp_path / "qa",
-        pairs=((PRIMARY_X2C_QZVPALL, ANION_X2C_QZVPALL_S),),
+        pairs=((PRIMARY_X2C_QZVPALL, SUPPLEMENTED_X2C_QZVPALL_S),),
         states_file=None,
         require_complete=False,
         force=True,
     )
 
     metadata = json.loads(result.metadata_json.read_text(encoding="utf-8"))
-    assert "basis_sensitivity_x2c_optional" in metadata["pair_outputs"]
-    x2c_outputs = metadata["pair_outputs"]["basis_sensitivity_x2c_optional"]
+    assert "basis_sensitivity_x2c" in metadata["pair_outputs"]
+    x2c_outputs = metadata["pair_outputs"]["basis_sensitivity_x2c"]
     assert Path(x2c_outputs["rows_csv"]).parent.name == "x2c-QZVPall"
     assert Path(x2c_outputs["rows_csv"]).name == "basis_sensitivity.csv"
 
@@ -173,7 +173,7 @@ def test_build_basis_sensitivity_qa_marks_scientific_outlier(tmp_path: Path) -> 
     )
     _write_profile_dataset(
         profiles_root,
-        ANION_DYALL_AV4Z,
+        AUGMENTED_DYALL_AV4Z,
         "dyall-av4z",
         [4.0, 3.0, 2.0, 4.0, 5.0],
     )
@@ -181,7 +181,7 @@ def test_build_basis_sensitivity_qa_marks_scientific_outlier(tmp_path: Path) -> 
     result = build_basis_sensitivity_qa(
         profiles_root=profiles_root,
         qa_root=tmp_path / "qa",
-        pairs=((PRIMARY_DYALL_V4Z, ANION_DYALL_AV4Z),),
+        pairs=((PRIMARY_DYALL_V4Z, AUGMENTED_DYALL_AV4Z),),
         states_file=None,
         require_complete=False,
         force=True,
@@ -212,7 +212,7 @@ def test_build_basis_sensitivity_qa_rejects_state_digest_mismatch(tmp_path: Path
     )
     _write_profile_dataset(
         profiles_root,
-        ANION_DYALL_AV4Z,
+        AUGMENTED_DYALL_AV4Z,
         "dyall-av4z",
         [4.0, 3.0, 2.0, 1.1, 0.6],
         state_digest="digest-b",
@@ -222,7 +222,7 @@ def test_build_basis_sensitivity_qa_rejects_state_digest_mismatch(tmp_path: Path
         build_basis_sensitivity_qa(
             profiles_root=profiles_root,
             qa_root=tmp_path / "qa",
-            pairs=((PRIMARY_DYALL_V4Z, ANION_DYALL_AV4Z),),
+            pairs=((PRIMARY_DYALL_V4Z, AUGMENTED_DYALL_AV4Z),),
             states_file=None,
             require_complete=False,
             force=True,
