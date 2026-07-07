@@ -10,7 +10,7 @@ The current data layer contains 1289 generated dataset-state rows across four ba
 
 The main documentation is organized as a paper-like technical note. The core argument is in the Introduction, Theory, Methods, Results, Discussion, and Conclusions. Data dictionaries, script details, notebooks, license material, and repository-operation notes are kept in the Other and Reference sections so that the scientific narrative remains readable.
 
-The documentation also includes a compact Multiwfn WFN interoperability notebook for the fixed H/O/H2O validation system. It is a local validation note, not a full artifact-generation workflow.
+The documentation also includes a compact Multiwfn WFN interoperability notebook for the fixed H/O/H2O validation system. Maintainer scripts now generate configured local `.rad` and `.wfn` interoperability files, while the committed data layer remains the profile/radii/QA representation.
 
 The Results page includes generated tables and figures produced from committed CSV/JSON artifacts by:
 

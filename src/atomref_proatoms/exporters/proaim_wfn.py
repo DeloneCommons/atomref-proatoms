@@ -9,7 +9,7 @@ coefficient data.
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -287,6 +287,59 @@ def collect_unrestricted_spin_orbitals_from_mf(
     )
 
 
+def collect_unrestricted_spin_orbitals_from_arrays(
+    *,
+    mo_coeff_alpha: ArrayF,
+    mo_coeff_beta: ArrayF,
+    mo_occ_alpha: ArrayF,
+    mo_occ_beta: ArrayF,
+    mo_energy_alpha: ArrayF,
+    mo_energy_beta: ArrayF,
+    n_ao: int | None = None,
+    occ_tol: float = 1e-10,
+) -> WfnOrbitalExport:
+    """Collect occupied alpha and beta spin orbitals from saved SCF arrays."""
+
+    coeff_alpha = np.asarray(mo_coeff_alpha, dtype=float)
+    coeff_beta = np.asarray(mo_coeff_beta, dtype=float)
+    occ_alpha = np.asarray(mo_occ_alpha, dtype=float)
+    occ_beta = np.asarray(mo_occ_beta, dtype=float)
+    energy_alpha = np.asarray(mo_energy_alpha, dtype=float)
+    energy_beta = np.asarray(mo_energy_beta, dtype=float)
+    if coeff_alpha.ndim != 2 or coeff_beta.ndim != 2:
+        raise ValueError("alpha/beta MO coefficient arrays must be two-dimensional")
+    if coeff_alpha.shape[0] != coeff_beta.shape[0]:
+        raise ValueError("alpha and beta MO coefficient AO dimensions differ")
+    if n_ao is not None and coeff_alpha.shape[0] != int(n_ao):
+        raise ValueError(f"MO AO dimension {coeff_alpha.shape[0]} != expected n_ao {int(n_ao)}")
+    a_coeffs, a_occs, a_energies, a_labels, a_spins = _collect_one_spin_channel(
+        coeff_alpha,
+        occ_alpha,
+        energy_alpha,
+        spin_label="alpha",
+        spin_type=MOSPIN_ALPHA,
+        occ_tol=occ_tol,
+    )
+    b_coeffs, b_occs, b_energies, b_labels, b_spins = _collect_one_spin_channel(
+        coeff_beta,
+        occ_beta,
+        energy_beta,
+        spin_label="beta",
+        spin_type=MOSPIN_BETA,
+        occ_tol=occ_tol,
+    )
+    coeffs = a_coeffs + b_coeffs
+    if not coeffs:
+        raise ValueError("No occupied spin orbitals found")
+    return WfnOrbitalExport(
+        coefficients=np.column_stack(coeffs),
+        occupations=np.asarray(a_occs + b_occs, dtype=float),
+        energies=np.asarray(a_energies + b_energies, dtype=float),
+        labels=a_labels + b_labels,
+        spin_types=a_spins + b_spins,
+    )
+
+
 def collect_restricted_orbitals(
     mo_coeff: ArrayF,
     mo_occ: ArrayF,
@@ -506,6 +559,52 @@ def write_atomref_spherical_wfn(
         mf,
         title=label,
         occ_tol=occ_tol,
+        keep_beta_index_gap=keep_beta_index_gap,
+    )
+    expected_alpha = float(sum(float(value) for value in state.alpha_l_counts.values()))
+    expected_beta = float(sum(float(value) for value in state.beta_l_counts.values()))
+    strict = strict_atom_wfn_mospin_qa(
+        path,
+        expected_total=float(state.electron_count),
+        expected_alpha=expected_alpha,
+        expected_beta=expected_beta,
+    )
+    return {**info, **strict, "state_id": str(state.state_id)}
+
+
+def write_atomref_scf_arrays_wfn(
+    path: Path | str,
+    state: Any,
+    mol: Any,
+    arrays: Mapping[str, ArrayF] | dict[str, ArrayF],
+    *,
+    title: str | None = None,
+    total_energy: float | None = None,
+    occ_tol: float = 1e-10,
+    keep_beta_index_gap: bool = True,
+) -> dict[str, Any]:
+    """Write an atomref atom/ion WFN from saved SCF arrays and a PySCF molecule."""
+
+    export = collect_unrestricted_spin_orbitals_from_arrays(
+        mo_coeff_alpha=arrays["mo_coeff_alpha"],
+        mo_coeff_beta=arrays["mo_coeff_beta"],
+        mo_occ_alpha=arrays["mo_occ_alpha"],
+        mo_occ_beta=arrays["mo_occ_beta"],
+        mo_energy_alpha=arrays["mo_energy_alpha"],
+        mo_energy_beta=arrays["mo_energy_beta"],
+        n_ao=int(mol.nao_nr()),
+        occ_tol=occ_tol,
+    )
+    label = title or f"atomref-proatoms {state.state_id} PROAIM WFN"
+    info = write_proaim_wfn(
+        path,
+        mol,
+        export.coefficients,
+        export.occupations,
+        export.energies,
+        title=label,
+        total_energy=total_energy,
+        spin_types=export.spin_types,
         keep_beta_index_gap=keep_beta_index_gap,
     )
     expected_alpha = float(sum(float(value) for value in state.alpha_l_counts.values()))

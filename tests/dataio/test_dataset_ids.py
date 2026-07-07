@@ -56,12 +56,19 @@ def test_profile_dataset_yaml_is_the_active_dataset_contract() -> None:
 
 
 def test_dataset_basis_mapping_is_explicit() -> None:
+    config = load_profile_dataset_config(CONFIG)
     assert expected_basis_for_dataset(PRIMARY_X2C_QZVPALL) == "x2c-QZVPall"
     assert expected_basis_for_dataset(PRIMARY_DYALL_V4Z) == "dyall-v4z"
     assert expected_basis_for_dataset(SUPPLEMENTED_X2C_QZVPALL_S) == "x2c-QZVPall-s"
     assert expected_basis_for_dataset(AUGMENTED_DYALL_AV4Z) == "dyall-av4z"
     assert len(DATASET_IDS) == 4
     assert all(dataset_id.endswith("_v2") for dataset_id in DATASET_IDS)
+    assert config.scope(PRIMARY_X2C_QZVPALL).multiwfn_rad == "all_states"
+    assert config.scope(PRIMARY_X2C_QZVPALL).multiwfn_wfn == "neutral_atoms"
+    assert config.scope(PRIMARY_DYALL_V4Z).multiwfn_rad == "all_states"
+    assert config.scope(PRIMARY_DYALL_V4Z).multiwfn_wfn == "none"
+    assert config.scope(SUPPLEMENTED_X2C_QZVPALL_S).multiwfn_rad == "none"
+    assert config.scope(AUGMENTED_DYALL_AV4Z).multiwfn_wfn == "none"
 
 
 def test_primary_datasets_are_not_split_by_charge_class() -> None:

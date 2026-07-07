@@ -82,6 +82,14 @@ The independent WFN evaluator parses the PROAIM centers, primitive center assign
 
 The Multiwfn portion is automated only through small local helpers that find an executable under `local-data/`, run `-silent`, add `-set local-data/settings.ini` when available, and parse exported plane files or point-output logs. Multiwfn remains an optional local interoperability context, not a package dependency and not a state-selection authority.
 
+## Multiwfn `.rad` and `.wfn` export policy
+
+The active dataset configuration now records which basis branches are intended to produce Multiwfn interoperability files. The primary `x2c-QZVPall` branch is configured for density-only `.rad` files for all H--Rn states and PROAIM `.wfn` files for neutral H--Rn atoms. The primary `dyall-v4z` branch is configured for `.rad` files for all H--Lr states and no `.wfn` files. The supplemented `x2c-QZVPall-s` and augmented `dyall-av4z` branches are retained for basis sensitivity and are not configured to emit Multiwfn files.
+
+The `.rad` exporter is derived from the committed wide profile tables. It interpolates each spherical density from the release grid onto the fixed Multiwfn `atmrad` radial grid and writes one file per atom/ion using the conventional charge suffix, for example `H_0.rad`, `O-1.rad`, or `Fe+2.rad`. The exporter records finite-grid electron integrals and the residual source-profile tail beyond the `.rad` grid as validation metadata. These checks are density-consistency diagnostics; they do not implement a Hirshfeld-I cycle.
+
+The `.wfn` exporter is derived from local SCF checkpoint and NPZ arrays, not from the profile CSV. It preserves the spin-orbital convention validated in the H/O/H2O notebook: alpha orbitals first, beta orbitals second, occupations at or below one, explicit `$MOSPIN` labels `1` and `2`, and no `$MOSPIN=3` reconstruction for fractional/open-shell atom references. Because `.wfn` is a wavefunction-like interoperability container, it remains secondary to the structured SCF arrays and radial profiles as the internal data representation.
+
 ## Supplemented/augmented basis sensitivity
 
 Basis sensitivity compares exact matched states between a primary basis and its supplemented or augmented counterpart:

@@ -24,6 +24,7 @@ def test_v2_subpackage_imports_are_canonical() -> None:
     from atomref_proatoms.dataio.paths import STATES_FILE
     from atomref_proatoms.engines.pyscf_backend import SCFSettings
     from atomref_proatoms.engines.spherical_uks import validate_angular_block_size
+    from atomref_proatoms.exporters.multiwfn_rad import write_multiwfn_rad_file
     from atomref_proatoms.exporters.proaim_wfn import write_proaim_wfn
     from atomref_proatoms.profiles import radius_at_density
     from atomref_proatoms.profiles.artifacts import write_json
@@ -42,6 +43,7 @@ def test_v2_subpackage_imports_are_canonical() -> None:
     assert callable(write_json)
     assert callable(log_radial_grid)
     assert QAResult.__name__ == "QAResult"
+    assert callable(write_multiwfn_rad_file)
     assert callable(write_proaim_wfn)
     assert radius_at_density is radial_radius_at_density
     assert AtomState is StateTableAtomState

@@ -7,6 +7,7 @@ from atomref_proatoms.exporters.proaim_wfn import (
     MOSPIN_ALPHA,
     MOSPIN_BETA,
     atom_wfn_filename,
+    collect_unrestricted_spin_orbitals_from_arrays,
     format_mospin_lines,
     strict_atom_wfn_mospin_qa,
     write_proaim_wfn,
@@ -72,3 +73,20 @@ def test_write_proaim_wfn_rejects_spin_occupation_above_one(tmp_path) -> None:
             title="bad",
             spin_types=[MOSPIN_ALPHA],
         )
+
+
+def test_collect_unrestricted_spin_orbitals_from_saved_arrays_alpha_then_beta() -> None:
+    export = collect_unrestricted_spin_orbitals_from_arrays(
+        mo_coeff_alpha=np.eye(3),
+        mo_coeff_beta=np.eye(3),
+        mo_occ_alpha=np.array([1.0, 0.5, 0.0]),
+        mo_occ_beta=np.array([1.0, 0.0, 0.25]),
+        mo_energy_alpha=np.array([-3.0, -2.0, -1.0]),
+        mo_energy_beta=np.array([-2.5, -1.5, -0.5]),
+        n_ao=3,
+    )
+
+    assert export.occupations.tolist() == [1.0, 0.5, 1.0, 0.25]
+    assert export.energies.tolist() == [-3.0, -2.0, -2.5, -0.5]
+    assert export.spin_types == [MOSPIN_ALPHA, MOSPIN_ALPHA, MOSPIN_BETA, MOSPIN_BETA]
+    assert export.coefficients.shape == (3, 4)

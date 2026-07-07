@@ -41,18 +41,16 @@ def test_read_multiwfn_plane_six_column_format_and_metrics(tmp_path) -> None:
 def test_parse_multiwfn_point_density_log_accepts_plain_and_fortran_numbers(tmp_path) -> None:
     path = tmp_path / "point.log"
     path.write_text(
-        """
- Density of all electrons: 1.250000D-02
- Density of Alpha electrons: 0.0075
- Density of Beta electrons: 5.0e-3
- Spin density of electrons: 2.500000E-03
-""",
+        "Density of all electrons: 1.25\n"
+        "Density of Alpha electrons: 6.0e-1\n"
+        "Density of Beta electrons: 5.0E-1\n"
+        "Spin density of electrons: 1.0D-1\n",
         encoding="utf-8",
     )
 
     parsed = parse_multiwfn_point_density_log(path)
 
-    assert parsed["multiwfn_total_density"] == pytest.approx(0.0125)
-    assert parsed["multiwfn_alpha_density"] == pytest.approx(0.0075)
-    assert parsed["multiwfn_beta_density"] == pytest.approx(0.005)
-    assert parsed["multiwfn_spin_density"] == pytest.approx(0.0025)
+    assert parsed["multiwfn_total_density"] == pytest.approx(1.25)
+    assert parsed["multiwfn_alpha_density"] == pytest.approx(0.6)
+    assert parsed["multiwfn_beta_density"] == pytest.approx(0.5)
+    assert parsed["multiwfn_spin_density"] == pytest.approx(0.1)

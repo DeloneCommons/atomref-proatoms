@@ -36,11 +36,11 @@ An informational diagnostic is a metric that helps interpret the data but is not
 
 Multiwfn is a practical motivation for later export work because it supports wavefunction and real-space density analyses, promolecular and deformation-density concepts, Hirshfeld/Hirshfeld-I-like workflows, and radial-function operations ([Lu and Chen, 2012](https://doi.org/10.1002/jcc.22885); [Lu, 2024](https://doi.org/10.1063/5.0216272)). In this project, however, Multiwfn is an interoperability target, not a state-selection authority. The state and basis policies described here remain the scientific definition of the data layer.
 
-The H/O/H2O WFN validation clarifies the practical role of file formats. Project-native NPZ and structured SCF artifacts remain the efficient internal path for PySCF-side work. Radial profiles, and later compact `.rad` exports, remain the preferred density-only representation for stockholder/Hirshfeld-like workflows. A `.wfn` file is an interoperability container for workflows that need wavefunction-like Gaussian primitive and orbital coefficient data.
+The H/O/H2O WFN validation clarifies the practical role of file formats. Project-native NPZ and structured SCF artifacts remain the efficient internal path for PySCF-side work. Radial profiles and compact `.rad` exports are the preferred density-only representation for stockholder/Hirshfeld-like workflows. A `.wfn` file is an interoperability container for workflows that need wavefunction-like Gaussian primitive and orbital coefficient data.
 
 The package WFN reader and evaluator added for this validation should therefore be interpreted narrowly. It is useful for checking that a saved WFN reproduces the density and spin-density semantics intended by the exporter; it is not a general PySCF-native WFN importer and does not replace the profile/radii/QA data layer.
 
-The validation is also intentionally limited. H, O, and H2O exercise open-shell atom spin typing, molecular WFN export, spherical-AO to Cartesian-primitive expansion at the WFN boundary, and Multiwfn deformation-density plane output. They do not prove every element, charge, basis, formal anion, high-angular-momentum shell, or future Multiwfn version. Full `.rad` export, full `.wfn` export, generated interoperability products, and a user-facing generator remain separate later stages.
+The validation is also intentionally limited. H, O, and H2O exercise open-shell atom spin typing, molecular WFN export, spherical-AO to Cartesian-primitive expansion at the WFN boundary, and Multiwfn deformation-density plane output. They do not prove every element, charge, basis, formal anion, high-angular-momentum shell, or future Multiwfn version. The export scripts add deterministic local `.rad` and `.wfn` generation paths, but a committed full interoperability product and a final user-facing generator remain separate later stages.
 
 ## Limitations
 
@@ -48,4 +48,4 @@ The data layer is a reference convention, not an experimental measurement of ato
 
 The state table is intentionally scoped. It is not a complete catalogue of all atomic excited states, metastable anions, or possible method-selected occupations. Users who need a non-default occupation should treat it as a new reference gauge and document the state explicitly.
 
-Finally, the current repository commits profile, radii, QA, and comparison tables, but not the expensive local SCF checkpoint layer. Full regeneration therefore requires local compute artifacts or rerunning the SCF workflow with the declared generator dependencies.
+Finally, the current repository commits profile, radii, QA, and comparison tables, but not the expensive local SCF checkpoint layer or full Multiwfn export tree. Full regeneration of `.wfn` files therefore requires local SCF artifacts or rerunning the SCF workflow with the declared generator dependencies. Density-only `.rad` files can be regenerated from the committed profile tables.

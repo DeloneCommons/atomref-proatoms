@@ -84,6 +84,20 @@ uv run --with 'mkdocs-material' --with 'mkdocs-jupyter' mkdocs build --strict
 
 The notebook `docs/notebooks/multiwfn_wfn_plane_validation.ipynb` is intended to be copied to `local-data/` for execution. A local Multiwfn executable may be placed at `local-data/Multiwfn` or under a `local-data/Multiwfn*/` directory; `local-data/settings.ini` is used when present. The notebook writes only H, O, and H2O validation files under ignored local paths and parses the resulting point and plane outputs.
 
-## Future interoperability outputs
+## Local Multiwfn interoperability export
 
-Planned Multiwfn outputs should be derived from the validated profile/radii/QA data layer. A density-only `.rad` exporter is the preferred compact density-only interoperability product for Hirshfeld-I-like workflows. A `.wfn` exporter is more delicate because it must preserve spherical fractional occupations and spin-channel semantics in a wavefunction-container format. The current WFN reader/evaluator supports validation and documentation of that boundary; it is not the recommended public data path. Full `.rad` export, full `.wfn` artifact generation, validation of generated interoperability products, and a final user-facing generator remain later implementation steps.
+The configured Multiwfn export policy is stored in `data/profile_datasets.yaml`. The current policy writes `.rad` files for all states in the two primary basis branches, writes `.wfn` files only for neutral atoms in the primary `x2c-QZVPall` branch, and writes no Multiwfn files for the supplemented/augmented branches.
+
+The maintainer export command is local-first:
+
+```bash
+python scripts/export_multiwfn_artifacts.py --dry-run
+python scripts/export_multiwfn_artifacts.py --format rad --force --check
+python scripts/check_multiwfn_artifacts.py --require-generated
+```
+
+The default output root is `local-data/multiwfn_artifacts/`, which is intentionally ignored. The `.rad` path needs only committed profile CSVs. The `.wfn` path additionally needs local SCF `scf.chk` and `scf.npz` files, because WFN export preserves wavefunction-like Gaussian primitive and spin-orbital information that is not present in the profile CSV. The package-side WFN reader/evaluator remains a validation utility, not the recommended public data path.
+
+## Remaining interoperability steps
+
+The exporter code now exists, but the repository still does not commit a full Multiwfn `.rad`/`.wfn` interoperability product and does not include the final user-facing generator. The next interoperability work should generate the configured local outputs, validate the resulting manifest and selected Multiwfn workflows, and then decide how the generated tree should be distributed.

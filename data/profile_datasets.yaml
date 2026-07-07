@@ -72,6 +72,9 @@ datasets:
       - formal_monoanion
       - formal_multianion
     diffuse: false
+    multiwfn_artifacts:
+      rad: all_states
+      wfn: neutral_atoms
 
   - dataset_id: pbe0_sfx2c_dyallv4z_h-lr_spherical_v2
     role: primary_h_lr_all_curated_states
@@ -88,6 +91,9 @@ datasets:
       - formal_monoanion
       - formal_multianion
     diffuse: false
+    multiwfn_artifacts:
+      rad: all_states
+      wfn: none
 
   - dataset_id: pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2
     role: supplemented_h_rn_neutral_and_anion_states
@@ -104,6 +110,9 @@ datasets:
       - formal_monoanion
       - formal_multianion
     diffuse: true
+    multiwfn_artifacts:
+      rad: none
+      wfn: none
 
   - dataset_id: pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2
     role: augmented_available_dyall_av4z_neutral_and_anion_states
@@ -120,3 +129,6 @@ datasets:
       - formal_monoanion
       - formal_multianion
     diffuse: true
+    multiwfn_artifacts:
+      rad: none
+      wfn: none

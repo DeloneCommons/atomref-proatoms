@@ -20,6 +20,16 @@ SUPPLEMENTED_X2C_QZVPALL_S = "pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2"
 AUGMENTED_DYALL_AV4Z = "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2"
 PRIMARY_PROFILE_DATASETS = (PRIMARY_X2C_QZVPALL, PRIMARY_DYALL_V4Z)
 SUPPLEMENTED_PROFILE_DATASETS = (SUPPLEMENTED_X2C_QZVPALL_S, AUGMENTED_DYALL_AV4Z)
+MULTIWFN_ARTIFACT_SCOPE_NONE = "none"
+MULTIWFN_ARTIFACT_SCOPE_ALL_STATES = "all_states"
+MULTIWFN_ARTIFACT_SCOPE_NEUTRAL_ATOMS = "neutral_atoms"
+ALLOWED_MULTIWFN_ARTIFACT_SCOPES = frozenset(
+    {
+        MULTIWFN_ARTIFACT_SCOPE_NONE,
+        MULTIWFN_ARTIFACT_SCOPE_ALL_STATES,
+        MULTIWFN_ARTIFACT_SCOPE_NEUTRAL_ATOMS,
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -34,6 +44,8 @@ class DatasetScope:
     z_intervals: tuple[tuple[int, int], ...]
     include_state_roles: tuple[str, ...]
     diffuse: bool
+    multiwfn_rad: str = MULTIWFN_ARTIFACT_SCOPE_NONE
+    multiwfn_wfn: str = MULTIWFN_ARTIFACT_SCOPE_NONE
     exclude_symbols: tuple[str, ...] = ()
     exclude_symbols_for_anions: tuple[str, ...] = ()
 
@@ -67,6 +79,22 @@ class DatasetScope:
         if charge > 0:
             return self.allow_cation
         return self.allow_anion
+
+    def allows_multiwfn_rad(self, *, charge: int) -> bool:
+        return _artifact_scope_allows_charge(self.multiwfn_rad, charge=charge)
+
+    def allows_multiwfn_wfn(self, *, charge: int) -> bool:
+        return _artifact_scope_allows_charge(self.multiwfn_wfn, charge=charge)
+
+
+def _artifact_scope_allows_charge(scope: str, *, charge: int) -> bool:
+    if scope == MULTIWFN_ARTIFACT_SCOPE_NONE:
+        return False
+    if scope == MULTIWFN_ARTIFACT_SCOPE_ALL_STATES:
+        return True
+    if scope == MULTIWFN_ARTIFACT_SCOPE_NEUTRAL_ATOMS:
+        return charge == 0
+    raise ValueError(f"Unknown Multiwfn artifact scope: {scope!r}")
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
@@ -119,6 +147,17 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
     roles_raw = record["include_state_roles"]
     if not isinstance(roles_raw, list) or not roles_raw:
         raise ValueError(f"dataset {record['dataset_id']}: include_state_roles must be non-empty")
+    artifacts_raw = record.get("multiwfn_artifacts", {})
+    if not isinstance(artifacts_raw, dict):
+        raise ValueError(f"dataset {record['dataset_id']}: multiwfn_artifacts must be a mapping")
+    multiwfn_rad = str(artifacts_raw.get("rad", MULTIWFN_ARTIFACT_SCOPE_NONE))
+    multiwfn_wfn = str(artifacts_raw.get("wfn", MULTIWFN_ARTIFACT_SCOPE_NONE))
+    for label, scope in {"rad": multiwfn_rad, "wfn": multiwfn_wfn}.items():
+        if scope not in ALLOWED_MULTIWFN_ARTIFACT_SCOPES:
+            raise ValueError(
+                f"dataset {record['dataset_id']}: multiwfn_artifacts.{label} must be one of "
+                f"{sorted(ALLOWED_MULTIWFN_ARTIFACT_SCOPES)}, got {scope!r}"
+            )
     exclude_symbols_raw = record.get("exclude_symbols", [])
     if not isinstance(exclude_symbols_raw, list):
         raise ValueError(f"dataset {record['dataset_id']}: exclude_symbols must be a list")
@@ -136,6 +175,8 @@ def _scope_from_record(record: dict[str, Any]) -> DatasetScope:
         z_intervals=tuple(intervals),
         include_state_roles=tuple(str(role) for role in roles_raw),
         diffuse=bool(record["diffuse"]),
+        multiwfn_rad=multiwfn_rad,
+        multiwfn_wfn=multiwfn_wfn,
         exclude_symbols=tuple(str(symbol) for symbol in exclude_symbols_raw),
         exclude_symbols_for_anions=tuple(
             str(symbol) for symbol in exclude_symbols_for_anions_raw
@@ -275,3 +316,11 @@ def state_allowed_in_dataset(
         and scope.allows_charge(charge)
         and state_role in scope.include_state_roles
     )
+
+
+def multiwfn_rad_allowed_for_dataset(dataset_id: str, *, charge: int) -> bool:
+    return dataset_scope(dataset_id).allows_multiwfn_rad(charge=charge)
+
+
+def multiwfn_wfn_allowed_for_dataset(dataset_id: str, *, charge: int) -> bool:
+    return dataset_scope(dataset_id).allows_multiwfn_wfn(charge=charge)

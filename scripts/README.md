@@ -15,6 +15,7 @@ python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
 python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/export_multiwfn_artifacts.py --dry-run
 python scripts/prepare_docs.py --write
 ```
 
@@ -35,6 +36,8 @@ artifacts require the generator dependency set.
 | `check_basis_sensitivity.py` | Compare primary and supplemented/augmented profile branches for matched neutral and anion states where both generated datasets are present. | `data/qa/basis_sensitivity/` |
 | `check_basis_comparisons.py` | Compare the two primary basis families over the H-Rn overlap by exact state ID and state-record digest. | `data/qa/basis_comparisons/` |
 | `check_profile_artifacts.py` | Validate generated profile/radii/QA data directories against the active dataset config. | terminal validation report |
+| `export_multiwfn_artifacts.py` | Export configured local Multiwfn `.rad` and `.wfn` interoperability files from profiles and local SCF artifacts. | `local-data/multiwfn_artifacts/` by default |
+| `check_multiwfn_artifacts.py` | Validate a generated Multiwfn artifact manifest, re-read `.rad` files against profile interpolation, and re-read `.wfn` electron counts. | terminal validation report |
 | `prepare_docs.py` | Refresh paper-style documentation table fragments, SVG figures, and marked Results blocks from committed data. | `docs/tables/`, `docs/figures/`, `docs/results.md` |
 
 ## `check_states.py`
@@ -204,6 +207,59 @@ Options mirror the scientific-difference thresholds in `check_basis_sensitivity.
 `--watch-cumulative-electrons`, `--outlier-cumulative-electrons`,
 `--watch-mean-shift-angstrom`, and `--outlier-mean-shift-angstrom`. Use
 `--allow-incomplete` only for local debugging.
+
+## `export_multiwfn_artifacts.py`
+
+Common commands:
+
+```bash
+python scripts/export_multiwfn_artifacts.py --dry-run
+python scripts/export_multiwfn_artifacts.py --format rad --force --check
+python scripts/export_multiwfn_artifacts.py --format wfn --force --check
+```
+
+The active export policy is read from `data/profile_datasets.yaml`. In the current configuration, `.rad` files are requested for all states in the primary `x2c-QZVPall` and `dyall-v4z` branches; `.wfn` files are requested only for neutral atoms in the primary `x2c-QZVPall` branch; supplemented/augmented branches request no Multiwfn outputs.
+
+The default output root is ignored local data:
+
+```text
+local-data/multiwfn_artifacts/
+  rad/<dataset_id>/<Element><charge>.rad
+  wfn/<dataset_id>/<Element>.wfn
+  manifest.json
+```
+
+The `.rad` exporter uses the committed profile CSVs and interpolates densities onto the fixed Multiwfn `atmrad` radial grid. The `.wfn` exporter uses local SCF checkpoint and NPZ files because profiles do not contain wavefunction-like MO coefficient data. Use `--format rad` when only the density-only stockholder/Hirshfeld-like export is needed.
+
+Options:
+
+- `--format {all,rad,wfn}`: select configured output formats.
+- `--dataset`: restrict to one configured dataset; may be repeated.
+- `--state`: restrict to one state ID; may be repeated.
+- `--profiles-root`: profile CSV root; default is `data/profiles`.
+- `--scf-root`: local SCF artifact root for `.wfn` export; default is `local-data/scf`.
+- `--output-root`: output root; default is `local-data/multiwfn_artifacts`.
+- `--force`: overwrite existing files.
+- `--check`: re-read generated `.rad` files and `.wfn` files after writing.
+- `--dry-run`: print the plan and required inputs without writing files.
+
+## `check_multiwfn_artifacts.py`
+
+Common commands:
+
+```bash
+python scripts/check_multiwfn_artifacts.py
+python scripts/check_multiwfn_artifacts.py --require-generated
+```
+
+The checker reads `local-data/multiwfn_artifacts/manifest.json` by default. For `.rad` files, it re-interpolates the source profile to the saved `.rad` grid and compares the values within a tight numerical tolerance. For `.wfn` files, it uses the package validation parser to check the electron-count semantics. This is a format-boundary validation; it is not a Hirshfeld-I calculation and does not make Multiwfn a package dependency.
+
+Options:
+
+- `--artifact-root`: generated Multiwfn artifact root.
+- `--profiles-root`: profile CSV root used for `.rad` validation.
+- `--require-generated`: fail if the manifest is absent.
+- `--rad-relative-tol`: tolerance for `.rad` value comparison.
 
 ## `check_profile_artifacts.py`
 
