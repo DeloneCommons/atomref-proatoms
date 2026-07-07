@@ -36,6 +36,7 @@ BASIS_ROOT = DATA_DIR / "basis_sets"
 PROFILES_ROOT = DATA_DIR / "profiles"
 RADII_ROOT = DATA_DIR / "radii"
 QA_ROOT = DATA_DIR / "qa"
+MULTIWFN_ARTIFACTS_ROOT = DATA_DIR / "multiwfn_artifacts"
 SCF_ROOT = LOCAL_DATA_DIR / "scf"
 DIAGNOSTICS_ROOT = LOCAL_DATA_DIR / "diagnostics"
 SCRATCH_ROOT = LOCAL_DATA_DIR / "scratch"
@@ -85,6 +86,10 @@ def radii_root() -> Path:
 
 def qa_root() -> Path:
     return QA_ROOT
+
+
+def multiwfn_artifacts_root() -> Path:
+    return MULTIWFN_ARTIFACTS_ROOT
 
 
 def local_scf_root() -> Path:

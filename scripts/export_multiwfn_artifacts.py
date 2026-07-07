@@ -10,6 +10,8 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 if str(SRC) not in sys.path:
@@ -17,8 +19,8 @@ if str(SRC) not in sys.path:
 
 from atomref_proatoms.dataio.datasets import load_profile_dataset_config  # noqa: E402
 from atomref_proatoms.dataio.paths import (  # noqa: E402
+    MULTIWFN_ARTIFACTS_ROOT,
     PROFILE_DATASETS_FILE,
-    PROFILES_ROOT,
     SCF_ROOT,
     STATES_FILE,
     repo_relative_path,
@@ -38,14 +40,14 @@ from atomref_proatoms.exporters.multiwfn_artifacts import (  # noqa: E402
     write_multiwfn_manifest,
 )
 from atomref_proatoms.exporters.multiwfn_rad import (  # noqa: E402
-    profile_state_density_from_wide_rows,
-    read_wide_profiles_csv,
-    write_profile_state_rad,
+    MULTIWFN_ATMRAD_GRID_BOHR,
+    evaluate_scf_radial_density,
+    write_multiwfn_rad_file,
 )
 from atomref_proatoms.exporters.proaim_wfn import write_atomref_scf_arrays_wfn  # noqa: E402
 from atomref_proatoms.states.state_tables import AtomState, load_atom_states  # noqa: E402
 
-DEFAULT_OUTPUT_ROOT = ROOT / "local-data" / "multiwfn_artifacts"
+DEFAULT_OUTPUT_ROOT = MULTIWFN_ARTIFACTS_ROOT
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -84,26 +86,45 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--format",
         choices=("all", "rad", "wfn"),
-        default="all",
-        help="Export both configured formats, only .rad, or only .wfn.",
-    )
-    parser.add_argument(
-        "--profiles-root",
-        type=Path,
-        default=PROFILES_ROOT,
-        help="Profile input root; defaults to data/profiles.",
+        default="rad",
+        help=(
+            "Export only .rad, only .wfn, or all configured outputs. Defaults to "
+            "rad so the density-only product can be generated before optional WFN export."
+        ),
     )
     parser.add_argument(
         "--scf-root",
         type=Path,
         default=SCF_ROOT,
-        help="Local SCF artifact root for .wfn export; defaults to local-data/scf.",
+        help="Local SCF artifact root for .rad/.wfn export; defaults to local-data/scf.",
     )
     parser.add_argument(
         "--output-root",
         type=Path,
         default=DEFAULT_OUTPUT_ROOT,
-        help="Output root; defaults to local-data/multiwfn_artifacts.",
+        help="Output root; defaults to data/multiwfn_artifacts.",
+    )
+    parser.add_argument(
+        "--rad-angular-points",
+        type=int,
+        default=1,
+        help=(
+            "Angular points for SCF-derived .rad densities. The default 1 evaluates "
+            "the spherical atomref density on a fixed Cartesian ray; use 110 for a "
+            "slower angular-average diagnostic."
+        ),
+    )
+    parser.add_argument(
+        "--rad-eval-chunk-size",
+        type=int,
+        default=8192,
+        help="Number of Cartesian points per PySCF AO-evaluation chunk for .rad export.",
+    )
+    parser.add_argument(
+        "--progress-every",
+        type=int,
+        default=25,
+        help="Print progress every N files; use 1 for every file and 0 to suppress progress.",
     )
     parser.add_argument("--force", action="store_true", help="Overwrite existing files.")
     parser.add_argument(
@@ -157,10 +178,25 @@ def _print_plan(
 ) -> None:
     print(f"Profile data version: {config.profile_data_version}")
     print(f"Dataset config: {repo_relative_path(args.config)}")
-    print(f"Profile input root: {repo_relative_path(args.profiles_root)}")
     print(f"SCF artifact root: {repo_relative_path(args.scf_root)}")
     print(f"Output root: {repo_relative_path(args.output_root)}")
     print(format_multiwfn_artifact_plan(jobs, show_jobs=args.show_jobs or args.list, config=config))
+
+
+def _is_default_output_root(path: Path) -> bool:
+    return path.resolve(strict=False) == DEFAULT_OUTPUT_ROOT.resolve(strict=False)
+
+
+def _ensure_default_readme_present(output_root: Path) -> None:
+    if not _is_default_output_root(output_root):
+        return
+    readme = output_root / "README.md"
+    if not readme.exists():
+        raise FileNotFoundError(
+            "The tracked Multiwfn data-contract README is missing: "
+            f"{repo_relative_path(readme)}. Restore it from the repository before "
+            "generating files under the default data/multiwfn_artifacts root."
+        )
 
 
 def _ensure_writable(path: Path, *, force: bool) -> None:
@@ -168,37 +204,48 @@ def _ensure_writable(path: Path, *, force: bool) -> None:
         raise FileExistsError(f"Refusing to overwrite existing file without --force: {path}")
 
 
-def _profile_rows_by_dataset(
-    jobs: tuple[MultiwfnArtifactJob, ...], profiles_root: Path
-) -> dict[str, list[dict[str, str]]]:
-    rows_by_dataset: dict[str, list[dict[str, str]]] = {}
-    for dataset_id in sorted({job.dataset_id for job in jobs if job.rad_requested}):
-        profiles_path = profiles_root / dataset_id / "profiles.csv"
-        if not profiles_path.exists():
-            raise FileNotFoundError(
-                f"Profile CSV required for .rad export not found: {profiles_path}"
-            )
-        rows_by_dataset[dataset_id] = read_wide_profiles_csv(profiles_path)
-    return rows_by_dataset
+def _required_scf_paths(job: MultiwfnArtifactJob, *, scf_root: Path):
+    paths = scf_artifact_paths(scf_root, job.dataset_id, job.state_id)
+    missing = [path for path in (paths.chk, paths.npz, paths.metadata) if not path.exists()]
+    if missing:
+        missing_text = ", ".join(repo_relative_path(path) for path in missing)
+        raise FileNotFoundError(
+            f"SCF artifact files required for Multiwfn export are missing: {missing_text}"
+        )
+    return paths
+
+
+def _rad_evaluation_label(n_ang: int) -> str:
+    return "fixed_axis_spherical_scf" if int(n_ang) == 1 else "angular_average_scf"
 
 
 def _export_rad_job(
     job: MultiwfnArtifactJob,
     *,
-    rows_by_dataset: Mapping[str, list[dict[str, str]]],
+    scf_root: Path,
     output_root: Path,
     force: bool,
     check: bool,
+    rad_angular_points: int,
+    rad_eval_chunk_size: int,
 ) -> dict[str, Any]:
-    rows = rows_by_dataset[job.dataset_id]
-    r_bohr, rho = profile_state_density_from_wide_rows(rows, job.state_id)
+    paths = _required_scf_paths(job, scf_root=scf_root)
     out_path = output_root / "rad" / job.dataset_id / job.rad_filename
     _ensure_writable(out_path, force=force)
-    info = write_profile_state_rad(
-        out_path,
-        profile_r_bohr=r_bohr,
-        profile_rho_e_bohr3=rho,
+    mol = load_mol_from_chk(paths.chk)
+    arrays = load_scf_npz(paths.npz)
+    metadata = read_scf_metadata(paths.metadata)
+    dm_total = np.asarray(arrays["dm_alpha"], dtype=float) + np.asarray(
+        arrays["dm_beta"], dtype=float
     )
+    r_bohr, rho_e_bohr3 = evaluate_scf_radial_density(
+        mol,
+        dm_total,
+        r_bohr=MULTIWFN_ATMRAD_GRID_BOHR,
+        n_ang=rad_angular_points,
+        coord_block_size=rad_eval_chunk_size,
+    )
+    info = write_multiwfn_rad_file(out_path, r_bohr, rho_e_bohr3)
     if check:
         from atomref_proatoms.exporters.multiwfn_rad import read_multiwfn_rad_file
 
@@ -211,7 +258,16 @@ def _export_rad_job(
         "state_id": job.state_id,
         "symbol": job.symbol,
         "charge": job.charge,
+        "electron_count": job.electron_count,
         "path": repo_relative_path(out_path),
+        "source": "scf_density_evaluation",
+        "rad_grid_source": "Multiwfn atmrad exemplar grid",
+        "rad_evaluation": _rad_evaluation_label(rad_angular_points),
+        "rad_angular_points": int(rad_angular_points),
+        "source_scf_checkpoint": repo_relative_path(paths.chk),
+        "source_scf_npz": repo_relative_path(paths.npz),
+        "source_scf_metadata": repo_relative_path(paths.metadata),
+        "source_scf_converged": bool(metadata.get("results", {}).get("converged")),
         **info,
     }
 
@@ -232,13 +288,7 @@ def _export_wfn_job(
     force: bool,
     check: bool,
 ) -> dict[str, Any]:
-    paths = scf_artifact_paths(scf_root, job.dataset_id, job.state_id)
-    missing = [path for path in (paths.chk, paths.npz, paths.metadata) if not path.exists()]
-    if missing:
-        missing_text = ", ".join(repo_relative_path(path) for path in missing)
-        raise FileNotFoundError(
-            f"SCF artifact files required for .wfn export are missing: {missing_text}"
-        )
+    paths = _required_scf_paths(job, scf_root=scf_root)
     out_path = output_root / "wfn" / job.dataset_id / job.wfn_filename
     _ensure_writable(out_path, force=force)
     state = states[job.state_id]
@@ -265,24 +315,52 @@ def _export_wfn_job(
         "state_id": job.state_id,
         "symbol": job.symbol,
         "charge": job.charge,
+        "electron_count": job.electron_count,
         "path": repo_relative_path(out_path),
+        "source": "scf_wavefunction_export",
+        "source_scf_checkpoint": repo_relative_path(paths.chk),
+        "source_scf_npz": repo_relative_path(paths.npz),
+        "source_scf_metadata": repo_relative_path(paths.metadata),
+        "source_scf_converged": bool(metadata.get("results", {}).get("converged")),
         **info,
     }
 
 
 def _dry_run_inputs(jobs: tuple[MultiwfnArtifactJob, ...], args: argparse.Namespace) -> None:
-    rad_datasets = sorted({job.dataset_id for job in jobs if job.rad_requested})
-    wfn_jobs = [job for job in jobs if job.wfn_requested]
-    if rad_datasets:
-        print("Required profile CSVs for .rad export:")
-        for dataset_id in rad_datasets:
-            print(f"  {repo_relative_path(args.profiles_root / dataset_id / 'profiles.csv')}")
-    if wfn_jobs:
-        print("Required SCF artifact directories for .wfn export:")
-        for job in wfn_jobs[:20]:
-            print(f"  {repo_relative_path(args.scf_root / job.dataset_id / job.state_id)}")
-        if len(wfn_jobs) > 20:
-            print(f"  ... {len(wfn_jobs) - 20} more")
+    if any(job.rad_requested for job in jobs):
+        print(
+            ".rad SCF-density evaluation: "
+            f"{_rad_evaluation_label(args.rad_angular_points)} "
+            f"(rad_angular_points={args.rad_angular_points})"
+        )
+    scf_jobs = [job for job in jobs if job.rad_requested or job.wfn_requested]
+    if scf_jobs:
+        print("Required local SCF artifact directories for .rad/.wfn export:")
+        for job in scf_jobs[:20]:
+            outputs = []
+            if job.rad_requested:
+                outputs.append(".rad")
+            if job.wfn_requested:
+                outputs.append(".wfn")
+            print(
+                f"  {repo_relative_path(args.scf_root / job.dataset_id / job.state_id)} "
+                f"# {'/'.join(outputs)}"
+            )
+        if len(scf_jobs) > 20:
+            print(f"  ... {len(scf_jobs) - 20} more")
+
+
+def _print_progress(
+    index: int, total: int, *, fmt: str, job: MultiwfnArtifactJob, every: int
+) -> None:
+    if every <= 0:
+        return
+    if index == 1 or index == total or index % every == 0:
+        print(
+            f"[{index}/{total}] exporting {fmt}: {job.dataset_id}/{job.state_id}",
+            file=sys.stderr,
+            flush=True,
+        )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -312,21 +390,41 @@ def main(argv: list[str] | None = None) -> int:
         print("Dry run completed before Multiwfn artifact export")
         return 0
 
-    rows_by_dataset = _profile_rows_by_dataset(jobs, args.profiles_root)
+    _ensure_default_readme_present(args.output_root)
     states_by_id = _state_map(states)
     files: list[dict[str, Any]] = []
+    total_outputs = sum(int(job.rad_requested) + int(job.wfn_requested) for job in jobs)
+    output_index = 0
     for job in jobs:
         if job.rad_requested:
+            output_index += 1
+            _print_progress(
+                output_index,
+                total_outputs,
+                fmt="rad",
+                job=job,
+                every=args.progress_every,
+            )
             files.append(
                 _export_rad_job(
                     job,
-                    rows_by_dataset=rows_by_dataset,
+                    scf_root=args.scf_root,
                     output_root=args.output_root,
                     force=args.force,
                     check=args.check,
+                    rad_angular_points=args.rad_angular_points,
+                    rad_eval_chunk_size=args.rad_eval_chunk_size,
                 )
             )
         if job.wfn_requested:
+            output_index += 1
+            _print_progress(
+                output_index,
+                total_outputs,
+                fmt="wfn",
+                job=job,
+                every=args.progress_every,
+            )
             files.append(
                 _export_wfn_job(
                     job,

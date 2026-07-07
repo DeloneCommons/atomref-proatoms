@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check generated Multiwfn interoperability files against profiles and state metadata."""
+"""Check generated Multiwfn interoperability files and manifest consistency."""
 
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ if str(SRC) not in sys.path:
 
 from atomref_proatoms.dataio.datasets import load_profile_dataset_config  # noqa: E402
 from atomref_proatoms.dataio.paths import (  # noqa: E402
+    MULTIWFN_ARTIFACTS_ROOT,
     PROFILE_DATASETS_FILE,
-    PROFILES_ROOT,
     STATES_FILE,
     repo_relative_path,
 )
@@ -27,15 +27,14 @@ from atomref_proatoms.exporters.multiwfn_artifacts import (  # noqa: E402
     read_multiwfn_manifest,
 )
 from atomref_proatoms.exporters.multiwfn_rad import (  # noqa: E402
-    interpolate_density_to_rad_grid,
-    profile_state_density_from_wide_rows,
+    MULTIWFN_ATMRAD_GRID_BOHR,
+    radial_density_integral,
     read_multiwfn_rad_file,
-    read_wide_profiles_csv,
 )
 from atomref_proatoms.states.state_tables import load_atom_states  # noqa: E402
 from atomref_proatoms.validation.wfn_density import parse_wfn_file  # noqa: E402
 
-DEFAULT_ARTIFACT_ROOT = ROOT / "local-data" / "multiwfn_artifacts"
+DEFAULT_ARTIFACT_ROOT = MULTIWFN_ARTIFACTS_ROOT
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -53,32 +52,33 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="Active curated state JSON; defaults to data/states/curated/atom_states_v2.json.",
     )
     parser.add_argument(
-        "--profiles-root",
-        type=Path,
-        default=PROFILES_ROOT,
-        help="Profile input root; defaults to data/profiles.",
-    )
-    parser.add_argument(
         "--artifact-root",
         "--multiwfn-root",
         dest="artifact_root",
         type=Path,
         default=DEFAULT_ARTIFACT_ROOT,
-        help="Generated Multiwfn artifact root; defaults to local-data/multiwfn_artifacts.",
+        help="Generated Multiwfn artifact root; defaults to data/multiwfn_artifacts.",
     )
     parser.add_argument(
         "--require-generated",
         action="store_true",
         help="Fail if the Multiwfn artifact manifest is absent.",
     )
-    parser.add_argument(
-        "--rad-relative-tol",
-        type=float,
-        default=1e-9,
-        help="Relative tolerance for comparing .rad values with profile interpolation.",
-    )
     return parser.parse_args(argv)
 
+
+
+
+def _check_manifest_path_alias(file_record: dict[str, Any]) -> None:
+    path_text = str(file_record.get("path", ""))
+    if not path_text:
+        raise ValueError("manifest file record is missing path")
+    file_text = file_record.get("file")
+    if file_text is not None and str(file_text) != path_text:
+        raise ValueError(
+            "manifest file field must match the canonical path field; "
+            f"got file={file_text!r}, path={path_text!r}"
+        )
 
 def _resolve_manifest_path(path_text: str, artifact_root: Path) -> Path:
     candidate = Path(path_text)
@@ -90,28 +90,66 @@ def _resolve_manifest_path(path_text: str, artifact_root: Path) -> Path:
     return artifact_root / candidate
 
 
-def _check_rad_file(
-    file_record: dict[str, Any],
-    *,
-    profiles_root: Path,
-    artifact_root: Path,
-    rows_cache: dict[str, list[dict[str, str]]],
-    relative_tol: float,
-) -> None:
+def _require_close(observed: float, expected: float, *, label: str, path: Path) -> None:
+    if not np.isclose(observed, expected, rtol=1e-10, atol=1e-12):
+        raise ValueError(f"{path}: {label} {observed:.12g} != manifest {expected:.12g}")
+
+
+def _check_rad_file(file_record: dict[str, Any], *, artifact_root: Path) -> None:
+    if file_record.get("source") != "scf_density_evaluation":
+        raise ValueError(
+            "manifest .rad records must be generated from local SCF artifacts; "
+            f"got source={file_record.get('source')!r}"
+        )
+    required_source_fields = (
+        "source_scf_checkpoint",
+        "source_scf_npz",
+        "source_scf_metadata",
+        "rad_evaluation",
+        "rad_angular_points",
+    )
+    missing_source_fields = [field for field in required_source_fields if field not in file_record]
+    if missing_source_fields:
+        raise ValueError(f"manifest .rad record missing fields {missing_source_fields}")
+    if file_record.get("rad_evaluation") not in {
+        "fixed_axis_spherical_scf",
+        "angular_average_scf",
+    }:
+        raise ValueError(
+            "manifest .rad record has unsupported rad_evaluation "
+            f"{file_record.get('rad_evaluation')!r}"
+        )
+    if int(file_record.get("rad_angular_points", 0)) < 1:
+        raise ValueError("manifest .rad record has invalid rad_angular_points")
     path = _resolve_manifest_path(str(file_record["path"]), artifact_root)
     parsed = read_multiwfn_rad_file(path)
-    dataset_id = str(file_record["dataset_id"])
-    state_id = str(file_record["state_id"])
-    if dataset_id not in rows_cache:
-        rows_cache[dataset_id] = read_wide_profiles_csv(profiles_root / dataset_id / "profiles.csv")
-    source_r, source_rho = profile_state_density_from_wide_rows(rows_cache[dataset_id], state_id)
-    expected = interpolate_density_to_rad_grid(source_r, source_rho, target_r_bohr=parsed.r_bohr)
-    abs_error = np.abs(parsed.rho_e_bohr3 - expected)
-    scale = max(float(np.max(np.abs(expected))), 1.0)
-    if float(np.max(abs_error)) > relative_tol * scale + 1e-14:
-        raise ValueError(
-            f"{path}: .rad values differ from profile interpolation; "
-            f"max_abs={float(np.max(abs_error)):.6g}, scale={scale:.6g}"
+    if parsed.n_points != len(MULTIWFN_ATMRAD_GRID_BOHR):
+        raise ValueError(f"{path}: unexpected .rad point count {parsed.n_points}")
+    if not np.allclose(parsed.r_bohr, MULTIWFN_ATMRAD_GRID_BOHR, rtol=0.0, atol=5e-13):
+        raise ValueError(f"{path}: radius grid does not match the fixed Multiwfn atmrad grid")
+    if "n_points" in file_record and parsed.n_points != int(file_record["n_points"]):
+        raise ValueError(f"{path}: point count does not match manifest")
+    if "r_min_bohr" in file_record:
+        _require_close(
+            float(parsed.r_bohr[0]),
+            float(file_record["r_min_bohr"]),
+            label="r_min",
+            path=path,
+        )
+    if "r_max_bohr" in file_record:
+        _require_close(
+            float(parsed.r_bohr[-1]),
+            float(file_record["r_max_bohr"]),
+            label="r_max",
+            path=path,
+        )
+    if "integral_electrons_trapezoid" in file_record:
+        observed = radial_density_integral(parsed.r_bohr, parsed.rho_e_bohr3)
+        _require_close(
+            observed,
+            float(file_record["integral_electrons_trapezoid"]),
+            label="finite-grid electron integral",
+            path=path,
         )
 
 
@@ -148,7 +186,6 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     states = load_atom_states(args.states_file)
     electron_counts = {state.state_id: state.electron_count for state in states}
-    rows_cache: dict[str, list[dict[str, str]]] = {}
     files = manifest.get("files")
     if not isinstance(files, list):
         print("ERROR: manifest files field must be a list", file=sys.stderr)
@@ -157,15 +194,10 @@ def main(argv: list[str] | None = None) -> int:
         for record in files:
             if not isinstance(record, dict):
                 raise ValueError(f"manifest file record must be an object, got {record!r}")
+            _check_manifest_path_alias(record)
             fmt = record.get("format")
             if fmt == "rad":
-                _check_rad_file(
-                    record,
-                    profiles_root=args.profiles_root,
-                    artifact_root=args.artifact_root,
-                    rows_cache=rows_cache,
-                    relative_tol=args.rad_relative_tol,
-                )
+                _check_rad_file(record, artifact_root=args.artifact_root)
             elif fmt == "wfn":
                 _check_wfn_file(
                     record,

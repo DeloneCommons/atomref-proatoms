@@ -20,3 +20,6 @@ site/
 *.molden
 *.log
 *.out
+!data/multiwfn_artifacts/
+!data/multiwfn_artifacts/**/
+!data/multiwfn_artifacts/**/*.wfn

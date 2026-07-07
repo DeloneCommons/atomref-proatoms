@@ -1,15 +1,16 @@
-"""Multiwfn ``.rad`` density-only export helpers.
+"""Multiwfn ``.rad`` density-only file helpers.
 
-The project-native radial profile CSV/metadata files remain the canonical compact
-Python-side data layer.  Multiwfn ``.rad`` files are written as a density-only
-interoperability product for Hirshfeld-I/stockholder-like workflows.
+Multiwfn ``.rad`` files are density-only interoperability products for
+stockholder/Hirshfeld-like workflows.  The maintainer export script evaluates
+these densities from local SCF checkpoint/array artifacts on the fixed Multiwfn
+``atmrad`` grid; it must not derive release ``.rad`` files by interpolating the
+committed profile CSV tables.
 """
 
 from __future__ import annotations
 
-import csv
 import math
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -17,7 +18,8 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
-from ..profiles.artifacts import profile_density_column
+from ..dataio.paths import repo_relative_path
+from ..profiles.grids import angular_grid
 
 ArrayF = npt.NDArray[np.float64]
 
@@ -248,39 +250,73 @@ def _as_float_array(values: Sequence[float] | Iterable[float], *, label: str) ->
     return arr
 
 
-def interpolate_density_to_rad_grid(
-    source_r_bohr: Sequence[float] | Iterable[float],
-    source_rho_e_bohr3: Sequence[float] | Iterable[float],
-    *,
-    target_r_bohr: Sequence[float] | Iterable[float] = MULTIWFN_ATMRAD_GRID_BOHR,
-) -> ArrayF:
-    """Interpolate a released profile density to the fixed Multiwfn atmrad grid."""
+def _pyscf_numint_module():
+    try:
+        from pyscf.dft import numint  # type: ignore[import-not-found]
+    except Exception as exc:  # pragma: no cover - optional dependency path
+        raise RuntimeError(
+            "PySCF is required for SCF-derived .rad density evaluation. Install with "
+            "`python -m pip install -e .[generator]`."
+        ) from exc
+    return numint
 
-    source_r = _as_float_array(source_r_bohr, label="source_r_bohr")
-    source_rho = _as_float_array(source_rho_e_bohr3, label="source_rho_e_bohr3")
-    target_r = _as_float_array(target_r_bohr, label="target_r_bohr")
-    if source_r.shape != source_rho.shape:
-        raise ValueError("source radius and density arrays have different lengths")
-    if np.any(source_r <= 0) or np.any(target_r <= 0):
-        raise ValueError("radial grids must be strictly positive")
-    if np.any(np.diff(source_r) <= 0):
-        raise ValueError("source_r_bohr must be strictly increasing")
-    if np.any(np.diff(target_r) <= 0):
-        raise ValueError("target_r_bohr must be strictly increasing")
-    if target_r[0] < source_r[0] or target_r[-1] > source_r[-1]:
-        raise ValueError(
-            "target Multiwfn .rad grid is outside the source profile range: "
-            f"target {target_r[0]:.6g}..{target_r[-1]:.6g}, "
-            f"source {source_r[0]:.6g}..{source_r[-1]:.6g} bohr"
-        )
-    if np.any(source_rho < 0):
-        raise ValueError("source densities must be non-negative")
-    positive = source_rho > 0.0
-    if np.all(positive):
-        out = np.exp(np.interp(np.log(target_r), np.log(source_r), np.log(source_rho)))
+
+def evaluate_scf_radial_density(
+    mol: Any,
+    dm_total: Any,
+    *,
+    r_bohr: Sequence[float] | Iterable[float] = MULTIWFN_ATMRAD_GRID_BOHR,
+    n_ang: int = 1,
+    coord_block_size: int = 8192,
+    prefer_pyscf_angular_grid: bool = True,
+) -> tuple[ArrayF, ArrayF]:
+    """Evaluate an SCF density matrix on a radial grid for ``.rad`` export.
+
+    Release ``.rad`` files are generated from local SCF density matrices, not by
+    profile-table interpolation.  With ``n_ang=1`` the density is evaluated on a
+    fixed Cartesian ray, which is appropriate for atomref's one-center spherical
+    SCF proatoms and avoids an expensive angular quadrature over every exported
+    file.  Larger ``n_ang`` values perform a vectorized angular average for local
+    diagnostics.
+    """
+
+    r_values = _as_float_array(r_bohr, label="r_bohr")
+    if np.any(r_values <= 0) or np.any(np.diff(r_values) <= 0):
+        raise ValueError("r_bohr must be strictly positive and increasing")
+    dm = np.asarray(dm_total, dtype=float)
+    if dm.ndim != 2 or dm.shape[0] != dm.shape[1]:
+        raise ValueError("dm_total must be a square two-dimensional density matrix")
+    if int(n_ang) < 1:
+        raise ValueError("n_ang must be positive")
+    if int(coord_block_size) < 1:
+        raise ValueError("coord_block_size must be positive")
+
+    if int(n_ang) == 1:
+        # Atomref proatom densities are constructed to be spherical at the SCF
+        # model level, so a single fixed ray is the preferred export path.
+        directions = np.asarray([[1.0, 0.0, 0.0]], dtype=float)
+        weights = np.ones(1, dtype=float)
     else:
-        out = np.interp(target_r, source_r, source_rho)
-    return np.maximum(out, 0.0)
+        directions, weights = angular_grid(int(n_ang), prefer_pyscf=prefer_pyscf_angular_grid)
+    weights = np.asarray(weights, dtype=float) / float(np.sum(weights))
+    n_dir = int(directions.shape[0])
+
+    coords = (r_values[:, None, None] * directions[None, :, :]).reshape(-1, 3)
+    rho_sum = np.zeros(r_values.shape[0], dtype=float)
+    numint = _pyscf_numint_module()
+    block_size = int(coord_block_size)
+    flat_indices = np.arange(coords.shape[0], dtype=np.int64)
+    for start in range(0, coords.shape[0], block_size):
+        end_block = min(start + block_size, coords.shape[0])
+        block_index = flat_indices[start:end_block]
+        radius_index = block_index // n_dir
+        angular_index = block_index % n_dir
+        ao = numint.eval_ao(mol, coords[start:end_block], deriv=0)
+        rho = np.asarray(numint.eval_rho(mol, ao, dm, xctype="LDA"), dtype=float)
+        np.add.at(rho_sum, radius_index, rho * weights[angular_index])
+    if np.any(~np.isfinite(rho_sum)) or np.any(rho_sum < -1e-14):
+        raise ValueError("SCF-derived radial density contains invalid values")
+    return r_values.copy(), np.maximum(rho_sum, 0.0)
 
 
 def write_multiwfn_rad_file(
@@ -306,7 +342,7 @@ def write_multiwfn_rad_file(
             handle.write(f"{r_value:20.12f} {rho_value:17.10E}\n")
     return {
         "schema_version": RAD_EXPORT_SCHEMA_VERSION,
-        "file": str(out_path),
+        "file": repo_relative_path(out_path),
         "n_points": int(r_values.size),
         "r_min_bohr": float(r_values[0]),
         "r_max_bohr": float(r_values[-1]),
@@ -365,70 +401,3 @@ def radial_density_integral(r_bohr: Sequence[float], rho_e_bohr3: Sequence[float
     rho_int = np.concatenate(([rho_values[0]], rho_values))
     distribution = 4.0 * math.pi * r_int * r_int * rho_int
     return float(np.trapezoid(distribution, r_int))
-
-
-def _tail_integral_beyond(
-    source_r_bohr: Sequence[float], source_rho_e_bohr3: Sequence[float], r_cut_bohr: float
-) -> float:
-    source_r = _as_float_array(source_r_bohr, label="source_r_bohr")
-    source_rho = _as_float_array(source_rho_e_bohr3, label="source_rho_e_bohr3")
-    mask = source_r >= float(r_cut_bohr)
-    if not np.any(mask):
-        return 0.0
-    r_tail = source_r[mask]
-    rho_tail = source_rho[mask]
-    if r_tail[0] > r_cut_bohr and r_cut_bohr > source_r[0]:
-        rho_cut = interpolate_density_to_rad_grid(
-            source_r, source_rho, target_r_bohr=[r_cut_bohr]
-        )[0]
-        r_tail = np.concatenate(([float(r_cut_bohr)], r_tail))
-        rho_tail = np.concatenate(([float(rho_cut)], rho_tail))
-    distribution = 4.0 * math.pi * r_tail * r_tail * rho_tail
-    return float(np.trapezoid(distribution, r_tail))
-
-
-def write_profile_state_rad(
-    path: Path | str,
-    *,
-    profile_r_bohr: Sequence[float],
-    profile_rho_e_bohr3: Sequence[float],
-    rad_grid_bohr: Sequence[float] = MULTIWFN_ATMRAD_GRID_BOHR,
-) -> dict[str, Any]:
-    """Interpolate one profile state to the Multiwfn grid and write ``.rad``."""
-
-    rad_r = _as_float_array(rad_grid_bohr, label="rad_grid_bohr")
-    rad_rho = interpolate_density_to_rad_grid(
-        profile_r_bohr, profile_rho_e_bohr3, target_r_bohr=rad_r
-    )
-    info = write_multiwfn_rad_file(path, rad_r, rad_rho)
-    profile_on_rad_integral = radial_density_integral(rad_r, rad_rho)
-    tail_beyond = _tail_integral_beyond(profile_r_bohr, profile_rho_e_bohr3, float(rad_r[-1]))
-    return {
-        **info,
-        "source": "profile_interpolation",
-        "rad_grid_source": "Multiwfn atmrad exemplar grid",
-        "profile_interpolated_integral_electrons_trapezoid": profile_on_rad_integral,
-        "source_profile_tail_beyond_rad_grid_electrons_trapezoid": tail_beyond,
-    }
-
-
-def profile_state_density_from_wide_rows(
-    rows: Sequence[Mapping[str, str]], state_id: str
-) -> tuple[ArrayF, ArrayF]:
-    """Return ``r`` and ``rho`` arrays for one state from parsed profile CSV rows."""
-
-    column = profile_density_column(state_id)
-    if not rows:
-        raise ValueError("profile CSV rows are empty")
-    if column not in rows[0]:
-        raise KeyError(f"profile column {column!r} not found")
-    r_values = np.asarray([float(row["r_bohr"]) for row in rows], dtype=float)
-    rho_values = np.asarray([float(row[column]) for row in rows], dtype=float)
-    return r_values, rho_values
-
-
-def read_wide_profiles_csv(path: Path | str) -> list[dict[str, str]]:
-    """Read a released wide profile CSV into row dictionaries."""
-
-    with Path(path).open("r", encoding="utf-8", newline="") as handle:
-        return list(csv.DictReader(handle))

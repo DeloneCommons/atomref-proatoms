@@ -8,7 +8,12 @@ profiles for isolated atoms and ions. The data are intended for atom-centered
 reference-density models: stockholder and Hirshfeld-like analyses, promolecular
 density construction, deformation-density inspection, empirical radius models,
 and related cheminformatics or crystallographic workflows that need a documented
-atomic reference convention.
+atomic reference convention. The repository also includes a committed Multiwfn
+interoperability product: SCF-derived `.rad` atomic radial-density files for the
+two primary basis branches and neutral-atom PROAIM `.wfn` files for the primary
+`x2c-QZVPall` branch. These files make the same state and spherical-density
+conventions available to Multiwfn workflows that use atomic densities or
+atomwfn-style inputs.
 
 The central scientific choice is to define the proatom as a **self-consistent
 spherical density**, not as an angular average applied after an ordinary
@@ -44,12 +49,17 @@ The data layer contains four profile/radii/QA datasets and 1289 dataset-state ro
 The two primary basis branches are large all-electron quadruple-zeta families
 chosen for broad periodic-table coverage and reduced radial basis-set error. The
 supplemented/augmented branches are not split by neutral/anion charge class;
-they retain their own basis identities and deliberately exclude cations. Generated data files are stored under:
+they retain their own basis identities and deliberately exclude cations. The
+Multiwfn interoperability directory contains 931 `.rad` files for the two
+primary branches and 86 neutral-atom `.wfn` files for `x2c-QZVPall`; these are
+derived products, not replacements for the profile/radii/QA contract. Generated
+data files are stored under:
 
 ```text
 data/profiles/<dataset_id>/profiles.csv
 data/radii/<dataset_id>/radii.csv
 data/qa/<dataset_id>/qa.csv
+data/multiwfn_artifacts/
 ```
 
 The expensive SCF checkpoints, arrays, and logs are regeneration inputs under
@@ -124,8 +134,8 @@ committed tables and refreshes `docs/tables/`, `docs/figures/`, and marked block
 - [Methods](docs/methods.md): state sources, basis branches, electronic-structure
   settings, radial grids, validation, and comparison metrics.
 - [Results](docs/results.md): paper-style summary of QA, basis comparisons, sensitivity patterns, and practical recommendations.
-- [Data products](docs/data.md): profile, radii, QA, basis-sensitivity, and
-  primary-basis-comparison file contracts.
+- [Data products](docs/data.md): profile, radii, QA, basis-sensitivity,
+  primary-basis-comparison, and Multiwfn interoperability file contracts.
 - [Input data](docs/inputs.md): basis bundles and atomic-state curation.
 - [State policy](docs/state_policy.md): state-source hierarchy, formal anion
   meaning, and interpretation limits.

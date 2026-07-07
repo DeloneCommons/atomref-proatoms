@@ -17,6 +17,7 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 
+from ..dataio.paths import repo_relative_path
 from ..validation.wfn_density import (
     MOSPIN_ALPHA,
     MOSPIN_BETA,
@@ -502,7 +503,7 @@ def write_proaim_wfn(
     spin_summary = summarize_spin_types(occ, spin_types)
     strict_summary = strict_atom_wfn_mospin_qa(out_path) if spin_types is not None else {}
     return {
-        "file": str(out_path),
+        "file": repo_relative_path(out_path),
         **counts,
         "occupation_sum": float(np.sum(occ)),
         "has_fractional_occupations": bool(np.any(np.abs(occ - np.round(occ)) > 1e-7)),

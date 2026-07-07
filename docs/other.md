@@ -96,8 +96,8 @@ python scripts/export_multiwfn_artifacts.py --format rad --force --check
 python scripts/check_multiwfn_artifacts.py --require-generated
 ```
 
-The default output root is `local-data/multiwfn_artifacts/`, which is intentionally ignored. The `.rad` path needs only committed profile CSVs. The `.wfn` path additionally needs local SCF `scf.chk` and `scf.npz` files, because WFN export preserves wavefunction-like Gaussian primitive and spin-orbital information that is not present in the profile CSV. The package-side WFN reader/evaluator remains a validation utility, not the recommended public data path.
+The default output root is `data/multiwfn_artifacts/`. Both `.rad` and `.wfn` outputs are generated from local SCF `scf.chk`, `scf.npz`, and metadata files under `local-data/scf/`. The `.rad` path evaluates the spherical SCF density directly on the fixed Multiwfn `atmrad` grid rather than interpolating the committed profile CSVs; by default it uses a fixed-ray evaluation and exposes an angular-average diagnostic option. The `.wfn` path preserves wavefunction-like Gaussian primitive and spin-orbital information. The package-side WFN reader/evaluator remains a validation utility, not the recommended public data path.
 
 ## Remaining interoperability steps
 
-The exporter code now exists, but the repository still does not commit a full Multiwfn `.rad`/`.wfn` interoperability product and does not include the final user-facing generator. The next interoperability work should generate the configured local outputs, validate the resulting manifest and selected Multiwfn workflows, and then decide how the generated tree should be distributed.
+The exporter code, `data/multiwfn_artifacts/` contract, generated `.rad` files, generated neutral `x2c-QZVPall` `.wfn` files, and manifest are now committed. The remaining interoperability work is the final user-facing generator/tool, which should reuse the same state, basis, SCF, `.rad`, `.wfn`, and manifest contracts rather than redefining them.

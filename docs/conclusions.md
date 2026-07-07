@@ -1,6 +1,6 @@
 # Conclusions
 
-`atomref-proatoms` currently provides a validated spherical proatomic data layer with 501 curated state records and 1289 generated dataset-state rows across four all-electron scalar-relativistic basis branches. The generated profiles, density-cutoff radii, QA rows, supplemented/augmented sensitivity comparisons, and primary-basis comparison artifacts are internally consistent under the current validators.
+`atomref-proatoms` currently provides a validated spherical proatomic data layer with 501 curated state records and 1289 generated dataset-state rows across four all-electron scalar-relativistic basis branches. The generated profiles, density-cutoff radii, QA rows, supplemented/augmented sensitivity comparisons, primary-basis comparison artifacts, and Multiwfn interoperability files are internally consistent under the current validators.
 
 The main scientific conclusions are:
 
@@ -10,4 +10,4 @@ The main scientific conclusions are:
 4. The Dyall augmented comparison has high-sensitivity rows, but these are concentrated in formal anion references and do not indicate data corruption or failed validation.
 5. The primary x2c-vs-Dyall comparison over H--Rn is low-difference for most states, with a small upper tail dominated by formal anion behavior.
 
-The data layer is therefore ready for local Multiwfn interoperability export, provided that the existing state, basis, and reference-gauge interpretation is preserved. Multiwfn `.rad` and `.wfn` files are derived products; they do not redefine the state policy or replace the profile/radii/QA contract.
+The committed Multiwfn `.rad` and `.wfn` files expose the primary reference gauges to practical Multiwfn workflows, while preserving the same state, basis, and reference-gauge interpretation as the profile/radii/QA layer. They are derived products; they do not redefine the state policy or replace the profile/radii/QA contract.

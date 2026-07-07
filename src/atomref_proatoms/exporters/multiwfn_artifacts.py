@@ -188,6 +188,23 @@ def format_multiwfn_artifact_plan(
     return "\n".join(lines)
 
 
+
+
+def _normalized_manifest_file_records(files: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """Return manifest file records with portable repo-relative path aliases."""
+
+    normalized: list[dict[str, Any]] = []
+    for record in files:
+        rec = dict(record)
+        if "path" in rec:
+            rec["path"] = repo_relative_path(str(rec["path"]))
+        if "file" in rec:
+            # ``file`` is retained as a compatibility alias for older diagnostics,
+            # but the portable ``path`` field is the canonical manifest path.
+            rec["file"] = str(rec.get("path", repo_relative_path(str(rec["file"]))))
+        normalized.append(rec)
+    return normalized
+
 def manifest_payload(
     *,
     output_root: Path,
@@ -207,9 +224,9 @@ def manifest_payload(
         "generated_by": "scripts/export_multiwfn_artifacts.py",
         "python_version": platform.python_version(),
         "summary": summary,
-        "files": list(files),
+        "files": _normalized_manifest_file_records(files),
         "notes": {
-            "rad": "Density-only Multiwfn .rad files interpolated from released profiles.",
+            "rad": "Density-only Multiwfn .rad files evaluated from local SCF arrays/checkpoints.",
             "wfn": "PROAIM WFN interoperability files generated from local SCF arrays/checkpoints.",
             "internal_data_path": (
                 "Project-native NPZ and profile artifacts remain the efficient package "

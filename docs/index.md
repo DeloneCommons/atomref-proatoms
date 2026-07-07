@@ -4,13 +4,13 @@
 
 `atomref-proatoms` is a reproducible data layer for spherical atomic and ionic reference densities. The current release provides self-consistent spherical PBE0/sf-X2C radial electron densities for neutral atoms, cations, curated monoanions, and explicitly formal anion references under a fixed state, basis, SCF, profile-extraction, radii, and validation policy. The profiles are intended as documented proatomic reference gauges for stockholder, Hirshfeld-like, promolecular, deformation-density, descriptor, and related real-space workflows. They are not claimed to be universal isolated-atom ground states for every approximate Hamiltonian, basis set, or molecular environment.
 
-The current data layer contains 1289 generated dataset-state rows across four basis branches. The primary branches are `x2c-QZVPall` for H--Rn and `dyall-v4z` for H--Lr. The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, contain neutral and anion rows used to quantify branch and tail sensitivity; cations are deliberately not duplicated in these branches. All committed rows pass the current validation criteria.
+The current data layer contains 1289 generated dataset-state rows across four basis branches. The primary branches are `x2c-QZVPall` for H--Rn and `dyall-v4z` for H--Lr. The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, contain neutral and anion rows used to quantify branch and tail sensitivity; cations are deliberately not duplicated in these branches. All committed rows pass the current validation criteria. A committed Multiwfn interoperability product is provided under `data/multiwfn_artifacts/`: 931 SCF-derived `.rad` files for the primary branches and 86 neutral `x2c-QZVPall` PROAIM `.wfn` files for workflows that expect Multiwfn atomic radial-density or atomwfn-style inputs.
 
 ## How to read these docs
 
 The main documentation is organized as a paper-like technical note. The core argument is in the Introduction, Theory, Methods, Results, Discussion, and Conclusions. Data dictionaries, script details, notebooks, license material, and repository-operation notes are kept in the Other and Reference sections so that the scientific narrative remains readable.
 
-The documentation also includes a compact Multiwfn WFN interoperability notebook for the fixed H/O/H2O validation system. Maintainer scripts now generate configured local `.rad` and `.wfn` interoperability files, while the committed data layer remains the profile/radii/QA representation.
+The documentation also includes a compact Multiwfn WFN interoperability notebook for the fixed H/O/H2O validation system. The committed `.rad` and `.wfn` files are practical interoperability products; the profile/radii/QA layer remains the canonical package data representation and the final user-facing generator is still a separate tool-development step.
 
 The Results page includes generated tables and figures produced from committed CSV/JSON artifacts by:
 
@@ -30,6 +30,7 @@ data/radii/<dataset_id>/radii.csv
 data/qa/<dataset_id>/qa.csv
 data/qa/basis_sensitivity/
 data/qa/basis_comparisons/
+data/multiwfn_artifacts/
 ```
 
 The state and generation contracts are:

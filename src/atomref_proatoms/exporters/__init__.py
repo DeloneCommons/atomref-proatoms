@@ -5,10 +5,10 @@ from __future__ import annotations
 from .multiwfn_rad import (
     MULTIWFN_ATMRAD_GRID_BOHR,
     RadData,
+    evaluate_scf_radial_density,
     multiwfn_rad_filename,
     read_multiwfn_rad_file,
     write_multiwfn_rad_file,
-    write_profile_state_rad,
 )
 from .proaim_wfn import (
     WfnOrbitalExport,
@@ -33,6 +33,7 @@ __all__ = [
     "collect_restricted_orbitals",
     "collect_unrestricted_spin_orbitals_from_arrays",
     "collect_unrestricted_spin_orbitals_from_mf",
+    "evaluate_scf_radial_density",
     "multiwfn_rad_filename",
     "read_multiwfn_rad_file",
     "strict_atom_wfn_mospin_qa",
@@ -40,6 +41,5 @@ __all__ = [
     "write_atomref_spherical_wfn",
     "write_mean_field_wfn",
     "write_multiwfn_rad_file",
-    "write_profile_state_rad",
     "write_proaim_wfn",
 ]

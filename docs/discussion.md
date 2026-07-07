@@ -40,7 +40,7 @@ The H/O/H2O WFN validation clarifies the practical role of file formats. Project
 
 The package WFN reader and evaluator added for this validation should therefore be interpreted narrowly. It is useful for checking that a saved WFN reproduces the density and spin-density semantics intended by the exporter; it is not a general PySCF-native WFN importer and does not replace the profile/radii/QA data layer.
 
-The validation is also intentionally limited. H, O, and H2O exercise open-shell atom spin typing, molecular WFN export, spherical-AO to Cartesian-primitive expansion at the WFN boundary, and Multiwfn deformation-density plane output. They do not prove every element, charge, basis, formal anion, high-angular-momentum shell, or future Multiwfn version. The export scripts add deterministic local `.rad` and `.wfn` generation paths, but a committed full interoperability product and a final user-facing generator remain separate later stages.
+The validation is also intentionally limited. H, O, and H2O exercise open-shell atom spin typing, molecular WFN export, spherical-AO to Cartesian-primitive expansion at the WFN boundary, and Multiwfn deformation-density plane output. They do not prove every element, charge, basis, formal anion, high-angular-momentum shell, or future Multiwfn version. The committed `.rad` and `.wfn` tree is therefore best read as a validated interoperability product under the present contract, not as a general proof that every possible Multiwfn workflow is basis- and version-independent.
 
 ## Limitations
 
@@ -48,4 +48,4 @@ The data layer is a reference convention, not an experimental measurement of ato
 
 The state table is intentionally scoped. It is not a complete catalogue of all atomic excited states, metastable anions, or possible method-selected occupations. Users who need a non-default occupation should treat it as a new reference gauge and document the state explicitly.
 
-Finally, the current repository commits profile, radii, QA, and comparison tables, but not the expensive local SCF checkpoint layer or full Multiwfn export tree. Full regeneration of `.wfn` files therefore requires local SCF artifacts or rerunning the SCF workflow with the declared generator dependencies. Density-only `.rad` files can be regenerated from the committed profile tables.
+Finally, the current repository commits profile, radii, QA, comparison tables, and the selected Multiwfn interoperability tree, but not the expensive local SCF checkpoint layer. Regenerating `.rad` or `.wfn` files therefore requires local SCF artifacts or rerunning the SCF workflow with the declared generator dependencies. The `.rad` files are evaluated from SCF arrays on the fixed Multiwfn grid, not interpolated from the committed profile tables.
