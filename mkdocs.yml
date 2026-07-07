@@ -39,6 +39,7 @@ nav:
       - Notebook guide: notebooks/README.md
       - Profile-table inspection: notebooks/proatomic_profiles.ipynb
       - Sphericalization demo: notebooks/spherical_vs_post_average_demo.ipynb
+      - Multiwfn WFN validation: notebooks/multiwfn_wfn_plane_validation.ipynb
       - License: license.md
       - AI assistance note: ai_note.md
 

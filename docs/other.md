@@ -80,6 +80,10 @@ When MkDocs dependencies are not installed in the active environment, a temporar
 uv run --with 'mkdocs-material' --with 'mkdocs-jupyter' mkdocs build --strict
 ```
 
+## Local WFN/Multiwfn validation workflow
+
+The notebook `docs/notebooks/multiwfn_wfn_plane_validation.ipynb` is intended to be copied to `local-data/` for execution. A local Multiwfn executable may be placed at `local-data/Multiwfn` or under a `local-data/Multiwfn*/` directory; `local-data/settings.ini` is used when present. The notebook writes only H, O, and H2O validation files under ignored local paths and parses the resulting point and plane outputs.
+
 ## Future interoperability outputs
 
-Planned Multiwfn outputs should be derived from the validated profile/radii/QA data layer. A density-only `.rad` exporter is the simplest interoperability product. A `.wfn` exporter is more delicate because it must preserve spherical fractional occupations and spin-channel semantics in a wavefunction-container format. Both should be validated against representative downstream Multiwfn workflows before being presented as release products.
+Planned Multiwfn outputs should be derived from the validated profile/radii/QA data layer. A density-only `.rad` exporter is the preferred compact density-only interoperability product for Hirshfeld-I-like workflows. A `.wfn` exporter is more delicate because it must preserve spherical fractional occupations and spin-channel semantics in a wavefunction-container format. The current WFN reader/evaluator supports validation and documentation of that boundary; it is not the recommended public data path. Full `.rad` export, full `.wfn` artifact generation, validation of generated interoperability products, and a final user-facing generator remain later implementation steps.

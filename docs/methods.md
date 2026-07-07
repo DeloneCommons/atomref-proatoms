@@ -72,6 +72,16 @@ The validation layer combines hard consistency checks and softer scientific diag
 
 The independent electron-count check integrates on a separate logarithmic Gauss--Legendre radial grid, not by trusting the release profile mesh. This makes the profile grid a data representation while the QA grid remains an independent numerical audit.
 
+## WFN and Multiwfn interoperability validation
+
+A local H/O/H2O validation was used to test the PROAIM WFN interoperability path. The test writes atom and molecule WFN files from the same PySCF and atomref density objects used to define the reference, reads the saved files back with an independent package-side WFN evaluator, and compares Multiwfn plane densities against the corresponding PySCF total-density and deformation-density references.
+
+The atom WFN convention is deliberately spin-orbital based for open-shell cases: alpha orbitals are written first, beta orbitals second, each occupation is at most one, and the file contains an explicit `$MOSPIN` block with labels `1` and `2`. A printed MO-index gap is retained at the beta block as a fallback cue for Multiwfn-like readers, but the explicit spin block is the primary convention. The exporter does not use `$MOSPIN=3` spatial-orbital reconstruction for fractional/open-shell atom references.
+
+The independent WFN evaluator parses the PROAIM centers, primitive center assignments, primitive type assignments, exponents, occupations, orbital energies, coefficients, and `$MOSPIN` records. Its Cartesian primitive type handling follows the Multiwfn convention for WFN inputs, including the external g-type WFN sequence and h-type primitive labels. This evaluator is a validation and documentation utility; it is not the preferred public data path.
+
+The Multiwfn portion is automated only through small local helpers that find an executable under `local-data/`, run `-silent`, add `-set local-data/settings.ini` when available, and parse exported plane files or point-output logs. Multiwfn remains an optional local interoperability context, not a package dependency and not a state-selection authority.
+
 ## Supplemented/augmented basis sensitivity
 
 Basis sensitivity compares exact matched states between a primary basis and its supplemented or augmented counterpart:

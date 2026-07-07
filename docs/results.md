@@ -100,6 +100,28 @@ All generated rows pass the current validation criteria. The electron-count and 
 
 The validation result supports using the committed profile/radii/QA layer as the baseline for downstream export and interoperability work. It does not mean that every formal anion is physically stable; it means the generated density row is internally consistent under the declared reference convention.
 
+## Multiwfn WFN interoperability validation
+
+A representative local H/O/H2O validation checks the WFN boundary before full Multiwfn artifact generation. The validation writes H and O atom WFNs and an H2O molecule WFN, reads the saved files with the package-side WFN evaluator, and compares Multiwfn plane output against direct PySCF density references. This is an interoperability test for a fixed small system, not a universal validation over the full state table.
+
+| check | points | reference | maximum absolute error | p95 absolute error | RMSE |
+|---|---:|---|---:|---:|---:|
+| H2O WFN read-back spot density | 5 | direct PySCF density | 2.55e-7 | NA | NA |
+| O atom spin point, total density | 1 | package WFN evaluator | 2.23e-11 | NA | NA |
+| O atom spin point, alpha density | 1 | package WFN evaluator | 3.73e-11 | NA | NA |
+| O atom spin point, beta density | 1 | package WFN evaluator | 1.50e-11 | NA | NA |
+| H2O deformation plane | 14641 | direct PySCF molecular-minus-atomic density | 1.51e-4 | 3.08e-7 | 2.0e-6 |
+| package WFN deformation plane | 14641 | direct PySCF molecular-minus-atomic density | 2.55e-7 | 5.03e-10 | 4.24e-9 |
+
+The O-atom point diagnostic confirms that the current Multiwfn build interprets the generated atom WFN as spin resolved rather than alpha/beta averaged.
+
+| source | total density | alpha density | beta density | spin density |
+|---|---:|---:|---:|---:|
+| package WFN evaluator | 0.502407 | 0.337266 | 0.165141 | 0.172125 |
+| Multiwfn point output | 0.502407 | 0.337266 | 0.165141 | 0.172125 |
+
+The standalone molecule and atom plane checks isolate the WFN-density interpretation from the deformation-density arithmetic. For the H2O total-density plane, the package WFN evaluator agrees with direct PySCF to an RMSE of `7.93e-9 e bohr^-3`; the larger Multiwfn-minus-reference maximum occurs at the near-nuclear grid point and remains small relative to the maximum plane density. The H and O atom planes show the same pattern at smaller scale. The documentation notebook `docs/notebooks/multiwfn_wfn_plane_validation.ipynb` records the local workflow and the compact result tables.
+
 ## Primary basis-family comparison
 
 The primary comparison matches `x2c-QZVPall` and `dyall-v4z` over the H--Rn overlap by exact `state_id` and state-record digest. The comparison tests how two primary all-electron scalar-relativistic basis families change the same spherical reference state. It is not a diffuse-basis test.
