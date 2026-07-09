@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from atomref_proatoms.engines.spherical_uks import (
+from atomref_proatoms.engines.spherical_scf import (
     require_spherical_basis,
     validate_angular_block_size,
 )

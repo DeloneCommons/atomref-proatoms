@@ -31,7 +31,7 @@ from ..engines.pyscf_backend import (
     scf_metadata,
     write_scf_npz,
 )
-from ..engines.spherical_uks import (
+from ..engines.spherical_scf import (
     apply_x2c_if_requested,
     configure_dft_grid,
     effective_l_counts_for_mol,

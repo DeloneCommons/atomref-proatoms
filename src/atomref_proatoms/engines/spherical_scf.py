@@ -1,4 +1,4 @@
-"""Spherical fractional-occupation PySCF helpers.
+"""Spherical fractional-occupation SCF helpers for PySCF.
 
 PySCF is kept as a lazy dependency: import-time tests and metadata checks can run
 without PySCF, while generator entry points import PySCF only when a real SCF

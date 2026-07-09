@@ -4,7 +4,7 @@ import io
 
 import pytest
 
-from atomref_proatoms.engines.spherical_uks import (
+from atomref_proatoms.engines.spherical_scf import (
     FRACTIONAL_OCCUPATION_SPIN_SQUARE_MESSAGE,
     make_spherical_uhf,
     make_spherical_uks,

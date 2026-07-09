@@ -20,7 +20,7 @@ from ..dataio.basis import BasisBundle, load_basis_nw_text, sha256_file
 from ..dataio.datasets import ProfileDatasetConfig, assert_dataset_basis_match
 from ..dataio.paths import repo_relative_path
 from ..states.state_tables import AtomState, state_digest
-from .spherical_uks import (
+from .spherical_scf import (
     apply_x2c_if_requested,
     configure_dft_grid,
     effective_l_counts_for_mol,

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 
-REMOVED_TOP_LEVEL_MODULES = (
+REMOVED_MODULES = (
     "atomref_proatoms.artifacts",
     "atomref_proatoms.basis",
     "atomref_proatoms.build_plan",
@@ -15,6 +15,7 @@ REMOVED_TOP_LEVEL_MODULES = (
     "atomref_proatoms.scf",
     "atomref_proatoms.schemas",
     "atomref_proatoms.spherical_uks",
+    "atomref_proatoms.engines.spherical_uks",
 )
 
 
@@ -23,7 +24,7 @@ def test_v2_subpackage_imports_are_canonical() -> None:
     from atomref_proatoms.dataio.datasets import DATASET_IDS
     from atomref_proatoms.dataio.paths import STATES_FILE
     from atomref_proatoms.engines.pyscf_backend import SCFSettings
-    from atomref_proatoms.engines.spherical_uks import validate_angular_block_size
+    from atomref_proatoms.engines.spherical_scf import validate_angular_block_size
     from atomref_proatoms.exporters.multiwfn_rad import write_multiwfn_rad_file
     from atomref_proatoms.exporters.proaim_wfn import write_proaim_wfn
     from atomref_proatoms.profiles import radius_at_density
@@ -50,6 +51,6 @@ def test_v2_subpackage_imports_are_canonical() -> None:
     assert callable(parse_wfn_file)
 
 
-def test_old_top_level_compatibility_modules_are_removed() -> None:
-    for module_name in REMOVED_TOP_LEVEL_MODULES:
+def test_old_compatibility_modules_are_removed() -> None:
+    for module_name in REMOVED_MODULES:
         assert importlib.util.find_spec(module_name) is None

@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from atomref_proatoms.engines.spherical_uks import (
+from atomref_proatoms.engines.spherical_scf import (
     angular_block_indices,
     ao_angular_momenta,
     configuration_l_counts_after_core_removal,

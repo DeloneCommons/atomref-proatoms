@@ -21,7 +21,7 @@ from atomref_proatoms.engines.pyscf_backend import (
     scf_state_record_digest,
     stable_json_digest,
 )
-from atomref_proatoms.engines.spherical_uks import (
+from atomref_proatoms.engines.spherical_scf import (
     get_atom_spherical_uhf_class,
     get_atom_spherical_uks_class,
 )
