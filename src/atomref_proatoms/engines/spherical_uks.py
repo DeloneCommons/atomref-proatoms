@@ -17,6 +17,11 @@ import numpy.typing as npt
 
 ArrayF = npt.NDArray[np.float64]
 
+FRACTIONAL_OCCUPATION_SPIN_SQUARE_MESSAGE = (
+    "<S^2> is not defined by the one-particle density matrix of a "
+    "fractional-occupation spherical ensemble"
+)
+
 
 _L_BY_LETTER = {"s": 0, "p": 1, "d": 2, "f": 3, "g": 4}
 _SHELL_RE = re.compile(r"(\d+)([spdfg])(\d+(?:\.\d+)?)")
@@ -231,6 +236,39 @@ def _as_l_count_mapping(counts: Mapping[int | str, float] | None) -> dict[int, f
     return {int(l_value): float(value) for l_value, value in (counts or {}).items()}
 
 
+def _fractional_occupation_populations(mo_occ: Any) -> tuple[float, float] | None:
+    """Return spin populations when a two-spin occupation array is fractional."""
+
+    if mo_occ is None:
+        return None
+    occupations = np.asarray(mo_occ, dtype=float)
+    if occupations.ndim != 2 or occupations.shape[0] != 2:
+        return None
+    if np.all(np.isclose(occupations, np.rint(occupations), rtol=0.0, atol=1.0e-12)):
+        return None
+    return float(occupations[0].sum()), float(occupations[1].sum())
+
+
+def _finalize_fractional_occupation_scf(mf: Any, *, base_finalize: Any, logger: Any) -> Any:
+    """Finalize without PySCF's determinant-only ``spin_square`` diagnostic."""
+
+    base_finalize(mf)
+    populations = _fractional_occupation_populations(mf.mo_occ)
+    if populations is None:
+        return mf
+    n_alpha, n_beta = populations
+    nominal_multiplicity = abs(n_alpha - n_beta) + 1.0
+    logger.note(
+        mf,
+        "fractional-occupation spherical ensemble: <S^2> is undefined from the 1-RDM; "
+        "Nalpha = %.8g  Nbeta = %.8g  nominal 2S+1 = %.8g",
+        n_alpha,
+        n_beta,
+        nominal_multiplicity,
+    )
+    return mf
+
+
 def occupation_from_l_counts(
     mol: Any,
     l_counts: Mapping[int | str, float],
@@ -337,6 +375,8 @@ def get_atom_spherical_uks_class():  # pragma: no cover - requires optional PySC
 
     try:
         from pyscf.dft import uks as pyscf_uks  # type: ignore[import-not-found]
+        from pyscf.lib import logger as pyscf_logger  # type: ignore[import-not-found]
+        from pyscf.scf import hf as pyscf_hf  # type: ignore[import-not-found]
     except Exception as exc:
         raise RuntimeError(
             "PySCF is required for spherical UKS generation. Install with "
@@ -390,6 +430,20 @@ def get_atom_spherical_uks_class():  # pragma: no cover - requires optional PySC
             del mo_coeff, mo_occ, fock
             return np.zeros(0)
 
+        def spin_square(self, mo_coeff: Any = None, s: Any = None):
+            if mo_coeff is None and _fractional_occupation_populations(self.mo_occ) is not None:
+                raise NotImplementedError(FRACTIONAL_OCCUPATION_SPIN_SQUARE_MESSAGE)
+            return super().spin_square(mo_coeff, s)
+
+        def _finalize(self):
+            if _fractional_occupation_populations(self.mo_occ) is None:
+                return super()._finalize()
+            return _finalize_fractional_occupation_scf(
+                self,
+                base_finalize=pyscf_hf.SCF._finalize,
+                logger=pyscf_logger,
+            )
+
     AtomSphAverageUKS.__name__ = "AtomSphAverageUKS"
     return AtomSphAverageUKS
 
@@ -399,6 +453,8 @@ def get_atom_spherical_uhf_class():  # pragma: no cover - requires optional PySC
     """Return the PySCF UHF subclass implementing spherical occupations."""
 
     try:
+        from pyscf.lib import logger as pyscf_logger  # type: ignore[import-not-found]
+        from pyscf.scf import hf as pyscf_hf  # type: ignore[import-not-found]
         from pyscf.scf import uhf as pyscf_uhf  # type: ignore[import-not-found]
     except Exception as exc:
         raise RuntimeError(
@@ -451,6 +507,20 @@ def get_atom_spherical_uhf_class():  # pragma: no cover - requires optional PySC
         def get_grad(self, mo_coeff: Any, mo_occ: Any, fock: Any = None):
             del mo_coeff, mo_occ, fock
             return np.zeros(0)
+
+        def spin_square(self, mo_coeff: Any = None, s: Any = None):
+            if mo_coeff is None and _fractional_occupation_populations(self.mo_occ) is not None:
+                raise NotImplementedError(FRACTIONAL_OCCUPATION_SPIN_SQUARE_MESSAGE)
+            return super().spin_square(mo_coeff, s)
+
+        def _finalize(self):
+            if _fractional_occupation_populations(self.mo_occ) is None:
+                return super()._finalize()
+            return _finalize_fractional_occupation_scf(
+                self,
+                base_finalize=pyscf_hf.SCF._finalize,
+                logger=pyscf_logger,
+            )
 
     AtomSphAverageUHF.__name__ = "AtomSphAverageUHF"
     return AtomSphAverageUHF

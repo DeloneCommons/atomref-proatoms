@@ -19,9 +19,9 @@ ELECTRON_COUNT_REL_TOL = 2.0e-7
 class SpinDiagnostics:
     """Diagnostic spin-square summary reported by the backend.
 
-    For spherical fractional occupations the backend ``<S^2>`` value is not a
-    strict pass/fail QA target; it is recorded to make open-shell and heavy-atom
-    runs auditable.
+    For spherical fractional occupations, a determinant-based ``<S^2>`` is not
+    defined by the ensemble one-particle density matrix and is suppressed. If a
+    different backend defines it, the reported value remains diagnostic only.
     """
 
     target_spin_2s: int
@@ -61,8 +61,9 @@ class LinearDependencyDiagnostics:
 
 
 SPIN_DIAGNOSTIC_NOTE = (
-    "PySCF spin_square is recorded as a diagnostic only. For spherical "
-    "fractional-occupation proatoms it is not used as a release QA pass/fail target."
+    "Determinant-based PySCF spin_square is undefined for spherical fractional-occupation "
+    "ensembles and is suppressed by their backends. When a backend defines it, the value "
+    "is diagnostic only and is not a release QA target."
 )
 
 LINEAR_DEPENDENCY_RE = re.compile(

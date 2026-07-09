@@ -42,7 +42,11 @@ The stored density is
 \rho(r)=\rho_\alpha(r)+\rho_\beta(r),
 \]
 
-not a spin-density profile. Spin diagnostics may be retained as provenance, but \(\langle S^2\rangle\) is not used as a validation target for fractional-occupation spherical ensembles.
+not a spin-density profile. A determinant-based \(\langle S^2\rangle\) is not
+defined by the one-particle density matrix of a fractional-occupation spherical
+ensemble. The spherical SCF backends therefore suppress PySCF's standard UHF
+`spin_square` value and report the alpha/beta electron populations and nominal
+multiplicity implied by their difference instead.
 
 ## Density-cutoff radii as level-surface descriptors
 
