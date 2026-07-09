@@ -16,7 +16,9 @@ def test_version(capsys) -> None:
     assert "atomref-proatoms" in capsys.readouterr().out
 
 
-def test_generate_requires_dry_run(tmp_path: Path, capsys) -> None:
+def test_generate_without_optional_pyscf_reports_execution_dependency(
+    tmp_path: Path, capsys
+) -> None:
     code = main([
         "generate",
         "--elements", "C",
@@ -26,7 +28,10 @@ def test_generate_requires_dry_run(tmp_path: Path, capsys) -> None:
     ])
     captured = capsys.readouterr()
     assert code == 2
-    assert "execution is not implemented" in captured.err
+    assert (
+        "could not be resolved for execution" in captured.err
+        or "PySCF is required" in captured.err
+    )
     assert not (tmp_path / "plan.json").exists()
 
 

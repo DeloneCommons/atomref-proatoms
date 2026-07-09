@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from atomref_proatoms.generator.execution import ExecutionOptions, execute_generation_plan
 from atomref_proatoms.generator.planner import (
     DEFAULT_WORKDIR,
     GeneratorRequest,
@@ -91,16 +92,59 @@ def add_generate_parser(parser: argparse.ArgumentParser) -> None:
         action="store_true",
         help="Resolve inputs and write run_config/plan JSON without running SCF.",
     )
+    output_group.add_argument("--resume", action="store_true", help="Reuse matching SCF cache.")
+    output_group.add_argument("--force", action="store_true", help="Overwrite generated outputs.")
+    output_group.add_argument(
+        "--continue-on-error",
+        action="store_true",
+        help="Continue selected states after a generation failure.",
+    )
+    output_group.add_argument(
+        "--allow-pyscf-version-mismatch",
+        action="store_true",
+        help="Allow execution with a PySCF version different from tool defaults.",
+    )
+    output_group.add_argument("--conv-tol", type=float, default=None, help="Override SCF conv_tol.")
+    output_group.add_argument("--max-cycle", type=int, default=None, help="Override SCF max_cycle.")
+    output_group.add_argument(
+        "--diis-space",
+        type=int,
+        default=None,
+        help="Override PySCF DIIS space.",
+    )
+    output_group.add_argument(
+        "--diis-start-cycle",
+        type=int,
+        default=None,
+        help="Override the SCF cycle where DIIS acceleration starts.",
+    )
+    output_group.add_argument(
+        "--grid-level",
+        type=int,
+        default=None,
+        help="Override PySCF DFT grid level.",
+    )
+    output_group.add_argument("--verbose", type=int, default=3, help="PySCF verbosity.")
+    output_group.add_argument(
+        "--quiet-scf-log",
+        action="store_true",
+        help="Capture PySCF logs to scf.log without echoing them to stdout.",
+    )
+    output_group.add_argument(
+        "--rad-angular-points",
+        type=int,
+        default=1,
+        help="Angular points for .rad density evaluation. Default: 1 fixed ray.",
+    )
+    output_group.add_argument(
+        "--rad-eval-chunk-size",
+        type=int,
+        default=8192,
+        help="Coordinate block size for .rad AO evaluation.",
+    )
 
 
 def run_generate(args: argparse.Namespace) -> int:
-    if not args.dry_run:
-        print(
-            "error: execution is not implemented yet; rerun with --dry-run",
-            file=sys.stderr,
-        )
-        return 2
-
     elements: tuple[str, ...] = ()
     if args.elements:
         elements = parse_elements(args.elements)
@@ -122,12 +166,39 @@ def run_generate(args: argparse.Namespace) -> int:
         resource_root=args.resource_root,
         allow_ecp=bool(args.allow_ecp),
         allow_unverified_basis=bool(args.allow_unverified_basis),
-        dry_run=True,
+        dry_run=bool(args.dry_run),
     )
     plan = build_generation_plan(request)
-    paths = write_dry_run_files(plan)
-    _print_summary(plan.plan_dict(), paths)
-    return 2 if plan.errors else 0
+    if args.dry_run:
+        paths = write_dry_run_files(plan)
+        _print_summary(plan.plan_dict(), paths)
+        return 2 if plan.errors else 0
+    if plan.errors:
+        for error in plan.errors:
+            print(f"error: {error}", file=sys.stderr)
+        return 2
+    options = ExecutionOptions(
+        resume=bool(args.resume),
+        force=bool(args.force),
+        continue_on_error=bool(args.continue_on_error),
+        conv_tol=args.conv_tol,
+        max_cycle=args.max_cycle,
+        diis_space=args.diis_space,
+        diis_start_cycle=args.diis_start_cycle,
+        grid_level=args.grid_level,
+        verbose=int(args.verbose),
+        quiet_scf_log=bool(args.quiet_scf_log),
+        allow_pyscf_version_mismatch=bool(args.allow_pyscf_version_mismatch),
+        rad_angular_points=int(args.rad_angular_points),
+        rad_eval_chunk_size=int(args.rad_eval_chunk_size),
+    )
+    try:
+        result = execute_generation_plan(plan, options)
+    except (RuntimeError, NotImplementedError, ValueError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    _print_execution_summary(result)
+    return 1 if result.failed_jobs else 0
 
 
 def _print_summary(plan: dict[str, Any], paths: dict[str, Path]) -> None:
@@ -145,3 +216,14 @@ def _print_summary(plan: dict[str, Any], paths: dict[str, Path]) -> None:
         print(f"  warnings: {len(warnings)}")
     if errors:
         print(f"  errors: {len(errors)}", file=sys.stderr)
+
+
+def _print_execution_summary(result: Any) -> None:
+    print("atomref-proatoms generate execution")
+    print(f"  status: {result.status}")
+    print(f"  scf computed: {result.computed_scf}")
+    print(f"  scf reused: {result.reused_scf}")
+    print(f"  failed jobs: {result.failed_jobs}")
+    print(f"  manifest: {result.manifest_path.as_posix()}")
+    print(f"  failures: {result.failures_path.as_posix()}")
+    print(f"  generated files: {len(result.written_files)}")
