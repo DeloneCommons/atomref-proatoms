@@ -18,6 +18,9 @@ dependencies = [
   "PyYAML>=6.0",
 ]
 
+[project.scripts]
+atomref-proatoms = "atomref_proatoms.cli.main:main"
+
 [project.optional-dependencies]
 test = [
   "pytest>=7",
