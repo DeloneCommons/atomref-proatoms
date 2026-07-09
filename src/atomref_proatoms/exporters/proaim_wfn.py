@@ -486,7 +486,8 @@ def write_proaim_wfn(
     except Exception as exc:  # pragma: no cover - optional dependency path
         raise RuntimeError(
             "PySCF is required to write PROAIM WFN files. Install with "
-            "`python -m pip install -e .[generator]`."
+            "`python -m pip install \"atomref-proatoms[generator]\"` or from source "
+            "with `python -m pip install -e \".[generator]\"`."
         ) from exc
 
     out_path.parent.mkdir(parents=True, exist_ok=True)

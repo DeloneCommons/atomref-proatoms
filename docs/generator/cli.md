@@ -81,8 +81,9 @@ elements. For stockholder runs, filter charges explicitly when possible:
 --charges=-1,0,+1
 ```
 
-The `=` form is recommended because values beginning with `-` can otherwise be
-parsed as options by the shell or argument parser.
+The separated form `--charges -1,0,+1` is also accepted. The `=` form is
+still recommended in examples because it is unambiguous for values beginning
+with `-`.
 
 The CLI does not accept custom configurations or multiplicities. Use Python
 scripting for those workflows.
@@ -172,6 +173,24 @@ export:
 <workdir>/scf/<run_id>/<state_id>/scf.json
 <workdir>/scf/<run_id>/<state_id>/scf.log
 ```
+
+For resume, checkpoint, array, and metadata files must be non-empty and match
+the current fingerprints. `scf.log` must exist, but it may be empty when a run
+was made with `--quiet-scf-log --verbose 0`.
+
+## `.rad` density controls
+
+The default `.rad` export evaluates the spherical SCF density on one fixed ray:
+
+```bash
+--rad-angular-points 1
+```
+
+For a local angular-average diagnostic, pass any integer greater than or equal
+to 4. PySCF-supported Lebedev sizes use PySCF grids; other valid sizes use the
+deterministic Fibonacci fallback. `--rad-eval-chunk-size` controls the number
+of Cartesian points passed to PySCF in one AO-evaluation block and must be
+positive.
 
 ## Workdir behavior
 

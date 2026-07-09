@@ -199,7 +199,8 @@ def import_pyscf_modules() -> tuple[Any, Any, Any, str]:
     except Exception as exc:  # pragma: no cover - optional dependency path
         raise RuntimeError(
             "PySCF is required only for generator operations. Install with "
-            "`python -m pip install -e .[generator]`."
+            "`python -m pip install \"atomref-proatoms[generator]\"` or from source "
+            "with `python -m pip install -e \".[generator]\"`."
         ) from exc
     return gto, dft, pyscf_basis, getattr(pyscf, "__version__", "unknown")
 
@@ -398,18 +399,27 @@ def load_mol_from_chk(chk_path: Path) -> Any:
     except Exception as exc:  # pragma: no cover - optional dependency path
         raise RuntimeError(
             "PySCF is required to read SCF checkpoint files. Install with "
-            "`python -m pip install -e .[generator]`."
+            "`python -m pip install \"atomref-proatoms[generator]\"` or from source "
+            "with `python -m pip install -e \".[generator]\"`."
         ) from exc
     return chkfile.load_mol(str(chk_path))
 
 
 def scf_artifacts_complete(paths: SCFArtifactPaths) -> bool:
-    """Return true when all required files for one SCF artifact are present and non-empty."""
+    """Return true when the files needed for one SCF artifact are present.
 
-    return all(
+    Numerical artifacts and structured metadata must be non-empty.  The text log
+    only has to exist: ``--quiet-scf-log --verbose 0`` can legitimately produce
+    an empty ``scf.log`` for an otherwise complete, reusable SCF artifact.
+    """
+
+    required_nonempty = (paths.chk, paths.npz, paths.metadata)
+    nonempty_artifacts = all(
         path.exists() and path.is_file() and path.stat().st_size > 0
-        for path in paths.required_files()
+        for path in required_nonempty
     )
+    log_exists = paths.log.exists() and paths.log.is_file()
+    return nonempty_artifacts and log_exists
 
 
 def scf_state_record_digest(record: dict[str, Any]) -> str:

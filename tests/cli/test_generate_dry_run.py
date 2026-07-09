@@ -96,3 +96,58 @@ def test_generate_dry_run_writes_plan(tmp_path: Path, capsys) -> None:
     assert plan["selected_state_count"] == 3
     assert plan["artifacts"] == ["profiles", "rad"]
     assert len(plan["jobs"]) == 3
+
+
+def test_generate_dry_run_accepts_separated_signed_charge_list(tmp_path: Path, capsys) -> None:
+    code = main([
+        "generate",
+        "--elements", "C",
+        "--method", "PBE0",
+        "--basis", "STO-3G",
+        "--state-policy", "stockholder",
+        "--charges", "-1,0,+1",
+        "--artifacts", "profiles",
+        "--workdir", str(tmp_path),
+        "--dry-run",
+    ])
+    captured = capsys.readouterr()
+    assert code == 0
+    assert "selected states: 3" in captured.out
+    plan = json.loads((tmp_path / "plan.json").read_text())
+    assert plan["selected_state_count"] == 3
+
+
+def test_generate_rejects_invalid_rad_angular_points_before_planning(
+    tmp_path: Path, capsys
+) -> None:
+    code = main([
+        "generate",
+        "--elements", "H",
+        "--method", "PBE0",
+        "--basis", "STO-3G",
+        "--rad-angular-points", "3",
+        "--workdir", str(tmp_path),
+        "--dry-run",
+    ])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "--rad-angular-points" in captured.err
+    assert not (tmp_path / "plan.json").exists()
+
+
+def test_generate_rejects_invalid_rad_eval_chunk_size_before_planning(
+    tmp_path: Path, capsys
+) -> None:
+    code = main([
+        "generate",
+        "--elements", "H",
+        "--method", "PBE0",
+        "--basis", "STO-3G",
+        "--rad-eval-chunk-size", "0",
+        "--workdir", str(tmp_path),
+        "--dry-run",
+    ])
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "--rad-eval-chunk-size" in captured.err
+    assert not (tmp_path / "plan.json").exists()

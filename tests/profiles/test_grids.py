@@ -34,6 +34,20 @@ def test_angular_grid_can_force_no_pyscf_fallback() -> None:
     assert float(weights.sum()) == pytest.approx(1.0)
 
 
+def test_angular_grid_falls_back_for_unsupported_pyscf_size(monkeypatch) -> None:
+    from atomref_proatoms.profiles import grids
+
+    def unsupported_grid(_n_points: int):
+        raise ValueError("Unsupported angular grids")
+
+    monkeypatch.setattr(grids, "pyscf_angular_grid", unsupported_grid)
+
+    directions, weights = angular_grid(4, prefer_pyscf=True)
+
+    assert directions.shape == (4, 3)
+    assert float(weights.sum()) == pytest.approx(1.0)
+
+
 def test_weighted_mean_and_std() -> None:
     mean, std = weighted_mean_and_std(np.array([1.0, 3.0]), np.array([0.25, 0.75]))
     assert mean == pytest.approx(2.5)

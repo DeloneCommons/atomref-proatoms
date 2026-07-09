@@ -340,7 +340,8 @@ def get_atom_spherical_uks_class():  # pragma: no cover - requires optional PySC
     except Exception as exc:
         raise RuntimeError(
             "PySCF is required for spherical UKS generation. Install with "
-            "`python -m pip install -e .[generator]`."
+            "`python -m pip install \"atomref-proatoms[generator]\"` or from source "
+            "with `python -m pip install -e \".[generator]\"`."
         ) from exc
 
     class AtomSphAverageUKS(pyscf_uks.UKS):  # type: ignore[misc]
@@ -402,7 +403,8 @@ def get_atom_spherical_uhf_class():  # pragma: no cover - requires optional PySC
     except Exception as exc:
         raise RuntimeError(
             "PySCF is required for spherical UHF generation. Install with "
-            "`python -m pip install -e .[generator]`."
+            "`python -m pip install \"atomref-proatoms[generator]\"` or from source "
+            "with `python -m pip install -e \".[generator]\"`."
         ) from exc
 
     class AtomSphAverageUHF(pyscf_uhf.UHF):  # type: ignore[misc]

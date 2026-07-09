@@ -114,6 +114,12 @@ For ECP/effective-core runs allowed by `--allow-ecp`, the generated profile and
 count is therefore the explicit electron count recorded in `scf.json`, while the
 full state electron count and effective core count are preserved in metadata.
 
+The release validators in `scripts/check_profile_artifacts.py` and
+`scripts/check_multiwfn_artifacts.py` check the committed publication layout
+under `data/`. Local generator workdirs are runtime products; inspect their
+`manifest.json`, `failures.csv`, profile/radius/QA tables, Multiwfn artifacts,
+and SCF metadata directly.
+
 ## 5. Move to Python scripting
 
 Use scripting when you need custom configurations, custom multiplicities,

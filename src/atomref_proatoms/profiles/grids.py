@@ -88,12 +88,17 @@ def pyscf_angular_grid(n_points: int) -> tuple[NDArray[np.float64], NDArray[np.f
 def angular_grid(
     n_points: int = PROFILE_N_ANG, *, prefer_pyscf: bool = True
 ) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
-    """Return an angular grid, falling back to Fibonacci when PySCF is unavailable."""
+    """Return an angular grid, falling back to Fibonacci when needed.
+
+    PySCF only supports selected Lebedev grid sizes.  For valid custom sizes that
+    PySCF does not know, use the deterministic Fibonacci grid instead of failing
+    after an expensive SCF calculation has already completed.
+    """
 
     if prefer_pyscf:
         try:
             return pyscf_angular_grid(n_points)
-        except RuntimeError:
+        except (RuntimeError, ValueError):
             pass
     return fibonacci_angular_grid(n_points)
 

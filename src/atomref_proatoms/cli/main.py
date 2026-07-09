@@ -8,7 +8,7 @@ from collections.abc import Sequence
 
 from atomref_proatoms import __version__
 
-from .generate import add_generate_parser, run_generate
+from .generate import add_generate_parser, normalize_generate_argv, run_generate
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -31,7 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     try:
-        args = parser.parse_args(argv)
+        args = parser.parse_args(normalize_generate_argv(argv))
     except SystemExit as exc:
         return int(exc.code)
     if not hasattr(args, "func"):

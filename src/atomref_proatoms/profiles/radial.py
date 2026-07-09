@@ -103,7 +103,8 @@ def _pyscf_numint():
     except Exception as exc:  # pragma: no cover - optional dependency path
         raise RuntimeError(
             "PySCF is required for density evaluation. Install with "
-            "`python -m pip install -e .[generator]`."
+            "`python -m pip install \"atomref-proatoms[generator]\"` or from source "
+            "with `python -m pip install -e \".[generator]\"`."
         ) from exc
     return numint
 

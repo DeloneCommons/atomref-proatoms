@@ -160,7 +160,9 @@ def test_scf_state_fingerprint_tracks_active_v2_state_definition() -> None:
     assert scf_state_record_digest(changed_record) != scf_state_record_digest(record)
 
 
-def test_scf_artifact_reuse_requires_complete_nonempty_files_and_convergence(tmp_path) -> None:
+def test_scf_artifact_reuse_allows_empty_log_but_requires_arrays_and_convergence(
+    tmp_path,
+) -> None:
     paths = scf_artifact_paths(tmp_path, "dataset", "state")
     paths.state_dir.mkdir(parents=True)
     expected = {key: f"expected-{key}" for key in SCF_REUSE_FINGERPRINT_KEYS}
@@ -176,6 +178,7 @@ def test_scf_artifact_reuse_requires_complete_nonempty_files_and_convergence(tmp
     }
     paths.metadata.write_text(json.dumps(metadata), encoding="utf-8")
 
+    paths.log.write_text("", encoding="utf-8")
     assert scf_artifacts_complete(paths)
     assert scf_artifact_is_reusable(paths, expected)
 

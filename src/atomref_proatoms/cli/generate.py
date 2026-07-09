@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +38,50 @@ def _execution_options_class() -> Any:
     from atomref_proatoms.generator.execution import ExecutionOptions
 
     return ExecutionOptions
+
+
+_CHARGE_LIST_RE = re.compile(r"^[+-]?\d+(?:,[+-]?\d+)*$")
+
+
+def normalize_generate_argv(argv: Sequence[str] | None) -> Sequence[str] | None:
+    """Normalize generate argv forms that argparse cannot parse directly.
+
+    ``--charges -1,0,+1`` is a natural spelling, but argparse interprets a
+    value beginning with ``-`` as the next option.  Rewrite that one safe form to
+    ``--charges=-1,0,+1`` before parsing while leaving all other arguments
+    untouched.
+    """
+
+    if argv is None:
+        return None
+    normalized = list(argv)
+    index = 0
+    while index + 1 < len(normalized):
+        if normalized[index] == "--charges" and _CHARGE_LIST_RE.fullmatch(
+            normalized[index + 1]
+        ):
+            normalized[index] = f"--charges={normalized[index + 1]}"
+            del normalized[index + 1]
+            continue
+        index += 1
+    return normalized
+
+
+def _positive_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("expected an integer") from exc
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("expected a positive integer")
+    return parsed
+
+
+def _rad_angular_points(value: str) -> int:
+    parsed = _positive_int(value)
+    if parsed != 1 and parsed < 4:
+        raise argparse.ArgumentTypeError("expected 1 or an integer >= 4")
+    return parsed
 
 
 def add_generate_parser(parser: argparse.ArgumentParser) -> None:
@@ -155,13 +201,16 @@ def add_generate_parser(parser: argparse.ArgumentParser) -> None:
     )
     output_group.add_argument(
         "--rad-angular-points",
-        type=int,
+        type=_rad_angular_points,
         default=1,
-        help="Angular points for .rad density evaluation. Default: 1 fixed ray.",
+        help=(
+            "Angular points for .rad density evaluation: 1 fixed ray or "
+            ">=4-point average. Default: 1."
+        ),
     )
     output_group.add_argument(
         "--rad-eval-chunk-size",
-        type=int,
+        type=_positive_int,
         default=8192,
         help="Coordinate block size for .rad AO evaluation.",
     )

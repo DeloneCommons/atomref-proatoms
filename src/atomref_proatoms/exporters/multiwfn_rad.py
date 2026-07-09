@@ -256,7 +256,8 @@ def _pyscf_numint_module():
     except Exception as exc:  # pragma: no cover - optional dependency path
         raise RuntimeError(
             "PySCF is required for SCF-derived .rad density evaluation. Install with "
-            "`python -m pip install -e .[generator]`."
+            "`python -m pip install \"atomref-proatoms[generator]\"` or from source "
+            "with `python -m pip install -e \".[generator]\"`."
         ) from exc
     return numint
 
@@ -286,18 +287,21 @@ def evaluate_scf_radial_density(
     dm = np.asarray(dm_total, dtype=float)
     if dm.ndim != 2 or dm.shape[0] != dm.shape[1]:
         raise ValueError("dm_total must be a square two-dimensional density matrix")
-    if int(n_ang) < 1:
+    n_ang_int = int(n_ang)
+    if n_ang_int < 1:
         raise ValueError("n_ang must be positive")
+    if n_ang_int != 1 and n_ang_int < 4:
+        raise ValueError("n_ang must be 1 or at least 4")
     if int(coord_block_size) < 1:
         raise ValueError("coord_block_size must be positive")
 
-    if int(n_ang) == 1:
+    if n_ang_int == 1:
         # Atomref proatom densities are constructed to be spherical at the SCF
         # model level, so a single fixed ray is the preferred export path.
         directions = np.asarray([[1.0, 0.0, 0.0]], dtype=float)
         weights = np.ones(1, dtype=float)
     else:
-        directions, weights = angular_grid(int(n_ang), prefer_pyscf=prefer_pyscf_angular_grid)
+        directions, weights = angular_grid(n_ang_int, prefer_pyscf=prefer_pyscf_angular_grid)
     weights = np.asarray(weights, dtype=float) / float(np.sum(weights))
     n_dir = int(directions.shape[0])
 

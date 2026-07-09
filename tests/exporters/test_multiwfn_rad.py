@@ -59,3 +59,12 @@ def test_evaluate_scf_radial_density_validates_inputs_before_pyscf_import() -> N
         evaluate_scf_radial_density(object(), np.ones((2, 3)), r_bohr=np.array([0.1]))
     with pytest.raises(ValueError, match="n_ang"):
         evaluate_scf_radial_density(object(), np.eye(2), r_bohr=np.array([0.1]), n_ang=0)
+    with pytest.raises(ValueError, match="1 or at least 4"):
+        evaluate_scf_radial_density(object(), np.eye(2), r_bohr=np.array([0.1]), n_ang=3)
+    with pytest.raises(ValueError, match="coord_block_size"):
+        evaluate_scf_radial_density(
+            object(),
+            np.eye(2),
+            r_bohr=np.array([0.1]),
+            coord_block_size=0,
+        )
