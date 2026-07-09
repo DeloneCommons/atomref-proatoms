@@ -87,13 +87,15 @@ next analyses, see the [Results](docs/results.md).
 
 ## How to inspect the data
 
-The fastest consistency checks are:
+The fastest release-data consistency checks are:
 
 ```bash
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/check_profile_artifacts.py --require-generated
-pytest
+python scripts/check_multiwfn_artifacts.py --require-generated
+python scripts/prepare_docs.py --check
+pytest -q
 ```
 
 `check_basis_bundles.py` is fully offline by default. If PySCF is installed, it
@@ -114,7 +116,8 @@ python scripts/smoke_installed_wheel.py
 ```
 
 The optional `--with-generator-execution` mode additionally installs the
-`generator` extra and runs a tiny neutral-H generation smoke test.
+`generator` extra and runs a tiny neutral-H generation smoke test. A full
+maintainer release gate is listed in [`docs/workflow.md`](docs/workflow.md).
 
 ## Regeneration workflow
 
@@ -122,7 +125,7 @@ Full regeneration requires the optional generator dependencies and complete loca
 SCF execution:
 
 ```bash
-python -m pip install -e ".[generator,test,dev]"
+python -m pip install -e ".[generator,dev,docs]"
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/compute_wavefunctions.py --resume --quiet-scf-log
@@ -146,6 +149,8 @@ The public generator tool has reproducible examples under [`examples/`](examples
 - `examples/03_python_custom_state_pipeline/` is an expert notebook for custom states and project-specific pipelines outside the curated CLI state policies.
 
 The full tool manual is in the [Generator tool](docs/generator/index.md) documentation section.
+Use `python -m pip install -e ".[generator]"` for local generation; this includes
+PySCF and Basis Set Exchange for `bse:` basis sources.
 
 ## Documentation map
 
@@ -166,10 +171,14 @@ The full tool manual is in the [Generator tool](docs/generator/index.md) documen
 
 ## Lightweight consumers
 
-This repository is the data-generation and publication-data project. Lightweight
-runtime packages may consume compact generated snapshots from `data/profiles/`,
-`data/radii/`, and `data/qa/`, but they should not depend on PySCF, Basis Set
-Exchange tooling, external quantum-chemistry programs, or generator internals.
+This repository is the data-generation and publication-data project. The wheel
+contains code, the CLI, schemas, curated state tables, presets, and small service
+resources. The full generated profile/radii/QA tables and Multiwfn `.rad`/`.wfn`
+files are release data products in the repository and GitHub/Zenodo assets.
+Lightweight runtime packages may consume compact generated snapshots from
+`data/profiles/`, `data/radii/`, and `data/qa/`, but they should not depend on
+PySCF, Basis Set Exchange tooling, external quantum-chemistry programs, or
+generator internals.
 
 ## License and attribution
 

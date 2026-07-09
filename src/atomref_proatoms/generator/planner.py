@@ -334,7 +334,7 @@ def build_generation_plan(request: GeneratorRequest) -> GeneratorPlan:
 
 
 def write_dry_run_files(plan: GeneratorPlan) -> dict[str, Path]:
-    """Write the dry-run JSON files required by the MVP spec."""
+    """Write the dry-run JSON files for a resolved generator plan."""
 
     workdir = plan.request.workdir.expanduser()
     workdir.mkdir(parents=True, exist_ok=True)

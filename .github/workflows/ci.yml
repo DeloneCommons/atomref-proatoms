@@ -40,10 +40,19 @@ jobs:
         run: ruff check .
 
       - name: Validate curated atom states
-        run: python scripts/build_atom_states.py --check
+        run: python scripts/check_states.py
 
       - name: Check bundled basis data
         run: python scripts/check_basis_bundles.py
+
+      - name: Check generated profile artifacts
+        run: python scripts/check_profile_artifacts.py --require-generated
+
+      - name: Check generated Multiwfn artifacts
+        run: python scripts/check_multiwfn_artifacts.py --require-generated
+
+      - name: Check derived documentation
+        run: python scripts/prepare_docs.py --check
 
       - name: Inspect active SCF build plan
         run: python scripts/compute_wavefunctions.py --list

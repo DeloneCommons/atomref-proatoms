@@ -23,6 +23,8 @@ from ..states.state_tables import AtomState, state_digest
 from .spherical_uks import (
     apply_x2c_if_requested,
     configure_dft_grid,
+    effective_l_counts_for_mol,
+    make_spherical_uhf,
     make_spherical_uks,
     validate_spherical_ao_layout,
 )
@@ -62,7 +64,7 @@ SCF_REUSE_FINGERPRINT_KEYS = (
 
 @dataclass(frozen=True)
 class SCFSettings:
-    """Small configuration object for spherical UKS runs."""
+    """Small configuration object for spherical UKS/UHF runs."""
 
     xc: str = DEFAULT_XC
     use_x2c: bool = DEFAULT_USE_X2C
@@ -257,30 +259,64 @@ def run_spherical_uks(
         verbose=run_settings.verbose,
         stdout=run_settings.stdout,
     )
+    alpha_l_counts, beta_l_counts = effective_l_counts_for_mol(state, mol)
     mf = make_spherical_uks(
         mol,
         xc=run_settings.xc,
-        alpha_l_counts=state.alpha_l_counts,
-        beta_l_counts=state.beta_l_counts,
+        alpha_l_counts=alpha_l_counts,
+        beta_l_counts=beta_l_counts,
     )
-    if run_settings.stdout is not None:
-        mf.stdout = run_settings.stdout
-    if run_settings.chkfile is not None:
-        mf.chkfile = str(run_settings.chkfile)
-    mf.conv_tol = run_settings.conv_tol
-    mf.max_cycle = run_settings.max_cycle
-    mf.diis_space = run_settings.diis_space
-    mf.diis_start_cycle = run_settings.diis_start_cycle
-    configure_dft_grid(mf, level=run_settings.grid_level, prune=run_settings.grid_prune)
+    _apply_common_scf_controls(mf, run_settings, configure_grid=True)
     mf = apply_x2c_if_requested(mf, use_x2c=run_settings.use_x2c)
-    # Reapply convergence controls after optional decoration so the active
-    # PySCF mean-field object definitely carries the production settings.
-    mf.conv_tol = run_settings.conv_tol
-    mf.max_cycle = run_settings.max_cycle
-    mf.diis_space = run_settings.diis_space
-    mf.diis_start_cycle = run_settings.diis_start_cycle
+    _apply_common_scf_controls(mf, run_settings, configure_grid=False)
     mf.kernel()
     return SCFRun(mf=mf, basis=basis_use, settings=run_settings)
+
+
+def run_spherical_uhf(
+    state: AtomState,
+    bundle: BasisBundle,
+    *,
+    settings: SCFSettings | None = None,
+) -> SCFRun:
+    """Run the spherical fractional-occupation UHF model for one state."""
+
+    run_settings = settings or SCFSettings(xc="HF")
+    mol, basis_use = build_atom_mol(
+        state,
+        bundle,
+        verbose=run_settings.verbose,
+        stdout=run_settings.stdout,
+    )
+    alpha_l_counts, beta_l_counts = effective_l_counts_for_mol(state, mol)
+    mf = make_spherical_uhf(
+        mol,
+        alpha_l_counts=alpha_l_counts,
+        beta_l_counts=beta_l_counts,
+    )
+    _apply_common_scf_controls(mf, run_settings, configure_grid=False)
+    mf = apply_x2c_if_requested(mf, use_x2c=run_settings.use_x2c)
+    _apply_common_scf_controls(mf, run_settings, configure_grid=False)
+    mf.kernel()
+    return SCFRun(mf=mf, basis=basis_use, settings=run_settings)
+
+
+def _apply_common_scf_controls(
+    mf: Any,
+    settings: SCFSettings,
+    *,
+    configure_grid: bool,
+) -> None:
+    if settings.stdout is not None:
+        mf.stdout = settings.stdout
+    if settings.chkfile is not None:
+        mf.chkfile = str(settings.chkfile)
+    mf.conv_tol = settings.conv_tol
+    mf.max_cycle = settings.max_cycle
+    mf.diis_space = settings.diis_space
+    mf.diis_start_cycle = settings.diis_start_cycle
+    if configure_grid and hasattr(mf, "grids"):
+        configure_dft_grid(mf, level=settings.grid_level, prune=settings.grid_prune)
 
 
 def run_dataset_state(
@@ -306,7 +342,7 @@ def _spin_pair(value: Any, *, label: str) -> tuple[NDArray[np.float64], NDArray[
 
 
 def scf_arrays_from_mf(mf: Any) -> dict[str, NDArray[np.float64]]:
-    """Extract project-native reusable SCF arrays from a completed UKS object."""
+    """Extract project-native reusable SCF arrays from a completed mean-field object."""
 
     dm_alpha, dm_beta = _spin_pair(mf.make_rdm1(), label="density matrix")
     mo_coeff_alpha, mo_coeff_beta = _spin_pair(mf.mo_coeff, label="mo_coeff")
@@ -480,6 +516,8 @@ def scf_metadata(
             "converged": bool(mf.converged),
             "total_energy_hartree": None if mf.e_tot is None else float(mf.e_tot),
             "nelectron": int(mf.mol.nelectron),
+            "state_electron_count": int(state.electron_count),
+            "effective_core_electrons": int(state.electron_count - int(mf.mol.nelectron)),
             "n_ao": int(mf.mol.nao_nr()),
         },
         "fingerprints": fingerprints,

@@ -1,20 +1,23 @@
 # CLI reference
 
-The MVP public command is:
+The public command is:
 
 ```bash
 atomref-proatoms generate [options]
 ```
 
-Use the installed help as the exact source for current flags:
+Use installed help as the exact source for current flags:
 
 ```bash
 atomref-proatoms generate --help
 ```
 
-This page explains the main concepts behind those flags.
+This page explains the main choices behind those flags.
 
-## Basic command
+## Basic dry run
+
+Start with a dry run. It checks the state selection, method, basis source, output
+context, and artifact policy without running SCF:
 
 ```bash
 atomref-proatoms generate \
@@ -24,13 +27,8 @@ atomref-proatoms generate \
   --basis bse:x2c-QZVPall \
   --state-policy neutral \
   --artifacts profiles,rad \
-  --workdir ./proatoms
-```
-
-Use `--dry-run` to resolve the plan without running SCF:
-
-```bash
-atomref-proatoms generate ... --dry-run
+  --workdir ./proatoms \
+  --dry-run
 ```
 
 Dry run writes:
@@ -41,6 +39,8 @@ run_config.input.json
 run_config.resolved.json
 plan.json
 ```
+
+Inspect `plan.json` before removing `--dry-run`.
 
 ## Element selection
 
@@ -62,7 +62,7 @@ Both can be combined:
 --elements H --element-range B-F
 ```
 
-## State policies
+## State policies and charges
 
 ```text
 --state-policy neutral
@@ -75,33 +75,33 @@ selects only curated neutral states.
 ```
 
 selects the curated stockholder/Hirshfeld-I-like state set for the requested
-elements.
-
-For stockholder runs, you may filter charges:
+elements. For stockholder runs, filter charges explicitly when possible:
 
 ```bash
 --charges=-1,0,+1
 ```
 
 The `=` form is recommended because values beginning with `-` can otherwise be
-parsed as options by the shell/argument parser.
+parsed as options by the shell or argument parser.
 
 The CLI does not accept custom configurations or multiplicities. Use Python
 scripting for those workflows.
 
 ## Method and relativity
 
-`--method hf` is reserved for HF generation. Other method strings are passed to
-PySCF as DFT exchange-correlation specifications, for example:
+HF and DFT are both public method paths:
 
 ```bash
+--method hf
 --method PBE0
 --method B3LYP
 --method "wB97X-D"
 ```
 
-The generator does not maintain its own dictionary of valid DFT names. The
-installed PySCF version is the source of truth.
+HF uses the spherical fractional-occupation UHF backend. DFT uses the spherical
+fractional-occupation UKS backend and passes the exchange-correlation string to
+PySCF. The generator does not maintain its own dictionary of valid DFT names;
+the installed PySCF/libxc stack is the source of truth.
 
 Relativity is selected with:
 
@@ -139,17 +139,22 @@ The generator saves basis provenance and checks under:
 <workdir>/basis/
 ```
 
-Detected ECP/effective-core basis data fail by default unless `--allow-ecp` is
-used. Local basis files may have unknown full-electron status; for WFN export,
-use `--allow-unverified-basis` only when you accept that responsibility.
+Detected ECP/effective-core basis data fail by default. Use `--allow-ecp` only
+when an explicit-valence density is intended. With that flag, BSE and local
+NWChem basis sources may carry ECP sections into execution. `.wfn` export still
+requires all-electron basis data and is rejected for ECP sources.
+
+Local basis files may have unknown full-electron status. For `.wfn` planning,
+use `--allow-unverified-basis` only when you have inspected the file and accept
+that responsibility.
 
 ## Artifacts
 
 ```text
 profiles  native profiles + radii + QA
 rad       Multiwfn density-only .rad files
-wfn       neutral-only PROAIM .wfn files
-all       profiles + rad + neutral-only wfn
+wfn       neutral-only PROAIM .wfn files, all-electron basis only
+all       profiles + rad + neutral-only wfn where allowed
 ```
 
 Default:
@@ -158,12 +163,19 @@ Default:
 --artifacts profiles,rad
 ```
 
-SCF artifacts are always written as part of execution and are used for resume and
-export.
+SCF artifacts are always written during execution and are used for resume and
+export:
+
+```text
+<workdir>/scf/<run_id>/<state_id>/scf.chk
+<workdir>/scf/<run_id>/<state_id>/scf.npz
+<workdir>/scf/<run_id>/<state_id>/scf.json
+<workdir>/scf/<run_id>/<state_id>/scf.log
+```
 
 ## Workdir behavior
 
-One workdir corresponds to one method + relativity + basis + state-policy
+One workdir corresponds to one method, relativity, basis, and state-policy
 context. If an existing workdir was initialized with a different context, the
 command stops and asks you to choose another directory.
 

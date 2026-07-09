@@ -1,4 +1,4 @@
-"""Spherical fractional-occupation UKS helpers.
+"""Spherical fractional-occupation PySCF helpers.
 
 PySCF is kept as a lazy dependency: import-time tests and metadata checks can run
 without PySCF, while generator entry points import PySCF only when a real SCF
@@ -7,6 +7,7 @@ object is requested.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping, Sequence
 from functools import lru_cache
 from typing import Any
@@ -15,6 +16,154 @@ import numpy as np
 import numpy.typing as npt
 
 ArrayF = npt.NDArray[np.float64]
+
+
+_L_BY_LETTER = {"s": 0, "p": 1, "d": 2, "f": 3, "g": 4}
+_SHELL_RE = re.compile(r"(\d+)([spdfg])(\d+(?:\.\d+)?)")
+_CORE_CONFIGURATION_BY_SYMBOL = {
+    "He": "1s2",
+    "Ne": "1s2 2s2 2p6",
+    "Ar": "[Ne] 3s2 3p6",
+    "Kr": "[Ar] 3d10 4s2 4p6",
+    "Cd": "[Kr] 4d10 5s2",
+    "Xe": "[Cd] 5p6",
+    "Hg": "[Xe] 4f14 5d10 6s2",
+    "Rn": "[Hg] 6p6",
+}
+
+
+def expand_configuration_shells(configuration: str) -> tuple[tuple[int, int, float], ...]:
+    """Expand a compact atomic configuration into ``(n, l, occupation)`` shells.
+
+    The state table uses compact bracket notation such as ``[Ar] 3d8 4s2`` and,
+    for some heavy p-block atoms, closed-shell labels such as ``[Cd]`` or
+    ``[Hg]``. This helper expands the bracketed prefix and preserves the written
+    shell order, which is the safest information available in the compact state
+    record.
+    """
+
+    value = str(configuration).strip()
+    if not value:
+        raise ValueError("configuration must be non-empty")
+
+    shells: list[tuple[int, int, float]] = []
+    if value.startswith("["):
+        close = value.find("]")
+        if close < 0:
+            raise ValueError(f"invalid configuration prefix in {configuration!r}")
+        core_symbol = value[1:close]
+        try:
+            core_configuration = _CORE_CONFIGURATION_BY_SYMBOL[core_symbol]
+        except KeyError as exc:
+            raise ValueError(f"unsupported core configuration label [{core_symbol}]") from exc
+        shells.extend(expand_configuration_shells(core_configuration))
+        value = value[close + 1 :].strip()
+
+    for principal, l_label, occupation_text in _SHELL_RE.findall(value):
+        occupation = float(occupation_text)
+        if occupation <= 0:
+            raise ValueError(f"non-positive shell occupation in {configuration!r}")
+        shells.append((int(principal), _L_BY_LETTER[l_label], occupation))
+
+    if not shells:
+        raise ValueError(f"no shell occupations found in {configuration!r}")
+    return tuple(shells)
+
+
+def configuration_l_counts_after_core_removal(
+    configuration: str,
+    core_electrons: int | float,
+) -> dict[int, float]:
+    """Return aggregate valence ``l`` counts after removing an ECP core.
+
+    ``core_electrons`` is removed from the beginning of the expanded compact
+    configuration. If a source uses an unusual partial-shell ECP, the remainder
+    is still represented as an effective-valence occupation because the compact
+    state record does not store radial-shell-resolved spin occupations.
+    """
+
+    remaining_core = float(core_electrons)
+    if remaining_core < -1e-8:
+        raise ValueError("core_electrons must be non-negative")
+    valence_by_l: dict[int, float] = {}
+    for _principal, l_value, shell_occupation in expand_configuration_shells(configuration):
+        remove = min(shell_occupation, remaining_core)
+        remaining_core -= remove
+        valence_occupation = shell_occupation - remove
+        if valence_occupation > 1e-10:
+            valence_by_l[l_value] = valence_by_l.get(l_value, 0.0) + valence_occupation
+    if remaining_core > 1e-8:
+        raise ValueError(
+            f"ECP core electron count {core_electrons:g} exceeds electrons in {configuration!r}"
+        )
+    return {l_value: value for l_value, value in sorted(valence_by_l.items()) if value > 1e-10}
+
+
+def effective_l_counts_for_mol(state: Any, mol: Any) -> tuple[dict[int, float], dict[int, float]]:
+    """Return alpha/beta ``l`` counts compatible with a built PySCF molecule.
+
+    All-electron molecules use the curated state counts unchanged. For an ECP
+    molecule, PySCF's target electron count is the explicit/effective-valence
+    count, while the curated state record stores the full atomic electron count.
+    The helper removes the effective core from the compact configuration and then
+    keeps the curated spin imbalance in each angular-momentum manifold.
+    """
+
+    alpha_full = {int(key): float(value) for key, value in state.alpha_l_counts.items()}
+    beta_full = {int(key): float(value) for key, value in state.beta_l_counts.items()}
+    mol_nelectron = float(getattr(mol, "nelectron"))
+    core_electrons = float(state.electron_count) - mol_nelectron
+    rounded_core = round(core_electrons)
+    if abs(core_electrons - rounded_core) > 1e-8:
+        raise ValueError(
+            f"non-integral effective core electron count {core_electrons:.12g} for {state.state_id}"
+        )
+    core_electrons = float(rounded_core)
+    if core_electrons < -1e-8:
+        raise ValueError(
+            f"molecule electron count {mol_nelectron:g} exceeds state electron count "
+            f"{state.electron_count:g} for {state.state_id}"
+        )
+    if core_electrons <= 1e-8:
+        return alpha_full, beta_full
+
+    valence_totals = configuration_l_counts_after_core_removal(
+        str(state.record["configuration"]),
+        core_electrons,
+    )
+    spin_delta = {
+        l_value: alpha_full.get(l_value, 0.0) - beta_full.get(l_value, 0.0)
+        for l_value in set(alpha_full) | set(beta_full)
+    }
+    alpha: dict[int, float] = {}
+    beta: dict[int, float] = {}
+    for l_value, total in valence_totals.items():
+        delta = spin_delta.get(l_value, 0.0)
+        if abs(delta) > total + 1e-8:
+            raise ValueError(
+                f"cannot preserve spin imbalance {delta:g} for l={l_value}; "
+                f"only {total:g} valence electrons remain after ECP core removal"
+            )
+        alpha_l = 0.5 * (total + delta)
+        beta_l = 0.5 * (total - delta)
+        if alpha_l < -1e-8 or beta_l < -1e-8:
+            raise ValueError(f"negative valence occupation derived for l={l_value}")
+        if alpha_l > 1e-10:
+            alpha[l_value] = alpha_l
+        if beta_l > 1e-10:
+            beta[l_value] = beta_l
+
+    nelec = sum(alpha.values()) + sum(beta.values())
+    spin = sum(alpha.values()) - sum(beta.values())
+    if abs(nelec - mol_nelectron) > 1e-8:
+        raise ValueError(
+            f"derived ECP occupation sum {nelec:g} != PySCF target {mol_nelectron:g}"
+        )
+    if abs(spin - float(getattr(mol, "spin"))) > 1e-8:
+        raise ValueError(
+            f"derived ECP spin {spin:g} != PySCF target spin {getattr(mol, 'spin')}"
+        )
+    return dict(sorted(alpha.items())), dict(sorted(beta.items()))
 
 
 def validate_angular_block_size(l_value: int, block_size: int) -> None:
@@ -245,6 +394,67 @@ def get_atom_spherical_uks_class():  # pragma: no cover - requires optional PySC
     return AtomSphAverageUKS
 
 
+@lru_cache(maxsize=1)
+def get_atom_spherical_uhf_class():  # pragma: no cover - requires optional PySCF
+    """Return the PySCF UHF subclass implementing spherical occupations."""
+
+    try:
+        from pyscf.scf import uhf as pyscf_uhf  # type: ignore[import-not-found]
+    except Exception as exc:
+        raise RuntimeError(
+            "PySCF is required for spherical UHF generation. Install with "
+            "`python -m pip install -e .[generator]`."
+        ) from exc
+
+    class AtomSphAverageUHF(pyscf_uhf.UHF):  # type: ignore[misc]
+        """PySCF UHF subclass with l-block radial eigensolvers and fixed occupations."""
+
+        def __init__(
+            self,
+            mol: Any,
+            alpha_l_counts: Mapping[int | str, float] | None = None,
+            beta_l_counts: Mapping[int | str, float] | None = None,
+        ) -> None:
+            super().__init__(mol)
+            self._keys = self._keys.union({"alpha_l_counts", "beta_l_counts"})
+            self.alpha_l_counts = _as_l_count_mapping(alpha_l_counts)
+            self.beta_l_counts = _as_l_count_mapping(beta_l_counts)
+            self.init_guess = "1e"
+            self.init_guess_breaksym = 0
+
+        def eig(self, fock: Any, ovlp: Any, overwrite: bool = False, x: Any = None):
+            del overwrite, x
+            fock_arr = np.asarray(fock)
+            if fock_arr.ndim == 2:
+                energy, coeff = spherical_block_eigh(self, fock_arr, ovlp)
+                return np.stack([energy, energy]), np.stack([coeff, coeff])
+            energy_a, coeff_a = spherical_block_eigh(self, fock_arr[0], ovlp)
+            energy_b, coeff_b = spherical_block_eigh(self, fock_arr[1], ovlp)
+            return np.stack([energy_a, energy_b]), np.stack([coeff_a, coeff_b])
+
+        def get_occ(self, mo_energy: Any = None, mo_coeff: Any = None):
+            del mo_energy, mo_coeff
+            occ_a = occupation_from_l_counts(self.mol, self.alpha_l_counts, 1.0)
+            occ_b = occupation_from_l_counts(self.mol, self.beta_l_counts, 1.0)
+
+            target_alpha, target_beta = self.mol.nelec
+            if abs(float(occ_a.sum()) - target_alpha) > 1e-8:
+                raise ValueError(
+                    f"alpha occupation sum {occ_a.sum()} != target alpha {target_alpha}"
+                )
+            if abs(float(occ_b.sum()) - target_beta) > 1e-8:
+                raise ValueError(f"beta occupation sum {occ_b.sum()} != target beta {target_beta}")
+
+            return np.stack([occ_a, occ_b])
+
+        def get_grad(self, mo_coeff: Any, mo_occ: Any, fock: Any = None):
+            del mo_coeff, mo_occ, fock
+            return np.zeros(0)
+
+    AtomSphAverageUHF.__name__ = "AtomSphAverageUHF"
+    return AtomSphAverageUHF
+
+
 def make_spherical_uks(
     mol: Any,
     *,
@@ -257,6 +467,19 @@ def make_spherical_uks(
     validate_spherical_ao_layout(mol)
     cls = get_atom_spherical_uks_class()
     return cls(mol, xc=xc, alpha_l_counts=alpha_l_counts, beta_l_counts=beta_l_counts)
+
+
+def make_spherical_uhf(
+    mol: Any,
+    *,
+    alpha_l_counts: Mapping[int | str, float] | None = None,
+    beta_l_counts: Mapping[int | str, float] | None = None,
+):
+    """Create the PySCF spherical fractional-occupation UHF object lazily."""
+
+    validate_spherical_ao_layout(mol)
+    cls = get_atom_spherical_uhf_class()
+    return cls(mol, alpha_l_counts=alpha_l_counts, beta_l_counts=beta_l_counts)
 
 
 def configure_dft_grid(mf: Any, *, level: int = 4, prune: Any = None) -> Any:

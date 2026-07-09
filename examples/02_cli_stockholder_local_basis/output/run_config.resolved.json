@@ -56,6 +56,7 @@
     ],
     "missing_symbols": [],
     "ecp_detected": false,
+    "ecp_symbols": [],
     "check_method": "nwchem_text_scan",
     "messages": [],
     "errors": [],

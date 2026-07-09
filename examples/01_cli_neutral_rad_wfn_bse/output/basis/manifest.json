@@ -11,5 +11,7 @@
     "basis_key": "bse:cc-pVDZ"
   },
   "check_method": "basis_set_exchange_json",
-  "full_electron_status": "no_ecp_detected"
+  "full_electron_status": "no_ecp_detected",
+  "ecp_detected": false,
+  "ecp_symbols": []
 }

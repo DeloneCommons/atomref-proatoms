@@ -16,13 +16,21 @@ python scripts/check_basis_sensitivity.py --force
 python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
 python scripts/export_multiwfn_artifacts.py --dry-run
+python scripts/check_multiwfn_artifacts.py --require-generated
 python scripts/prepare_docs.py --write
 ```
 
 `check_states.py`, `check_basis_bundles.py`, `check_profile_artifacts.py`,
 `compute_wavefunctions.py --list`, and `compute_wavefunctions.py --dry-run` do
 not require PySCF. Running SCF and extracting profiles from PySCF checkpoint
-artifacts require the generator dependency set.
+artifacts require the generator dependency set:
+
+```bash
+python -m pip install -e ".[generator]"
+```
+
+For the full maintainer release-check environment, use
+`python -m pip install -e ".[generator,dev,docs]"`.
 
 ## Script summary
 
@@ -91,8 +99,8 @@ python scripts/smoke_installed_wheel.py --with-generator-execution
 ```
 
 This additionally installs the `generator` extra and runs a tiny neutral-H
-profiles/`.rad` generation. It is intentionally optional because it requires
-PySCF and is heavier than the base packaging check.
+profiles/`.rad` generation. It is intentionally optional because it executes
+SCF and is heavier than the base packaging check.
 
 ## `build_atom_states.py`
 

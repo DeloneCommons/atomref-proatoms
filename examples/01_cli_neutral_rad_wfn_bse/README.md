@@ -14,6 +14,12 @@ It demonstrates:
 - non-relativistic generation with `--relativity none`;
 - Multiwfn-oriented outputs with `--artifacts rad,wfn`.
 
+Install the generator dependencies once from the repository root:
+
+```bash
+python -m pip install -e ".[generator]"
+```
+
 Run:
 
 ```bash

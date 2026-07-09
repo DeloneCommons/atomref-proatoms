@@ -11,5 +11,7 @@
     "basis_key": "file:dyall-v2z-ni-pd-pt"
   },
   "check_method": "nwchem_text_scan",
-  "full_electron_status": "unknown"
+  "full_electron_status": "unknown",
+  "ecp_detected": false,
+  "ecp_symbols": []
 }

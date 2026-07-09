@@ -16,3 +16,9 @@ by `RUN_OPTIONAL_CUSTOM_SCF = False` so the notebook can be executed during docs
 work without PySCF or expensive quantum-chemistry work. Set it to `True` locally
 to run a tiny neutral-H custom-state smoke calculation and write profile, radii,
 `.rad`, and `.wfn` outputs under `output/notebook_h/`.
+
+For the optional SCF cell, install the generator dependencies from the repository root:
+
+```bash
+python -m pip install -e ".[generator]"
+```

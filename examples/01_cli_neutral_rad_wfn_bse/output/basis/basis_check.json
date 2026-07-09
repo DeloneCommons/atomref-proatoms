@@ -28,6 +28,7 @@
   ],
   "missing_symbols": [],
   "ecp_detected": false,
+  "ecp_symbols": [],
   "check_method": "basis_set_exchange_json",
   "messages": [],
   "errors": [],

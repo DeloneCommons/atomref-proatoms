@@ -1,29 +1,57 @@
 # Workflow and code layout
 
-The repository separates lightweight loading/validation utilities from the
-optional SCF generator. Users who only read released data products should not need
-PySCF. PySCF is required only for local regeneration of SCF artifacts and radial
-profiles.
+The repository separates released data products from the optional code paths that
+create them. Users who only inspect the published tables should not need PySCF.
+Maintainers who regenerate SCF artifacts, profiles, radii, QA, or Multiwfn files
+need the generator dependencies.
 
 ## Package layout
 
 The Python package in `src/atomref_proatoms/` is organized into subpackages with
 explicit boundaries:
 
-- `dataio/`: source-tree paths, schema constants, basis bundles, and profile-dataset configuration;
+- `dataio/`: source-tree paths, package resources, schema constants, basis bundles, and profile-dataset configuration;
 - `states/`: curated atomic-state records, validation, summaries, and state-table loading;
-- `engines/`: PySCF-facing backend helpers and spherical fractional-occupation UKS machinery;
-- `profiles/`: radial grids, density-profile evaluation, build plans, QA helpers, and generated-data writers.
+- `engines/`: PySCF-facing backend helpers and spherical fractional-occupation UKS/UHF machinery;
+- `profiles/`: radial grids, density-profile evaluation, build plans, QA helpers, and generated-data writers;
+- `exporters/`: Multiwfn `.rad`, PROAIM `.wfn`, and validation-side export helpers;
+- `generator/`: public generator planning and execution code;
+- `cli/`: the installed `atomref-proatoms` command.
 
-The current code does not yet create `exporters/` or `cli/` packages because no
-Multiwfn exporters or final user-facing generator commands are implemented in
-this data layer. The public scripts in `scripts/` are small workflow entry points
-around the package code. Their detailed command-line options are documented in
-`scripts/README.md`.
+The scripts in `scripts/` remain maintainer entry points for full release-data
+regeneration and validation. The public CLI is documented in the
+[Generator tool](generator/index.md) section.
 
-## Standard workflow
+## Installation choices
 
-Run the workflow checks from the repository root:
+Use the smallest environment that matches the task:
+
+```bash
+python -m pip install -e .                 # read data, import package, run lightweight checks
+python -m pip install -e ".[generator]"     # run atomref-proatoms generate with PySCF and BSE
+python -m pip install -e ".[dev]"           # pytest and ruff for code checks
+python -m pip install -e ".[docs]"          # build the MkDocs site
+python -m pip install -e ".[generator,dev,docs]"  # maintainer release-check environment
+```
+
+The `all` extra remains a convenience umbrella for local development, but the
+specific extras above are easier to explain to users. The generator extra now
+includes both PySCF and Basis Set Exchange because `bse:` basis sources are a
+normal public generator path.
+
+## Data distribution model
+
+The wheel carries code, the CLI, schemas, curated state tables, presets, and
+small service resources needed for planning and generation. The full generated
+profile/radii/QA tables and the committed Multiwfn `.rad`/`.wfn` interoperability
+tree are release data products stored in the repository and mirrored by the
+GitHub/Zenodo release assets. Lightweight downstream packages should consume the
+stable data products, not generator internals.
+
+## Standard maintainer workflow
+
+Run these commands from the repository root when regenerating the committed data
+products:
 
 ```bash
 python scripts/check_states.py
@@ -33,23 +61,27 @@ python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
 python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/export_multiwfn_artifacts.py --format rad --force --check
+python scripts/export_multiwfn_artifacts.py --format wfn --force --check
+python scripts/check_multiwfn_artifacts.py --require-generated
 python scripts/prepare_docs.py --write
 ```
 
 `check_states.py` and `check_basis_bundles.py` validate compact tracked inputs.
-The third command creates or reuses ignored local SCF artifacts. The fourth
-command extracts profile, radii, and QA tables from complete local SCF
-material. The fifth command records supplemented/augmented basis-sensitivity metrics for
-matched neutral and anion states when the compared profile datasets are present.
-The sixth command records the primary x2c-QZVPall versus dyall-v4z basis-family
-comparison over the H-Rn overlap. The profile-data checker confirms
-that generated data directories match the active dataset configuration,
-profile-data version, and QA summaries. The final command refreshes documentation tables, figures, and marked Results blocks from committed
-CSV/JSON/YAML data files; it does not run SCF or rewrite the profile/radii/QA data.
+`compute_wavefunctions.py` creates or reuses ignored local SCF artifacts.
+`extract_profiles.py` reads complete local SCF artifacts and writes profile,
+radii, and QA tables. The basis-sensitivity and primary-comparison scripts write
+scientific diagnostic QA layers. The Multiwfn exporter writes `.rad` files for
+configured states and neutral-only `.wfn` files where the public contract permits
+them. `prepare_docs.py --write` reads committed CSV/JSON/YAML data and refreshes
+derived documentation tables, figures, and marked Results blocks.
+
+Do not run the SCF or exporter steps just to edit documentation. They are
+regeneration steps.
 
 ## Inspection commands
 
-These commands inspect the configured work without running SCF:
+These commands inspect configured work without running SCF:
 
 ```bash
 python scripts/compute_wavefunctions.py --list
@@ -58,74 +90,68 @@ python scripts/extract_profiles.py --list
 python scripts/extract_profiles.py --dry-run
 python scripts/check_basis_sensitivity.py --dry-run
 python scripts/check_basis_comparisons.py --dry-run
+python scripts/export_multiwfn_artifacts.py --dry-run
 ```
 
 They are useful for reviewing selected datasets and states on machines without
 PySCF. Use `--show-jobs` with `--list` or `--dry-run` when per-state job lines
 are needed; summary mode is the default for full plans.
 
-## Generator dependencies
+## Release-readiness checklist
 
-Install generator dependencies only where SCF generation will be run:
+The lightweight release gate is:
 
 ```bash
-python -m pip install -e ".[generator,test,dev]"
+python scripts/check_states.py
+python scripts/check_basis_bundles.py
+python scripts/check_profile_artifacts.py --require-generated
+python scripts/check_multiwfn_artifacts.py --require-generated
+python scripts/prepare_docs.py --check
+pytest -q
+python scripts/smoke_installed_wheel.py --no-build-isolation
+mkdocs build --strict
 ```
 
-The release configuration expects PySCF `2.13.1`. `compute_wavefunctions.py`
-refuses to create generated data with a different PySCF version unless
-`--allow-pyscf-version-mismatch` is supplied for debugging.
+The installed-wheel smoke test verifies that package resources and the public CLI
+work outside the repository checkout. `mkdocs build --strict` requires the docs
+extra. When a clean build environment already has the build backend installed,
+`--no-build-isolation` keeps the wheel smoke test usable offline.
+
+A heavier optional release smoke is available:
+
+```bash
+python scripts/smoke_installed_wheel.py --with-generator-execution --no-build-isolation
+```
+
+That mode installs the generator extra and runs a tiny neutral-H generation path.
+It is intentionally optional because it executes SCF.
 
 ## Regeneration products
 
 `compute_wavefunctions.py` writes ignored local artifacts under
 `local-data/scf/<dataset_id>/<state_id>/`:
 
-- `scf.chk`: PySCF checkpoint;
-- `scf.npz`: reusable numerical arrays;
-- `scf.json`: SCF metadata and provenance;
-- `scf.log`: backend log.
+```text
+scf.chk   PySCF checkpoint
+scf.npz   reusable numerical arrays
+scf.json  SCF metadata and provenance
+scf.log   backend log
+```
 
 `extract_profiles.py` reads those local artifacts and writes:
 
-- `data/profiles/<dataset_id>/profiles.csv` and `metadata.json`;
-- `data/radii/<dataset_id>/radii.csv` and `metadata.json`;
-- `data/qa/<dataset_id>/qa.csv` and `metadata.json`;
-- aggregate QA files under `data/qa/`.
-
-`check_basis_sensitivity.py --force` writes the current basis-sensitivity QA
-layer. Both dyall-v4z versus dyall-av4z and x2c-QZVPall versus x2c-QZVPall-s are
-emitted by default when the corresponding generated profile datasets are present.
-
 ```text
-data/qa/basis_sensitivity/
-  basis_sensitivity.csv
-  basis_sensitivity_summary.csv
-  basis_sensitivity_outliers.csv
-  basis_sensitivity_metric_distributions.csv
-  metadata.json
-  dyall-v4z/
-  x2c-QZVPall/
+data/profiles/<dataset_id>/profiles.csv and metadata.json
+data/radii/<dataset_id>/radii.csv and metadata.json
+data/qa/<dataset_id>/qa.csv and metadata.json
+data/qa/ aggregate summaries
 ```
 
-
-`check_basis_comparisons.py --force` writes the primary basis-family comparison
-layer. The current comparison matches x2c-QZVPall and dyall-v4z over the H-Rn
-overlap by exact state ID and state-record digest.
-
-```text
-data/qa/basis_comparisons/
-  metadata.json
-  x2c-QZVPall__dyall-v4z/
-    basis_comparison.csv
-    basis_comparison_summary.csv
-    basis_comparison_outliers.csv
-    basis_comparison_metric_distributions.csv
-```
-
-Generated profile, radii, and QA files should be committed together after `check_profile_artifacts.py --require-generated` has passed. Documentation-derived tables and figures can then be refreshed with `prepare_docs.py --write`. Local
-SCF artifacts under `local-data/` remain ignored and are not part of the public
-release tables.
+`export_multiwfn_artifacts.py` reads the same local SCF artifacts and writes the
+configured Multiwfn interoperability tree under `data/multiwfn_artifacts/`.
+Generated profile, radii, QA, and Multiwfn files should be committed together
+only after the corresponding check scripts pass. Local SCF artifacts under
+`local-data/` remain ignored.
 
 ## Documentation build
 
@@ -134,6 +160,7 @@ The documentation site is built with MkDocs:
 ```bash
 python -m pip install -e ".[docs]"
 NO_MKDOCS_2_WARNING=1 mkdocs serve
+mkdocs build --strict
 ```
 
 Notebook pages are included in the site without execution. Executing notebooks is

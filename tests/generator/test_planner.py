@@ -51,6 +51,24 @@ def test_build_generation_plan_dry_run_without_scf(tmp_path: Path) -> None:
     assert payload["would_write"]["multiwfn_dir"].endswith("multiwfn")
 
 
+def test_build_generation_plan_accepts_hf_backend(tmp_path: Path) -> None:
+    request = GeneratorRequest(
+        elements=("H",),
+        method="hf",
+        relativity="none",
+        basis="def2-SVP",
+        state_policy="neutral",
+        artifacts=("profiles",),
+        workdir=tmp_path,
+        dry_run=True,
+    )
+    plan = build_generation_plan(request)
+
+    assert plan.method.method_kind == "hf"
+    assert plan.method.scf_type == "UHF"
+    assert plan.jobs[0]["method_kind"] == "hf"
+
+
 def test_wfn_only_non_neutral_selection_records_error(tmp_path: Path) -> None:
     request = GeneratorRequest(
         elements=("C",),

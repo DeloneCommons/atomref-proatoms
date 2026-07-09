@@ -13,8 +13,14 @@ The examples are intentionally split by user level:
 
 The CLI examples include committed output directories produced by the corresponding
 `run.sh` scripts. Re-running an example requires the optional generator
-dependencies, especially PySCF. The BSE example also requires
-`basis-set-exchange`.
+dependencies:
+
+```bash
+python -m pip install -e ".[generator]"
+```
+
+The generator extra includes PySCF and Basis Set Exchange, so it is enough for
+both PySCF basis names and `bse:` basis sources.
 
 To avoid BLAS/OpenMP oversubscription on workstations, the example scripts set
 `OMP_NUM_THREADS`, `MKL_NUM_THREADS`, and `OPENBLAS_NUM_THREADS` to `1` unless

@@ -76,7 +76,10 @@ def add_generate_parser(parser: argparse.ArgumentParser) -> None:
     method_group.add_argument(
         "--allow-ecp",
         action="store_true",
-        help="Allow detected ECP/effective-core basis data.",
+        help=(
+            "Allow detected ECP/effective-core basis data for profiles/.rad; "
+            "WFN export still requires all-electron data."
+        ),
     )
     method_group.add_argument(
         "--allow-unverified-basis",

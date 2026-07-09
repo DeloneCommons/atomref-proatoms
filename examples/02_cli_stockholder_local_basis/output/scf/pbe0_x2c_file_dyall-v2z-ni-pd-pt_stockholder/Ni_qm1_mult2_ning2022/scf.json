@@ -37,18 +37,20 @@
   "basis": {
     "basis_id": "file:dyall-v2z-ni-pd-pt",
     "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521",
-    "basis_manifest_sha256": "ee63b1efd4b6c0f46461f2fb8cdde6ca801a3076f9738913e7d9ef80c2617c36",
+    "basis_manifest_sha256": "ec8a5bf821fe88875c033bb95d59c7d193efb5f81d8a5fe1e421605ebee41728",
     "source_api_url": "input/dyall-v2z-ni-pd-pt.nw"
   },
   "results": {
     "converged": true,
     "total_energy_hartree": -1520.2569731010187,
     "nelectron": 29,
+    "state_electron_count": 29,
+    "effective_core_electrons": 0,
     "n_ao": 92
   },
   "fingerprints": {
     "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521",
-    "basis_manifest_sha256": "ee63b1efd4b6c0f46461f2fb8cdde6ca801a3076f9738913e7d9ef80c2617c36",
+    "basis_manifest_sha256": "ec8a5bf821fe88875c033bb95d59c7d193efb5f81d8a5fe1e421605ebee41728",
     "state_record_sha256": "0b04a6813170d252c1c2ed9ab5c1b11ed3d88ce6d61eee41b5a0db8e247ec35a",
     "scf_settings_sha256": "4a5331d0131e7fa97e47fcbb6011ad9f213854e8f7d68a9337e70b165e063f06",
     "engine_version": "2.13.1",

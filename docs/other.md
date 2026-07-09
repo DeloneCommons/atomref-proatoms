@@ -98,6 +98,6 @@ python scripts/check_multiwfn_artifacts.py --require-generated
 
 The default output root is `data/multiwfn_artifacts/`. Both `.rad` and `.wfn` outputs are generated from local SCF `scf.chk`, `scf.npz`, and metadata files under `local-data/scf/`. The `.rad` path evaluates the spherical SCF density directly on the fixed Multiwfn `atmrad` grid rather than interpolating the committed profile CSVs; by default it uses a fixed-ray evaluation and exposes an angular-average diagnostic option. The `.wfn` path preserves wavefunction-like Gaussian primitive and spin-orbital information. The package-side WFN reader/evaluator remains a validation utility, not the recommended public data path.
 
-## Remaining interoperability steps
+## Multiwfn interoperability and generator contract
 
-The exporter code, `data/multiwfn_artifacts/` contract, generated `.rad` files, generated neutral `x2c-QZVPall` `.wfn` files, and manifest are now committed. The remaining interoperability work is the final user-facing generator/tool, which should reuse the same state, basis, SCF, `.rad`, `.wfn`, and manifest contracts rather than redefining them.
+The exporter code, `data/multiwfn_artifacts/` contract, generated `.rad` files, generated neutral `x2c-QZVPall` `.wfn` files, and manifest are committed. The public generator reuses the same state, basis, SCF, `.rad`, `.wfn`, and manifest contracts for local runs. `.wfn` export remains intentionally conservative: it is neutral-only and requires all-electron basis data.

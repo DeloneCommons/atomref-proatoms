@@ -14,6 +14,7 @@ BasisSourceKind = Literal["pyscf", "bse", "file"]
 FullElectronStatus = Literal["no_ecp_detected", "ecp_detected", "unknown"]
 
 _ECP_HINT_RE = re.compile(r"(^|\s)(ecp|potential|nelec)($|\s)", re.IGNORECASE)
+_ECP_NELEC_RE = re.compile(r"^\s*([A-Za-z]{1,2})\s+nelec\s+\d+\b", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -53,6 +54,7 @@ class BasisCheckResult:
     covered_symbols: tuple[str, ...] = ()
     missing_symbols: tuple[str, ...] = ()
     ecp_detected: bool = False
+    ecp_symbols: tuple[str, ...] = ()
     check_method: str = "not_performed"
     messages: tuple[str, ...] = ()
     errors: tuple[str, ...] = ()
@@ -70,6 +72,7 @@ class BasisCheckResult:
             "covered_symbols": list(self.covered_symbols),
             "missing_symbols": list(self.missing_symbols),
             "ecp_detected": self.ecp_detected,
+            "ecp_symbols": list(self.ecp_symbols),
             "check_method": self.check_method,
             "messages": list(self.messages),
             "errors": list(self.errors),
@@ -133,7 +136,7 @@ def parse_basis_spec(
     basis_file: str | Path | None = None,
     basis_name: str | None = None,
 ) -> BasisSpec:
-    """Parse the MVP basis-source grammar."""
+    """Parse the public basis-source grammar."""
 
     if basis_file is not None and basis is not None:
         raise ValueError("Use either --basis or --basis-file, not both")
@@ -166,13 +169,30 @@ def sha256_text(text: str) -> str:
 def detect_ecp_in_nwchem_text(text: str) -> bool:
     """Return True when an NWChem-like basis file contains obvious ECP markers."""
 
+    return bool(detect_ecp_symbols_in_nwchem_text(text)) or any(
+        _ECP_HINT_RE.search(line.strip())
+        for line in text.splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    )
+
+
+def detect_ecp_symbols_in_nwchem_text(text: str) -> tuple[str, ...]:
+    """Return symbols with explicit ``nelec`` ECP records in NWChem text."""
+
+    symbols: list[str] = []
+    seen: set[str] = set()
     for raw_line in text.splitlines():
-        line = raw_line.strip()
-        if not line or line.startswith("#"):
+        match = _ECP_NELEC_RE.match(raw_line)
+        if match is None:
             continue
-        if _ECP_HINT_RE.search(line):
-            return True
-    return False
+        try:
+            symbol = _normalize_symbol(match.group(1))
+        except ValueError:
+            continue
+        if symbol not in seen:
+            symbols.append(symbol)
+            seen.add(symbol)
+    return tuple(symbols)
 
 
 def _covered_symbols_from_nwchem(text: str) -> tuple[str, ...]:
@@ -207,7 +227,8 @@ def _check_file_basis(spec: BasisSpec, symbols: tuple[str, ...]) -> BasisCheckRe
     text = path.read_text(encoding="utf-8")
     covered = _covered_symbols_from_nwchem(text)
     missing = tuple(symbol for symbol in symbols if symbol not in set(covered))
-    ecp_detected = detect_ecp_in_nwchem_text(text)
+    ecp_symbols = detect_ecp_symbols_in_nwchem_text(text)
+    ecp_detected = bool(ecp_symbols) or detect_ecp_in_nwchem_text(text)
     errors = tuple(f"basis file has no shell data for {symbol}" for symbol in missing)
     warnings: tuple[str, ...] = ()
     if not ecp_detected:
@@ -221,6 +242,7 @@ def _check_file_basis(spec: BasisSpec, symbols: tuple[str, ...]) -> BasisCheckRe
         covered_symbols=covered,
         missing_symbols=missing,
         ecp_detected=ecp_detected,
+        ecp_symbols=ecp_symbols,
         check_method="nwchem_text_scan",
         errors=errors,
         warnings=warnings,
@@ -271,6 +293,7 @@ def _check_pyscf_basis(spec: BasisSpec, symbols: tuple[str, ...]) -> BasisCheckR
         covered_symbols=tuple(symbol for symbol in symbols if symbol not in missing),
         missing_symbols=tuple(missing),
         ecp_detected=bool(ecp_symbols),
+        ecp_symbols=tuple(ecp_symbols),
         check_method="pyscf_basis_load",
         messages=tuple(messages),
         errors=errors,
@@ -331,6 +354,7 @@ def _check_bse_basis(spec: BasisSpec, symbols: tuple[str, ...]) -> BasisCheckRes
         covered_symbols=covered,
         missing_symbols=missing,
         ecp_detected=ecp_detected,
+        ecp_symbols=tuple(ecp_symbols),
         check_method="basis_set_exchange_json",
         errors=errors,
         warnings=warnings,
@@ -340,7 +364,7 @@ def _check_bse_basis(spec: BasisSpec, symbols: tuple[str, ...]) -> BasisCheckRes
 
 
 def apply_basis_policy(check: BasisCheckResult, policy: BasisPolicy) -> BasisPolicyDecision:
-    """Convert a basis check into default MVP pass/fail policy."""
+    """Convert a basis check into release-facing pass/fail policy."""
 
     errors = list(check.errors)
     warnings = list(check.warnings)
@@ -348,6 +372,11 @@ def apply_basis_policy(check: BasisCheckResult, policy: BasisPolicy) -> BasisPol
         errors.append(
             "ECP/effective-core basis data were detected; "
             "rerun with --allow-ecp to allow it."
+        )
+    if policy.artifact_requires_wfn and check.full_electron_status == "ecp_detected":
+        errors.append(
+            "WFN export requires all-electron basis data; ECP/effective-core sources "
+            "can generate profiles and .rad files with --allow-ecp, but not .wfn files."
         )
     if (
         policy.artifact_requires_wfn

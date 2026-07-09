@@ -10,7 +10,7 @@ The current data layer contains 1289 generated dataset-state rows across four ba
 
 The main documentation is organized as a paper-like technical note. The core argument is in the Introduction, Theory, Methods, Results, Discussion, and Conclusions. Data dictionaries, script details, notebooks, license material, and repository-operation notes are kept in the Other and Reference sections so that the scientific narrative remains readable.
 
-The documentation also includes a compact Multiwfn WFN interoperability notebook for the fixed H/O/H2O validation system. The committed `.rad` and `.wfn` files are practical interoperability products; the profile/radii/QA layer remains the canonical package data representation and the final user-facing generator is still a separate tool-development step.
+The documentation also includes a compact Multiwfn WFN interoperability notebook for the fixed H/O/H2O validation system. The committed `.rad` and `.wfn` files are practical interoperability products; the profile/radii/QA layer remains the canonical data representation. The public `atomref-proatoms generate` command is available for small local generation runs and custom release-adjacent workflows without redefining the data contract.
 
 The Results page includes generated tables and figures produced from committed CSV/JSON artifacts by:
 

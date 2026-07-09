@@ -23,3 +23,8 @@ site/
 !data/multiwfn_artifacts/
 !data/multiwfn_artifacts/**/
 !data/multiwfn_artifacts/**/*.wfn
+!examples/
+!examples/**/
+!examples/**/*.wfn
+!examples/**/*.chk
+!examples/**/*.log

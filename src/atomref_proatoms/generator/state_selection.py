@@ -1,4 +1,4 @@
-"""Curated-state selection helpers for the MVP generator."""
+"""Curated-state selection helpers for the public generator."""
 
 from __future__ import annotations
 
@@ -126,7 +126,7 @@ def select_curated_states(
     policy: str,
     charges: tuple[int, ...] | list[int] | None = None,
 ) -> StateSelection:
-    """Select only curated MVP states: neutral or stockholder."""
+    """Select curated public-generator states: neutral or stockholder."""
 
     normalized_elements = tuple(parse_elements(tuple(elements)))
     selected_policy = parse_state_policy(policy)
@@ -168,7 +168,7 @@ def select_packaged_states(
     charges: tuple[int, ...] | list[int] | None = None,
     resource_root: Path | str | None = None,
 ) -> StateSelection:
-    """Load packaged states and apply the MVP selection policy."""
+    """Load packaged states and apply the public selection policy."""
 
     return select_curated_states(
         load_packaged_atom_states(resource_root=resource_root),

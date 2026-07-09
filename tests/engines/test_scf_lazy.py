@@ -21,7 +21,10 @@ from atomref_proatoms.engines.pyscf_backend import (
     scf_state_record_digest,
     stable_json_digest,
 )
-from atomref_proatoms.engines.spherical_uks import get_atom_spherical_uks_class
+from atomref_proatoms.engines.spherical_uks import (
+    get_atom_spherical_uhf_class,
+    get_atom_spherical_uks_class,
+)
 from atomref_proatoms.states import AtomState
 
 
@@ -42,6 +45,7 @@ def test_scf_reuse_fingerprint_excludes_max_cycle() -> None:
     assert base.to_fingerprint_json() != longer.to_fingerprint_json()
     assert base.to_reuse_fingerprint_json() == longer.to_reuse_fingerprint_json()
 
+
 def test_pyscf_import_failure_has_clear_message_when_missing() -> None:
     pytest.importorskip("pyscf")
     _gto, _dft, _basis, version = import_pyscf_modules()
@@ -52,6 +56,12 @@ def test_spherical_uks_class_factory_is_lazy() -> None:
     pytest.importorskip("pyscf")
     cls = get_atom_spherical_uks_class()
     assert cls.__name__ == "AtomSphAverageUKS"
+
+
+def test_spherical_uhf_class_factory_is_lazy() -> None:
+    pytest.importorskip("pyscf")
+    cls = get_atom_spherical_uhf_class()
+    assert cls.__name__ == "AtomSphAverageUHF"
 
 
 def test_load_scf_npz_requires_project_native_arrays(tmp_path) -> None:

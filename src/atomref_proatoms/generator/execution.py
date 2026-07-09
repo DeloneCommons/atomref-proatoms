@@ -34,6 +34,8 @@ from ..engines.pyscf_backend import (
 from ..engines.spherical_uks import (
     apply_x2c_if_requested,
     configure_dft_grid,
+    effective_l_counts_for_mol,
+    make_spherical_uhf,
     make_spherical_uks,
     validate_spherical_ao_layout,
 )
@@ -122,8 +124,6 @@ def execute_generation_plan(plan: GeneratorPlan, options: ExecutionOptions) -> E
 
     if plan.errors:
         raise ValueError("plan has errors; rerun --dry-run and inspect plan.json")
-    if plan.method.method_kind == "hf":
-        raise NotImplementedError("HF execution requires the deferred spherical-UHF backend patch")
 
     workdir = plan.request.workdir.expanduser()
     workdir.mkdir(parents=True, exist_ok=True)
@@ -309,6 +309,8 @@ def _prepare_basis_cache(plan: GeneratorPlan, workdir: Path) -> BasisCheckResult
             "basis_source": plan.basis.as_dict(),
             "check_method": basis_check.check_method,
             "full_electron_status": basis_check.full_electron_status,
+            "ecp_detected": basis_check.ecp_detected,
+            "ecp_symbols": list(basis_check.ecp_symbols),
         },
     )
     checksum_rows: list[tuple[str, str]] = []
@@ -358,13 +360,17 @@ def _build_atom_mol(
     else:
         if basis_check.rendered_nwchem is None:
             raise RuntimeError(f"basis source {basis.basis_key!r} has no rendered NWChem text")
-        mol.basis = {
-            state.symbol: pyscf_basis.parse(basis_check.rendered_nwchem, symb=state.symbol)
-        }
-        if basis_check.ecp_detected:
-            raise RuntimeError(
-                "ECP execution for BSE/file NWChem sources is not implemented in the MVP path"
-            )
+        basis_text = _nwchem_basis_block(basis_check.rendered_nwchem)
+        mol.basis = {state.symbol: pyscf_basis.parse(basis_text, symb=state.symbol)}
+        if allow_ecp and _basis_check_has_ecp_for_symbol(basis_check, state.symbol):
+            try:
+                ecp_text = _nwchem_ecp_block(basis_check.rendered_nwchem)
+                mol.ecp = {state.symbol: pyscf_basis.parse_ecp(ecp_text, symb=state.symbol)}
+            except Exception as exc:
+                raise RuntimeError(
+                    f"Could not parse NWChem ECP data for {state.symbol} from "
+                    f"basis source {basis.basis_key!r}"
+                ) from exc
     mol.charge = state.charge
     mol.spin = state.spin_2s
     mol.unit = "Bohr"
@@ -376,6 +382,36 @@ def _build_atom_mol(
     mol.build()
     validate_spherical_ao_layout(mol)
     return mol
+
+
+def _extract_nwchem_block(text: str, header: str) -> str:
+    lines = text.splitlines()
+    selected: list[str] = []
+    active = False
+    for raw_line in lines:
+        stripped = raw_line.strip()
+        if not active and stripped.lower().startswith(header.lower()):
+            active = True
+        if active:
+            selected.append(raw_line)
+            if stripped.lower() == "end":
+                break
+    return "\n".join(selected) + "\n" if selected else text
+
+
+def _nwchem_basis_block(text: str) -> str:
+    return _extract_nwchem_block(text, "basis")
+
+
+def _nwchem_ecp_block(text: str) -> str:
+    return _extract_nwchem_block(text, "ecp")
+
+
+def _basis_check_has_ecp_for_symbol(basis_check: BasisCheckResult, symbol: str) -> bool:
+    ecp_symbols = getattr(basis_check, "ecp_symbols", ())
+    if ecp_symbols:
+        return symbol in set(ecp_symbols)
+    return bool(basis_check.ecp_detected)
 
 
 def _scf_settings(plan: GeneratorPlan, options: ExecutionOptions, chkfile: Path) -> SCFSettings:
@@ -412,6 +448,12 @@ def _scf_settings(plan: GeneratorPlan, options: ExecutionOptions, chkfile: Path)
     )
 
 
+def _density_model(plan: GeneratorPlan) -> str:
+    if plan.method.method_kind == "hf":
+        return "self_consistent_fractional_occupation_spherical_uhf"
+    return "self_consistent_fractional_occupation_spherical_uks"
+
+
 def _profile_config_proxy(plan: GeneratorPlan) -> Any:
     return SimpleNamespace(
         defaults={
@@ -422,7 +464,7 @@ def _profile_config_proxy(plan: GeneratorPlan) -> Any:
             "scf_type": plan.method.scf_type,
             "xc": plan.method.xc or "HF",
             "relativity": plan.relativity.engine_label,
-            "density_model": "self_consistent_fractional_occupation_spherical_uks",
+            "density_model": _density_model(plan),
         }
     )
 
@@ -453,6 +495,24 @@ def _basis_bundle_proxy(plan: GeneratorPlan, basis_check: BasisCheckResult) -> A
         path=basis_path.parent,
         manifest={"source": {"source_api_url": str(plan.basis.original or plan.basis.basis_key)}},
     )
+
+
+def _apply_common_scf_controls(
+    mf: Any,
+    settings: SCFSettings,
+    *,
+    configure_grid: bool,
+) -> None:
+    if settings.stdout is not None:
+        mf.stdout = settings.stdout
+    if settings.chkfile is not None:
+        mf.chkfile = str(settings.chkfile)
+    mf.conv_tol = settings.conv_tol
+    mf.max_cycle = settings.max_cycle
+    mf.diis_space = settings.diis_space
+    mf.diis_start_cycle = settings.diis_start_cycle
+    if configure_grid and hasattr(mf, "grids"):
+        configure_dft_grid(mf, level=settings.grid_level, prune=settings.grid_prune)
 
 
 def _ensure_scf_artifacts(
@@ -502,26 +562,24 @@ def _ensure_scf_artifacts(
         verbose=run_settings.verbose,
         stdout=run_settings.stdout,
     )
-    mf = make_spherical_uks(
-        mol,
-        xc=run_settings.xc,
-        alpha_l_counts=state.alpha_l_counts,
-        beta_l_counts=state.beta_l_counts,
-    )
-    if run_settings.stdout is not None:
-        mf.stdout = run_settings.stdout
-    if run_settings.chkfile is not None:
-        mf.chkfile = str(run_settings.chkfile)
-    mf.conv_tol = run_settings.conv_tol
-    mf.max_cycle = run_settings.max_cycle
-    mf.diis_space = run_settings.diis_space
-    mf.diis_start_cycle = run_settings.diis_start_cycle
-    configure_dft_grid(mf, level=run_settings.grid_level, prune=run_settings.grid_prune)
+    alpha_l_counts, beta_l_counts = effective_l_counts_for_mol(state, mol)
+    if plan.method.method_kind == "hf":
+        mf = make_spherical_uhf(
+            mol,
+            alpha_l_counts=alpha_l_counts,
+            beta_l_counts=beta_l_counts,
+        )
+        _apply_common_scf_controls(mf, run_settings, configure_grid=False)
+    else:
+        mf = make_spherical_uks(
+            mol,
+            xc=run_settings.xc,
+            alpha_l_counts=alpha_l_counts,
+            beta_l_counts=beta_l_counts,
+        )
+        _apply_common_scf_controls(mf, run_settings, configure_grid=True)
     mf = apply_x2c_if_requested(mf, use_x2c=run_settings.use_x2c)
-    mf.conv_tol = run_settings.conv_tol
-    mf.max_cycle = run_settings.max_cycle
-    mf.diis_space = run_settings.diis_space
-    mf.diis_start_cycle = run_settings.diis_start_cycle
+    _apply_common_scf_controls(mf, run_settings, configure_grid=False)
     mf.kernel()
     log_text = log_capture.getvalue()
     paths.log.write_text(log_text, encoding="utf-8")
@@ -575,11 +633,14 @@ def _qa_grid_kwargs(plan: GeneratorPlan) -> dict[str, Any]:
 
 
 def _state_metadata(state: AtomState, scf_meta: Mapping[str, Any]) -> dict[str, Any]:
+    results = scf_meta.get("results", {})
     return {
         "symbol": state.symbol,
         "z": state.z,
         "charge": state.charge,
         "electron_count": state.electron_count,
+        "explicit_electron_count": int(results.get("nelectron", state.electron_count)),
+        "effective_core_electrons": int(results.get("effective_core_electrons", 0)),
         "spin_2s": state.spin_2s,
         "multiplicity": state.multiplicity,
         "configuration": state.record["configuration"],
@@ -633,15 +694,21 @@ def _write_profile_outputs(
         linear_dependency = linear_dependency_diagnostics_from_log(
             paths.log.read_text(encoding="utf-8")
         )
+        results = scf_meta.get("results", {})
+        explicit_electron_count = int(results.get("nelectron", state.electron_count))
+        effective_core_electrons = int(results.get("effective_core_electrons", 0))
         qa_result = qa_result_from_profile(
-            scf_converged=bool(scf_meta.get("results", {}).get("converged")),
-            electron_count_exact=state.electron_count,
+            scf_converged=bool(results.get("converged")),
+            electron_count_exact=explicit_electron_count,
             derived=state_derived,
             profile=profile,
             linear_dependency_vectors_removed=linear_dependency.vectors_removed,
         ).to_json()
         qa_result["linear_dependency_warning_count"] = linear_dependency.warning_count
-        qa_result["electron_count_tolerance"] = electron_count_tolerance(state.electron_count)
+        qa_result["electron_count_reference"] = explicit_electron_count
+        qa_result["state_electron_count"] = state.electron_count
+        qa_result["effective_core_electrons"] = effective_core_electrons
+        qa_result["electron_count_tolerance"] = electron_count_tolerance(explicit_electron_count)
         qa_result["electron_count_pass"] = (
             qa_result["electron_count_error_qa"] is None
             or abs(float(qa_result["electron_count_error_qa"]))
@@ -659,7 +726,9 @@ def _write_profile_outputs(
             "symbol": state.symbol,
             "z": state.z,
             "charge": state.charge,
-            "electron_count": state.electron_count,
+            "electron_count": explicit_electron_count,
+            "state_electron_count": state.electron_count,
+            "effective_core_electrons": effective_core_electrons,
             "multiplicity": state.multiplicity,
         }
         states_metadata[state.state_id] = _state_metadata(state, scf_meta)
@@ -677,7 +746,7 @@ def _write_profile_outputs(
         "dataset_id": plan.run_id,
         "basis_id": plan.basis.basis_key,
         "basis_sha256": _execution_basis_sha256(plan, basis_check),
-        "density_model": "self_consistent_fractional_occupation_spherical_uks",
+        "density_model": _density_model(plan),
         "method": method,
         "units": {"r": "bohr", "rho": "electron/bohr^3"},
         "profile_grid": dict(plan.defaults.get("profile_grid", {})),
@@ -787,6 +856,13 @@ def _write_rad_outputs(
                     "state_id": state.state_id,
                     "symbol": state.symbol,
                     "charge": state.charge,
+                    "electron_count": int(
+                        metadata.get("results", {}).get("nelectron", state.electron_count)
+                    ),
+                    "state_electron_count": state.electron_count,
+                    "effective_core_electrons": int(
+                        metadata.get("results", {}).get("effective_core_electrons", 0)
+                    ),
                     "path": out_path.relative_to(workdir).as_posix(),
                     "source": "scf_density_evaluation",
                     "rad_grid_source": "Multiwfn atmrad exemplar grid",

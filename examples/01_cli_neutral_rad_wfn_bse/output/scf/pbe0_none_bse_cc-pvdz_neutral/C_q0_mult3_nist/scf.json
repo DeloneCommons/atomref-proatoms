@@ -37,18 +37,20 @@
   "basis": {
     "basis_id": "bse:cc-pVDZ",
     "basis_sha256": "355db0d1f365eac28dcdf54d2e1b61eba5e214d975b261bc4ed9736b09f7aeb9",
-    "basis_manifest_sha256": "faaef251941195c36b7cb593221e5c3445a3b644257562231a1e903199d7ca95",
+    "basis_manifest_sha256": "909116fc9c0baf35a5eb1946d44ecfdde21fd755c8e2f79dff18bef17d925df9",
     "source_api_url": "bse:cc-pVDZ"
   },
   "results": {
     "converged": true,
     "total_energy_hartree": -37.75490596852873,
     "nelectron": 6,
+    "state_electron_count": 6,
+    "effective_core_electrons": 0,
     "n_ao": 14
   },
   "fingerprints": {
     "basis_sha256": "355db0d1f365eac28dcdf54d2e1b61eba5e214d975b261bc4ed9736b09f7aeb9",
-    "basis_manifest_sha256": "faaef251941195c36b7cb593221e5c3445a3b644257562231a1e903199d7ca95",
+    "basis_manifest_sha256": "909116fc9c0baf35a5eb1946d44ecfdde21fd755c8e2f79dff18bef17d925df9",
     "state_record_sha256": "b979ebf0cc26fd5ab1fea35bb0f048eace890f5e603fa28edfe24ba35bb1c6e3",
     "scf_settings_sha256": "c6410172e26755c46faa84cfb9aa4f946f7feb0f7e232c44d83b6bf79ea62f94",
     "engine_version": "2.13.1",
