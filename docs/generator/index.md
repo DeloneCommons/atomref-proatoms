@@ -61,6 +61,16 @@ The PyPI package carries service resources needed for the generator, not the ful
 released data archive. Full generated profiles/radii/QA and committed Multiwfn
 artifacts belong to the repository release and Zenodo/GitHub data products.
 
+The repository includes an installed-wheel smoke test for release checks:
+
+```bash
+python scripts/smoke_installed_wheel.py
+```
+
+This builds the wheel, installs it into a fresh environment, and verifies that
+`atomref-proatoms --help`, `--version`, and `generate --dry-run` work outside a
+source checkout.
+
 ## Examples
 
 Reproducible examples live in the repository root under [`examples/`](https://github.com/DeloneCommons/atomref-proatoms/tree/main/examples/):

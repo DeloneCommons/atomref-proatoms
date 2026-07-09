@@ -274,13 +274,39 @@ def profile_dataset_config(path: Path = PROFILE_DATASETS_FILE) -> ProfileDataset
     return _cached_profile_dataset_config(str(Path(path).resolve()))
 
 
-DATASET_IDS = profile_dataset_config().dataset_ids
-DATASET_SCOPES = {scope.dataset_id: scope for scope in profile_dataset_config().scopes}
-BASIS_TO_DATASETS: dict[str, tuple[str, ...]] = {}
-for _scope in profile_dataset_config().scopes:
-    BASIS_TO_DATASETS.setdefault(_scope.basis_id, ())
-    BASIS_TO_DATASETS[_scope.basis_id] = (*BASIS_TO_DATASETS[_scope.basis_id], _scope.dataset_id)
-DATASET_TO_BASIS = {scope.dataset_id: scope.basis_id for scope in profile_dataset_config().scopes}
+def _load_default_dataset_indexes() -> tuple[
+    tuple[str, ...],
+    dict[str, DatasetScope],
+    dict[str, tuple[str, ...]],
+    dict[str, str],
+]:
+    """Return repo-default dataset indexes when the repo data file exists.
+
+    Maintainer scripts run from a repository checkout and expect these compatibility
+    constants to be populated.  Installed wheels used by the public generator do not
+    carry the full repo-root ``data/profile_datasets.yaml`` file, so importing this
+    module must remain safe when that default file is absent.
+    """
+
+    try:
+        config = profile_dataset_config()
+    except FileNotFoundError:
+        return (), {}, {}, {}
+    basis_to_datasets: dict[str, tuple[str, ...]] = {}
+    for scope in config.scopes:
+        basis_to_datasets.setdefault(scope.basis_id, ())
+        basis_to_datasets[scope.basis_id] = (*basis_to_datasets[scope.basis_id], scope.dataset_id)
+    return (
+        config.dataset_ids,
+        {scope.dataset_id: scope for scope in config.scopes},
+        basis_to_datasets,
+        {scope.dataset_id: scope.basis_id for scope in config.scopes},
+    )
+
+
+DATASET_IDS, DATASET_SCOPES, BASIS_TO_DATASETS, DATASET_TO_BASIS = (
+    _load_default_dataset_indexes()
+)
 
 
 def dataset_scope(dataset_id: str, *, config: ProfileDatasetConfig | None = None) -> DatasetScope:

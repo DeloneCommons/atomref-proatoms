@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from atomref_proatoms.generator.execution import ExecutionOptions, execute_generation_plan
 from atomref_proatoms.generator.planner import (
     DEFAULT_WORKDIR,
     GeneratorRequest,
@@ -16,6 +15,27 @@ from atomref_proatoms.generator.planner import (
     write_dry_run_files,
 )
 from atomref_proatoms.generator.state_selection import parse_charges, parse_elements
+
+
+def execute_generation_plan(plan: Any, options: Any) -> Any:
+    """Execute a resolved plan, importing the heavy execution layer lazily.
+
+    Keeping this wrapper at module scope lets unit tests monkeypatch execution
+    behavior while preserving installed-wheel ``--help`` behavior without touching
+    repo-root data files or optional generator dependencies.
+    """
+
+    from atomref_proatoms.generator.execution import (
+        execute_generation_plan as _execute_generation_plan,
+    )
+
+    return _execute_generation_plan(plan, options)
+
+
+def _execution_options_class() -> Any:
+    from atomref_proatoms.generator.execution import ExecutionOptions
+
+    return ExecutionOptions
 
 
 def add_generate_parser(parser: argparse.ArgumentParser) -> None:
@@ -178,6 +198,8 @@ def run_generate(args: argparse.Namespace) -> int:
             print(f"error: {error}", file=sys.stderr)
         return 2
     write_dry_run_files(plan)
+    ExecutionOptions = _execution_options_class()
+
     options = ExecutionOptions(
         resume=bool(args.resume),
         force=bool(args.force),

@@ -106,6 +106,16 @@ The lightweight package layer remains importable without PySCF:
 python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 ```
 
+For a PyPI-style packaging check, build and install the wheel into a fresh
+environment and run the public CLI outside the repository checkout:
+
+```bash
+python scripts/smoke_installed_wheel.py
+```
+
+The optional `--with-generator-execution` mode additionally installs the
+`generator` extra and runs a tiny neutral-H generation smoke test.
+
 ## Regeneration workflow
 
 Full regeneration requires the optional generator dependencies and complete local
