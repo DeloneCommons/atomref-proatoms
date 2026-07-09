@@ -1,8 +1,7 @@
 """Execution bridge for the conservative public generator CLI.
 
 This module connects the dry-run plan to the existing spherical-SCF,
-profile, QA, and Multiwfn ``.rad`` machinery.  It intentionally keeps WFN
-export out of scope for Patch 3.
+profile, QA, Multiwfn ``.rad``, and neutral-only PROAIM ``.wfn`` machinery.
 """
 
 from __future__ import annotations
@@ -44,6 +43,7 @@ from ..exporters.multiwfn_rad import (
     multiwfn_rad_filename,
     write_multiwfn_rad_file,
 )
+from ..exporters.proaim_wfn import atom_wfn_filename, write_atomref_scf_arrays_wfn
 from ..profiles.artifacts import (
     profile_density_column,
     write_json,
@@ -122,8 +122,6 @@ def execute_generation_plan(plan: GeneratorPlan, options: ExecutionOptions) -> E
 
     if plan.errors:
         raise ValueError("plan has errors; rerun --dry-run and inspect plan.json")
-    if "wfn" in plan.artifacts:
-        raise NotImplementedError("WFN export is deferred to the neutral-only WFN patch")
     if plan.method.method_kind == "hf":
         raise NotImplementedError("HF execution requires the deferred spherical-UHF backend patch")
 
@@ -140,6 +138,9 @@ def execute_generation_plan(plan: GeneratorPlan, options: ExecutionOptions) -> E
 
     for index, job in enumerate(plan.jobs, start=1):
         state = states_by_id[str(job["state_id"])]
+        if not job.get("artifacts"):
+            scf_status[state.state_id] = "skipped_no_requested_artifacts"
+            continue
         print(f"[{index}/{len(plan.jobs)}] SCF {state.state_id}", flush=True)
         try:
             status = _ensure_scf_artifacts(
@@ -210,16 +211,31 @@ def execute_generation_plan(plan: GeneratorPlan, options: ExecutionOptions) -> E
                     written_files=tuple(generated_files),
                 )
 
+    multiwfn_records: list[dict[str, Any]] = []
     if successful_states and "rad" in plan.artifacts:
-        generated_files.extend(
-            _write_rad_outputs(
-                plan,
-                workdir,
-                successful_states,
-                options=options,
-                failures=failures,
-            )
+        rad_files, rad_records = _write_rad_outputs(
+            plan,
+            workdir,
+            successful_states,
+            options=options,
+            failures=failures,
         )
+        generated_files.extend(rad_files)
+        multiwfn_records.extend(rad_records)
+
+    if successful_states and "wfn" in plan.artifacts:
+        wfn_files, wfn_records = _write_wfn_outputs(
+            plan,
+            workdir,
+            successful_states,
+            options=options,
+            failures=failures,
+        )
+        generated_files.extend(wfn_files)
+        multiwfn_records.extend(wfn_records)
+
+    if "rad" in plan.artifacts or "wfn" in plan.artifacts:
+        generated_files.append(_write_multiwfn_manifest(plan, workdir, multiwfn_records))
 
     failures_path = _write_failures_csv(workdir / "failures.csv", failures)
     status = "failed" if failures else "ok"
@@ -737,7 +753,7 @@ def _write_rad_outputs(
     *,
     options: ExecutionOptions,
     failures: list[dict[str, Any]],
-) -> tuple[Path, ...]:
+) -> tuple[tuple[Path, ...], tuple[dict[str, Any], ...]]:
     written: list[Path] = []
     rad_dir = workdir / "multiwfn" / "rad"
     manifest_files: list[dict[str, Any]] = []
@@ -787,17 +803,100 @@ def _write_rad_outputs(
             print(f"ERROR: .rad {state.state_id}: {exc}", file=sys.stderr)
             if not options.continue_on_error:
                 break
+    return tuple(written), tuple(manifest_files)
+
+
+def _scf_total_energy(metadata: Mapping[str, Any]) -> float | None:
+    results = metadata.get("results")
+    if isinstance(results, Mapping) and results.get("total_energy_hartree") is not None:
+        return float(results["total_energy_hartree"])
+    return None
+
+
+def _write_wfn_outputs(
+    plan: GeneratorPlan,
+    workdir: Path,
+    states: tuple[AtomState, ...],
+    *,
+    options: ExecutionOptions,
+    failures: list[dict[str, Any]],
+) -> tuple[tuple[Path, ...], tuple[dict[str, Any], ...]]:
+    written: list[Path] = []
+    manifest_files: list[dict[str, Any]] = []
+    wfn_dir = workdir / "multiwfn" / "wfn"
+    for state in states:
+        if state.charge != 0:
+            continue
+        try:
+            paths = scf_artifact_paths(workdir / "scf", plan.run_id, state.state_id)
+            mol = load_mol_from_chk(paths.chk)
+            arrays = load_scf_npz(paths.npz)
+            metadata = read_scf_metadata(paths.metadata)
+            out_path = wfn_dir / atom_wfn_filename(state.symbol)
+            if out_path.exists() and not options.force:
+                raise FileExistsError(
+                    "Refusing to overwrite existing file without --force: "
+                    f"{out_path}"
+                )
+            info = write_atomref_scf_arrays_wfn(
+                out_path,
+                state,
+                mol,
+                arrays,
+                title=f"atomref-proatoms {state.state_id} {plan.basis.basis_key}",
+                total_energy=_scf_total_energy(metadata),
+            )
+            written.append(out_path)
+            manifest_files.append(
+                {
+                    "format": "wfn",
+                    "state_id": state.state_id,
+                    "symbol": state.symbol,
+                    "charge": state.charge,
+                    "electron_count": state.electron_count,
+                    "path": out_path.relative_to(workdir).as_posix(),
+                    "source": "scf_wavefunction_export",
+                    "source_scf_checkpoint": paths.chk.relative_to(workdir).as_posix(),
+                    "source_scf_npz": paths.npz.relative_to(workdir).as_posix(),
+                    "source_scf_metadata": paths.metadata.relative_to(workdir).as_posix(),
+                    "source_scf_converged": bool(metadata.get("results", {}).get("converged")),
+                    **info,
+                }
+            )
+        except Exception as exc:
+            failures.append(_failure_record(state=state, stage="wfn", exc=exc))
+            print(f"ERROR: .wfn {state.state_id}: {exc}", file=sys.stderr)
+            if not options.continue_on_error:
+                break
+    return tuple(written), tuple(manifest_files)
+
+
+def _write_multiwfn_manifest(
+    plan: GeneratorPlan,
+    workdir: Path,
+    files: list[dict[str, Any]],
+) -> Path:
+    path = workdir / "multiwfn" / "manifest.json"
     write_json(
-        workdir / "multiwfn" / "manifest.json",
+        path,
         {
             "schema_version": "atomref.proatoms.generator_multiwfn_manifest.v1",
             "run_id": plan.run_id,
             "profile_data_version": str(plan.defaults.get("profile_data_version", "2.0.0")),
-            "files": manifest_files,
+            "files": files,
+            "notes": {
+                "rad": (
+                    "Density-only Multiwfn .rad files evaluated from local SCF "
+                    "arrays/checkpoints."
+                ),
+                "wfn": (
+                    "Neutral-only PROAIM WFN files generated from local SCF "
+                    "arrays/checkpoints."
+                ),
+            },
         },
     )
-    written.append(workdir / "multiwfn" / "manifest.json")
-    return tuple(written)
+    return path
 
 
 def _failure_record(*, state: AtomState, stage: str, exc: Exception) -> dict[str, Any]:

@@ -13,6 +13,7 @@ import yaml
 
 from .. import __version__
 from ..dataio.resources import resource_bytes, resource_origin, resource_text
+from ..exporters.proaim_wfn import atom_wfn_filename
 from ..states.state_tables import AtomState
 from .basis_resolver import (
     BasisCheckResult,
@@ -418,9 +419,9 @@ def _build_jobs(
 
 
 def _job_output_paths(state: AtomState, artifacts: list[str], run_id: str) -> dict[str, str]:
-    paths: dict[str, str] = {
-        "scf_dir": f"scf/{state.state_id}",
-    }
+    paths: dict[str, str] = {}
+    if artifacts:
+        paths["scf_dir"] = f"scf/{run_id}/{state.state_id}"
     if "profiles" in artifacts:
         paths.update(
             {
@@ -432,7 +433,7 @@ def _job_output_paths(state: AtomState, artifacts: list[str], run_id: str) -> di
     if "rad" in artifacts:
         paths["rad"] = f"multiwfn/rad/{_rad_filename(state)}"
     if "wfn" in artifacts:
-        paths["wfn"] = f"multiwfn/wfn/{state.symbol} .wfn"
+        paths["wfn"] = f"multiwfn/wfn/{atom_wfn_filename(state.symbol)}"
     return paths
 
 

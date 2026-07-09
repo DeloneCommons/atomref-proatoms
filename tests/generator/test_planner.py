@@ -39,6 +39,10 @@ def test_build_generation_plan_dry_run_without_scf(tmp_path: Path) -> None:
     assert plan.state_selection.state_ids
     assert len(plan.jobs) == 2
     assert all(job["wfn_eligible"] for job in plan.jobs)
+    assert all(
+        str(job["output_paths"]["scf_dir"]).startswith(f"scf/{plan.run_id}/")
+        for job in plan.jobs
+    )
     paths = write_dry_run_files(plan)
     for path in paths.values():
         assert path.is_file()
@@ -61,3 +65,5 @@ def test_wfn_only_non_neutral_selection_records_error(tmp_path: Path) -> None:
     )
     plan = build_generation_plan(request)
     assert any("WFN-only" in error for error in plan.errors)
+    assert plan.jobs[0]["artifacts"] == []
+    assert "scf_dir" not in plan.jobs[0]["output_paths"]
