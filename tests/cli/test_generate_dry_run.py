@@ -71,6 +71,9 @@ def test_generate_execution_success_is_reported_without_running_scf(
     assert code == 0
     assert "generate execution" in captured.out
     assert "scf computed: 1" in captured.out
+    assert (tmp_path / "run_config.input.json").is_file()
+    assert (tmp_path / "run_config.resolved.json").is_file()
+    assert (tmp_path / "plan.json").is_file()
 
 
 def test_generate_dry_run_writes_plan(tmp_path: Path, capsys) -> None:

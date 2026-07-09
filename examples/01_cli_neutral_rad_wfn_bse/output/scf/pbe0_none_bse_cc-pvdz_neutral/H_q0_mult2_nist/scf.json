@@ -1,0 +1,74 @@
+{
+  "schema_version": "atomref.proatoms.scf_artifact.v1",
+  "dataset_id": "pbe0_none_bse_cc-pvdz_neutral",
+  "state_id": "H_q0_mult2_nist",
+  "basis_id": "bse:cc-pVDZ",
+  "density_model": "self_consistent_fractional_occupation_spherical_uks",
+  "method": {
+    "engine": "pyscf",
+    "engine_version": "2.13.1",
+    "scf_type": "UKS",
+    "xc": "PBE0",
+    "relativity": "none",
+    "spherical_basis": true
+  },
+  "settings": {
+    "xc": "PBE0",
+    "use_x2c": false,
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 4,
+    "grid_prune": null
+  },
+  "state": {
+    "symbol": "H",
+    "z": 1,
+    "charge": 0,
+    "electron_count": 1,
+    "spin_2s": 1,
+    "multiplicity": 2,
+    "configuration": "1s1",
+    "state_role": "reference",
+    "state_category": "nist_reference",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+  },
+  "basis": {
+    "basis_id": "bse:cc-pVDZ",
+    "basis_sha256": "355db0d1f365eac28dcdf54d2e1b61eba5e214d975b261bc4ed9736b09f7aeb9",
+    "basis_manifest_sha256": "faaef251941195c36b7cb593221e5c3445a3b644257562231a1e903199d7ca95",
+    "source_api_url": "bse:cc-pVDZ"
+  },
+  "results": {
+    "converged": true,
+    "total_energy_hartree": -0.500289863968344,
+    "nelectron": 1,
+    "n_ao": 5
+  },
+  "fingerprints": {
+    "basis_sha256": "355db0d1f365eac28dcdf54d2e1b61eba5e214d975b261bc4ed9736b09f7aeb9",
+    "basis_manifest_sha256": "faaef251941195c36b7cb593221e5c3445a3b644257562231a1e903199d7ca95",
+    "state_record_sha256": "ec46271458438d403de3c7ddc2c1472b4b70e1f7b199dfcddec01ac7557b43dc",
+    "scf_settings_sha256": "c6410172e26755c46faa84cfb9aa4f946f7feb0f7e232c44d83b6bf79ea62f94",
+    "engine_version": "2.13.1",
+    "density_model": "self_consistent_fractional_occupation_spherical_uks",
+    "scf_type": "UKS"
+  },
+  "log": {
+    "captured": true,
+    "line_count": 0
+  },
+  "generator": {
+    "schema_version": "atomref.proatoms.generator_manifest.v1",
+    "package_version": "2.0.0",
+    "basis_source": {
+      "source": "bse",
+      "name": "cc-pVDZ",
+      "label": "cc-pVDZ",
+      "path": null,
+      "original": "bse:cc-pVDZ",
+      "basis_key": "bse:cc-pVDZ"
+    }
+  }
+}

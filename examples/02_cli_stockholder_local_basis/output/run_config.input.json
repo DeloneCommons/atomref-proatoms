@@ -1,0 +1,28 @@
+{
+  "elements": [
+    "Ni",
+    "Pd"
+  ],
+  "element_range": null,
+  "method": "PBE0",
+  "relativity": "x2c",
+  "basis": null,
+  "basis_file": "input/dyall-v2z-ni-pd-pt.nw",
+  "basis_name": "dyall-v2z-ni-pd-pt",
+  "state_policy": "stockholder",
+  "charges": [
+    -1,
+    0,
+    1
+  ],
+  "artifacts": [
+    "profiles",
+    "rad",
+    "wfn"
+  ],
+  "workdir": "output",
+  "resource_root": null,
+  "allow_ecp": false,
+  "allow_unverified_basis": true,
+  "dry_run": false
+}

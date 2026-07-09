@@ -127,6 +127,16 @@ The `--list` and `--dry-run` options on `compute_wavefunctions.py` and
 rewriting generated artifacts. `scripts/prepare_docs.py --write` only reads
 committed tables and refreshes `docs/tables/`, `docs/figures/`, and marked blocks in `docs/results.md`.
 
+## Generator examples
+
+The public generator tool has reproducible examples under [`examples/`](examples/):
+
+- `examples/01_cli_neutral_rad_wfn_bse/` generates neutral Multiwfn `.rad` and `.wfn` files for H and B--F from a BSE basis with X2C disabled.
+- `examples/02_cli_stockholder_local_basis/` generates stockholder-style profiles/radii/QA, `.rad`, and neutral-only `.wfn` outputs from a local NWChem basis file.
+- `examples/03_python_custom_state_pipeline/` is an expert notebook for custom states and project-specific pipelines outside the curated CLI state policies.
+
+The full tool manual is in the [Generator tool](docs/generator/index.md) documentation section.
+
 ## Documentation map
 
 - [Scientific model](docs/theory.md): spherical fractional-occupation proatoms,

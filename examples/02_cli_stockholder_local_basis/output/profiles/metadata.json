@@ -1,0 +1,345 @@
+{
+  "schema_version": "atomref.proatoms.generator_profile_dataset.v1",
+  "profile_data_version": "2.0.0",
+  "dataset_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+  "basis_id": "file:dyall-v2z-ni-pd-pt",
+  "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521",
+  "density_model": "self_consistent_fractional_occupation_spherical_uks",
+  "method": {
+    "engine": "pyscf",
+    "engine_version": "2.13.1",
+    "scf_type": "UKS",
+    "xc": "PBE0",
+    "relativity": "sf-X2C-1e",
+    "spherical_basis": true
+  },
+  "units": {
+    "r": "bohr",
+    "rho": "electron/bohr^3"
+  },
+  "profile_grid": {
+    "type": "log",
+    "r_min_bohr": 1e-06,
+    "r_max_bohr": 60.0,
+    "n": 1200
+  },
+  "qa_grid": {
+    "type": "gauss_legendre_log_r",
+    "r_min_bohr": 1e-07,
+    "r_max_bohr": 120.0,
+    "n": 400,
+    "angular_points": 110
+  },
+  "cutoffs_e_bohr3": [
+    0.003,
+    0.001,
+    0.0001
+  ],
+  "columns": {
+    "rho_e_bohr3__Ni_qm1_mult2_ning2022": {
+      "state_id": "Ni_qm1_mult2_ning2022",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": -1,
+      "electron_count": 29,
+      "multiplicity": 2
+    },
+    "rho_e_bohr3__Ni_q0_mult3_nist": {
+      "state_id": "Ni_q0_mult3_nist",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 0,
+      "electron_count": 28,
+      "multiplicity": 3
+    },
+    "rho_e_bohr3__Ni_qp1_mult2_nist": {
+      "state_id": "Ni_qp1_mult2_nist",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 1,
+      "electron_count": 27,
+      "multiplicity": 2
+    },
+    "rho_e_bohr3__Pd_qm1_mult2_ning2022": {
+      "state_id": "Pd_qm1_mult2_ning2022",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": -1,
+      "electron_count": 47,
+      "multiplicity": 2
+    },
+    "rho_e_bohr3__Pd_q0_mult1_nist": {
+      "state_id": "Pd_q0_mult1_nist",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 0,
+      "electron_count": 46,
+      "multiplicity": 1
+    },
+    "rho_e_bohr3__Pd_qp1_mult2_nist": {
+      "state_id": "Pd_qp1_mult2_nist",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 1,
+      "electron_count": 45,
+      "multiplicity": 2
+    }
+  },
+  "states": {
+    "Ni_qm1_mult2_ning2022": {
+      "symbol": "Ni",
+      "z": 28,
+      "charge": -1,
+      "electron_count": 29,
+      "spin_2s": 1,
+      "multiplicity": 2,
+      "configuration": "[Ar] 3d9 4s2",
+      "spin_model": "curated_ground_multiplicity",
+      "spin_variant": "curated_multiplicity",
+      "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+      "state_category": "ning2022_monoanion_reference",
+      "state_role": "bound_experimental",
+      "curation_status": "curated",
+      "scf_state_metadata": {
+        "symbol": "Ni",
+        "z": 28,
+        "charge": -1,
+        "electron_count": 29,
+        "spin_2s": 1,
+        "multiplicity": 2,
+        "configuration": "[Ar] 3d9 4s2",
+        "state_role": "bound_experimental",
+        "state_category": "ning2022_monoanion_reference",
+        "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+      }
+    },
+    "Ni_q0_mult3_nist": {
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 0,
+      "electron_count": 28,
+      "spin_2s": 2,
+      "multiplicity": 3,
+      "configuration": "[Ar] 3d8 4s2",
+      "spin_model": "curated_ground_multiplicity",
+      "spin_variant": "curated_multiplicity",
+      "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+      "state_category": "nist_reference",
+      "state_role": "reference",
+      "curation_status": "curated",
+      "scf_state_metadata": {
+        "symbol": "Ni",
+        "z": 28,
+        "charge": 0,
+        "electron_count": 28,
+        "spin_2s": 2,
+        "multiplicity": 3,
+        "configuration": "[Ar] 3d8 4s2",
+        "state_role": "reference",
+        "state_category": "nist_reference",
+        "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+      }
+    },
+    "Ni_qp1_mult2_nist": {
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 1,
+      "electron_count": 27,
+      "spin_2s": 1,
+      "multiplicity": 2,
+      "configuration": "[Ar] 3d9",
+      "spin_model": "curated_ground_multiplicity",
+      "spin_variant": "curated_multiplicity",
+      "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+      "state_category": "nist_reference",
+      "state_role": "reference",
+      "curation_status": "curated",
+      "scf_state_metadata": {
+        "symbol": "Ni",
+        "z": 28,
+        "charge": 1,
+        "electron_count": 27,
+        "spin_2s": 1,
+        "multiplicity": 2,
+        "configuration": "[Ar] 3d9",
+        "state_role": "reference",
+        "state_category": "nist_reference",
+        "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+      }
+    },
+    "Pd_qm1_mult2_ning2022": {
+      "symbol": "Pd",
+      "z": 46,
+      "charge": -1,
+      "electron_count": 47,
+      "spin_2s": 1,
+      "multiplicity": 2,
+      "configuration": "[Kr] 4d10 5s1",
+      "spin_model": "curated_ground_multiplicity",
+      "spin_variant": "curated_multiplicity",
+      "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+      "state_category": "ning2022_monoanion_reference",
+      "state_role": "bound_experimental",
+      "curation_status": "curated",
+      "scf_state_metadata": {
+        "symbol": "Pd",
+        "z": 46,
+        "charge": -1,
+        "electron_count": 47,
+        "spin_2s": 1,
+        "multiplicity": 2,
+        "configuration": "[Kr] 4d10 5s1",
+        "state_role": "bound_experimental",
+        "state_category": "ning2022_monoanion_reference",
+        "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+      }
+    },
+    "Pd_q0_mult1_nist": {
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 0,
+      "electron_count": 46,
+      "spin_2s": 0,
+      "multiplicity": 1,
+      "configuration": "[Kr] 4d10",
+      "spin_model": "curated_ground_multiplicity",
+      "spin_variant": "curated_multiplicity",
+      "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+      "state_category": "nist_reference",
+      "state_role": "reference",
+      "curation_status": "curated",
+      "scf_state_metadata": {
+        "symbol": "Pd",
+        "z": 46,
+        "charge": 0,
+        "electron_count": 46,
+        "spin_2s": 0,
+        "multiplicity": 1,
+        "configuration": "[Kr] 4d10",
+        "state_role": "reference",
+        "state_category": "nist_reference",
+        "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+      }
+    },
+    "Pd_qp1_mult2_nist": {
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 1,
+      "electron_count": 45,
+      "spin_2s": 1,
+      "multiplicity": 2,
+      "configuration": "[Kr] 4d9",
+      "spin_model": "curated_ground_multiplicity",
+      "spin_variant": "curated_multiplicity",
+      "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+      "state_category": "nist_reference",
+      "state_role": "reference_uncertain",
+      "curation_status": "curated",
+      "scf_state_metadata": {
+        "symbol": "Pd",
+        "z": 46,
+        "charge": 1,
+        "electron_count": 45,
+        "spin_2s": 1,
+        "multiplicity": 2,
+        "configuration": "[Kr] 4d9",
+        "state_role": "reference_uncertain",
+        "state_category": "nist_reference",
+        "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+      }
+    }
+  },
+  "scf_artifacts": {
+    "Ni_qm1_mult2_ning2022": {
+      "schema_version": "atomref.proatoms.scf_artifact.v1",
+      "scf_chk": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qm1_mult2_ning2022/scf.chk",
+      "scf_npz": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qm1_mult2_ning2022/scf.npz",
+      "scf_json": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qm1_mult2_ning2022/scf.json",
+      "scf_log": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qm1_mult2_ning2022/scf.log",
+      "results": {
+        "converged": true,
+        "total_energy_hartree": -1520.2569731010187,
+        "nelectron": 29,
+        "n_ao": 92
+      }
+    },
+    "Ni_q0_mult3_nist": {
+      "schema_version": "atomref.proatoms.scf_artifact.v1",
+      "scf_chk": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_q0_mult3_nist/scf.chk",
+      "scf_npz": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_q0_mult3_nist/scf.npz",
+      "scf_json": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_q0_mult3_nist/scf.json",
+      "scf_log": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_q0_mult3_nist/scf.log",
+      "results": {
+        "converged": true,
+        "total_energy_hartree": -1520.1766489771762,
+        "nelectron": 28,
+        "n_ao": 92
+      }
+    },
+    "Ni_qp1_mult2_nist": {
+      "schema_version": "atomref.proatoms.scf_artifact.v1",
+      "scf_chk": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qp1_mult2_nist/scf.chk",
+      "scf_npz": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qp1_mult2_nist/scf.npz",
+      "scf_json": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qp1_mult2_nist/scf.json",
+      "scf_log": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qp1_mult2_nist/scf.log",
+      "results": {
+        "converged": true,
+        "total_energy_hartree": -1519.958065580834,
+        "nelectron": 27,
+        "n_ao": 92
+      }
+    },
+    "Pd_qm1_mult2_ning2022": {
+      "schema_version": "atomref.proatoms.scf_artifact.v1",
+      "scf_chk": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qm1_mult2_ning2022/scf.chk",
+      "scf_npz": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qm1_mult2_ning2022/scf.npz",
+      "scf_json": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qm1_mult2_ning2022/scf.json",
+      "scf_log": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qm1_mult2_ning2022/scf.log",
+      "results": {
+        "converged": true,
+        "total_energy_hartree": -5045.10481329227,
+        "nelectron": 47,
+        "n_ao": 127
+      }
+    },
+    "Pd_q0_mult1_nist": {
+      "schema_version": "atomref.proatoms.scf_artifact.v1",
+      "scf_chk": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_q0_mult1_nist/scf.chk",
+      "scf_npz": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_q0_mult1_nist/scf.npz",
+      "scf_json": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_q0_mult1_nist/scf.json",
+      "scf_log": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_q0_mult1_nist/scf.log",
+      "results": {
+        "converged": true,
+        "total_energy_hartree": -5045.094258487261,
+        "nelectron": 46,
+        "n_ao": 127
+      }
+    },
+    "Pd_qp1_mult2_nist": {
+      "schema_version": "atomref.proatoms.scf_artifact.v1",
+      "scf_chk": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qp1_mult2_nist/scf.chk",
+      "scf_npz": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qp1_mult2_nist/scf.npz",
+      "scf_json": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qp1_mult2_nist/scf.json",
+      "scf_log": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qp1_mult2_nist/scf.log",
+      "results": {
+        "converged": true,
+        "total_energy_hartree": -5044.7232836001,
+        "nelectron": 45,
+        "n_ao": 127
+      }
+    }
+  },
+  "related_artifacts": {
+    "profiles_csv": "profiles/profiles.csv",
+    "profile_metadata_json": "profiles/metadata.json",
+    "radii_csv": "radii/radii.csv",
+    "radii_metadata_json": "radii/metadata.json",
+    "qa_csv": "qa/qa.csv",
+    "qa_metadata_json": "qa/metadata.json"
+  },
+  "provenance": {
+    "generator_run_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+    "state_table_sha256": "832c8bf0e023cb5398b76d0e0bbe0f5b6d2e85b94ca1542676f38435b3e67dae",
+    "tool_defaults_sha256": "8a8b5e7fa852577e3fe5c07e4942f2a08db5ea0f8ae9f527dfd05d3fec1980df"
+  }
+}

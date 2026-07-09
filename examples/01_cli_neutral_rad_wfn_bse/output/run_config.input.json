@@ -1,0 +1,22 @@
+{
+  "elements": [
+    "H"
+  ],
+  "element_range": "B-F",
+  "method": "PBE0",
+  "relativity": "none",
+  "basis": "bse:cc-pVDZ",
+  "basis_file": null,
+  "basis_name": null,
+  "state_policy": "neutral",
+  "charges": null,
+  "artifacts": [
+    "rad",
+    "wfn"
+  ],
+  "workdir": "output",
+  "resource_root": null,
+  "allow_ecp": false,
+  "allow_unverified_basis": true,
+  "dry_run": false
+}

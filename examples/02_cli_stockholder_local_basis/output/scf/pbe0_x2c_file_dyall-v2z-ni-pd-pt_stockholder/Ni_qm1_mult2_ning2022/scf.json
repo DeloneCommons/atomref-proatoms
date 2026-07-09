@@ -1,0 +1,74 @@
+{
+  "schema_version": "atomref.proatoms.scf_artifact.v1",
+  "dataset_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+  "state_id": "Ni_qm1_mult2_ning2022",
+  "basis_id": "file:dyall-v2z-ni-pd-pt",
+  "density_model": "self_consistent_fractional_occupation_spherical_uks",
+  "method": {
+    "engine": "pyscf",
+    "engine_version": "2.13.1",
+    "scf_type": "UKS",
+    "xc": "PBE0",
+    "relativity": "sf-X2C-1e",
+    "spherical_basis": true
+  },
+  "settings": {
+    "xc": "PBE0",
+    "use_x2c": true,
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 0,
+    "grid_prune": null
+  },
+  "state": {
+    "symbol": "Ni",
+    "z": 28,
+    "charge": -1,
+    "electron_count": 29,
+    "spin_2s": 1,
+    "multiplicity": 2,
+    "configuration": "[Ar] 3d9 4s2",
+    "state_role": "bound_experimental",
+    "state_category": "ning2022_monoanion_reference",
+    "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2"
+  },
+  "basis": {
+    "basis_id": "file:dyall-v2z-ni-pd-pt",
+    "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521",
+    "basis_manifest_sha256": "ee63b1efd4b6c0f46461f2fb8cdde6ca801a3076f9738913e7d9ef80c2617c36",
+    "source_api_url": "input/dyall-v2z-ni-pd-pt.nw"
+  },
+  "results": {
+    "converged": true,
+    "total_energy_hartree": -1520.2569731010187,
+    "nelectron": 29,
+    "n_ao": 92
+  },
+  "fingerprints": {
+    "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521",
+    "basis_manifest_sha256": "ee63b1efd4b6c0f46461f2fb8cdde6ca801a3076f9738913e7d9ef80c2617c36",
+    "state_record_sha256": "0b04a6813170d252c1c2ed9ab5c1b11ed3d88ce6d61eee41b5a0db8e247ec35a",
+    "scf_settings_sha256": "4a5331d0131e7fa97e47fcbb6011ad9f213854e8f7d68a9337e70b165e063f06",
+    "engine_version": "2.13.1",
+    "density_model": "self_consistent_fractional_occupation_spherical_uks",
+    "scf_type": "UKS"
+  },
+  "log": {
+    "captured": true,
+    "line_count": 0
+  },
+  "generator": {
+    "schema_version": "atomref.proatoms.generator_manifest.v1",
+    "package_version": "2.0.0",
+    "basis_source": {
+      "source": "file",
+      "name": "dyall-v2z-ni-pd-pt",
+      "label": "dyall-v2z-ni-pd-pt",
+      "path": "input/dyall-v2z-ni-pd-pt.nw",
+      "original": "input/dyall-v2z-ni-pd-pt.nw",
+      "basis_key": "file:dyall-v2z-ni-pd-pt"
+    }
+  }
+}

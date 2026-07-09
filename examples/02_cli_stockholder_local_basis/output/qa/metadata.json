@@ -1,0 +1,20 @@
+{
+  "schema_version": "atomref.proatoms.qa_dataset.v1",
+  "profile_data_version": "2.0.0",
+  "dataset_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+  "basis_id": "file:dyall-v2z-ni-pd-pt",
+  "files": {
+    "qa_csv": "examples/02_cli_stockholder_local_basis/output/qa/qa.csv",
+    "metadata_json": "examples/02_cli_stockholder_local_basis/output/qa/metadata.json"
+  },
+  "sources": {
+    "profiles_csv": "profiles/profiles.csv",
+    "profile_metadata_json": "profiles/metadata.json"
+  },
+  "row_count": 6,
+  "passed_count": 6,
+  "failed_count": 0,
+  "provenance": {
+    "generator_run_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder"
+  }
+}

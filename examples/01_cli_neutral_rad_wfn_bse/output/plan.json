@@ -1,0 +1,362 @@
+{
+  "schema_version": "atomref.proatoms.generator_plan.v1",
+  "run_id": "pbe0_none_bse_cc-pvdz_neutral",
+  "package_version": "2.0.0",
+  "resource_origin": {
+    "kind": "package",
+    "package": "atomref_proatoms.resources",
+    "root": null
+  },
+  "state_table_sha256": "832c8bf0e023cb5398b76d0e0bbe0f5b6d2e85b94ca1542676f38435b3e67dae",
+  "tool_defaults_sha256": "8a8b5e7fa852577e3fe5c07e4942f2a08db5ea0f8ae9f527dfd05d3fec1980df",
+  "elements": [
+    "H",
+    "B",
+    "C",
+    "N",
+    "O",
+    "F"
+  ],
+  "selected_state_count": 6,
+  "selected_states": [
+    {
+      "state_id": "H_q0_mult2_nist",
+      "symbol": "H",
+      "z": 1,
+      "charge": 0,
+      "electron_count": 1,
+      "multiplicity": 2,
+      "configuration": "1s1",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "B_q0_mult2_nist",
+      "symbol": "B",
+      "z": 5,
+      "charge": 0,
+      "electron_count": 5,
+      "multiplicity": 2,
+      "configuration": "1s2 2s2 2p1",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "C_q0_mult3_nist",
+      "symbol": "C",
+      "z": 6,
+      "charge": 0,
+      "electron_count": 6,
+      "multiplicity": 3,
+      "configuration": "1s2 2s2 2p2",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "N_q0_mult4_nist",
+      "symbol": "N",
+      "z": 7,
+      "charge": 0,
+      "electron_count": 7,
+      "multiplicity": 4,
+      "configuration": "1s2 2s2 2p3",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "O_q0_mult3_nist",
+      "symbol": "O",
+      "z": 8,
+      "charge": 0,
+      "electron_count": 8,
+      "multiplicity": 3,
+      "configuration": "1s2 2s2 2p4",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "F_q0_mult2_nist",
+      "symbol": "F",
+      "z": 9,
+      "charge": 0,
+      "electron_count": 9,
+      "multiplicity": 2,
+      "configuration": "1s2 2s2 2p5",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    }
+  ],
+  "method": {
+    "input_method": "PBE0",
+    "method_kind": "dft",
+    "xc": "PBE0",
+    "scf_type": "UKS"
+  },
+  "method_check": {
+    "status": "ok",
+    "message": "PySCF accepted XC string 'PBE0'.",
+    "pyscf_version": "2.13.1"
+  },
+  "relativity": {
+    "input_relativity": "none",
+    "relativity": "none",
+    "engine_label": "none"
+  },
+  "basis_source": {
+    "source": "bse",
+    "name": "cc-pVDZ",
+    "label": "cc-pVDZ",
+    "path": null,
+    "original": "bse:cc-pVDZ",
+    "basis_key": "bse:cc-pVDZ"
+  },
+  "basis_check_status": {
+    "basis_source": {
+      "source": "bse",
+      "name": "cc-pVDZ",
+      "label": "cc-pVDZ",
+      "path": null,
+      "original": "bse:cc-pVDZ",
+      "basis_key": "bse:cc-pVDZ"
+    },
+    "requested_symbols": [
+      "H",
+      "B",
+      "C",
+      "N",
+      "O",
+      "F"
+    ],
+    "status": "ok",
+    "full_electron_status": "no_ecp_detected",
+    "coverage_checked": true,
+    "covered_symbols": [
+      "H",
+      "B",
+      "C",
+      "N",
+      "O",
+      "F"
+    ],
+    "missing_symbols": [],
+    "ecp_detected": false,
+    "check_method": "basis_set_exchange_json",
+    "messages": [],
+    "errors": [],
+    "warnings": [],
+    "basis_sha256": "355db0d1f365eac28dcdf54d2e1b61eba5e214d975b261bc4ed9736b09f7aeb9"
+  },
+  "basis_policy": {
+    "status": "ok",
+    "errors": [],
+    "warnings": []
+  },
+  "artifacts": [
+    "rad",
+    "wfn"
+  ],
+  "warnings": [],
+  "errors": [],
+  "jobs": [
+    {
+      "state_id": "H_q0_mult2_nist",
+      "symbol": "H",
+      "z": 1,
+      "charge": 0,
+      "electron_count": 1,
+      "multiplicity": 2,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "requested_artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_none_bse_cc-pvdz_neutral/H_q0_mult2_nist",
+        "rad": "multiwfn/rad/H_0.rad",
+        "wfn": "multiwfn/wfn/H .wfn"
+      }
+    },
+    {
+      "state_id": "B_q0_mult2_nist",
+      "symbol": "B",
+      "z": 5,
+      "charge": 0,
+      "electron_count": 5,
+      "multiplicity": 2,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "requested_artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_none_bse_cc-pvdz_neutral/B_q0_mult2_nist",
+        "rad": "multiwfn/rad/B_0.rad",
+        "wfn": "multiwfn/wfn/B .wfn"
+      }
+    },
+    {
+      "state_id": "C_q0_mult3_nist",
+      "symbol": "C",
+      "z": 6,
+      "charge": 0,
+      "electron_count": 6,
+      "multiplicity": 3,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "requested_artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_none_bse_cc-pvdz_neutral/C_q0_mult3_nist",
+        "rad": "multiwfn/rad/C_0.rad",
+        "wfn": "multiwfn/wfn/C .wfn"
+      }
+    },
+    {
+      "state_id": "N_q0_mult4_nist",
+      "symbol": "N",
+      "z": 7,
+      "charge": 0,
+      "electron_count": 7,
+      "multiplicity": 4,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "requested_artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_none_bse_cc-pvdz_neutral/N_q0_mult4_nist",
+        "rad": "multiwfn/rad/N_0.rad",
+        "wfn": "multiwfn/wfn/N .wfn"
+      }
+    },
+    {
+      "state_id": "O_q0_mult3_nist",
+      "symbol": "O",
+      "z": 8,
+      "charge": 0,
+      "electron_count": 8,
+      "multiplicity": 3,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "requested_artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_none_bse_cc-pvdz_neutral/O_q0_mult3_nist",
+        "rad": "multiwfn/rad/O_0.rad",
+        "wfn": "multiwfn/wfn/O .wfn"
+      }
+    },
+    {
+      "state_id": "F_q0_mult2_nist",
+      "symbol": "F",
+      "z": 9,
+      "charge": 0,
+      "electron_count": 9,
+      "multiplicity": 2,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "requested_artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_none_bse_cc-pvdz_neutral/F_q0_mult2_nist",
+        "rad": "multiwfn/rad/F_0.rad",
+        "wfn": "multiwfn/wfn/F .wfn"
+      }
+    }
+  ],
+  "would_write": {
+    "workspace_marker": "output/atomref_proatoms_workspace.json",
+    "run_config_input": "output/run_config.input.json",
+    "run_config_resolved": "output/run_config.resolved.json",
+    "plan": "output/plan.json",
+    "manifest": "output/manifest.json",
+    "failures": "output/failures.csv",
+    "basis_dir": "output/basis",
+    "scf_dir": "output/scf",
+    "profiles_dir": "output/profiles",
+    "radii_dir": "output/radii",
+    "qa_dir": "output/qa",
+    "multiwfn_dir": "output/multiwfn"
+  }
+}

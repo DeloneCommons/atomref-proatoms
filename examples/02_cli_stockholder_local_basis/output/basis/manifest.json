@@ -1,0 +1,15 @@
+{
+  "schema_version": "atomref.proatoms.generator_basis_manifest.v1",
+  "basis_key": "file:dyall-v2z-ni-pd-pt",
+  "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521",
+  "basis_source": {
+    "source": "file",
+    "name": "dyall-v2z-ni-pd-pt",
+    "label": "dyall-v2z-ni-pd-pt",
+    "path": "input/dyall-v2z-ni-pd-pt.nw",
+    "original": "input/dyall-v2z-ni-pd-pt.nw",
+    "basis_key": "file:dyall-v2z-ni-pd-pt"
+  },
+  "check_method": "nwchem_text_scan",
+  "full_electron_status": "unknown"
+}

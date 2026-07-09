@@ -1,0 +1,166 @@
+{
+  "schema_version": "atomref.proatoms.generator_resolved_config.v1",
+  "package_version": "2.0.0",
+  "run_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+  "resource_origin": {
+    "kind": "package",
+    "package": "atomref_proatoms.resources",
+    "root": null
+  },
+  "state_table_sha256": "832c8bf0e023cb5398b76d0e0bbe0f5b6d2e85b94ca1542676f38435b3e67dae",
+  "tool_defaults_sha256": "8a8b5e7fa852577e3fe5c07e4942f2a08db5ea0f8ae9f527dfd05d3fec1980df",
+  "method": {
+    "input_method": "PBE0",
+    "method_kind": "dft",
+    "xc": "PBE0",
+    "scf_type": "UKS"
+  },
+  "method_check": {
+    "status": "ok",
+    "message": "PySCF accepted XC string 'PBE0'.",
+    "pyscf_version": "2.13.1"
+  },
+  "relativity": {
+    "input_relativity": "x2c",
+    "relativity": "x2c",
+    "engine_label": "sf-X2C-1e"
+  },
+  "basis": {
+    "source": "file",
+    "name": "dyall-v2z-ni-pd-pt",
+    "label": "dyall-v2z-ni-pd-pt",
+    "path": "input/dyall-v2z-ni-pd-pt.nw",
+    "original": "input/dyall-v2z-ni-pd-pt.nw",
+    "basis_key": "file:dyall-v2z-ni-pd-pt"
+  },
+  "basis_check": {
+    "basis_source": {
+      "source": "file",
+      "name": "dyall-v2z-ni-pd-pt",
+      "label": "dyall-v2z-ni-pd-pt",
+      "path": "input/dyall-v2z-ni-pd-pt.nw",
+      "original": "input/dyall-v2z-ni-pd-pt.nw",
+      "basis_key": "file:dyall-v2z-ni-pd-pt"
+    },
+    "requested_symbols": [
+      "Ni",
+      "Pd"
+    ],
+    "status": "ok",
+    "full_electron_status": "unknown",
+    "coverage_checked": true,
+    "covered_symbols": [
+      "Ni",
+      "Pd",
+      "Pt"
+    ],
+    "missing_symbols": [],
+    "ecp_detected": false,
+    "check_method": "nwchem_text_scan",
+    "messages": [],
+    "errors": [],
+    "warnings": [
+      "No obvious ECP marker was found; full-electron status is still unverified."
+    ],
+    "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521"
+  },
+  "basis_policy": {
+    "status": "ok",
+    "errors": [],
+    "warnings": [
+      "No obvious ECP marker was found; full-electron status is still unverified.",
+      "Full-electron status is unknown for this basis source."
+    ]
+  },
+  "state_selection": {
+    "state_count": 6,
+    "neutral_count": 2,
+    "cation_count": 2,
+    "anion_count": 2,
+    "by_category": {
+      "ning2022_monoanion_reference": 2,
+      "nist_reference": 4
+    },
+    "by_charge": {
+      "-1": 2,
+      "0": 2,
+      "1": 2
+    },
+    "by_spin_variant": {
+      "curated_multiplicity": 6
+    },
+    "policy": "stockholder",
+    "elements": [
+      "Ni",
+      "Pd"
+    ],
+    "charges": [
+      -1,
+      0,
+      1
+    ],
+    "state_ids": [
+      "Ni_qm1_mult2_ning2022",
+      "Ni_q0_mult3_nist",
+      "Ni_qp1_mult2_nist",
+      "Pd_qm1_mult2_ning2022",
+      "Pd_q0_mult1_nist",
+      "Pd_qp1_mult2_nist"
+    ],
+    "warnings": []
+  },
+  "artifacts": [
+    "profiles",
+    "rad",
+    "wfn"
+  ],
+  "workspace": {
+    "workdir": "output",
+    "marker_path": "output/atomref_proatoms_workspace.json",
+    "status": "initialized",
+    "context": {
+      "method": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "state_policy": "stockholder"
+    },
+    "existing_context": null,
+    "message": "workspace marker initialized"
+  },
+  "scf_defaults": {
+    "engine": "pyscf",
+    "expected_engine_version": "2.13.1",
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 4
+  },
+  "profile_grid": {
+    "type": "log",
+    "r_min_bohr": 1e-06,
+    "r_max_bohr": 60.0,
+    "n": 1200
+  },
+  "qa_grid": {
+    "type": "gauss_legendre_log_r",
+    "r_min_bohr": 1e-07,
+    "r_max_bohr": 120.0,
+    "n": 400,
+    "angular_points": 110
+  },
+  "cutoffs_e_bohr3": [
+    0.003,
+    0.001,
+    0.0001
+  ],
+  "warnings": [
+    "No obvious ECP marker was found; full-electron status is still unverified.",
+    "Full-electron status is unknown for this basis source.",
+    "WFN export will skip non-neutral state Ni_qm1_mult2_ning2022",
+    "WFN export will skip non-neutral state Ni_qp1_mult2_nist",
+    "WFN export will skip non-neutral state Pd_qm1_mult2_ning2022",
+    "WFN export will skip non-neutral state Pd_qp1_mult2_nist"
+  ],
+  "errors": []
+}

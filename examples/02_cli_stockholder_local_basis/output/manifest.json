@@ -1,0 +1,94 @@
+{
+  "schema_version": "atomref.proatoms.generator_manifest.v1",
+  "package_version": "2.0.0",
+  "run_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+  "status": "ok",
+  "method": {
+    "input_method": "PBE0",
+    "method_kind": "dft",
+    "xc": "PBE0",
+    "scf_type": "UKS"
+  },
+  "relativity": {
+    "input_relativity": "x2c",
+    "relativity": "x2c",
+    "engine_label": "sf-X2C-1e"
+  },
+  "basis": {
+    "source": "file",
+    "name": "dyall-v2z-ni-pd-pt",
+    "label": "dyall-v2z-ni-pd-pt",
+    "path": "input/dyall-v2z-ni-pd-pt.nw",
+    "original": "input/dyall-v2z-ni-pd-pt.nw",
+    "basis_key": "file:dyall-v2z-ni-pd-pt"
+  },
+  "state_selection": {
+    "state_count": 6,
+    "neutral_count": 2,
+    "cation_count": 2,
+    "anion_count": 2,
+    "by_category": {
+      "ning2022_monoanion_reference": 2,
+      "nist_reference": 4
+    },
+    "by_charge": {
+      "-1": 2,
+      "0": 2,
+      "1": 2
+    },
+    "by_spin_variant": {
+      "curated_multiplicity": 6
+    },
+    "policy": "stockholder",
+    "elements": [
+      "Ni",
+      "Pd"
+    ],
+    "charges": [
+      -1,
+      0,
+      1
+    ],
+    "state_ids": [
+      "Ni_qm1_mult2_ning2022",
+      "Ni_q0_mult3_nist",
+      "Ni_qp1_mult2_nist",
+      "Pd_qm1_mult2_ning2022",
+      "Pd_q0_mult1_nist",
+      "Pd_qp1_mult2_nist"
+    ],
+    "warnings": []
+  },
+  "artifacts": [
+    "profiles",
+    "rad",
+    "wfn"
+  ],
+  "scf_status": {
+    "Ni_qm1_mult2_ning2022": "computed",
+    "Ni_q0_mult3_nist": "computed",
+    "Ni_qp1_mult2_nist": "computed",
+    "Pd_qm1_mult2_ning2022": "computed",
+    "Pd_q0_mult1_nist": "computed",
+    "Pd_qp1_mult2_nist": "computed"
+  },
+  "generated_files": [
+    "profiles/profiles.csv",
+    "profiles/metadata.json",
+    "radii/radii.csv",
+    "radii/metadata.json",
+    "qa/qa.csv",
+    "qa/metadata.json",
+    "multiwfn/rad/Ni-1.rad",
+    "multiwfn/rad/Ni_0.rad",
+    "multiwfn/rad/Ni+1.rad",
+    "multiwfn/rad/Pd-1.rad",
+    "multiwfn/rad/Pd_0.rad",
+    "multiwfn/rad/Pd+1.rad",
+    "multiwfn/wfn/Ni.wfn",
+    "multiwfn/wfn/Pd.wfn",
+    "multiwfn/manifest.json"
+  ],
+  "failure_count": 0,
+  "failures_csv": "failures.csv"
+}

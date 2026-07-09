@@ -30,6 +30,12 @@ nav:
   - Results: results.md
   - Discussion: discussion.md
   - Conclusions: conclusions.md
+  - Generator tool:
+      - Tool overview: generator/index.md
+      - CLI reference: generator/cli.md
+      - How-to guide: generator/howto.md
+      - Python scripting: generator/scripting.md
+      - Examples: generator/examples.md
   - Other: other.md
   - Reference:
       - Data products: data.md

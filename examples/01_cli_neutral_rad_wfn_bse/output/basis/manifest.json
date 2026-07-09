@@ -1,0 +1,15 @@
+{
+  "schema_version": "atomref.proatoms.generator_basis_manifest.v1",
+  "basis_key": "bse:cc-pVDZ",
+  "basis_sha256": "355db0d1f365eac28dcdf54d2e1b61eba5e214d975b261bc4ed9736b09f7aeb9",
+  "basis_source": {
+    "source": "bse",
+    "name": "cc-pVDZ",
+    "label": "cc-pVDZ",
+    "path": null,
+    "original": "bse:cc-pVDZ",
+    "basis_key": "bse:cc-pVDZ"
+  },
+  "check_method": "basis_set_exchange_json",
+  "full_electron_status": "no_ecp_detected"
+}

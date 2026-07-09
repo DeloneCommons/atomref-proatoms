@@ -177,6 +177,7 @@ def run_generate(args: argparse.Namespace) -> int:
         for error in plan.errors:
             print(f"error: {error}", file=sys.stderr)
         return 2
+    write_dry_run_files(plan)
     options = ExecutionOptions(
         resume=bool(args.resume),
         force=bool(args.force),

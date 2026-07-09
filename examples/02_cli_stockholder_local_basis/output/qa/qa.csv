@@ -1,0 +1,7 @@
+state_id,symbol,z,charge,electron_count,multiplicity,state_category,state_role,overall_pass,scf_converged,electron_count_error_qa,electron_count_tolerance,electron_count_pass,max_rel_angular_sigma,max_rel_angular_sigma_tolerance,angular_sigma_pass,tail_reaches_min_cutoff,radii_monotonic,linear_dependency_warning_count,linear_dependency_vectors_removed
+Ni_qm1_mult2_ning2022,Ni,28,-1,29,2,ning2022_monoanion_reference,bound_experimental,True,True,7.922551503725117e-13,5.7999999999999995e-06,True,1.7823023217018666e-15,1e-08,True,True,True,0,0
+Ni_q0_mult3_nist,Ni,28,0,28,3,nist_reference,reference,True,True,7.744915819785092e-13,5.6e-06,True,1.6984145566998492e-15,1e-08,True,True,True,0,0
+Ni_qp1_mult2_nist,Ni,28,1,27,2,nist_reference,reference,True,True,7.460698725481052e-13,5.4e-06,True,2.2281791461184703e-15,1e-08,True,True,True,0,0
+Pd_qm1_mult2_ning2022,Pd,46,-1,47,2,ning2022_monoanion_reference,bound_experimental,True,True,1.3002932064409833e-12,9.4e-06,True,2.6726887090047655e-15,1e-08,True,True,True,0,0
+Pd_q0_mult1_nist,Pd,46,0,46,1,nist_reference,reference,True,True,1.2647660696529783e-12,9.2e-06,True,2.2879412150533633e-15,1e-08,True,True,True,0,0
+Pd_qp1_mult2_nist,Pd,46,1,45,2,nist_reference,reference_uncertain,True,True,1.2363443602225743e-12,9e-06,True,2.0154464004989556e-15,1e-08,True,True,True,0,0
