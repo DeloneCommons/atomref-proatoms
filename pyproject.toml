@@ -56,6 +56,15 @@ all = [
 [tool.setuptools.packages.find]
 where = ["src"]
 
+
+[tool.setuptools.package-data]
+"atomref_proatoms.resources" = [
+  "states/*.json",
+  "presets/*.yaml",
+  "grids/*.csv",
+  "schemas/*.json",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "atomref.proatoms.generator.manifest.schema.v1",
+  "title": "atomref-proatoms generator manifest",
+  "type": "object"
+}
