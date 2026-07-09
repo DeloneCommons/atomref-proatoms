@@ -27,10 +27,19 @@ regeneration and validation. The public CLI is documented in the
 Use the smallest environment that matches the task:
 
 ```bash
-python -m pip install -e .                 # read data, import package, run lightweight checks
-python -m pip install -e ".[generator]"     # run atomref-proatoms generate with PySCF and BSE
-python -m pip install -e ".[dev]"           # pytest and ruff for code checks
-python -m pip install -e ".[docs]"          # build the MkDocs site
+python -m pip install atomref-proatoms               # install the published package and CLI from PyPI
+python -m pip install "atomref-proatoms[generator]"  # install the PyPI generator tool with PySCF and BSE
+```
+
+For development, documentation builds, maintainer scripts, or release-data
+regeneration from a source checkout, use editable installs from the repository
+root:
+
+```bash
+python -m pip install -e .                          # read data, import package, run lightweight checks
+python -m pip install -e ".[generator]"              # run atomref-proatoms generate with PySCF and BSE
+python -m pip install -e ".[dev]"                    # pytest and ruff for code checks
+python -m pip install -e ".[docs]"                   # build the MkDocs site
 python -m pip install -e ".[generator,dev,docs]"  # maintainer release-check environment
 ```
 
@@ -41,12 +50,12 @@ normal public generator path.
 
 ## Data distribution model
 
-The wheel carries code, the CLI, schemas, curated state tables, presets, and
-small service resources needed for planning and generation. The full generated
-profile/radii/QA tables and the committed Multiwfn `.rad`/`.wfn` interoperability
-tree are release data products stored in the repository and mirrored by the
-GitHub/Zenodo release assets. Lightweight downstream packages should consume the
-stable data products, not generator internals.
+The PyPI wheel carries code, the CLI, schemas, curated state tables, presets,
+and small service resources needed for planning and generation. The full
+generated profile/radii/QA tables and the committed Multiwfn `.rad`/`.wfn`
+interoperability tree are release data products stored in the repository and
+mirrored by the GitHub/Zenodo release assets. Lightweight downstream packages
+should consume the stable data products, not generator internals.
 
 ## Standard maintainer workflow
 

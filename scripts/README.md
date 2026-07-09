@@ -23,11 +23,16 @@ python scripts/prepare_docs.py --write
 `check_states.py`, `check_basis_bundles.py`, `check_profile_artifacts.py`,
 `compute_wavefunctions.py --list`, and `compute_wavefunctions.py --dry-run` do
 not require PySCF. Running SCF and extracting profiles from PySCF checkpoint
-artifacts require the generator dependency set:
+artifacts require the generator dependency set. For source-checkout maintainer
+work, install it from the repository root:
 
 ```bash
 python -m pip install -e ".[generator]"
 ```
+
+For normal CLI generation without maintainer scripts, PyPI users can instead use
+`python -m pip install "atomref-proatoms[generator]"` and run
+`atomref-proatoms generate`.
 
 For the full maintainer release-check environment, use
 `python -m pip install -e ".[generator,dev,docs]"`.

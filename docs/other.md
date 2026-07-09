@@ -76,10 +76,14 @@ ruff check .
 mkdocs build --strict
 ```
 
-When MkDocs dependencies are not installed in the active environment, a temporary environment can be used, for example:
+When MkDocs dependencies are not installed in the active environment, create a
+temporary documentation environment with pip, for example:
 
 ```bash
-uv run --with 'mkdocs-material' --with 'mkdocs-jupyter' mkdocs build --strict
+python -m venv .venv-docs
+. .venv-docs/bin/activate
+python -m pip install -e ".[docs]"
+mkdocs build --strict
 ```
 
 ## Local WFN/Multiwfn validation workflow

@@ -14,13 +14,20 @@ It demonstrates:
 - non-relativistic generation with `--relativity none`;
 - Multiwfn-oriented outputs with `--artifacts rad,wfn`.
 
-Install the generator dependencies once from the repository root:
+Install the generator dependencies once. From PyPI:
+
+```bash
+python -m pip install "atomref-proatoms[generator]"
+```
+
+From a source checkout, use the editable equivalent from the repository root:
 
 ```bash
 python -m pip install -e ".[generator]"
 ```
 
-Run:
+Run the example from this directory in a source checkout or full GitHub/Zenodo
+release archive:
 
 ```bash
 ./run.sh

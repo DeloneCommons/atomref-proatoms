@@ -16,6 +16,44 @@ two primary basis branches and neutral-atom PROAIM `.wfn` files for the primary
 conventions available to Multiwfn workflows that use atomic densities or
 atomwfn-style inputs.
 
+## Quick orientation
+
+Reading this on PyPI? The PyPI package installs the Python package, packaged
+state/preset resources, and the `atomref-proatoms` CLI. It is the right route
+for planning and generating new local profiles, but it is not the complete
+published dataset archive.
+
+- New to the project: start with the documentation map below and the
+  [Workflow](docs/workflow.md) guide.
+- Need the published atomic profiles, cutoff radii, and QA tables: use the
+  `data/` folder from the GitHub or Zenodo release snapshot.
+- Need Multiwfn `.rad` or `.wfn` files: see `data/multiwfn_artifacts/` for the
+  released files and `examples/` for small reproducible generator runs.
+- Need to generate new local profiles or Multiwfn artifacts: install the
+  generator extra and use `atomref-proatoms generate`.
+
+## Installation
+
+For the published command-line tool from PyPI:
+
+```bash
+python -m pip install atomref-proatoms
+python -m pip install "atomref-proatoms[generator]"
+```
+
+The base install is enough to import the package, inspect packaged resources,
+and run lightweight CLI help/dry-run paths. The `generator` extra adds PySCF and
+Basis Set Exchange for local SCF-backed generation and `bse:` basis sources.
+
+For a source checkout, use editable installs from the repository root:
+
+```bash
+python -m pip install -e .
+python -m pip install -e ".[generator]"
+```
+
+## Scientific approach
+
 The central scientific choice is to define the proatom as a **self-consistent
 spherical density**, not as an angular average applied after an ordinary
 broken-symmetry open-shell calculation. In the generator, open-shell occupations
@@ -153,7 +191,8 @@ The public generator tool has reproducible examples under [`examples/`](examples
 - `examples/03_python_custom_state_pipeline/` is an expert notebook for custom states and project-specific pipelines outside the curated CLI state policies.
 
 The full tool manual is in the [Generator tool](docs/generator/index.md) documentation section.
-Use `python -m pip install -e ".[generator]"` for local generation; this includes
+Use `python -m pip install "atomref-proatoms[generator]"` for the PyPI tool, or
+`python -m pip install -e ".[generator]"` from a source checkout. Both include
 PySCF and Basis Set Exchange for `bse:` basis sources.
 
 ## Documentation map

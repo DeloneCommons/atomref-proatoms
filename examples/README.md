@@ -12,8 +12,16 @@ The examples are intentionally split by user level:
 | `03_python_custom_state_pipeline/` | expert users | Notebook-style guide for custom states, explicit configurations, profile/radius export, and pipeline organization. |
 
 The CLI examples include committed output directories produced by the corresponding
-`run.sh` scripts. Re-running an example requires the optional generator
-dependencies:
+`run.sh` scripts. The examples themselves live in the source tree or full
+GitHub/Zenodo release archive; PyPI installs the CLI and package resources, not
+these example folders. Re-running an example requires the optional generator
+dependencies. From PyPI, install the generator tool with:
+
+```bash
+python -m pip install "atomref-proatoms[generator]"
+```
+
+From a source checkout, use the editable equivalent from the repository root:
 
 ```bash
 python -m pip install -e ".[generator]"

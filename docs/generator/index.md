@@ -62,16 +62,24 @@ scripts or notebooks, where the state definition can be reviewed directly.
 ## Installation model
 
 The base package is importable without PySCF. Generation requires the optional
-generator dependencies:
+generator dependencies. For the published PyPI tool, use:
+
+```bash
+python -m pip install atomref-proatoms
+python -m pip install "atomref-proatoms[generator]"
+```
+
+For a source checkout, use the editable equivalent from the repository root:
 
 ```bash
 python -m pip install -e ".[generator]"
 ```
 
-This installs PySCF and Basis Set Exchange. The wheel carries the code, CLI,
-schemas, state table, presets, and small service resources needed for planning
-and local generation. The full generated profile/radii/QA tables and committed
-Multiwfn artifacts are repository and GitHub/Zenodo release data products.
+The generator extra installs PySCF and Basis Set Exchange. The wheel carries the
+code, CLI, schemas, state table, presets, and small service resources needed for
+planning and local generation. The full generated profile/radii/QA tables and
+committed Multiwfn artifacts are repository and GitHub/Zenodo release data
+products.
 
 ## Installed-wheel smoke test
 

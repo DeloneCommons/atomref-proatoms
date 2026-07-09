@@ -17,8 +17,18 @@ work without PySCF or expensive quantum-chemistry work. Set it to `True` locally
 to run a tiny neutral-H custom-state smoke calculation and write profile, radii,
 `.rad`, and `.wfn` outputs under `output/notebook_h/`.
 
-For the optional SCF cell, install the generator dependencies from the repository root:
+For the optional SCF cell, install the generator dependencies. From PyPI:
+
+```bash
+python -m pip install "atomref-proatoms[generator]"
+```
+
+From a source checkout, use the editable equivalent from the repository root:
 
 ```bash
 python -m pip install -e ".[generator]"
 ```
+
+Open the notebook from this directory in a source checkout or full GitHub/Zenodo
+release archive. A PyPI install supplies the package and CLI used by the
+notebook, but it does not install the example folder itself.
