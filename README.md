@@ -3,12 +3,13 @@
 [![CI][ci-badge]][ci-workflow]
 [![Pages][pages-badge]][pages-workflow]
 
-`atomref-proatoms` publishes reproducible spherical proatomic radial electron-density
-profiles for isolated atoms and ions. The data are intended for atom-centered
-reference-density models: stockholder and Hirshfeld-like analyses, promolecular
-density construction, deformation-density inspection, empirical radius models,
-and related cheminformatics or crystallographic workflows that need a documented
-atomic reference convention. The repository also includes a committed Multiwfn
+`atomref-proatoms` publishes versioned spherical proatomic radial electron-density
+profiles for isolated atoms and ions. It is meant for users who need a documented
+atom-centered reference convention instead of an implicit mixture of states,
+bases, grids, and validation rules. The data support stockholder and
+Hirshfeld-like analyses, promolecular density construction, deformation-density
+inspection, empirical radius models, and related cheminformatics or
+crystallographic workflows. The repository also includes a committed Multiwfn
 interoperability product: SCF-derived `.rad` atomic radial-density files for the
 two primary basis branches and neutral-atom PROAIM `.wfn` files for the primary
 `x2c-QZVPall` branch. These files make the same state and spherical-density
@@ -133,12 +134,15 @@ python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
 python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/export_multiwfn_artifacts.py --format all --force --check
+python scripts/check_multiwfn_artifacts.py --require-generated
 ```
 
-The `--list` and `--dry-run` options on `compute_wavefunctions.py` and
-`extract_profiles.py` inspect the active build plan without running SCF or
-rewriting generated artifacts. `scripts/prepare_docs.py --write` only reads
-committed tables and refreshes `docs/tables/`, `docs/figures/`, and marked blocks in `docs/results.md`.
+The `--list` and `--dry-run` options on `compute_wavefunctions.py`,
+`extract_profiles.py`, and `export_multiwfn_artifacts.py` inspect the active
+build/export plan without running SCF or rewriting generated artifacts.
+`scripts/prepare_docs.py --write` only reads committed tables and refreshes
+`docs/tables/`, `docs/figures/`, and marked blocks in `docs/results.md`.
 
 ## Generator examples
 

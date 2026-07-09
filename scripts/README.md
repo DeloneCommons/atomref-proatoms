@@ -15,7 +15,7 @@ python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
 python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
-python scripts/export_multiwfn_artifacts.py --dry-run
+python scripts/export_multiwfn_artifacts.py --format all --force --check
 python scripts/check_multiwfn_artifacts.py --require-generated
 python scripts/prepare_docs.py --write
 ```
@@ -259,8 +259,7 @@ Common commands:
 
 ```bash
 python scripts/export_multiwfn_artifacts.py --dry-run
-python scripts/export_multiwfn_artifacts.py --format rad --force --check
-python scripts/export_multiwfn_artifacts.py --format wfn --force --check
+python scripts/export_multiwfn_artifacts.py --format all --force --check
 ```
 
 The active export policy is read from `data/profile_datasets.yaml`. In the current configuration, `.rad` files are requested for all states in the primary `x2c-QZVPall` and `dyall-v4z` branches; `.wfn` files are requested only for neutral atoms in the primary `x2c-QZVPall` branch; supplemented/augmented branches request no Multiwfn outputs.
@@ -276,7 +275,7 @@ data/multiwfn_artifacts/
 
 The manifest records repository-relative paths. One-letter neutral WFN filenames intentionally retain Multiwfn's space-padded atomwfn convention, for example `H .wfn` and `O .wfn`.
 
-Both `.rad` and `.wfn` export paths use local SCF checkpoint, NPZ, and metadata files under `local-data/scf/`. The `.rad` exporter evaluates the spherical SCF density directly on the fixed Multiwfn `atmrad` radial grid; it does not interpolate the committed profile CSVs. The default `.rad` path samples a fixed Cartesian ray, which is appropriate for atomref's one-center spherical SCF proatoms and avoids a slow angular quadrature over every exported file; `--rad-angular-points 110` is available for local angular-average diagnostics. The `.wfn` exporter uses the same local SCF files because profiles do not contain wavefunction-like MO coefficient data. The default export format is `rad`; use `--format all` when the WFN product should be regenerated in the same manifest.
+Both `.rad` and `.wfn` export paths use local SCF checkpoint, NPZ, and metadata files under `local-data/scf/`. The `.rad` exporter evaluates the spherical SCF density directly on the fixed Multiwfn `atmrad` radial grid; it does not interpolate the committed profile CSVs. The default `.rad` path samples a fixed Cartesian ray, which is appropriate for atomref's one-center spherical SCF proatoms and avoids a slow angular quadrature over every exported file; `--rad-angular-points 110` is available for local angular-average diagnostics. The `.wfn` exporter uses the same local SCF files because profiles do not contain wavefunction-like MO coefficient data. The default export format is `rad` for quick density-only work; use `--format all` for release regeneration so the committed manifest describes both `.rad` and `.wfn` products together.
 
 Options:
 

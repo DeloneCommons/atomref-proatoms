@@ -51,10 +51,11 @@ For users who only inspect the committed data layer, the lightweight validation 
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/check_multiwfn_artifacts.py --require-generated
 python scripts/check_basis_sensitivity.py --dry-run
 python scripts/check_basis_comparisons.py --dry-run
 python scripts/prepare_docs.py --check
-pytest
+pytest -q
 ```
 
-Full SCF regeneration is a maintainer workflow requiring generator dependencies and local compute resources; it is not needed to consume the committed profile, radii, and QA tables.
+Full SCF regeneration is a maintainer workflow requiring generator dependencies and local compute resources; it is not needed to consume the committed profile, radii, QA, or Multiwfn interoperability products.

@@ -59,10 +59,12 @@ The standard lightweight validation command set is:
 python scripts/check_states.py
 python scripts/check_basis_bundles.py
 python scripts/check_profile_artifacts.py --require-generated
+python scripts/check_multiwfn_artifacts.py --require-generated
 python scripts/compute_wavefunctions.py --dry-run
 python scripts/extract_profiles.py --dry-run
 python scripts/check_basis_sensitivity.py --dry-run
 python scripts/check_basis_comparisons.py --dry-run
+python scripts/export_multiwfn_artifacts.py --dry-run
 python scripts/prepare_docs.py --check
 python -m pytest -q
 ```
@@ -92,11 +94,11 @@ The maintainer export command is local-first:
 
 ```bash
 python scripts/export_multiwfn_artifacts.py --dry-run
-python scripts/export_multiwfn_artifacts.py --format rad --force --check
+python scripts/export_multiwfn_artifacts.py --format all --force --check
 python scripts/check_multiwfn_artifacts.py --require-generated
 ```
 
-The default output root is `data/multiwfn_artifacts/`. Both `.rad` and `.wfn` outputs are generated from local SCF `scf.chk`, `scf.npz`, and metadata files under `local-data/scf/`. The `.rad` path evaluates the spherical SCF density directly on the fixed Multiwfn `atmrad` grid rather than interpolating the committed profile CSVs; by default it uses a fixed-ray evaluation and exposes an angular-average diagnostic option. The `.wfn` path preserves wavefunction-like Gaussian primitive and spin-orbital information. The package-side WFN reader/evaluator remains a validation utility, not the recommended public data path.
+The default output root is `data/multiwfn_artifacts/`. Both `.rad` and `.wfn` outputs are generated from local SCF `scf.chk`, `scf.npz`, and metadata files under `local-data/scf/`. The `.rad` path evaluates the spherical SCF density directly on the fixed Multiwfn `atmrad` grid rather than interpolating the committed profile CSVs; by default it uses a fixed-ray evaluation and exposes an angular-average diagnostic option. The `.wfn` path preserves wavefunction-like Gaussian primitive and spin-orbital information. For release regeneration, `--format all` keeps the manifest synchronized with both product families. The package-side WFN reader/evaluator remains a validation utility, not the recommended public data path.
 
 ## Multiwfn interoperability and generator contract
 

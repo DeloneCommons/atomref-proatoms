@@ -111,7 +111,7 @@ def effective_l_counts_for_mol(state: Any, mol: Any) -> tuple[dict[int, float], 
 
     alpha_full = {int(key): float(value) for key, value in state.alpha_l_counts.items()}
     beta_full = {int(key): float(value) for key, value in state.beta_l_counts.items()}
-    mol_nelectron = float(getattr(mol, "nelectron"))
+    mol_nelectron = float(mol.nelectron)
     core_electrons = float(state.electron_count) - mol_nelectron
     rounded_core = round(core_electrons)
     if abs(core_electrons - rounded_core) > 1e-8:
@@ -159,10 +159,9 @@ def effective_l_counts_for_mol(state: Any, mol: Any) -> tuple[dict[int, float], 
         raise ValueError(
             f"derived ECP occupation sum {nelec:g} != PySCF target {mol_nelectron:g}"
         )
-    if abs(spin - float(getattr(mol, "spin"))) > 1e-8:
-        raise ValueError(
-            f"derived ECP spin {spin:g} != PySCF target spin {getattr(mol, 'spin')}"
-        )
+    mol_spin = float(mol.spin)
+    if abs(spin - mol_spin) > 1e-8:
+        raise ValueError(f"derived ECP spin {spin:g} != PySCF target spin {mol_spin:g}")
     return dict(sorted(alpha.items())), dict(sorted(beta.items()))
 
 

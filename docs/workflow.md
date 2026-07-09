@@ -61,8 +61,7 @@ python scripts/extract_profiles.py --force --check
 python scripts/check_basis_sensitivity.py --force
 python scripts/check_basis_comparisons.py --force
 python scripts/check_profile_artifacts.py --require-generated
-python scripts/export_multiwfn_artifacts.py --format rad --force --check
-python scripts/export_multiwfn_artifacts.py --format wfn --force --check
+python scripts/export_multiwfn_artifacts.py --format all --force --check
 python scripts/check_multiwfn_artifacts.py --require-generated
 python scripts/prepare_docs.py --write
 ```
@@ -71,9 +70,10 @@ python scripts/prepare_docs.py --write
 `compute_wavefunctions.py` creates or reuses ignored local SCF artifacts.
 `extract_profiles.py` reads complete local SCF artifacts and writes profile,
 radii, and QA tables. The basis-sensitivity and primary-comparison scripts write
-scientific diagnostic QA layers. The Multiwfn exporter writes `.rad` files for
-configured states and neutral-only `.wfn` files where the public contract permits
-them. `prepare_docs.py --write` reads committed CSV/JSON/YAML data and refreshes
+scientific diagnostic QA layers. The Multiwfn exporter writes one combined
+manifest for the configured `.rad` files and neutral-only `.wfn` files where the
+public contract permits them, so use `--format all` for release regeneration.
+`prepare_docs.py --write` reads committed CSV/JSON/YAML data and refreshes
 derived documentation tables, figures, and marked Results blocks.
 
 Do not run the SCF or exporter steps just to edit documentation. They are
