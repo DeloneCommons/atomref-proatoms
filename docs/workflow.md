@@ -122,9 +122,9 @@ mkdocs build --strict
 ```
 
 The installed-wheel smoke test verifies that package resources and the public CLI
-work outside the repository checkout. `mkdocs build --strict` requires the docs
-extra. When a clean build environment already has the build backend installed,
-`--no-build-isolation` keeps the wheel smoke test usable offline.
+work without importing from the source checkout. `mkdocs build --strict` requires
+the docs extra. When a clean build environment already has the build backend
+installed, `--no-build-isolation` keeps the wheel smoke test usable offline.
 
 A heavier optional release smoke is available:
 

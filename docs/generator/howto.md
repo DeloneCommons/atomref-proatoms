@@ -110,9 +110,11 @@ N = integral 4*pi*r^2*rho(r) dr
 ```
 
 For ECP/effective-core runs allowed by `--allow-ecp`, the generated profile and
-`.rad` files describe the explicit/effective-valence density. The QA electron
-count is therefore the explicit electron count recorded in `scf.json`, while the
-full state electron count and effective core count are preserved in metadata.
+`.rad` files describe the explicit/effective-valence density. The `electron_count`
+in local generator profile metadata and radii/QA tables is therefore the explicit
+electron count recorded in `scf.json`. The full state electron count is preserved
+as `state_electron_count`, alongside `effective_core_electrons`, in profile
+metadata.
 
 The release validators in `scripts/check_profile_artifacts.py` and
 `scripts/check_multiwfn_artifacts.py` check the committed publication layout

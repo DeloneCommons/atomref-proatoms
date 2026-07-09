@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -115,6 +116,40 @@ def test_generate_dry_run_accepts_separated_signed_charge_list(tmp_path: Path, c
     assert "selected states: 3" in captured.out
     plan = json.loads((tmp_path / "plan.json").read_text())
     assert plan["selected_state_count"] == 3
+
+
+def test_generate_entry_point_accepts_separated_signed_charge_list(
+    monkeypatch, tmp_path: Path, capsys
+) -> None:
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "atomref-proatoms",
+            "generate",
+            "--elements",
+            "C",
+            "--method",
+            "PBE0",
+            "--basis",
+            "STO-3G",
+            "--state-policy",
+            "stockholder",
+            "--charges",
+            "-1,0,+1",
+            "--artifacts",
+            "profiles",
+            "--workdir",
+            str(tmp_path),
+            "--dry-run",
+        ],
+    )
+
+    code = main()
+
+    captured = capsys.readouterr()
+    assert code == 0
+    assert "selected states: 3" in captured.out
 
 
 def test_generate_rejects_invalid_rad_angular_points_before_planning(

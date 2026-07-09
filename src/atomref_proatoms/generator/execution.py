@@ -536,7 +536,7 @@ def _ensure_scf_artifacts(
         settings=settings,
         pyscf_version=pyscf_version,
     )
-    if options.resume and not options.force and scf_artifact_is_reusable(paths, fingerprints):
+    if options.resume and scf_artifact_is_reusable(paths, fingerprints):
         return "reused"
 
     paths.state_dir.mkdir(parents=True, exist_ok=True)
@@ -634,12 +634,14 @@ def _qa_grid_kwargs(plan: GeneratorPlan) -> dict[str, Any]:
 
 def _state_metadata(state: AtomState, scf_meta: Mapping[str, Any]) -> dict[str, Any]:
     results = scf_meta.get("results", {})
+    explicit_electron_count = int(results.get("nelectron", state.electron_count))
     return {
         "symbol": state.symbol,
         "z": state.z,
         "charge": state.charge,
-        "electron_count": state.electron_count,
-        "explicit_electron_count": int(results.get("nelectron", state.electron_count)),
+        "electron_count": explicit_electron_count,
+        "explicit_electron_count": explicit_electron_count,
+        "state_electron_count": state.electron_count,
         "effective_core_electrons": int(results.get("effective_core_electrons", 0)),
         "spin_2s": state.spin_2s,
         "multiplicity": state.multiplicity,

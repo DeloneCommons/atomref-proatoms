@@ -187,7 +187,7 @@ def test_check_multiwfn_artifacts_validates_scf_sourced_rad_manifest(tmp_path: P
                 "state_id": "H_q0_mult2_nist",
                 "symbol": "H",
                 "charge": 0,
-                "path": str(rad_path),
+                "path": info["file"],
                 "source": "scf_density_evaluation",
                 "source_scf_checkpoint": "local-data/scf/test/scf.chk",
                 "source_scf_npz": "local-data/scf/test/scf.npz",
@@ -239,7 +239,7 @@ def test_check_multiwfn_artifacts_rejects_profile_interpolated_rad_manifest(tmp_
                 "state_id": "H_q0_mult2_nist",
                 "symbol": "H",
                 "charge": 0,
-                "path": str(rad_path),
+                "path": info["file"],
                 "source": "profile_interpolation",
                 **info,
             }

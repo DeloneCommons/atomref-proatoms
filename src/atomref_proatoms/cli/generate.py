@@ -43,7 +43,7 @@ def _execution_options_class() -> Any:
 _CHARGE_LIST_RE = re.compile(r"^[+-]?\d+(?:,[+-]?\d+)*$")
 
 
-def normalize_generate_argv(argv: Sequence[str] | None) -> Sequence[str] | None:
+def normalize_generate_argv(argv: Sequence[str] | None) -> Sequence[str]:
     """Normalize generate argv forms that argparse cannot parse directly.
 
     ``--charges -1,0,+1`` is a natural spelling, but argparse interprets a
@@ -52,9 +52,7 @@ def normalize_generate_argv(argv: Sequence[str] | None) -> Sequence[str] | None:
     untouched.
     """
 
-    if argv is None:
-        return None
-    normalized = list(argv)
+    normalized = list(sys.argv[1:] if argv is None else argv)
     index = 0
     while index + 1 < len(normalized):
         if normalized[index] == "--charges" and _CHARGE_LIST_RE.fullmatch(
@@ -162,7 +160,11 @@ def add_generate_parser(parser: argparse.ArgumentParser) -> None:
         help="Resolve inputs and write run_config/plan JSON without running SCF.",
     )
     output_group.add_argument("--resume", action="store_true", help="Reuse matching SCF cache.")
-    output_group.add_argument("--force", action="store_true", help="Overwrite generated outputs.")
+    output_group.add_argument(
+        "--force",
+        action="store_true",
+        help="Overwrite generated outputs; matching SCF is still reused with --resume.",
+    )
     output_group.add_argument(
         "--continue-on-error",
         action="store_true",

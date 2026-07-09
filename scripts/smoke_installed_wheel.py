@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Smoke-test the installed atomref-proatoms wheel outside a repo checkout.
+"""Smoke-test atomref-proatoms from an installed wheel, isolated from source imports.
 
 The goal is intentionally narrower than the normal pytest suite: build a wheel,
 install that wheel into a fresh virtual environment, and run the public CLI from a
-working directory that is not the source tree.  This catches packaging/resource
-mistakes that source-tree tests can hide.
+separate working directory without importing the checkout's ``src`` package. This
+catches packaging/resource mistakes that source-tree tests can hide. The working
+directory itself may be below the repository, for example under ``local-data/``.
 """
 
 from __future__ import annotations
@@ -149,7 +150,8 @@ from atomref_proatoms.dataio.resources import resource_text
 
 module_path = Path(atomref_proatoms.__file__).resolve()
 repo_root = Path(__import__('os').environ['ATOMREF_PROATOMS_SMOKE_REPO']).resolve()
-if module_path == repo_root or repo_root in module_path.parents:
+source_package = (repo_root / 'src' / 'atomref_proatoms').resolve()
+if module_path == source_package or source_package in module_path.parents:
     raise SystemExit(f'atomref_proatoms imported from source tree: {module_path}')
 
 states = json.loads(resource_text('states/atom_states_v2.json'))
@@ -260,7 +262,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Build atomref-proatoms as a wheel, install it into a fresh virtual "
-            "environment, and run import/CLI/dry-run checks outside the repo checkout."
+            "environment, and run import/CLI/dry-run checks without source-tree imports."
         )
     )
     parser.add_argument(
@@ -337,7 +339,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         wheelhouse = work_root / "wheelhouse"
         venv_dir = work_root / "venv"
-        run_dir = work_root / "run-outside-repo"
+        run_dir = work_root / "run-isolated-from-source"
         run_dir.mkdir(parents=True, exist_ok=True)
 
         wheel = (

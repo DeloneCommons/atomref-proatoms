@@ -148,7 +148,7 @@ python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 ```
 
 For a PyPI-style packaging check, build and install the wheel into a fresh
-environment and run the public CLI outside the repository checkout:
+environment and run the public CLI without importing from the source checkout:
 
 ```bash
 python scripts/smoke_installed_wheel.py

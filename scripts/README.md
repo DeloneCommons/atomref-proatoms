@@ -52,7 +52,7 @@ For the full maintainer release-check environment, use
 | `export_multiwfn_artifacts.py` | Export configured Multiwfn `.rad` and `.wfn` interoperability files from local SCF artifacts. | `data/multiwfn_artifacts/` by default |
 | `check_multiwfn_artifacts.py` | Validate a generated Multiwfn artifact manifest, re-read `.rad` grid/integral metadata, and re-read `.wfn` electron counts. | terminal validation report |
 | `prepare_docs.py` | Refresh paper-style documentation table fragments, SVG figures, and marked Results blocks from committed data. | `docs/tables/`, `docs/figures/`, `docs/results.md` |
-| `smoke_installed_wheel.py` | Build a wheel, install it into a fresh virtual environment, and run import/CLI/dry-run checks outside the repository checkout. | temporary wheelhouse, venv, and smoke workdir |
+| `smoke_installed_wheel.py` | Build a wheel, install it into a fresh virtual environment, and run import/CLI/dry-run checks without source-tree imports. | temporary wheelhouse, venv, and smoke workdir |
 
 ## `check_states.py`
 
@@ -81,8 +81,9 @@ python scripts/smoke_installed_wheel.py
 
 This is a PyPI/installability smoke test, not a replacement for the normal pytest
 suite. It builds the project wheel, installs the wheel into a fresh virtual
-environment, clears source-tree resource overrides, changes to a directory
-outside the repository checkout, and then checks:
+environment, clears source-tree resource overrides, changes to an isolated work
+directory, verifies that imports do not resolve to the checkout's `src` package,
+and then checks:
 
 ```text
 import atomref_proatoms

@@ -178,6 +178,10 @@ For resume, checkpoint, array, and metadata files must be non-empty and match
 the current fingerprints. `scf.log` must exist, but it may be empty when a run
 was made with `--quiet-scf-log --verbose 0`.
 
+Use `--resume --force` to reuse matching SCF artifacts while refreshing existing
+profiles, radii, QA, `.rad`, and `.wfn` outputs. `--force` without `--resume`
+recomputes SCF as well as overwriting downstream outputs.
+
 ## `.rad` density controls
 
 The default `.rad` export evaluates the spherical SCF density on one fixed ray:
