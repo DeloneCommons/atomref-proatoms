@@ -42,11 +42,15 @@ The stored density is
 \rho(r)=\rho_\alpha(r)+\rho_\beta(r),
 \]
 
-not a spin-density profile. A determinant-based \(\langle S^2\rangle\) is not
-defined by the one-particle density matrix of a fractional-occupation spherical
-ensemble. The spherical SCF backends therefore suppress PySCF's standard UHF
-`spin_square` value and report the alpha/beta electron populations and nominal
-multiplicity implied by their difference instead.
+not a spin-density profile. When any angular-momentum manifold has genuinely
+fractional occupations, the resulting spherical ensemble is not a single Slater
+determinant, so a determinant-based \(\langle S^2\rangle\) is not defined by its
+one-particle density matrix. In those cases, the spherical SCF backends suppress
+PySCF's standard UHF `spin_square` value and instead report the alpha/beta
+electron populations and the nominal multiplicity implied by their difference.
+For states whose spherical occupations are all integer-valued, such as the
+one-electron H atom, the ordinary determinant-based \(\langle S^2\rangle\)
+diagnostic remains well defined and may be reported normally.
 
 ## Density-cutoff radii as level-surface descriptors
 

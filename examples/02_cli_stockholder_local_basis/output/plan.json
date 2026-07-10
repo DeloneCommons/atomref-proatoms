@@ -163,6 +163,25 @@
     "rad",
     "wfn"
   ],
+  "scf_settings": {
+    "engine": "pyscf",
+    "expected_engine_version": "2.13.1",
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 0,
+    "verbose": 0
+  },
+  "execution_policy": {
+    "resume": false,
+    "force": true,
+    "continue_on_error": false,
+    "allow_pyscf_version_mismatch": true,
+    "quiet_scf_log": true,
+    "rad_angular_points": 1,
+    "rad_eval_chunk_size": 8192
+  },
   "warnings": [
     "No obvious ECP marker was found; full-electron status is still unverified.",
     "Full-electron status is unknown for this basis source.",
@@ -202,7 +221,7 @@
         "profiles_csv": "profiles/profiles.csv",
         "radii_csv": "radii/radii.csv",
         "qa_csv": "qa/qa.csv",
-        "rad": "multiwfn/rad/Ni_m1.rad"
+        "rad": "multiwfn/rad/Ni-1.rad"
       }
     },
     {
@@ -268,7 +287,7 @@
         "profiles_csv": "profiles/profiles.csv",
         "radii_csv": "radii/radii.csv",
         "qa_csv": "qa/qa.csv",
-        "rad": "multiwfn/rad/Ni_p1.rad"
+        "rad": "multiwfn/rad/Ni+1.rad"
       }
     },
     {
@@ -300,7 +319,7 @@
         "profiles_csv": "profiles/profiles.csv",
         "radii_csv": "radii/radii.csv",
         "qa_csv": "qa/qa.csv",
-        "rad": "multiwfn/rad/Pd_m1.rad"
+        "rad": "multiwfn/rad/Pd-1.rad"
       }
     },
     {
@@ -366,7 +385,7 @@
         "profiles_csv": "profiles/profiles.csv",
         "radii_csv": "radii/radii.csv",
         "qa_csv": "qa/qa.csv",
-        "rad": "multiwfn/rad/Pd_p1.rad"
+        "rad": "multiwfn/rad/Pd+1.rad"
       }
     }
   ],

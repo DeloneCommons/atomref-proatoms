@@ -211,7 +211,7 @@ def _print_plan(args: argparse.Namespace, jobs: tuple[Any, ...], config: Any) ->
     print(f"Dataset config: {repo_relative_path(args.config)}")
     print(f"SCF artifact root: {repo_relative_path(args.scf_root)}")
     print(f"Profile output root: {repo_relative_path(args.output_root)}")
-    print(format_build_plan(jobs, show_jobs=args.show_jobs or args.list, config=config))
+    print(format_build_plan(jobs, show_jobs=args.show_jobs, config=config))
 
 
 def _check_fingerprint(

@@ -39,7 +39,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
     try:
         return int(args.func(args))
-    except ValueError as exc:
+    except (OSError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

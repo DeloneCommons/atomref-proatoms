@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: >-
+  If you use atomref-proatoms, please cite the exact software and dataset release
+  that you used, together with the upstream basis-set and atomic-state sources.
+title: atomref-proatoms
+type: software
+version: 2.0.0
+date-released: 2026-07-10
+authors:
+  - family-names: Chernyshov
+    given-names: Ivan Yu.
+    email: ivan.chernyshoff@gmail.com
+repository-code: https://github.com/DeloneCommons/atomref-proatoms
+url: https://delonecommons.github.io/atomref-proatoms/
+abstract: >-
+  A versioned dataset and Python toolkit for reproducible spherical atomic and
+  ionic reference densities, cutoff radii, quality-assurance data, and Multiwfn
+  interoperability artifacts.
+license:
+  - MIT
+  - CC-BY-4.0

@@ -42,6 +42,12 @@ plan.json
 
 Inspect `plan.json` before removing `--dry-run`.
 
+The input file preserves every CLI control exactly as requested. The resolved
+configuration and plan also contain the effective `scf_settings` and
+`execution_policy`, including resume/overwrite behavior, logging, and `.rad`
+evaluation controls. This makes a dry run a complete provenance preview rather
+than only a chemistry-selection preview.
+
 ## Element selection
 
 Use a comma-separated element list:
@@ -181,6 +187,24 @@ was made with `--quiet-scf-log --verbose 0`.
 Use `--resume --force` to reuse matching SCF artifacts while refreshing existing
 profiles, radii, QA, `.rad`, and `.wfn` outputs. `--force` without `--resume`
 recomputes SCF as well as overwriting downstream outputs.
+
+## SCF runtime controls
+
+The packaged defaults are used unless an override is supplied:
+
+```text
+--conv-tol FLOAT          positive, finite SCF convergence tolerance
+--max-cycle INTEGER       positive maximum SCF cycle count
+--diis-space INTEGER      positive DIIS subspace size
+--diis-start-cycle INT    non-negative first DIIS cycle
+--grid-level INTEGER      non-negative PySCF DFT grid level
+--verbose INTEGER         non-negative PySCF verbosity (default: 3)
+--quiet-scf-log           write scf.log without echoing PySCF output
+```
+
+Invalid numeric controls are rejected before any plan files or SCF artifacts are
+written. Effective values are recorded in `run_config.resolved.json` and
+`plan.json`; raw overrides are retained in `run_config.input.json`.
 
 ## `.rad` density controls
 

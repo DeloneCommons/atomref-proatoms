@@ -8,7 +8,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 PROFILE_R_MIN = 1.0e-6
-PROFILE_R_MAX = 80.0
+PROFILE_R_MAX = 60.0
 PROFILE_N_R = 1200
 PROFILE_N_ANG = 110
 QA_R_MIN = 1.0e-7

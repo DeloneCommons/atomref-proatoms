@@ -14,11 +14,11 @@ or build a different documented reference convention.
 
 | Goal | Start here | Installation needed? |
 |---|---|---|
-| Use the published radial profiles, cutoff radii, or QA tables | [Published data](data/) | No |
-| Use the released Multiwfn `.rad` or `.wfn` files | [Multiwfn artifacts](data/multiwfn_artifacts/) | No |
-| Understand or cite the scientific convention | [Scientific note](docs/index.md) | No |
-| Generate a small local dataset | [Generator quick start](docs/generator/index.md) | Yes, generator extra |
-| Develop or regenerate the release | [Maintainer workflow](docs/workflow.md) | Yes, source checkout |
+| Use the published radial profiles, cutoff radii, or QA tables | [Published data](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data) | No |
+| Use the released Multiwfn `.rad` or `.wfn` files | [Multiwfn artifacts](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data/multiwfn_artifacts) | No |
+| Understand or cite the scientific convention | [Scientific note](https://delonecommons.github.io/atomref-proatoms/) | No |
+| Generate a small local dataset | [Generator quick start](https://delonecommons.github.io/atomref-proatoms/generator/) | Yes, generator extra |
+| Develop or regenerate the release | [Maintainer workflow](https://delonecommons.github.io/atomref-proatoms/workflow/) | Yes, source checkout |
 
 The PyPI package contains the Python API, command-line interface, curated state
 table, presets, schemas, and small supporting resources. It does **not** contain
@@ -48,9 +48,12 @@ self-consistent spherical fractional-occupation unrestricted Kohn--Sham (UKS),
 pure all-electron Gaussian basis functions, a logarithmic release grid, and an
 independent log-radius QA quadrature. The profile data version is `2.0.0`.
 
-The paper-style [Introduction](docs/introduction.md), [Theory](docs/theory.md),
-[Methods](docs/methods.md), [Results](docs/results.md),
-[Discussion](docs/discussion.md), and [Conclusions](docs/conclusions.md) document
+The paper-style [Introduction](https://delonecommons.github.io/atomref-proatoms/introduction/),
+[Theory](https://delonecommons.github.io/atomref-proatoms/theory/),
+[Methods](https://delonecommons.github.io/atomref-proatoms/methods/),
+[Results](https://delonecommons.github.io/atomref-proatoms/results/),
+[Discussion](https://delonecommons.github.io/atomref-proatoms/discussion/), and
+[Conclusions](https://delonecommons.github.io/atomref-proatoms/conclusions/) document
 the scientific reasoning and its limits.
 
 ## Installation for the toolkit
@@ -76,7 +79,8 @@ repository root:
 python -m pip install -e ".[generator]"
 ```
 
-See the [Generator tool overview](docs/generator/index.md) for a dry-run-first
+See the [Generator tool overview](https://delonecommons.github.io/atomref-proatoms/generator/)
+for a dry-run-first
 walkthrough suitable for a first local calculation.
 
 ## Python scripting API
@@ -96,8 +100,9 @@ print(selection.state_ids)
 
 The base installation supports packaged-state selection and lightweight profile
 operations. Spherical SCF calculations and SCF-derived exports require the
-`generator` extra. See the [Python API](docs/api.md) and the
-[custom-state scripting guide](docs/generator/scripting.md) for the supported
+`generator` extra. See the [Python API](https://delonecommons.github.io/atomref-proatoms/api/)
+and the [custom-state scripting guide](https://delonecommons.github.io/atomref-proatoms/generator/scripting/)
+for the supported
 package-level interface.
 
 ## Published data at a glance
@@ -128,7 +133,8 @@ data/qa/<dataset_id>/qa.csv                   per-state validation results
 data/multiwfn_artifacts/                      released .rad and .wfn files
 ```
 
-The [data landing page](data/) gives the exact dataset IDs, default-basis advice,
+The [data landing page](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data)
+gives the exact dataset IDs, default-basis advice,
 file contracts, and interpretation cautions.
 
 The expensive SCF checkpoints, arrays, and logs are regeneration inputs under
@@ -152,7 +158,7 @@ outliers. The primary basis-family comparison is stored under
 dyall-v4z. These comparison rows are scientific diagnostics, not release failures.
 
 For a compact Methods-style summary of QA, basis comparisons, and recommended
-next analyses, see the [Results](docs/results.md).
+next analyses, see the [Results](https://delonecommons.github.io/atomref-proatoms/results/).
 
 ## Validate a source checkout
 
@@ -179,19 +185,22 @@ python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 ```
 
 A full maintainer release gate, including the installed-wheel smoke test and
-documentation build, is listed in the [maintainer workflow](docs/workflow.md).
+documentation build, is listed in the
+[maintainer workflow](https://delonecommons.github.io/atomref-proatoms/workflow/).
 
 ## Regeneration workflow
 
 Full release regeneration is a maintainer workflow that requires optional
 dependencies, substantial local SCF execution, and the ignored checkpoint layer.
-See the [ordered regeneration procedure](docs/workflow.md#standard-maintainer-workflow)
-and [script reference](scripts/README.md). The maintainer scripts provide
+See the [ordered regeneration procedure](https://delonecommons.github.io/atomref-proatoms/workflow/#standard-maintainer-workflow)
+and [script reference](https://github.com/DeloneCommons/atomref-proatoms/blob/main/scripts/README.md).
+The maintainer scripts provide
 `--list` and `--dry-run` modes for inspecting a plan before expensive work.
 
 ## Generator examples
 
-The public generator tool has reproducible examples under [`examples/`](examples/):
+The public generator tool has reproducible examples under
+[`examples/`](https://github.com/DeloneCommons/atomref-proatoms/tree/main/examples):
 
 - `examples/01_cli_neutral_rad_wfn_bse/` generates neutral Multiwfn `.rad` and
   `.wfn` files for H and B--F from a BSE basis with X2C disabled.
@@ -202,26 +211,33 @@ The public generator tool has reproducible examples under [`examples/`](examples
   states and project-specific pipelines outside the curated CLI state policies.
 
 The full workflow is explained in the
-[generator overview and quick start](docs/generator/index.md).
+[generator overview and quick start](https://delonecommons.github.io/atomref-proatoms/generator/).
 
 ## Documentation map
 
-- **Scientific note:** [Abstract and scope](docs/index.md) →
-  [Introduction](docs/introduction.md) → [Theory](docs/theory.md) →
-  [Methods](docs/methods.md) → [Results](docs/results.md) →
-  [Discussion](docs/discussion.md) → [Conclusions](docs/conclusions.md).
-- **Generator manual:** [overview and quick start](docs/generator/index.md),
-  [how-to guide](docs/generator/howto.md), [CLI reference](docs/generator/cli.md),
-  [Python scripting](docs/generator/scripting.md), and
-  [examples](docs/generator/examples.md).
-- **Data and scientific reference:** [data products](docs/data.md),
-  [input data](docs/inputs.md), [state policy](docs/state_policy.md), and
-  [notebooks](docs/notebooks/README.md).
-- **Developer and maintainer reference:** [Python API](docs/api.md),
-  [workflow and validation](docs/workflow.md), and
-  [script reference](scripts/README.md).
-- **Project policies:** [license](docs/license.md) and
-  [AI assistance note](docs/ai_note.md).
+- **Scientific note:** [Abstract and scope](https://delonecommons.github.io/atomref-proatoms/) →
+  [Introduction](https://delonecommons.github.io/atomref-proatoms/introduction/) →
+  [Theory](https://delonecommons.github.io/atomref-proatoms/theory/) →
+  [Methods](https://delonecommons.github.io/atomref-proatoms/methods/) →
+  [Results](https://delonecommons.github.io/atomref-proatoms/results/) →
+  [Discussion](https://delonecommons.github.io/atomref-proatoms/discussion/) →
+  [Conclusions](https://delonecommons.github.io/atomref-proatoms/conclusions/).
+- **Generator manual:** [overview and quick start](https://delonecommons.github.io/atomref-proatoms/generator/),
+  [how-to guide](https://delonecommons.github.io/atomref-proatoms/generator/howto/),
+  [CLI reference](https://delonecommons.github.io/atomref-proatoms/generator/cli/),
+  [Python scripting](https://delonecommons.github.io/atomref-proatoms/generator/scripting/),
+  and [examples](https://delonecommons.github.io/atomref-proatoms/generator/examples/).
+- **Data and scientific reference:** [data products](https://delonecommons.github.io/atomref-proatoms/data/),
+  [input data](https://delonecommons.github.io/atomref-proatoms/inputs/),
+  [state policy](https://delonecommons.github.io/atomref-proatoms/state_policy/), and
+  [notebooks](https://delonecommons.github.io/atomref-proatoms/notebooks/).
+- **Developer and maintainer reference:** [Python API](https://delonecommons.github.io/atomref-proatoms/api/),
+  [workflow and validation](https://delonecommons.github.io/atomref-proatoms/workflow/), and
+  [script reference](https://github.com/DeloneCommons/atomref-proatoms/blob/main/scripts/README.md).
+- **Project policies:** [license](https://delonecommons.github.io/atomref-proatoms/license/),
+  [citation metadata](https://github.com/DeloneCommons/atomref-proatoms/blob/main/CITATION.cff),
+  [changelog](https://github.com/DeloneCommons/atomref-proatoms/blob/main/CHANGELOG.md), and
+  [AI assistance note](https://delonecommons.github.io/atomref-proatoms/ai_note/).
 
 ## Lightweight consumers
 
@@ -247,12 +263,15 @@ from the NIST Atomic Spectra Database, NIST Standard Reference Database 78. It
 also includes a compact Ning--Lu 2022 monoanion state-status source table without
 electron-affinity values and a formal-anion preparation table whose rows are
 explicitly marked as formal/not-claimed references. See
-[`LICENSE.md`](LICENSE.md) for the full repository license statement.
+[`LICENSE.md`](https://github.com/DeloneCommons/atomref-proatoms/blob/main/LICENSE.md)
+for the full repository license statement. Machine-readable release citation
+metadata is provided in
+[`CITATION.cff`](https://github.com/DeloneCommons/atomref-proatoms/blob/main/CITATION.cff).
 
 Project planning, scientific discussion, code drafting, and documentation drafting
 used OpenAI models as assistance tools. The repository author is responsible for
 the final scientific content, code, data, validation, and release decisions. See
-[`AI_NOTE.md`](AI_NOTE.md).
+[`AI_NOTE.md`](https://github.com/DeloneCommons/atomref-proatoms/blob/main/AI_NOTE.md).
 
 [ci-badge]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/ci.yml/badge.svg
 [ci-workflow]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/ci.yml

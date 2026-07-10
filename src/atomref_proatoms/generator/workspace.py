@@ -108,6 +108,8 @@ def check_or_initialize_workspace(
     """Check that a workdir context is compatible, initializing when absent."""
 
     root = Path(workdir).expanduser()
+    if root.exists() and not root.is_dir():
+        raise ValueError(f"workdir exists and is not a directory: {root}")
     marker = workspace_marker_path(root)
     existing = read_workspace_context(root)
     if existing is None:

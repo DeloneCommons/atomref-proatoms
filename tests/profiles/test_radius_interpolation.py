@@ -13,6 +13,13 @@ def test_radius_at_density_interpolates_log_density_tail() -> None:
     assert radius_at_density(r, rho, math.exp(-0.5)) == pytest.approx(1.5)
 
 
+def test_radius_at_density_uses_outermost_crossing_for_nonmonotonic_tail() -> None:
+    r = [1.0, 2.0, 3.0, 4.0]
+    rho = [2.0, 0.5, 2.0, 0.25]
+
+    assert radius_at_density(r, rho, 1.0) == pytest.approx(3.0 + math.log(2.0) / math.log(8.0))
+
+
 def test_radius_at_density_rejects_missing_crossing() -> None:
     with pytest.raises(ValueError):
         radius_at_density([1.0, 2.0, 3.0], [10.0, 9.0, 8.0], 1.0)

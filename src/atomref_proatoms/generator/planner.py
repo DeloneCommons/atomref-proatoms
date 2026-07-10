@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -13,6 +14,7 @@ import yaml
 
 from .. import __version__
 from ..dataio.resources import resource_bytes, resource_origin, resource_text
+from ..exporters.multiwfn_rad import multiwfn_rad_filename
 from ..exporters.proaim_wfn import atom_wfn_filename
 from ..states.state_tables import AtomState
 from .basis_resolver import (
@@ -64,6 +66,19 @@ class GeneratorRequest:
     resource_root: Path | None = None
     allow_ecp: bool = False
     allow_unverified_basis: bool = False
+    resume: bool = False
+    force: bool = False
+    continue_on_error: bool = False
+    allow_pyscf_version_mismatch: bool = False
+    conv_tol: float | None = None
+    max_cycle: int | None = None
+    diis_space: int | None = None
+    diis_start_cycle: int | None = None
+    grid_level: int | None = None
+    verbose: int = 3
+    quiet_scf_log: bool = False
+    rad_angular_points: int = 1
+    rad_eval_chunk_size: int = 8192
     dry_run: bool = True
 
     def input_dict(self) -> dict[str, Any]:
@@ -84,6 +99,19 @@ class GeneratorRequest:
             ),
             "allow_ecp": self.allow_ecp,
             "allow_unverified_basis": self.allow_unverified_basis,
+            "resume": self.resume,
+            "force": self.force,
+            "continue_on_error": self.continue_on_error,
+            "allow_pyscf_version_mismatch": self.allow_pyscf_version_mismatch,
+            "conv_tol": self.conv_tol,
+            "max_cycle": self.max_cycle,
+            "diis_space": self.diis_space,
+            "diis_start_cycle": self.diis_start_cycle,
+            "grid_level": self.grid_level,
+            "verbose": self.verbose,
+            "quiet_scf_log": self.quiet_scf_log,
+            "rad_angular_points": self.rad_angular_points,
+            "rad_eval_chunk_size": self.rad_eval_chunk_size,
             "dry_run": self.dry_run,
         }
 
@@ -110,6 +138,30 @@ class GeneratorPlan:
     state_table_sha256: str
     tool_defaults_sha256: str
 
+    def resolved_scf_settings(self) -> dict[str, Any]:
+        settings = dict(self.defaults.get("scf_defaults", {}))
+        overrides = {
+            "conv_tol": self.request.conv_tol,
+            "max_cycle": self.request.max_cycle,
+            "diis_space": self.request.diis_space,
+            "diis_start_cycle": self.request.diis_start_cycle,
+            "grid_level": self.request.grid_level,
+        }
+        settings.update({key: value for key, value in overrides.items() if value is not None})
+        settings["verbose"] = self.request.verbose
+        return settings
+
+    def resolved_execution_policy(self) -> dict[str, Any]:
+        return {
+            "resume": self.request.resume,
+            "force": self.request.force,
+            "continue_on_error": self.request.continue_on_error,
+            "allow_pyscf_version_mismatch": self.request.allow_pyscf_version_mismatch,
+            "quiet_scf_log": self.request.quiet_scf_log,
+            "rad_angular_points": self.request.rad_angular_points,
+            "rad_eval_chunk_size": self.request.rad_eval_chunk_size,
+        }
+
     def resolved_config_dict(self) -> dict[str, Any]:
         return {
             "schema_version": "atomref.proatoms.generator_resolved_config.v1",
@@ -128,6 +180,8 @@ class GeneratorPlan:
             "artifacts": list(self.artifacts),
             "workspace": self.workspace_status.as_dict(),
             "scf_defaults": self.defaults.get("scf_defaults", {}),
+            "scf_settings": self.resolved_scf_settings(),
+            "execution_policy": self.resolved_execution_policy(),
             "profile_grid": self.defaults.get("profile_grid", {}),
             "qa_grid": self.defaults.get("qa_grid", {}),
             "cutoffs_e_bohr3": self.defaults.get("cutoffs_e_bohr3", []),
@@ -154,6 +208,8 @@ class GeneratorPlan:
             "basis_check_status": self.basis_check.as_dict(),
             "basis_policy": self.basis_policy.as_dict(),
             "artifacts": list(self.artifacts),
+            "scf_settings": self.resolved_scf_settings(),
+            "execution_policy": self.resolved_execution_policy(),
             "warnings": list(self.warnings),
             "errors": list(self.errors),
             "jobs": list(self.jobs),
@@ -240,9 +296,36 @@ def resolve_requested_elements(
     return parse_elements(tuple(pieces))
 
 
+def _validate_integer_control(name: str, value: int | None, *, minimum: int) -> None:
+    if value is None:
+        return
+    if isinstance(value, bool) or int(value) != value or int(value) < minimum:
+        qualifier = "positive" if minimum == 1 else "non-negative"
+        raise ValueError(f"--{name} must be a {qualifier} integer")
+
+
+def validate_generator_request(request: GeneratorRequest) -> None:
+    """Validate runtime controls shared by CLI and programmatic planning."""
+
+    if request.conv_tol is not None:
+        conv_tol = float(request.conv_tol)
+        if not math.isfinite(conv_tol) or conv_tol <= 0:
+            raise ValueError("--conv-tol must be a positive finite number")
+    _validate_integer_control("max-cycle", request.max_cycle, minimum=1)
+    _validate_integer_control("diis-space", request.diis_space, minimum=1)
+    _validate_integer_control("diis-start-cycle", request.diis_start_cycle, minimum=0)
+    _validate_integer_control("grid-level", request.grid_level, minimum=0)
+    _validate_integer_control("verbose", request.verbose, minimum=0)
+    _validate_integer_control("rad-eval-chunk-size", request.rad_eval_chunk_size, minimum=1)
+    _validate_integer_control("rad-angular-points", request.rad_angular_points, minimum=1)
+    if request.rad_angular_points not in {1} and request.rad_angular_points < 4:
+        raise ValueError("--rad-angular-points must be 1 or an integer >= 4")
+
+
 def build_generation_plan(request: GeneratorRequest) -> GeneratorPlan:
     """Resolve a generator request and initialize/check the dry-run workspace."""
 
+    validate_generator_request(request)
     defaults = load_tool_defaults(resource_root=request.resource_root)
     artifacts = parse_artifacts(request.artifacts, defaults=defaults)
     if not request.method:
@@ -431,20 +514,10 @@ def _job_output_paths(state: AtomState, artifacts: list[str], run_id: str) -> di
             }
         )
     if "rad" in artifacts:
-        paths["rad"] = f"multiwfn/rad/{_rad_filename(state)}"
+        paths["rad"] = f"multiwfn/rad/{multiwfn_rad_filename(state.symbol, state.charge)}"
     if "wfn" in artifacts:
         paths["wfn"] = f"multiwfn/wfn/{atom_wfn_filename(state.symbol)}"
     return paths
-
-
-def _rad_filename(state: AtomState) -> str:
-    if state.charge == 0:
-        suffix = "0"
-    elif state.charge > 0:
-        suffix = f"p{state.charge}"
-    else:
-        suffix = f"m{abs(state.charge)}"
-    return f"{state.symbol}_{suffix}.rad"
 
 
 def _run_id(

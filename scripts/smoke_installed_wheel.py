@@ -18,10 +18,20 @@ import subprocess
 import sys
 import tempfile
 import venv
+import zipfile
 from pathlib import Path
 
 PROJECT_NAME = "atomref-proatoms"
 WHEEL_GLOB = "atomref_proatoms-*.whl"
+STAGED_FILES = (
+    "pyproject.toml",
+    "MANIFEST.in",
+    "README.md",
+    "LICENSE.md",
+    "AI_NOTE.md",
+    "CHANGELOG.md",
+    "CITATION.cff",
+)
 
 
 def _repo_root() -> Path:
@@ -77,6 +87,53 @@ def _venv_script(venv_dir: Path, name: str) -> Path:
     return candidates[0]
 
 
+def _stage_clean_source(repo_root: Path, stage_root: Path) -> Path:
+    """Copy only declared build inputs into a fresh source tree."""
+    if stage_root.exists():
+        shutil.rmtree(stage_root)
+    stage_root.mkdir(parents=True)
+    for relative in STAGED_FILES:
+        source = repo_root / relative
+        if not source.is_file():
+            raise SystemExit(f"required build input is missing: {source}")
+        shutil.copy2(source, stage_root / relative)
+    source_tree = repo_root / "src"
+    if not source_tree.is_dir():
+        raise SystemExit(f"package source directory is missing: {source_tree}")
+    shutil.copytree(
+        source_tree,
+        stage_root / "src",
+        ignore=shutil.ignore_patterns("*.egg-info", "__pycache__", "*.pyc", "*.pyo"),
+    )
+    return stage_root
+
+
+def _assert_wheel_contents(wheel: Path) -> None:
+    """Reject incomplete wheels and common source-tree contamination."""
+    with zipfile.ZipFile(wheel) as archive:
+        names = set(archive.namelist())
+    required = {
+        "atomref_proatoms/engines/spherical_scf.py",
+        "atomref_proatoms/resources/states/atom_states_v2.json",
+        "atomref_proatoms/resources/presets/tool_defaults.yaml",
+        "atomref_proatoms/resources/grids/multiwfn_atmrad_grid.csv",
+        "atomref_proatoms/resources/schemas/manifest.schema.json",
+        "atomref_proatoms/resources/schemas/run_config.schema.json",
+    }
+    missing = sorted(required - names)
+    if missing:
+        raise SystemExit("wheel is missing required files: " + ", ".join(missing))
+    forbidden = sorted(
+        name
+        for name in names
+        if name.endswith(("spherical_uks.py", ".pyc", ".pyo"))
+        or "/__pycache__/" in name
+        or ".egg-info/" in name
+    )
+    if forbidden:
+        raise SystemExit("wheel contains forbidden stale/build files: " + ", ".join(forbidden))
+
+
 def _build_wheel(
     *,
     python: Path,
@@ -86,6 +143,7 @@ def _build_wheel(
     env: dict[str, str],
 ) -> Path:
     wheelhouse.mkdir(parents=True, exist_ok=True)
+    staged_source = _stage_clean_source(repo_root, wheelhouse.parent / "clean-source")
     cmd: list[str | os.PathLike[str]] = [
         str(python),
         "-m",
@@ -97,8 +155,8 @@ def _build_wheel(
     ]
     if no_build_isolation:
         cmd.append("--no-build-isolation")
-    cmd.append(repo_root)
-    _run(cmd, cwd=repo_root, env=env)
+    cmd.append(staged_source)
+    _run(cmd, cwd=staged_source, env=env)
     wheels = sorted(wheelhouse.glob(WHEEL_GLOB))
     if not wheels:
         raise SystemExit(f"no wheel matching {WHEEL_GLOB!r} was built in {wheelhouse}")
@@ -261,8 +319,9 @@ def _assert_generator_execution(
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Build atomref-proatoms as a wheel, install it into a fresh virtual "
-            "environment, and run import/CLI/dry-run checks without source-tree imports."
+            "Stage clean atomref-proatoms build inputs, build a wheel, install it into a "
+            "fresh virtual environment, and run import/CLI/dry-run checks without "
+            "source-tree imports."
         )
     )
     parser.add_argument(
@@ -354,6 +413,7 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         print(f"Built/selected wheel: {wheel}")
+        _assert_wheel_contents(wheel)
 
         if venv_dir.exists():
             shutil.rmtree(venv_dir)

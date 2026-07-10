@@ -85,3 +85,22 @@ def test_wfn_only_non_neutral_selection_records_error(tmp_path: Path) -> None:
     assert any("WFN-only" in error for error in plan.errors)
     assert plan.jobs[0]["artifacts"] == []
     assert "scf_dir" not in plan.jobs[0]["output_paths"]
+
+
+def test_charged_rad_plan_paths_match_multiwfn_filenames(tmp_path: Path) -> None:
+    request = GeneratorRequest(
+        elements=("C",),
+        method="HF",
+        relativity="none",
+        basis="STO-3G",
+        state_policy="stockholder",
+        charges=(-1, 1),
+        artifacts=("rad",),
+        workdir=tmp_path,
+        dry_run=True,
+    )
+
+    plan = build_generation_plan(request)
+    paths = {job["charge"]: job["output_paths"]["rad"] for job in plan.jobs}
+
+    assert paths == {-1: "multiwfn/rad/C-1.rad", 1: "multiwfn/rad/C+1.rad"}

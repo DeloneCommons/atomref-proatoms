@@ -118,15 +118,20 @@
   "workspace": {
     "workdir": "output",
     "marker_path": "output/atomref_proatoms_workspace.json",
-    "status": "initialized",
+    "status": "compatible",
     "context": {
       "method": "PBE0",
       "relativity": "x2c",
       "basis_key": "file:dyall-v2z-ni-pd-pt",
       "state_policy": "stockholder"
     },
-    "existing_context": null,
-    "message": "workspace marker initialized"
+    "existing_context": {
+      "method": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "state_policy": "stockholder"
+    },
+    "message": "workspace context is compatible"
   },
   "scf_defaults": {
     "engine": "pyscf",
@@ -136,6 +141,25 @@
     "diis_space": 12,
     "diis_start_cycle": 1,
     "grid_level": 4
+  },
+  "scf_settings": {
+    "engine": "pyscf",
+    "expected_engine_version": "2.13.1",
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 0,
+    "verbose": 0
+  },
+  "execution_policy": {
+    "resume": false,
+    "force": true,
+    "continue_on_error": false,
+    "allow_pyscf_version_mismatch": true,
+    "quiet_scf_log": true,
+    "rad_angular_points": 1,
+    "rad_eval_chunk_size": 8192
   },
   "profile_grid": {
     "type": "log",

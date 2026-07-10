@@ -35,9 +35,9 @@ def radius_at_density(
     """Interpolate the outermost radius where ``rho`` reaches ``cutoff``.
 
     The function assumes a radial profile sampled from small to large radius and returns the
-    first outward crossing from ``rho >= cutoff`` to ``rho <= cutoff``. Interpolation is linear
-    in ``log(rho)`` when both neighboring densities are positive, which is stable for tail
-    radii. It raises ``ValueError`` when the profile never crosses the cutoff.
+    outermost outward crossing from ``rho >= cutoff`` to ``rho <= cutoff``. Interpolation is
+    linear in ``log(rho)`` when both neighboring densities are positive, which is stable for
+    tail radii. It raises ``ValueError`` when the profile never crosses the cutoff.
     """
 
     if cutoff <= 0:
@@ -54,7 +54,10 @@ def radius_at_density(
     if any(radii[i] >= radii[i + 1] for i in range(len(radii) - 1)):
         raise ValueError("r_bohr must be strictly increasing")
 
-    for i in range(len(rho) - 1):
+    if rho[-1] == cutoff:
+        return radii[-1]
+
+    for i in range(len(rho) - 2, -1, -1):
         left = rho[i]
         right = rho[i + 1]
         if left == cutoff:
@@ -69,8 +72,6 @@ def radius_at_density(
             else:
                 frac = 0.0
             return radii[i] + frac * (radii[i + 1] - radii[i])
-    if rho[-1] == cutoff:
-        return radii[-1]
     raise ValueError(f"profile does not cross cutoff {cutoff}")
 
 

@@ -186,3 +186,87 @@ def test_generate_rejects_invalid_rad_eval_chunk_size_before_planning(
     assert code == 2
     assert "--rad-eval-chunk-size" in captured.err
     assert not (tmp_path / "plan.json").exists()
+
+
+def test_generate_rejects_invalid_scf_controls_before_planning(
+    tmp_path: Path, capsys
+) -> None:
+    code = main([
+        "generate",
+        "--elements", "H",
+        "--method", "HF",
+        "--basis", "STO-3G",
+        "--max-cycle", "0",
+        "--workdir", str(tmp_path),
+        "--dry-run",
+    ])
+
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "--max-cycle" in captured.err
+    assert not (tmp_path / "plan.json").exists()
+
+
+def test_generate_dry_run_records_effective_runtime_controls(tmp_path: Path) -> None:
+    code = main([
+        "generate",
+        "--elements", "H",
+        "--method", "HF",
+        "--basis", "STO-3G",
+        "--conv-tol", "1e-10",
+        "--max-cycle", "125",
+        "--diis-space", "8",
+        "--diis-start-cycle", "0",
+        "--grid-level", "0",
+        "--verbose", "1",
+        "--rad-angular-points", "14",
+        "--rad-eval-chunk-size", "2048",
+        "--resume",
+        "--force",
+        "--quiet-scf-log",
+        "--workdir", str(tmp_path),
+        "--dry-run",
+    ])
+
+    assert code == 0
+    input_config = json.loads((tmp_path / "run_config.input.json").read_text())
+    resolved = json.loads((tmp_path / "run_config.resolved.json").read_text())
+    plan = json.loads((tmp_path / "plan.json").read_text())
+    assert input_config["max_cycle"] == 125
+    assert resolved["scf_settings"] == {
+        "engine": "pyscf",
+        "expected_engine_version": "2.13.1",
+        "conv_tol": 1.0e-10,
+        "max_cycle": 125,
+        "diis_space": 8,
+        "diis_start_cycle": 0,
+        "grid_level": 0,
+        "verbose": 1,
+    }
+    assert resolved["execution_policy"]["rad_angular_points"] == 14
+    assert resolved["execution_policy"]["rad_eval_chunk_size"] == 2048
+    assert resolved["execution_policy"]["resume"] is True
+    assert resolved["execution_policy"]["force"] is True
+    assert plan["scf_settings"] == resolved["scf_settings"]
+    assert plan["execution_policy"] == resolved["execution_policy"]
+
+
+def test_generate_reports_file_workdir_without_traceback(
+    tmp_path: Path, capsys
+) -> None:
+    workdir = tmp_path / "not-a-directory"
+    workdir.write_text("occupied\n", encoding="utf-8")
+
+    code = main([
+        "generate",
+        "--elements", "H",
+        "--method", "HF",
+        "--basis", "STO-3G",
+        "--workdir", str(workdir),
+        "--dry-run",
+    ])
+
+    captured = capsys.readouterr()
+    assert code == 2
+    assert "not a directory" in captured.err
+    assert "Traceback" not in captured.err

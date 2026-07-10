@@ -40,7 +40,7 @@ python -m pip install -e .                          # read data, import package,
 python -m pip install -e ".[generator]"              # run atomref-proatoms generate with PySCF and BSE
 python -m pip install -e ".[dev]"                    # pytest and ruff for code checks
 python -m pip install -e ".[docs]"                   # build the MkDocs site
-python -m pip install -e ".[generator,dev,docs]"  # maintainer release-check environment
+python -m pip install -e ".[generator,dev,docs,release]"  # full release-check environment
 ```
 
 The `all` extra remains a convenience umbrella for local development, but the
@@ -116,15 +116,22 @@ python scripts/check_basis_bundles.py
 python scripts/check_profile_artifacts.py --require-generated
 python scripts/check_multiwfn_artifacts.py --require-generated
 python scripts/prepare_docs.py --check
+python scripts/check_basis_sensitivity.py --dry-run
+python scripts/check_basis_comparisons.py --dry-run
 pytest -q
-python scripts/smoke_installed_wheel.py --no-build-isolation
 mkdocs build --strict
+python scripts/smoke_installed_wheel.py --no-build-isolation
+python scripts/build_release_artifacts.py --outdir local-data/release-dist-v2.0.0
 ```
 
-The installed-wheel smoke test verifies that package resources and the public CLI
-work without importing from the source checkout. `mkdocs build --strict` requires
-the docs extra. When a clean build environment already has the build backend
-installed, `--no-build-isolation` keeps the wheel smoke test usable offline.
+The installed-wheel smoke test copies only declared build inputs into a fresh
+staging tree, inspects the wheel for required resources and stale build files,
+and verifies that the public CLI works without importing from the source
+checkout. `build_release_artifacts.py` applies the same clean-staging rule to the
+wheel and sdist, checks both archives, and runs `twine check`; its output directory
+must be empty. `mkdocs build --strict` requires the docs extra. When a clean build
+environment already has the build backend installed, `--no-build-isolation`
+keeps the wheel smoke test usable offline.
 
 A heavier optional release smoke is available:
 
@@ -134,6 +141,26 @@ python scripts/smoke_installed_wheel.py --with-generator-execution --no-build-is
 
 That mode installs the generator extra and runs a tiny neutral-H generation path.
 It is intentionally optional because it executes SCF.
+
+## Publication sequence
+
+After the complete gate passes and the changelog no longer says `Unreleased`:
+
+1. commit the reviewed code and regenerated data together, merge the intended
+   release commit to `main`, and let CI pass on that exact commit;
+2. create the `v2.0.0` tag on that commit;
+3. build into a new empty release directory with
+   `build_release_artifacts.py`, then install and smoke-test the built wheel;
+4. upload those exact files to TestPyPI and test a clean installation before
+   publishing the unchanged files to PyPI and attaching them to the GitHub
+   release;
+5. archive the same tagged snapshot and record its DOI in the release notes when
+   the Zenodo record is available.
+
+Do not rebuild between TestPyPI and PyPI. The tag, GitHub release, archive, wheel,
+and sdist should all identify the same commit and version. `CITATION.cff` provides
+machine-readable citation metadata; add the final archive DOI there in a later
+documentation-only change if the DOI is not known before publication.
 
 ## Regeneration products
 

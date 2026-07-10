@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import math
 import re
 import sys
 from collections.abc import Sequence
@@ -72,6 +73,26 @@ def _positive_int(value: str) -> int:
         raise argparse.ArgumentTypeError("expected an integer") from exc
     if parsed < 1:
         raise argparse.ArgumentTypeError("expected a positive integer")
+    return parsed
+
+
+def _nonnegative_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("expected an integer") from exc
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("expected a non-negative integer")
+    return parsed
+
+
+def _positive_float(value: str) -> float:
+    try:
+        parsed = float(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("expected a number") from exc
+    if not math.isfinite(parsed) or parsed <= 0:
+        raise argparse.ArgumentTypeError("expected a positive finite number")
     return parsed
 
 
@@ -175,27 +196,33 @@ def add_generate_parser(parser: argparse.ArgumentParser) -> None:
         action="store_true",
         help="Allow execution with a PySCF version different from tool defaults.",
     )
-    output_group.add_argument("--conv-tol", type=float, default=None, help="Override SCF conv_tol.")
-    output_group.add_argument("--max-cycle", type=int, default=None, help="Override SCF max_cycle.")
+    output_group.add_argument(
+        "--conv-tol", type=_positive_float, default=None, help="Override SCF conv_tol."
+    )
+    output_group.add_argument(
+        "--max-cycle", type=_positive_int, default=None, help="Override SCF max_cycle."
+    )
     output_group.add_argument(
         "--diis-space",
-        type=int,
+        type=_positive_int,
         default=None,
         help="Override PySCF DIIS space.",
     )
     output_group.add_argument(
         "--diis-start-cycle",
-        type=int,
+        type=_nonnegative_int,
         default=None,
         help="Override the SCF cycle where DIIS acceleration starts.",
     )
     output_group.add_argument(
         "--grid-level",
-        type=int,
+        type=_nonnegative_int,
         default=None,
         help="Override PySCF DFT grid level.",
     )
-    output_group.add_argument("--verbose", type=int, default=3, help="PySCF verbosity.")
+    output_group.add_argument(
+        "--verbose", type=_nonnegative_int, default=3, help="PySCF verbosity."
+    )
     output_group.add_argument(
         "--quiet-scf-log",
         action="store_true",
@@ -240,6 +267,19 @@ def run_generate(args: argparse.Namespace) -> int:
         resource_root=args.resource_root,
         allow_ecp=bool(args.allow_ecp),
         allow_unverified_basis=bool(args.allow_unverified_basis),
+        resume=bool(args.resume),
+        force=bool(args.force),
+        continue_on_error=bool(args.continue_on_error),
+        allow_pyscf_version_mismatch=bool(args.allow_pyscf_version_mismatch),
+        conv_tol=args.conv_tol,
+        max_cycle=args.max_cycle,
+        diis_space=args.diis_space,
+        diis_start_cycle=args.diis_start_cycle,
+        grid_level=args.grid_level,
+        verbose=int(args.verbose),
+        quiet_scf_log=bool(args.quiet_scf_log),
+        rad_angular_points=int(args.rad_angular_points),
+        rad_eval_chunk_size=int(args.rad_eval_chunk_size),
         dry_run=bool(args.dry_run),
     )
     plan = build_generation_plan(request)

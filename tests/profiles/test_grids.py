@@ -5,10 +5,19 @@ import pytest
 
 from atomref_proatoms.profiles.grids import (
     angular_grid,
+    default_profile_grid,
     fibonacci_angular_grid,
     gauss_legendre_log_grid,
     weighted_mean_and_std,
 )
+
+
+def test_default_profile_grid_matches_release_contract() -> None:
+    r = default_profile_grid()
+
+    assert r.shape == (1200,)
+    assert r[0] == pytest.approx(1.0e-6)
+    assert r[-1] == pytest.approx(60.0)
 
 
 def test_gauss_legendre_log_grid_has_positive_nodes_and_weights() -> None:

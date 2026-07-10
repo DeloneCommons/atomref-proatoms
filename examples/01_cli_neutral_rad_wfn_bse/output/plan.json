@@ -168,6 +168,25 @@
     "rad",
     "wfn"
   ],
+  "scf_settings": {
+    "engine": "pyscf",
+    "expected_engine_version": "2.13.1",
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 4,
+    "verbose": 0
+  },
+  "execution_policy": {
+    "resume": false,
+    "force": true,
+    "continue_on_error": false,
+    "allow_pyscf_version_mismatch": true,
+    "quiet_scf_log": true,
+    "rad_angular_points": 1,
+    "rad_eval_chunk_size": 8192
+  },
   "warnings": [],
   "errors": [],
   "jobs": [

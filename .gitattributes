@@ -1,0 +1,2 @@
+# Python's csv module emits RFC 4180 CRLF records; treat CR as part of the EOL.
+*.csv whitespace=cr-at-eol

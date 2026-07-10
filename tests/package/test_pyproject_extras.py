@@ -14,5 +14,5 @@ def _extra_block(pyproject_text: str, name: str) -> set[str]:
 def test_pyproject_has_all_extra() -> None:
     text = Path("pyproject.toml").read_text()
     all_extra = _extra_block(text, "all")
-    for extra in ("generator", "audit", "dev"):
+    for extra in ("generator", "audit", "dev", "docs", "release"):
         assert _extra_block(text, extra).issubset(all_extra)
