@@ -148,3 +148,5 @@ python scripts/prepare_docs.py --check
 ```
 
 This script does not generate SCF artifacts, profile tables, radii, QA data, or comparison CSVs. It only keeps the documentation tables and figures synchronized with those committed data products.
+
+Next: [Results](results.md).

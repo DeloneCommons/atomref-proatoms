@@ -1,5 +1,6 @@
 site_name: atomref-proatoms
 site_description: Reproducible spherical atomic and ionic proatomic radial-density datasets
+site_url: https://delonecommons.github.io/atomref-proatoms/
 repo_url: https://github.com/DeloneCommons/atomref-proatoms
 edit_uri: edit/main/
 
@@ -23,32 +24,35 @@ extra_javascript:
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
-  - Abstract and scope: index.md
-  - Introduction: introduction.md
-  - Theory: theory.md
-  - Methods: methods.md
-  - Results: results.md
-  - Discussion: discussion.md
-  - Conclusions: conclusions.md
-  - Generator tool:
-      - Tool overview: generator/index.md
-      - CLI reference: generator/cli.md
+  - Start here: index.md
+  - Scientific note:
+      - Introduction: introduction.md
+      - Theory: theory.md
+      - Methods: methods.md
+      - Results: results.md
+      - Discussion: discussion.md
+      - Conclusions: conclusions.md
+  - Generator manual:
+      - Overview and quick start: generator/index.md
       - How-to guide: generator/howto.md
+      - CLI reference: generator/cli.md
       - Python scripting: generator/scripting.md
       - Examples: generator/examples.md
-  - Other: other.md
-  - Reference:
+  - Data and scientific reference:
       - Data products: data.md
       - Input data: inputs.md
       - State policy details: state_policy.md
-      - Workflow and validation: workflow.md
       - Notebook guide: notebooks/README.md
       - Profile-table inspection: notebooks/proatomic_profiles.ipynb
       - Sphericalization demo: notebooks/spherical_vs_post_average_demo.ipynb
       - Multiwfn WFN validation: notebooks/multiwfn_wfn_plane_validation.ipynb
+  - Developer and maintainer reference:
+      - Python API: api.md
+      - Workflow and validation: workflow.md
+      - Repository and reuse notes: other.md
+  - Project policies:
       - License: license.md
       - AI assistance note: ai_note.md
-  - Python API: api.md
 
 markdown_extensions:
   - admonition

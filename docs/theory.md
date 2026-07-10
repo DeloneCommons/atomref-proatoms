@@ -75,3 +75,5 @@ Changing from reference set 1 to reference set 2 changes the deformation density
 \]
 
 This difference is a sum of atom-centered spherical functions. Consequently, changes in the proatom gauge primarily affect radial shells, density tails, and integrated atom-centered quantities. Directional interatomic features are usually more robust than absolute charge-transfer magnitudes or subtle tail-sensitive conclusions.
+
+Next: [Methods](methods.md).

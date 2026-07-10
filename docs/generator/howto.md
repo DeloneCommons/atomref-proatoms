@@ -131,3 +131,27 @@ charge, electron count, spin multiplicity, configuration, alpha/beta l counts,
 basis source, SCF settings, profile grid, and QA.
 
 See `examples/03_python_custom_state_pipeline/custom_state_pipeline.ipynb`.
+
+## 6. Confirm success or diagnose a failure
+
+A successful run exits with status zero, prints `status: ok`, and writes a
+`manifest.json` with `"status": "ok"`. Its `failures.csv` contains only the
+header row. Review `qa/qa.csv` before using native profiles in scientific work.
+
+Common problems have local, recoverable causes:
+
+- If `atomref-proatoms` is not found, activate the virtual environment in which
+  you installed it and run `python -m pip show atomref-proatoms`.
+- If execution reports that generator dependencies are missing, install
+  `"atomref-proatoms[generator]"` in that same environment.
+- If the workdir reports a context mismatch, choose a new `--workdir`. One
+  workdir intentionally pins one method, relativity, basis, and state policy.
+- If an SCF job fails, read `failures.csv` and the corresponding
+  `scf/<run_id>/<state_id>/scf.log`. Correct the input or calculation settings,
+  then rerun with `--resume` to reuse matching completed jobs.
+- If you are unsure what a command will overwrite, add `--dry-run` first. Use
+  `--resume --force` only when you intend to reuse matching SCF files while
+  refreshing downstream outputs.
+
+The [CLI reference](cli.md) documents basis restrictions, resume behavior, and
+artifact-specific options.

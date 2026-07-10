@@ -428,7 +428,7 @@ def write_qa_overview(
         f"Failed rows: {total_failed}.",
         f"Linear-dependency warnings: {total_ld_warnings}.",
         "",
-        "This file is generated from `data/qa/*/qa.csv` and is intended as a compact ",
+        "This file is generated from `data/qa/*/qa.csv` and is intended as a compact",
         "release gate, not as a narrative scientific report.",
         "",
         "| dataset_id | states | failed | max |ΔN| | max angular σ/ρ | LD warnings |",

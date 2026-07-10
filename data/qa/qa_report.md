@@ -6,7 +6,7 @@ States checked: 1289.
 Failed rows: 0.
 Linear-dependency warnings: 372.
 
-This file is generated from `data/qa/*/qa.csv` and is intended as a compact 
+This file is generated from `data/qa/*/qa.csv` and is intended as a compact
 release gate, not as a narrative scientific report.
 
 | dataset_id | states | failed | max |ΔN| | max angular σ/ρ | LD warnings |

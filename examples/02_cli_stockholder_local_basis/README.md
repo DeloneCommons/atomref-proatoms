@@ -12,7 +12,7 @@ input/dyall-v2z-ni-pd-pt.nw
 It was downloaded from Basis Set Exchange with the equivalent URL:
 
 ```text
-http://www.basissetexchange.org/api/basis/dyall-v2z/format/nwchem/?version=1&elements=28,46,78
+https://www.basissetexchange.org/api/basis/dyall-v2z/format/nwchem/?version=1&elements=28,46,78
 ```
 
 The example command selects Ni and Pd with the charge filter `-1,0,+1`.
@@ -33,7 +33,7 @@ Run the example from this directory in a source checkout or full GitHub/Zenodo
 release archive:
 
 ```bash
-./run.sh
+bash run.sh
 ```
 
 The script sets `--grid-level 0` to keep the committed example lightweight and

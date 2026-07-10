@@ -1,56 +1,83 @@
 # atomref-proatoms
 
 [![CI][ci-badge]][ci-workflow]
-[![Pages][pages-badge]][pages-workflow]
+[![Documentation][pages-badge]][documentation]
 
-`atomref-proatoms` publishes versioned spherical proatomic radial electron-density
-profiles for isolated atoms and ions. It is meant for users who need a documented
-atom-centered reference convention instead of an implicit mixture of states,
-bases, grids, and validation rules. The data support stockholder and
-Hirshfeld-like analyses, promolecular density construction, deformation-density
-inspection, empirical radius models, and related cheminformatics or
-crystallographic workflows. The repository also includes a committed Multiwfn
-interoperability product: SCF-derived `.rad` atomic radial-density files for the
-two primary basis branches and neutral-atom PROAIM `.wfn` files for the primary
-`x2c-QZVPall` branch. These files make the same state and spherical-density
-conventions available to Multiwfn workflows that use atomic densities or
-atomwfn-style inputs.
+`atomref-proatoms` is both a versioned dataset and a Python toolkit for spherical
+atomic and ionic reference densities. The released data can be used directly in
+stockholder and Hirshfeld-like analyses, promolecular and deformation-density
+work, radius models, and related real-space workflows. The toolkit is optional:
+install it only when you want to select packaged states, generate a local subset,
+or build a different documented reference convention.
 
-## Quick orientation
+## Choose what you need
 
-Reading this on PyPI? The PyPI package installs the Python package, packaged
-state/preset resources, and the `atomref-proatoms` CLI. It is the right route
-for planning and generating new local profiles, but it is not the complete
-published dataset archive.
+| Goal | Start here | Installation needed? |
+|---|---|---|
+| Use the published radial profiles, cutoff radii, or QA tables | [Published data](data/) | No |
+| Use the released Multiwfn `.rad` or `.wfn` files | [Multiwfn artifacts](data/multiwfn_artifacts/) | No |
+| Understand or cite the scientific convention | [Scientific note](docs/index.md) | No |
+| Generate a small local dataset | [Generator quick start](docs/generator/index.md) | Yes, generator extra |
+| Develop or regenerate the release | [Maintainer workflow](docs/workflow.md) | Yes, source checkout |
 
-- New to the project: start with the documentation map below and the
-  [Workflow](docs/workflow.md) guide.
-- Need the published atomic profiles, cutoff radii, and QA tables: use the
-  `data/` folder from the GitHub or Zenodo release snapshot.
-- Need Multiwfn `.rad` or `.wfn` files: see `data/multiwfn_artifacts/` for the
-  released files and `examples/` for small reproducible generator runs.
-- Need to generate new local profiles or Multiwfn artifacts: install the
-  generator extra and use `atomref-proatoms generate`.
+The PyPI package contains the Python API, command-line interface, curated state
+table, presets, schemas, and small supporting resources. It does **not** contain
+the complete published profile/radii/QA tables or Multiwfn artifact tree; obtain
+those from a GitHub or Zenodo release snapshot.
 
-## Installation
+## Why these proatoms are different
 
-For the published command-line tool from PyPI:
+The central scientific choice is to define each proatom as a **self-consistent
+spherical density**, not as an angular average applied after an ordinary
+broken-symmetry open-shell calculation. Open-shell occupations are distributed
+over complete angular-momentum manifolds during the self-consistent-field (SCF)
+cycle, and the atomic Fock problem is solved in angular-momentum-averaged radial
+blocks. The tabulated radial density therefore belongs to the spherical ensemble
+used by the mean-field model itself.
+
+The current data layer combines NIST-derived neutral/cation states, a compact
+Ning--Lu 2022 monoanion status layer, and explicitly formal anion references.
+Formal anions are included for stockholder/Hirshfeld-I-like reference-density
+coverage; they are not claims of stable isolated atomic anions. The state table is
+`data/states/curated/atom_states_v2.json`, and the selected generation scope is
+`data/states/selection/required_states_v2.csv`.
+
+The profile-generation protocol is declared in `data/profile_datasets.yaml`:
+PBE0, spin-free one-electron exact two-component (X2C) relativity,
+self-consistent spherical fractional-occupation unrestricted Kohn--Sham (UKS),
+pure all-electron Gaussian basis functions, a logarithmic release grid, and an
+independent log-radius QA quadrature. The profile data version is `2.0.0`.
+
+The paper-style [Introduction](docs/introduction.md), [Theory](docs/theory.md),
+[Methods](docs/methods.md), [Results](docs/results.md),
+[Discussion](docs/discussion.md), and [Conclusions](docs/conclusions.md) document
+the scientific reasoning and its limits.
+
+## Installation for the toolkit
+
+No installation is required to read the released CSV, JSON, `.rad`, or `.wfn`
+files. To generate new profiles with PySCF and Basis Set Exchange, install the
+published tool with its generator dependencies:
 
 ```bash
-python -m pip install atomref-proatoms
 python -m pip install "atomref-proatoms[generator]"
 ```
 
-The base install is enough to import the package, inspect packaged resources,
-and run lightweight CLI help/dry-run paths. The `generator` extra adds PySCF and
-Basis Set Exchange for local SCF-backed generation and `bse:` basis sources.
-
-For a source checkout, use editable installs from the repository root:
+For lightweight state selection and profile operations without SCF generation:
 
 ```bash
-python -m pip install -e .
+python -m pip install atomref-proatoms
+```
+
+From a source checkout, use the corresponding editable install from the
+repository root:
+
+```bash
 python -m pip install -e ".[generator]"
 ```
+
+See the [Generator tool overview](docs/generator/index.md) for a dry-run-first
+walkthrough suitable for a first local calculation.
 
 ## Python scripting API
 
@@ -73,38 +100,17 @@ operations. Spherical SCF calculations and SCF-derived exports require the
 [custom-state scripting guide](docs/generator/scripting.md) for the supported
 package-level interface.
 
-## Scientific approach
+## Published data at a glance
 
-The central scientific choice is to define the proatom as a **self-consistent
-spherical density**, not as an angular average applied after an ordinary
-broken-symmetry open-shell calculation. In the generator, open-shell occupations
-are distributed over complete angular-momentum manifolds during the SCF cycle,
-and the atomic Fock problem is solved in angular-momentum-averaged radial blocks.
-The tabulated radial density is therefore the density of the spherical ensemble
-used in the mean-field model itself.
+The data layer contains four profile/radii/quality-assurance (QA) datasets and
+1289 dataset-state rows:
 
-The current data layer combines NIST-derived neutral/cation states, a compact
-Ning--Lu 2022 monoanion status layer, and explicitly formal anion references.
-Formal anions are included for stockholder/Hirshfeld-I-like reference-density
-coverage; they are not claims of stable isolated atomic anions. The state table is
-`data/states/curated/atom_states_v2.json`, and the selected generation scope is
-`data/states/selection/required_states_v2.csv`.
-
-The profile-generation protocol is declared in `data/profile_datasets.yaml`:
-PBE0, spin-free one-electron X2C, self-consistent spherical fractional-occupation
-UKS, pure all-electron Gaussian basis functions, a logarithmic release grid, and
-an independent log-radius QA quadrature. The profile data version is `2.0.0`.
-
-## Scientific contents
-
-The data layer contains four profile/radii/QA datasets and 1289 dataset-state rows:
-
-| dataset ID | basis | selected rows | role |
+| basis branch | coverage | selected rows | intended use |
 |---|---|---:|---|
-| `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` | `x2c-QZVPall` | 430 | primary H-Rn |
-| `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` | `dyall-v4z` | 501 | primary H-Lr |
-| `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` | `x2c-QZVPall-s` | 192 | supplemented H-Rn neutrals/anions |
-| `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` | `dyall-av4z` | 166 | augmented selected neutrals/anions |
+| `x2c-QZVPall` | H--Rn | 430 | primary/default branch |
+| `dyall-v4z` | H--Lr | 501 | primary branch with broader coverage |
+| `x2c-QZVPall-s` | H--Rn | 192 | supplemented neutral/anion comparison |
+| `dyall-av4z` | H--Ba and Hf--Ra where available | 166 | augmented neutral/anion comparison |
 
 The two primary basis branches are large all-electron quadruple-zeta families
 chosen for broad periodic-table coverage and reduced radial basis-set error. The
@@ -116,23 +122,26 @@ derived products, not replacements for the profile/radii/QA contract. Generated
 data files are stored under:
 
 ```text
-data/profiles/<dataset_id>/profiles.csv
-data/radii/<dataset_id>/radii.csv
-data/qa/<dataset_id>/qa.csv
-data/multiwfn_artifacts/
+data/profiles/<dataset_id>/profiles.csv       spherical density rho(r)
+data/radii/<dataset_id>/radii.csv             density-cutoff radii
+data/qa/<dataset_id>/qa.csv                   per-state validation results
+data/multiwfn_artifacts/                      released .rad and .wfn files
 ```
+
+The [data landing page](data/) gives the exact dataset IDs, default-basis advice,
+file contracts, and interpretation cautions.
 
 The expensive SCF checkpoints, arrays, and logs are regeneration inputs under
 ignored `local-data/scf/` paths and are not part of the committed release tables.
 
 ## Quality-assurance summary
 
-Every committed profile row passes the current validation criteria. The validation layer verifies
-SCF completion, independent electron-count integration, angular sphericity,
-finite density values, tail coverage, and cutoff-radius consistency. The current
-maximum independent electron-count error is about `2.5e-12` electrons, and the
-maximum relative angular density standard deviation above the QA density floor is
-about `1.6e-14`.
+Every committed profile row passes the current validation criteria. The
+validation layer verifies SCF completion, independent electron-count integration,
+angular sphericity, finite density values, tail coverage, and cutoff-radius
+consistency. The current maximum independent electron-count error is about
+`2.5e-12` electrons, and the maximum relative angular density standard deviation
+above the QA density floor is about `1.6e-14`.
 
 Diffuse/supplemented basis sensitivity is stored under
 `data/qa/basis_sensitivity/`: dyall-v4z → dyall-av4z has 166 matched
@@ -145,9 +154,10 @@ dyall-v4z. These comparison rows are scientific diagnostics, not release failure
 For a compact Methods-style summary of QA, basis comparisons, and recommended
 next analyses, see the [Results](docs/results.md).
 
-## How to inspect the data
+## Validate a source checkout
 
-The fastest release-data consistency checks are:
+You do not need to run validation scripts to consume a tagged release. To audit
+a source checkout, the fastest release-data consistency checks are:
 
 ```bash
 python scripts/check_states.py
@@ -168,72 +178,50 @@ The lightweight package layer remains importable without PySCF:
 python -c "import atomref_proatoms; print(atomref_proatoms.__version__)"
 ```
 
-For a PyPI-style packaging check, build and install the wheel into a fresh
-environment and run the public CLI without importing from the source checkout:
-
-```bash
-python scripts/smoke_installed_wheel.py
-```
-
-The optional `--with-generator-execution` mode additionally installs the
-`generator` extra and runs a tiny neutral-H generation smoke test. A full
-maintainer release gate is listed in [`docs/workflow.md`](docs/workflow.md).
+A full maintainer release gate, including the installed-wheel smoke test and
+documentation build, is listed in the [maintainer workflow](docs/workflow.md).
 
 ## Regeneration workflow
 
-Full regeneration requires the optional generator dependencies and complete local
-SCF execution:
-
-```bash
-python -m pip install -e ".[generator,dev,docs]"
-python scripts/check_states.py
-python scripts/check_basis_bundles.py
-python scripts/compute_wavefunctions.py --resume --quiet-scf-log
-python scripts/extract_profiles.py --force --check
-python scripts/check_basis_sensitivity.py --force
-python scripts/check_basis_comparisons.py --force
-python scripts/check_profile_artifacts.py --require-generated
-python scripts/export_multiwfn_artifacts.py --format all --force --check
-python scripts/check_multiwfn_artifacts.py --require-generated
-```
-
-The `--list` and `--dry-run` options on `compute_wavefunctions.py`,
-`extract_profiles.py`, and `export_multiwfn_artifacts.py` inspect the active
-build/export plan without running SCF or rewriting generated artifacts.
-`scripts/prepare_docs.py --write` only reads committed tables and refreshes
-`docs/tables/`, `docs/figures/`, and marked blocks in `docs/results.md`.
+Full release regeneration is a maintainer workflow that requires optional
+dependencies, substantial local SCF execution, and the ignored checkpoint layer.
+See the [ordered regeneration procedure](docs/workflow.md#standard-maintainer-workflow)
+and [script reference](scripts/README.md). The maintainer scripts provide
+`--list` and `--dry-run` modes for inspecting a plan before expensive work.
 
 ## Generator examples
 
 The public generator tool has reproducible examples under [`examples/`](examples/):
 
-- `examples/01_cli_neutral_rad_wfn_bse/` generates neutral Multiwfn `.rad` and `.wfn` files for H and B--F from a BSE basis with X2C disabled.
-- `examples/02_cli_stockholder_local_basis/` generates stockholder-style profiles/radii/QA, `.rad`, and neutral-only `.wfn` outputs from a local NWChem basis file.
-- `examples/03_python_custom_state_pipeline/` is an expert notebook for custom states and project-specific pipelines outside the curated CLI state policies.
+- `examples/01_cli_neutral_rad_wfn_bse/` generates neutral Multiwfn `.rad` and
+  `.wfn` files for H and B--F from a BSE basis with X2C disabled.
+- `examples/02_cli_stockholder_local_basis/` generates stockholder-style
+  profiles/radii/QA, `.rad`, and neutral-only `.wfn` outputs from a local NWChem
+  basis file.
+- `examples/03_python_custom_state_pipeline/` is an expert notebook for custom
+  states and project-specific pipelines outside the curated CLI state policies.
 
-The full tool manual is in the [Generator tool](docs/generator/index.md) documentation section.
-Use `python -m pip install "atomref-proatoms[generator]"` for the PyPI tool, or
-`python -m pip install -e ".[generator]"` from a source checkout. Both include
-PySCF and Basis Set Exchange for `bse:` basis sources.
+The full workflow is explained in the
+[generator overview and quick start](docs/generator/index.md).
 
 ## Documentation map
 
-- [Scientific model](docs/theory.md): spherical fractional-occupation proatoms,
-  radial distributions, cutoff-radius definitions, and reference-gauge interpretation.
-- [Methods](docs/methods.md): state sources, basis branches, electronic-structure
-  settings, radial grids, validation, and comparison metrics.
-- [Results](docs/results.md): paper-style summary of QA, basis comparisons, sensitivity patterns, and practical recommendations.
-- [Data products](docs/data.md): profile, radii, QA, basis-sensitivity,
-  primary-basis-comparison, and Multiwfn interoperability file contracts.
-- [Input data](docs/inputs.md): basis bundles and atomic-state curation.
-- [State policy](docs/state_policy.md): state-source hierarchy, formal anion
-  meaning, and interpretation limits.
-- [Workflow](docs/workflow.md): scripts, package layout, and regeneration steps.
-- [Notebooks](docs/notebooks/README.md): profile-inspection and sphericalization
-  demonstration notebooks.
-- [Python API](docs/api.md): package-level state, SCF, profile, and
-  interoperability scripting interface.
-- [License](docs/license.md) and [AI assistance note](docs/ai_note.md).
+- **Scientific note:** [Abstract and scope](docs/index.md) →
+  [Introduction](docs/introduction.md) → [Theory](docs/theory.md) →
+  [Methods](docs/methods.md) → [Results](docs/results.md) →
+  [Discussion](docs/discussion.md) → [Conclusions](docs/conclusions.md).
+- **Generator manual:** [overview and quick start](docs/generator/index.md),
+  [how-to guide](docs/generator/howto.md), [CLI reference](docs/generator/cli.md),
+  [Python scripting](docs/generator/scripting.md), and
+  [examples](docs/generator/examples.md).
+- **Data and scientific reference:** [data products](docs/data.md),
+  [input data](docs/inputs.md), [state policy](docs/state_policy.md), and
+  [notebooks](docs/notebooks/README.md).
+- **Developer and maintainer reference:** [Python API](docs/api.md),
+  [workflow and validation](docs/workflow.md), and
+  [script reference](scripts/README.md).
+- **Project policies:** [license](docs/license.md) and
+  [AI assistance note](docs/ai_note.md).
 
 ## Lightweight consumers
 
@@ -269,4 +257,4 @@ the final scientific content, code, data, validation, and release decisions. See
 [ci-badge]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/ci.yml/badge.svg
 [ci-workflow]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/ci.yml
 [pages-badge]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/pages.yml/badge.svg
-[pages-workflow]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/pages.yml
+[documentation]: https://delonecommons.github.io/atomref-proatoms/

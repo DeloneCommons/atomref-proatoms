@@ -6,19 +6,26 @@
 
 The current data layer contains 1289 generated dataset-state rows across four basis branches. The primary branches are `x2c-QZVPall` for H--Rn and `dyall-v4z` for H--Lr. The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, contain neutral and anion rows used to quantify branch and tail sensitivity; cations are deliberately not duplicated in these branches. All committed rows pass the current validation criteria. A committed Multiwfn interoperability product is provided under `data/multiwfn_artifacts/`: 931 SCF-derived `.rad` files for the primary branches and 86 neutral `x2c-QZVPall` PROAIM `.wfn` files for workflows that expect Multiwfn atomic radial-density or atomwfn-style inputs.
 
-## How to read these docs
+## Choose a reading path
 
-The main documentation is organized as a paper-like technical note. The core argument is in the Introduction, Theory, Methods, Results, Discussion, and Conclusions. Data dictionaries, script details, notebooks, license material, and repository-operation notes are kept in the Other and Reference sections so that the scientific narrative remains readable.
+| If you want to... | Read... |
+|---|---|
+| Understand the scientific motivation and evidence | [Introduction](introduction.md) → [Theory](theory.md) → [Methods](methods.md) → [Results](results.md) → [Discussion](discussion.md) → [Conclusions](conclusions.md) |
+| Use the published tables or Multiwfn files | [Data products](data.md), then the README in the relevant [data directory on GitHub](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data) |
+| Generate a small local subset | [Generator overview and quick start](generator/index.md), then the [how-to guide](generator/howto.md) |
+| Use the package from Python | [Python scripting](generator/scripting.md) and the [Python API](api.md) |
+| Reproduce or maintain the release | [Workflow and validation](workflow.md) and [repository notes](other.md) |
 
-The documentation also includes a compact Multiwfn WFN interoperability notebook for the fixed H/O/H2O validation system. The committed `.rad` and `.wfn` files are practical interoperability products; the profile/radii/QA layer remains the canonical data representation. The public `atomref-proatoms generate` command is available for small local generation runs and custom release-adjacent workflows without redefining the data contract.
+The first path is organized as a paper-like technical note. Data dictionaries,
+script details, notebooks, licensing, and repository operations are separated
+from that sequence so that the scientific argument remains readable.
 
-The Results page includes generated tables and figures produced from committed CSV/JSON artifacts by:
-
-```bash
-python scripts/prepare_docs.py --write
-```
-
-The visible Markdown remains the source of the scientific prose. The script only refreshes marked table and figure blocks plus reusable fragments under `docs/tables/` and `docs/figures/`.
+The documentation also includes a compact Multiwfn WFN interoperability notebook
+for the fixed H/O/H₂O validation system. The committed `.rad` and `.wfn` files are
+practical interoperability products; the profile/radii/QA layer remains the
+canonical data representation. The public `atomref-proatoms generate` command is
+available for small local generation runs and custom release-adjacent workflows
+without redefining the released data contract.
 
 ## Data entry points
 
@@ -43,19 +50,23 @@ data/profile_datasets.yaml
 
 The expensive SCF checkpoints and logs are local regeneration material under ignored `local-data/scf/` paths and are not part of the committed data layer.
 
-## Minimal validation
+Browse the complete [published data tree on GitHub](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data)
+or use the corresponding directory from a tagged release archive.
 
-For users who only inspect the committed data layer, the lightweight validation path is:
+## Optional checkout validation
+
+Tagged data can be read directly. To audit the data layer in a source checkout,
+run the two artifact checks:
 
 ```bash
-python scripts/check_states.py
-python scripts/check_basis_bundles.py
 python scripts/check_profile_artifacts.py --require-generated
 python scripts/check_multiwfn_artifacts.py --require-generated
-python scripts/check_basis_sensitivity.py --dry-run
-python scripts/check_basis_comparisons.py --dry-run
-python scripts/prepare_docs.py --check
-pytest -q
 ```
 
-Full SCF regeneration is a maintainer workflow requiring generator dependencies and local compute resources; it is not needed to consume the committed profile, radii, QA, or Multiwfn interoperability products.
+The full release gate and documentation-regeneration procedure are in
+[Workflow and validation](workflow.md). Full SCF regeneration requires generator
+dependencies and local compute resources; it is not needed to consume the
+committed data products.
+
+Continue with the [Introduction](introduction.md), or go directly to the
+[generator quick start](generator/index.md) if your goal is a local run.

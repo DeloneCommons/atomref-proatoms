@@ -33,3 +33,5 @@ This branch structure and validation layer define the five questions answered in
 5. How should users choose between primary and supplemented/augmented branches?
 
 The Results and Discussion sections answer these questions from the committed profile, radii, QA, comparison, and Multiwfn interoperability data products. Multiwfn `.rad` and `.wfn` files are practical analysis products, not the state-selection authority for the data layer.
+
+Next: [Theory](theory.md).

@@ -16,8 +16,8 @@ zeta level is preferred over lower-zeta x2c-TZVPall-like alternatives because ra
 density tails and density-cutoff radii are sensitive to basis quality, while the project
 does not require a still larger validation-only basis by default.
 
-Non-diffuse primary branch. Diffuse/supplemented results must not be silently merged
-into this dataset.
+This is the non-diffuse primary branch. Supplemented results must not be silently
+merged into this dataset.
 
 ## Bundle metadata
 

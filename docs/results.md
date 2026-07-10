@@ -247,3 +247,5 @@ The high-sensitivity Dyall augmented rows are listed below. They are mainly ligh
 The current data layer supports a clear default policy. Use the primary branches for reproducible default analyses: `x2c-QZVPall` for H--Rn when that element range is sufficient, and `dyall-v4z` for the broader H--Lr branch. Most users can ignore `x2c-QZVPall-s`; it is retained as an auditable supplemented comparison branch, not as the recommended tail-convergence reference. When low-density tails are central to the scientific question, prefer the Dyall primary/augmented comparison where its element coverage exists, and report formal-anion sensitivity explicitly.
 
 The supplemented/augmented branches should not be silently substituted into the primary dataset. They are separate reference gauges. Their value is precisely that they make basis-tail sensitivity observable and auditable.
+
+Next: [Discussion](discussion.md).

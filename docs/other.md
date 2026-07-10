@@ -1,4 +1,4 @@
-# Other material and repository reference
+# Repository, reuse, and interoperability notes
 
 ## Data dictionaries
 

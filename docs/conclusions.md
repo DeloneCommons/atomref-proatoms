@@ -11,3 +11,6 @@ The main scientific conclusions are:
 5. The primary x2c-vs-Dyall comparison over H--Rn is low-difference for most states, with a small upper tail dominated by formal anion behavior.
 
 The committed Multiwfn `.rad` and `.wfn` files expose the primary reference gauges to practical Multiwfn workflows, while preserving the same state, basis, and reference-gauge interpretation as the profile/radii/QA layer. They are derived products; they do not redefine the state policy or replace the profile/radii/QA contract.
+
+For practical reuse, continue with the [data-product reference](data.md). For a
+new local calculation, start with the [generator overview](generator/index.md).

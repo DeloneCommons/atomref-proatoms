@@ -49,3 +49,5 @@ The data layer is a reference convention, not an experimental measurement of ato
 The state table is intentionally scoped. It is not a complete catalogue of all atomic excited states, metastable anions, or possible method-selected occupations. Users who need a non-default occupation should treat it as a new reference gauge and document the state explicitly.
 
 Finally, the current repository commits profile, radii, QA, comparison tables, and the selected Multiwfn interoperability tree, but not the expensive local SCF checkpoint layer. Regenerating `.rad` or `.wfn` files therefore requires local SCF artifacts or rerunning the SCF workflow with the declared generator dependencies. The `.rad` files are evaluated from SCF arrays on the fixed Multiwfn grid, not interpolated from the committed profile tables.
+
+Next: [Conclusions](conclusions.md).

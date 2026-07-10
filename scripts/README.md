@@ -202,7 +202,7 @@ data/qa/basis_sensitivity/
     basis_sensitivity_metric_distributions.csv
 ```
 
-The pair-specific subdirectories are named after the base/basic basis set in the
+The pair-specific subdirectories are named after the base basis set in the
 comparison. The root-level files are aggregate compatibility outputs containing
 all emitted comparison rows.
 

@@ -13,7 +13,7 @@ Run:
 
 ```bash
 cd examples/01_cli_neutral_rad_wfn_bse
-./run.sh
+bash run.sh
 ```
 
 This example is useful for users who mainly want to understand the Multiwfn file
@@ -35,7 +35,7 @@ Run:
 
 ```bash
 cd examples/02_cli_stockholder_local_basis
-./run.sh
+bash run.sh
 ```
 
 This example is useful for users who need the native density tables:
