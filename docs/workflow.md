@@ -154,13 +154,18 @@ After the complete gate passes and the changelog no longer says `Unreleased`:
 4. upload those exact files to TestPyPI and test a clean installation before
    publishing the unchanged files to PyPI and attaching them to the GitHub
    release;
-5. archive the same tagged snapshot and record its DOI in the release notes when
-   the Zenodo record is available.
+5. archive the same tagged snapshot and record the Zenodo concept DOI and new
+   version-specific DOI in the citation metadata and release notes.
 
 Do not rebuild between TestPyPI and PyPI. The tag, GitHub release, archive, wheel,
-and sdist should all identify the same commit and version. `CITATION.cff` provides
-machine-readable citation metadata; add the final archive DOI there in a later
-documentation-only change if the DOI is not known before publication.
+and sdist should all identify the same commit and version. Release `2.0.0` is
+archived under the version-specific DOI
+[10.5281/zenodo.21291022](https://doi.org/10.5281/zenodo.21291022), while the
+project-level citation uses the concept DOI
+[10.5281/zenodo.21291021](https://doi.org/10.5281/zenodo.21291021).
+`CITATION.cff` records both identifiers. For future releases, preserve the
+concept DOI as the normal project citation and add the new version-specific DOI
+as the immutable identifier for that exact archive.
 
 ## Regeneration products
 

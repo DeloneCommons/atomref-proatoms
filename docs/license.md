@@ -14,11 +14,15 @@ Summary:
   NIST Standard Reference Database 78. Raw NIST ASD pages and quantitative SRD
   tables are not redistributed in this repository.
 
-When publishing work based on these data, cite the repository release, Basis Set
-Exchange and the upstream basis references used by the selected dataset, and the
-NIST Atomic Spectra Database for the state-configuration source layer.
+When publishing work based on these data, cite the atomref-proatoms
+[concept DOI](https://doi.org/10.5281/zenodo.21291021), report the exact release
+version and dataset ID or basis branch, and cite Basis Set Exchange, the upstream
+basis references used by the selected dataset, and the NIST Atomic Spectra
+Database for the state-configuration source layer.
 The repository root `CITATION.cff` cites the released dataset and therefore
 records `type: dataset` and the dataset license, `CC-BY-4.0`. The accompanying
 code remains MIT-licensed under the root `LICENSE.md`; the Python distribution's
-metadata reflects both kinds of bundled material. Prefer the archived dataset
-release DOI once assigned.
+metadata reflects both kinds of bundled material. Use the
+[version-specific v2.0.0 DOI](https://doi.org/10.5281/zenodo.21291022) when an
+immutable reference to the exact archived files is required. See the full
+[citation and reuse guidance](other.md#citation-and-reuse-guidance).

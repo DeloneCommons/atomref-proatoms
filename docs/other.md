@@ -43,13 +43,44 @@ Full profile regeneration additionally requires local SCF artifacts or new SCF c
 
 ## Citation and reuse guidance
 
-When using the data layer, cite or describe the reference convention rather than treating the profiles as method-independent isolated-atom truth. A compact description is:
+Please cite the atomref-proatoms [concept DOI](https://doi.org/10.5281/zenodo.21291021)
+for general use and report the exact release version and dataset ID or basis
+branch used. Cite the [version-specific v2.0.0 DOI](https://doi.org/10.5281/zenodo.21291022)
+when an immutable reference to the exact archived files is required. Thus the
+concept DOI is the preferred project-level citation across releases, while the
+version-specific DOI identifies the exact immutable `2.0.0` archive.
+
+Use these entry points according to the intended task:
+
+| Purpose | Location |
+|---|---|
+| Evolving project citation | [Zenodo concept DOI](https://doi.org/10.5281/zenodo.21291021) |
+| Exact v2.0.0 archive | [Zenodo version-specific DOI](https://doi.org/10.5281/zenodo.21291022) |
+| Complete published data layer | [Zenodo v2.0.0 archive](https://doi.org/10.5281/zenodo.21291022) or [tagged GitHub release](https://github.com/DeloneCommons/atomref-proatoms/releases/tag/v2.0.0) |
+| Installable toolkit | [PyPI](https://pypi.org/project/atomref-proatoms/) |
+| Source code | [GitHub](https://github.com/DeloneCommons/atomref-proatoms) |
+| Documentation | [Project documentation site](https://delonecommons.github.io/atomref-proatoms/) |
+
+The Zenodo/GitHub release contains the complete published data layer. The PyPI
+package contains the API, CLI, curated state resources, schemas, presets, and
+generator tooling, but intentionally excludes the complete generated profiles,
+radii, QA, and Multiwfn artifact trees.
+
+For scientific provenance in publications and derived data, record release
+version `2.0.0` and the exact dataset ID or basis branch used. Also cite or
+describe the reference convention rather than treating the profiles as
+method-independent isolated-atom truth. A compact description is:
 
 ```text
 Spherical reference proatoms were taken from atomref-proatoms, using the documented state, basis, spherical fractional-occupation SCF, profile, radii, and QA policies. Neutral and cationic states are NIST-derived; accepted monoanions use the Ning--Lu anion-status layer; formal anions are explicitly labeled reference-density rows and are not claimed as stable isolated atomic anions.
 ```
 
-This wording is guidance for reuse of the data layer. It is not a substitute for describing the basis branch and profile-data version used in a particular analysis.
+Formal anion rows in this convention are documented reference conventions, not
+claims that all corresponding isolated anions are physically stable. This
+wording is guidance for reuse of the data layer; it is not a substitute for
+reporting the exact release version and dataset ID or basis branch used in a
+particular analysis. Machine-readable citation metadata, including both DOIs,
+are provided in the repository root `CITATION.cff`.
 
 ## Validation command set
 

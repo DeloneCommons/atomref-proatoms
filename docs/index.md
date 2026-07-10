@@ -12,6 +12,7 @@ The current data layer contains 1289 generated dataset-state rows across four ba
 |---|---|
 | Understand the scientific motivation and evidence | [Introduction](introduction.md) → [Theory](theory.md) → [Methods](methods.md) → [Results](results.md) → [Discussion](discussion.md) → [Conclusions](conclusions.md) |
 | Use the published tables or Multiwfn files | [Data products](data.md), then the README in the relevant [data directory on GitHub](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data) |
+| Cite or reuse the data | [Citation, release, and reuse guidance](other.md#citation-and-reuse-guidance) |
 | Generate a small local subset | [Generator overview and quick start](generator/index.md), then the [how-to guide](generator/howto.md) |
 | Use the package from Python | [Python scripting](generator/scripting.md) and the [Python API](api.md) |
 | Reproduce or maintain the release | [Workflow and validation](workflow.md) and [repository notes](other.md) |
@@ -50,8 +51,24 @@ data/profile_datasets.yaml
 
 The expensive SCF checkpoints and logs are local regeneration material under ignored `local-data/scf/` paths and are not part of the committed data layer.
 
-Browse the complete [published data tree on GitHub](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data)
-or use the corresponding directory from a tagged release archive.
+Use the complete [Zenodo v2.0.0 archive](https://doi.org/10.5281/zenodo.21291022)
+or [tagged GitHub release](https://github.com/DeloneCommons/atomref-proatoms/releases/tag/v2.0.0)
+for the published data layer. The evolving source tree is available from the
+[GitHub repository](https://github.com/DeloneCommons/atomref-proatoms).
+
+## Citation and release access
+
+Please cite the atomref-proatoms [concept DOI](https://doi.org/10.5281/zenodo.21291021)
+for general use and report the exact release version and dataset ID or basis
+branch used. Cite the [version-specific v2.0.0 DOI](https://doi.org/10.5281/zenodo.21291022)
+when an immutable reference to the exact archived files is required.
+
+The complete Zenodo/GitHub release contains the published data layer. The
+[PyPI project](https://pypi.org/project/atomref-proatoms/) provides the installable
+API, CLI, curated state resources, schemas, presets, and generator tooling, but
+not the complete generated profiles, radii, QA, or Multiwfn artifact trees. See
+[Citation, release, and reuse guidance](other.md#citation-and-reuse-guidance) for
+the full access map and scientific provenance requirements.
 
 ## Optional checkout validation
 

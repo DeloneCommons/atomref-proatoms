@@ -85,7 +85,17 @@ sensitivity is reported separately and is not hidden as a pass/fail result. See
 the [paper-style Results](../docs/results.md) and the compact generated
 [`qa_report.md`](qa/qa_report.md).
 
-When publishing work based on these files, identify the repository release,
-profile data version, dataset ID or basis branch, and state policy. Code and data
-use different licenses, and frozen basis inputs retain upstream notices; see the
+For the complete published data layer, use the
+[Zenodo v2.0.0 archive](https://doi.org/10.5281/zenodo.21291022) or the
+[tagged GitHub release](https://github.com/DeloneCommons/atomref-proatoms/releases/tag/v2.0.0).
+The PyPI wheel is the installable toolkit and intentionally excludes these
+complete generated profile, radii, QA, and Multiwfn artifact trees.
+
+When publishing work based on these files, cite the
+[concept DOI](https://doi.org/10.5281/zenodo.21291021) for general use and report
+the exact release version and dataset ID or basis branch used. Use the
+[version-specific v2.0.0 DOI](https://doi.org/10.5281/zenodo.21291022) when an
+immutable reference to the exact archived files is required. Code and data use
+different licenses, and frozen basis inputs retain upstream notices; see the
+[citation and reuse guidance](../docs/other.md#citation-and-reuse-guidance) and
 [license and attribution summary](../docs/license.md).

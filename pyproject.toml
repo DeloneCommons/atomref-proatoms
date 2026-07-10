@@ -24,6 +24,7 @@ Homepage = "https://github.com/DeloneCommons/atomref-proatoms"
 Documentation = "https://delonecommons.github.io/atomref-proatoms/"
 Repository = "https://github.com/DeloneCommons/atomref-proatoms"
 Issues = "https://github.com/DeloneCommons/atomref-proatoms/issues"
+Dataset = "https://doi.org/10.5281/zenodo.21291021"
 
 [project.scripts]
 atomref-proatoms = "atomref_proatoms.cli.main:main"

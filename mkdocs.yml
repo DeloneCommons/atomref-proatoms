@@ -49,7 +49,7 @@ nav:
   - Developer and maintainer reference:
       - Python API: api.md
       - Workflow and validation: workflow.md
-      - Repository and reuse notes: other.md
+      - Citation, release, and reuse: other.md
   - Project policies:
       - License: license.md
       - AI assistance note: ai_note.md

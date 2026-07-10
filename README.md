@@ -2,6 +2,7 @@
 
 [![CI][ci-badge]][ci-workflow]
 [![Documentation][pages-badge]][documentation]
+[![DOI][zenodo-badge]][zenodo-doi]
 
 `atomref-proatoms` is both a versioned dataset and a Python toolkit for spherical
 atomic and ionic reference densities. The released data can be used directly in
@@ -14,7 +15,7 @@ or build a different documented reference convention.
 
 | Goal | Start here | Installation needed? |
 |---|---|---|
-| Use the published radial profiles, cutoff radii, or QA tables | [Published data](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data) | No |
+| Use the published radial profiles, cutoff radii, or QA tables | [v2.0.0 archive](https://doi.org/10.5281/zenodo.21291022) and [data guide](https://delonecommons.github.io/atomref-proatoms/data/) | No |
 | Use the released Multiwfn `.rad` or `.wfn` files | [Multiwfn artifacts](https://github.com/DeloneCommons/atomref-proatoms/tree/main/data/multiwfn_artifacts) | No |
 | Understand or cite the scientific convention | [Scientific note](https://delonecommons.github.io/atomref-proatoms/) | No |
 | Generate a small local dataset | [Generator quick start](https://delonecommons.github.io/atomref-proatoms/generator/) | Yes, generator extra |
@@ -23,7 +24,8 @@ or build a different documented reference convention.
 The PyPI package contains the Python API, command-line interface, curated state
 table, presets, schemas, and small supporting resources. It does **not** contain
 the complete published profile/radii/QA tables or Multiwfn artifact tree; obtain
-those from a GitHub or Zenodo release snapshot.
+those from the [Zenodo v2.0.0 archive](https://doi.org/10.5281/zenodo.21291022)
+or [tagged GitHub release](https://github.com/DeloneCommons/atomref-proatoms/releases/tag/v2.0.0).
 
 ## Why these proatoms are different
 
@@ -250,6 +252,19 @@ Lightweight runtime packages may consume compact generated snapshots from
 PySCF, Basis Set Exchange tooling, external quantum-chemistry programs, or
 generator internals.
 
+## Citation
+
+Please cite the atomref-proatoms [concept DOI](https://doi.org/10.5281/zenodo.21291021)
+for general use and report the exact release version and dataset ID or basis
+branch used. Cite the [version-specific v2.0.0 DOI](https://doi.org/10.5281/zenodo.21291022)
+when an immutable reference to the exact archived files is required.
+
+Machine-readable metadata are provided in
+[`CITATION.cff`](https://github.com/DeloneCommons/atomref-proatoms/blob/main/CITATION.cff).
+See the detailed
+[citation, release, and reuse guidance](https://delonecommons.github.io/atomref-proatoms/other/#citation-and-reuse-guidance)
+for data-access links and scientific provenance requirements.
+
 ## License and attribution
 
 Code in `src/`, `scripts/`, and `tests/` is released under the MIT License. The
@@ -277,3 +292,5 @@ the final scientific content, code, data, validation, and release decisions. See
 [ci-workflow]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/ci.yml
 [pages-badge]: https://github.com/DeloneCommons/atomref-proatoms/actions/workflows/pages.yml/badge.svg
 [documentation]: https://delonecommons.github.io/atomref-proatoms/
+[zenodo-badge]: https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21291021-blue.svg
+[zenodo-doi]: https://doi.org/10.5281/zenodo.21291021

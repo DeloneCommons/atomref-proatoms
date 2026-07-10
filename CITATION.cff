@@ -1,17 +1,24 @@
 cff-version: 1.2.0
 message: >-
-  If you use atomref-proatoms, please cite the exact dataset release used.
-  The release also contains the software used to generate and validate the data.
+  Please cite the atomref-proatoms concept DOI for general use and report the
+  exact release version and dataset ID or basis branch used. Cite the
+  version-specific DOI when an immutable reference to the exact archived files
+  is required.
 title: "atomref-proatoms: spherical atomic and ionic reference densities"
 type: dataset
-version: 2.0.0
-date-released: 2026-07-10
+version: "2.0.0"
+date-released: "2026-07-10"
 authors:
   - family-names: Chernyshov
     given-names: Ivan Yu.
     email: ivan.chernyshoff@gmail.com
 repository-code: https://github.com/DeloneCommons/atomref-proatoms
 url: https://delonecommons.github.io/atomref-proatoms/
+doi: 10.5281/zenodo.21291021
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21291022
+    description: Version-specific DOI for the immutable atomref-proatoms 2.0.0 archive.
 abstract: >-
   A versioned dataset of spherical atomic and ionic reference densities,
   cutoff radii, quality-assurance data, and Multiwfn interoperability
