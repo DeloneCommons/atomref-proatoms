@@ -12,9 +12,9 @@ def test_citation_metadata_matches_package_version() -> None:
     assert citation["cff-version"] == "1.2.0"
     assert citation["version"] == __version__
     assert str(citation["date-released"]) == "2026-07-10"
-    assert citation["type"] == "software"
+    assert citation["type"] == "dataset"
     assert citation["repository-code"].endswith("/atomref-proatoms")
-    assert {"MIT", "CC-BY-4.0"}.issubset(citation["license"])
+    assert citation["license"] == "CC-BY-4.0"
 
 
 def test_changelog_has_current_version() -> None:

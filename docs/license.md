@@ -17,5 +17,8 @@ Summary:
 When publishing work based on these data, cite the repository release, Basis Set
 Exchange and the upstream basis references used by the selected dataset, and the
 NIST Atomic Spectra Database for the state-configuration source layer.
-The repository root `CITATION.cff` supplies machine-readable metadata for the
-exact software/dataset release; prefer the archived release DOI once assigned.
+The repository root `CITATION.cff` cites the released dataset and therefore
+records `type: dataset` and the dataset license, `CC-BY-4.0`. The accompanying
+code remains MIT-licensed under the root `LICENSE.md`; the Python distribution's
+metadata reflects both kinds of bundled material. Prefer the archived dataset
+release DOI once assigned.

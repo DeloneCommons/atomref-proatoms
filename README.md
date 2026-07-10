@@ -264,8 +264,8 @@ also includes a compact Ning--Lu 2022 monoanion state-status source table withou
 electron-affinity values and a formal-anion preparation table whose rows are
 explicitly marked as formal/not-claimed references. See
 [`LICENSE.md`](https://github.com/DeloneCommons/atomref-proatoms/blob/main/LICENSE.md)
-for the full repository license statement. Machine-readable release citation
-metadata is provided in
+for the full repository license statement. Machine-readable dataset-release
+citation metadata is provided in
 [`CITATION.cff`](https://github.com/DeloneCommons/atomref-proatoms/blob/main/CITATION.cff).
 
 Project planning, scientific discussion, code drafting, and documentation drafting
