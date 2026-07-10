@@ -48,6 +48,7 @@ nav:
       - Multiwfn WFN validation: notebooks/multiwfn_wfn_plane_validation.ipynb
       - License: license.md
       - AI assistance note: ai_note.md
+  - Python API: api.md
 
 markdown_extensions:
   - admonition

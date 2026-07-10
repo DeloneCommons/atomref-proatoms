@@ -52,6 +52,27 @@ python -m pip install -e .
 python -m pip install -e ".[generator]"
 ```
 
+## Python scripting API
+
+Reusable scripting objects are available directly from the package:
+
+```python
+from atomref_proatoms import select_packaged_states
+
+selection = select_packaged_states(
+    elements=["C", "Ni"],
+    policy="stockholder",
+    charges=[-1, 0, 1],
+)
+print(selection.state_ids)
+```
+
+The base installation supports packaged-state selection and lightweight profile
+operations. Spherical SCF calculations and SCF-derived exports require the
+`generator` extra. See the [Python API](docs/api.md) and the
+[custom-state scripting guide](docs/generator/scripting.md) for the supported
+package-level interface.
+
 ## Scientific approach
 
 The central scientific choice is to define the proatom as a **self-consistent
@@ -210,6 +231,8 @@ PySCF and Basis Set Exchange for `bse:` basis sources.
 - [Workflow](docs/workflow.md): scripts, package layout, and regeneration steps.
 - [Notebooks](docs/notebooks/README.md): profile-inspection and sphericalization
   demonstration notebooks.
+- [Python API](docs/api.md): package-level state, SCF, profile, and
+  interoperability scripting interface.
 - [License](docs/license.md) and [AI assistance note](docs/ai_note.md).
 
 ## Lightweight consumers

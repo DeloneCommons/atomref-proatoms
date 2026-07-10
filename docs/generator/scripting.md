@@ -40,6 +40,25 @@ The package APIs used by the CLI are available for this purpose, but scripts
 should keep their inputs visible. Avoid hiding the scientific state definition
 behind a long helper function unless it is thoroughly documented.
 
+## Public imports
+
+The supported scripting interface is imported directly from the package:
+
+```python
+from atomref_proatoms import (
+    AtomState,
+    interpolate_density,
+    make_spherical_uks,
+    select_packaged_states,
+    validate_atom_state,
+)
+```
+
+Importing the package remains lightweight and does not require PySCF. Calling
+SCF-backed functions such as `make_spherical_uks` requires the `generator`
+extra. The complete supported surface, signatures, units, and optional-dependency
+boundaries are listed in the [Python API](../api.md).
+
 ## Example notebook
 
 The expert notebook is:

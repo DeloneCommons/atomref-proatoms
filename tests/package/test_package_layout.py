@@ -18,6 +18,51 @@ REMOVED_MODULES = (
     "atomref_proatoms.engines.spherical_uks",
 )
 
+PUBLIC_SCRIPTING_API = {
+    "AtomState",
+    "BasisCheckResult",
+    "BasisSpec",
+    "MethodCheck",
+    "MethodSpec",
+    "RelativitySpec",
+    "StateSelection",
+    "__version__",
+    "apply_x2c_if_requested",
+    "atom_wfn_filename",
+    "check_basis_source",
+    "check_method_with_pyscf",
+    "configure_dft_grid",
+    "density_profile_from_mf",
+    "derived_radii",
+    "evaluate_scf_radial_density",
+    "interpolate_density",
+    "load_profile_csv",
+    "log_radial_grid",
+    "make_spherical_uhf",
+    "make_spherical_uks",
+    "multiwfn_rad_filename",
+    "parse_basis_spec",
+    "parse_method",
+    "parse_relativity",
+    "radius_at_density",
+    "select_packaged_states",
+    "validate_atom_state",
+    "validate_spherical_ao_layout",
+    "write_atomref_spherical_wfn",
+    "write_multiwfn_rad_file",
+    "write_scf_npz",
+    "write_wide_profiles_csv",
+}
+
+
+def test_top_level_scripting_api_is_explicit_and_complete() -> None:
+    import atomref_proatoms
+
+    assert len(atomref_proatoms.__all__) == len(set(atomref_proatoms.__all__))
+    assert set(atomref_proatoms.__all__) == PUBLIC_SCRIPTING_API
+    for name in PUBLIC_SCRIPTING_API:
+        assert hasattr(atomref_proatoms, name)
+
 
 def test_v2_subpackage_imports_are_canonical() -> None:
     from atomref_proatoms.dataio.basis import BasisBundle
