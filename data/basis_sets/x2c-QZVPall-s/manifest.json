@@ -38,14 +38,17 @@
     "n_elements": 86
   },
   "usage": {
-    "dataset_ids_using_this_basis": []
+    "dataset_ids_using_this_basis": [
+      "pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2"
+    ]
   },
   "redistribution": {
     "redistribution_basis": "BSE export redistributed under the BSE BSD-3-Clause notice; upstream citations are recorded in references.md.",
     "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
   },
   "notes": [
-    "Auxiliary supplemented x2c branch retained as frozen input data for basis-sensitivity studies.",
-    "No active v1 profile dataset uses this basis."
+    "Supplemented x2c branch retained as frozen input data for neutral/anion basis-comparison studies.",
+    "The upstream BSE description identifies this as an NMR-shielding-oriented basis, not a conventional diffuse tail basis.",
+    "The active profile dataset uses this basis for neutral and anion states in its declared H-Rn coverage; cations are excluded."
   ]
 }

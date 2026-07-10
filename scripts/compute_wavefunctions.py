@@ -14,25 +14,16 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from atomref_proatoms.artifacts import write_json  # noqa: E402
-from atomref_proatoms.basis import list_basis_bundles  # noqa: E402
-from atomref_proatoms.build_plan import (  # noqa: E402
-    ALL_PROFILE_DATASETS,
-    ALL_V1_BUILD_PLAN,
-    ProfileBuildJob,
-    build_jobs_for_datasets,
-    filter_build_jobs,
-    format_build_plan,
-)
-from atomref_proatoms.datasets import DATASET_IDS, load_profile_dataset_config  # noqa: E402
-from atomref_proatoms.paths import (  # noqa: E402
+from atomref_proatoms.dataio.basis import list_basis_bundles  # noqa: E402
+from atomref_proatoms.dataio.datasets import DATASET_IDS, load_profile_dataset_config  # noqa: E402
+from atomref_proatoms.dataio.paths import (  # noqa: E402
     BASIS_ROOT,
     PROFILE_DATASETS_FILE,
     SCF_ROOT,
     STATES_FILE,
     repo_relative_path,
 )
-from atomref_proatoms.scf import (  # noqa: E402
+from atomref_proatoms.engines.pyscf_backend import (  # noqa: E402
     SCFSettings,
     import_pyscf_modules,
     run_dataset_state,
@@ -42,7 +33,15 @@ from atomref_proatoms.scf import (  # noqa: E402
     scf_metadata,
     write_scf_npz,
 )
-from atomref_proatoms.states import AtomState, load_atom_states  # noqa: E402
+from atomref_proatoms.profiles.artifacts import write_json  # noqa: E402
+from atomref_proatoms.profiles.build_plan import (  # noqa: E402
+    ALL_PROFILE_DATASETS,
+    ProfileBuildJob,
+    build_jobs_for_datasets,
+    filter_build_jobs,
+    format_build_plan,
+)
+from atomref_proatoms.states.state_tables import AtomState, load_atom_states  # noqa: E402
 
 
 class TeeCapture(io.StringIO):
@@ -78,8 +77,8 @@ def parse_args() -> argparse.Namespace:
         action="append",
         default=[],
         help=(
-            "Dataset ID to compute; may be repeated. Use 'all' or 'all_v1' for all "
-            "configured v1 datasets. Defaults to all datasets."
+            "Dataset ID to compute; may be repeated. Use 'all' for all "
+            "configured datasets. Defaults to all datasets."
         ),
     )
     parser.add_argument(
@@ -96,7 +95,9 @@ def parse_args() -> argparse.Namespace:
         default=SCF_ROOT,
         help="Local SCF artifact root; defaults to local-data/scf.",
     )
-    parser.add_argument("--resume", action="store_true", help="Reuse matching local SCF artifacts.")
+    parser.add_argument(
+        "--resume", action="store_true", help="Reuse matching local SCF artifacts."
+    )
     parser.add_argument(
         "--force",
         action="store_true",
@@ -106,6 +107,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--xc", default=None, help="Override XC functional from the YAML default.")
     parser.add_argument("--conv-tol", type=float, default=None, help="Override SCF conv_tol.")
     parser.add_argument("--max-cycle", type=int, default=None, help="Override maximum SCF cycles.")
+    parser.add_argument("--diis-space", type=int, default=None, help="Override PySCF DIIS space.")
+    parser.add_argument(
+        "--diis-start-cycle",
+        type=int,
+        default=None,
+        help="Override the SCF cycle where DIIS acceleration starts.",
+    )
     parser.add_argument(
         "--grid-level", type=int, default=None, help="Override PySCF DFT grid level."
     )
@@ -151,7 +159,7 @@ def _selected_dataset_ids(values: list[str], configured_ids: tuple[str, ...]) ->
     if not values:
         return configured_ids
     expanded: list[str] = []
-    aliases = {ALL_PROFILE_DATASETS, ALL_V1_BUILD_PLAN}
+    aliases = {ALL_PROFILE_DATASETS}
     for value in values:
         if value in aliases:
             expanded.extend(configured_ids)
@@ -182,7 +190,15 @@ def _settings_from_args(
             args.conv_tol if args.conv_tol is not None else defaults.get("conv_tol", 1e-9)
         ),
         max_cycle=int(
-            args.max_cycle if args.max_cycle is not None else defaults.get("max_cycle", 100)
+            args.max_cycle if args.max_cycle is not None else defaults.get("max_cycle", 300)
+        ),
+        diis_space=int(
+            args.diis_space if args.diis_space is not None else defaults.get("diis_space", 12)
+        ),
+        diis_start_cycle=int(
+            args.diis_start_cycle
+            if args.diis_start_cycle is not None
+            else defaults.get("diis_start_cycle", 1)
         ),
         grid_level=int(
             args.grid_level if args.grid_level is not None else defaults.get("grid_level", 4)
@@ -198,7 +214,7 @@ def _print_plan(args: argparse.Namespace, jobs: tuple[ProfileBuildJob, ...], con
     print(f"SCF artifact root: {repo_relative_path(args.scf_root)}")
     print(
         format_build_plan(
-            jobs, show_jobs=args.show_jobs or args.list or args.dry_run, config=config
+            jobs, show_jobs=args.show_jobs, config=config
         )
     )
 
@@ -222,6 +238,7 @@ def _compute_one_job(
         state=state,
         bundle=bundle,
         settings=settings,
+        pyscf_version=pyscf_version,
     )
     if args.resume and not args.force and scf_artifact_is_reusable(paths, fingerprints):
         return "skipped_reusable"
@@ -233,6 +250,8 @@ def _compute_one_job(
         use_x2c=settings.use_x2c,
         conv_tol=settings.conv_tol,
         max_cycle=settings.max_cycle,
+        diis_space=settings.diis_space,
+        diis_start_cycle=settings.diis_start_cycle,
         grid_level=settings.grid_level,
         grid_prune=settings.grid_prune,
         verbose=settings.verbose,
@@ -255,6 +274,11 @@ def _compute_one_job(
         log_text=log_text,
     )
     write_json(paths.metadata, metadata)
+    if not bool(metadata.get("results", {}).get("converged")):
+        raise RuntimeError(
+            "SCF did not converge; diagnostic artifacts were written to "
+            f"{repo_relative_path(paths.state_dir)}"
+        )
     return "computed"
 
 

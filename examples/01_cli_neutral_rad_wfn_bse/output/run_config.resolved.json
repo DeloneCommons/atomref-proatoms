@@ -1,0 +1,182 @@
+{
+  "schema_version": "atomref.proatoms.generator_resolved_config.v1",
+  "package_version": "2.0.0",
+  "run_id": "pbe0_none_bse_cc-pvdz_neutral",
+  "resource_origin": {
+    "kind": "package",
+    "package": "atomref_proatoms.resources",
+    "root": null
+  },
+  "state_table_sha256": "832c8bf0e023cb5398b76d0e0bbe0f5b6d2e85b94ca1542676f38435b3e67dae",
+  "tool_defaults_sha256": "8a8b5e7fa852577e3fe5c07e4942f2a08db5ea0f8ae9f527dfd05d3fec1980df",
+  "method": {
+    "input_method": "PBE0",
+    "method_kind": "dft",
+    "xc": "PBE0",
+    "scf_type": "UKS"
+  },
+  "method_check": {
+    "status": "ok",
+    "message": "PySCF accepted XC string 'PBE0'.",
+    "pyscf_version": "2.13.1"
+  },
+  "relativity": {
+    "input_relativity": "none",
+    "relativity": "none",
+    "engine_label": "none"
+  },
+  "basis": {
+    "source": "bse",
+    "name": "cc-pVDZ",
+    "label": "cc-pVDZ",
+    "path": null,
+    "original": "bse:cc-pVDZ",
+    "basis_key": "bse:cc-pVDZ"
+  },
+  "basis_check": {
+    "basis_source": {
+      "source": "bse",
+      "name": "cc-pVDZ",
+      "label": "cc-pVDZ",
+      "path": null,
+      "original": "bse:cc-pVDZ",
+      "basis_key": "bse:cc-pVDZ"
+    },
+    "requested_symbols": [
+      "H",
+      "B",
+      "C",
+      "N",
+      "O",
+      "F"
+    ],
+    "status": "ok",
+    "full_electron_status": "no_ecp_detected",
+    "coverage_checked": true,
+    "covered_symbols": [
+      "H",
+      "B",
+      "C",
+      "N",
+      "O",
+      "F"
+    ],
+    "missing_symbols": [],
+    "ecp_detected": false,
+    "ecp_symbols": [],
+    "check_method": "basis_set_exchange_json",
+    "messages": [],
+    "errors": [],
+    "warnings": [],
+    "basis_sha256": "355db0d1f365eac28dcdf54d2e1b61eba5e214d975b261bc4ed9736b09f7aeb9"
+  },
+  "basis_policy": {
+    "status": "ok",
+    "errors": [],
+    "warnings": []
+  },
+  "state_selection": {
+    "state_count": 6,
+    "neutral_count": 6,
+    "cation_count": 0,
+    "anion_count": 0,
+    "by_category": {
+      "nist_reference": 6
+    },
+    "by_charge": {
+      "0": 6
+    },
+    "by_spin_variant": {
+      "curated_multiplicity": 6
+    },
+    "policy": "neutral",
+    "elements": [
+      "H",
+      "B",
+      "C",
+      "N",
+      "O",
+      "F"
+    ],
+    "charges": null,
+    "state_ids": [
+      "H_q0_mult2_nist",
+      "B_q0_mult2_nist",
+      "C_q0_mult3_nist",
+      "N_q0_mult4_nist",
+      "O_q0_mult3_nist",
+      "F_q0_mult2_nist"
+    ],
+    "warnings": []
+  },
+  "artifacts": [
+    "rad",
+    "wfn"
+  ],
+  "workspace": {
+    "workdir": "output",
+    "marker_path": "output/atomref_proatoms_workspace.json",
+    "status": "compatible",
+    "context": {
+      "method": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "state_policy": "neutral"
+    },
+    "existing_context": {
+      "method": "PBE0",
+      "relativity": "none",
+      "basis_key": "bse:cc-pVDZ",
+      "state_policy": "neutral"
+    },
+    "message": "workspace context is compatible"
+  },
+  "scf_defaults": {
+    "engine": "pyscf",
+    "expected_engine_version": "2.13.1",
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 4
+  },
+  "scf_settings": {
+    "engine": "pyscf",
+    "expected_engine_version": "2.13.1",
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 4,
+    "verbose": 0
+  },
+  "execution_policy": {
+    "resume": false,
+    "force": true,
+    "continue_on_error": false,
+    "allow_pyscf_version_mismatch": true,
+    "quiet_scf_log": true,
+    "rad_angular_points": 1,
+    "rad_eval_chunk_size": 8192
+  },
+  "profile_grid": {
+    "type": "log",
+    "r_min_bohr": 1e-06,
+    "r_max_bohr": 60.0,
+    "n": 1200
+  },
+  "qa_grid": {
+    "type": "gauss_legendre_log_r",
+    "r_min_bohr": 1e-07,
+    "r_max_bohr": 120.0,
+    "n": 400,
+    "angular_points": 110
+  },
+  "cutoffs_e_bohr3": [
+    0.003,
+    0.001,
+    0.0001
+  ],
+  "warnings": [],
+  "errors": []
+}

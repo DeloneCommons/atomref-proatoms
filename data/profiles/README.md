@@ -1,17 +1,42 @@
 # Generated radial profile datasets
 
-This directory contains the released spherical proatomic radial electron-density
-profiles for the active `atomref-proatoms` data version. A profile is a tabulated
-free-atom electron density, `rho(r)`, evaluated on the common radial grid defined
-in `data/profile_datasets.yaml` and stored with explicit state, basis, method,
-and QA provenance.
+This directory stores the released spherical proatomic radial electron-density
+profiles. It is a data contract page: it describes file layout, column naming,
+metadata, validation links, and regeneration commands. For the scientific model
+and interpretation, see `docs/theory.md`, `docs/methods.md`, and
+`docs/results.md`.
 
-The profiles are intended as stable reference data for atom-centered
-computational chemistry workflows. Typical downstream uses include empirical
-atomic density/radius models, crystallographic descriptors, promolecular-density
-approximations, deformation-density baselines, and lightweight packages that need
-precomputed consistent atomic reference densities rather than a local quantum-
-chemistry generator.
+For each selected atom or ion, the table gives the spin-summed spherical density
+\(\rho(r)\) generated from the declared state, basis, relativistic convention,
+and self-consistent spherical fractional-occupation UKS model. The profile
+tables are not hand-fitted atomic radii and not post-SCF angular averages of
+ordinary open-shell atoms.
+
+## Dataset scopes
+
+The current profile configuration declares four dataset scopes:
+
+```text
+pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2
+  x2c-QZVPall, H-Rn, all curated states, 430 density columns
+
+pbe0_sfx2c_dyallv4z_h-lr_spherical_v2
+  dyall-v4z, H-Lr, all curated states, 501 density columns
+
+pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2
+  x2c-QZVPall-s, H-Rn, neutrals and anions, 192 density columns
+
+pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2
+  dyall-av4z, H-Ba/Hf-Ra neutral and anion states where covered,
+  166 density columns
+```
+
+The primary datasets are deliberately not split into separate neutral, cation,
+and anion products. The supplemented/augmented branches follow the same design
+for the states they support: neutral and anion rows are grouped under one basis
+identity, while cations are excluded from these tail-sensitivity branches.
+Charge/state membership is part of the dataset scope record and generated
+metadata.
 
 ## Dataset layout
 
@@ -31,8 +56,13 @@ atomic state:
 r_bohr,rho_e_bohr3__<state_id>,rho_e_bohr3__<state_id>,...
 ```
 
-The radius unit is bohr. Electron density is reported as electrons/bohr³.
-Column names are deterministic and are based on curated state IDs.
+The radius unit is bohr. Electron density is reported as electrons/bohr³. Column
+names are deterministic and are based on curated state IDs. The stored radial grid
+has 1200 logarithmic rows from `1e-6` to `60` bohr for every generated dataset.
+
+This grid is the release representation. Independent QA integration uses a
+separate Gauss-Legendre grid in log-radius, so a profile can pass only if it is
+consistent under a second numerical integration scheme.
 
 ## Metadata
 
@@ -45,25 +75,28 @@ The local SCF artifacts referenced in metadata are stored under ignored
 `local-data/scf/` directories and are not tracked in the release repository. They
 are the regeneration source for these profiles.
 
-## Active v1 datasets
+## Interpretation
 
-The active v1 datasets are declared in `data/profile_datasets.yaml`:
+Use a profile column only together with its dataset metadata. A row such as a
+formal multianion profile is a formal spherical reference density for
+stockholder-like workflows, not an experimental isolated-ion claim. A density in
+a supplemented or augmented branch should be cited with that branch's `basis_id`
+in any downstream analysis.
 
-```text
-pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1
-pbe0_sfx2c_dyallv4z_h-lr_spherical_v1
-```
-
-Both select neutral atomic states. Generated cutoff radii and QA summaries are
-published separately under `data/radii/` and `data/qa/`.
+For the current scientific QA and basis-sensitivity summary, see
+`docs/results.md` and `data/qa/README.md`.
 
 ## Regeneration
 
-Profiles are generated artifacts and should not be hand-edited. Regenerate them
-from complete local SCF artifacts with:
+Profiles are generated artifacts and should not be hand-edited. After complete
+local SCF artifacts have been produced, regenerate them and run the artifact
+consistency gate with:
 
 ```bash
 python scripts/extract_profiles.py --force --check
+python scripts/check_basis_sensitivity.py --force
+python scripts/check_basis_comparisons.py --force
+python scripts/check_profile_artifacts.py --require-generated
 ```
 
 For inspection without writing files:
@@ -76,5 +109,6 @@ python scripts/extract_profiles.py --dry-run
 ## Related documentation
 
 - Scientific density model: `docs/theory.md`.
+- Results: `docs/results.md`.
 - Released artifact contract: `docs/data.md`.
 - Regeneration workflow: `docs/workflow.md`.

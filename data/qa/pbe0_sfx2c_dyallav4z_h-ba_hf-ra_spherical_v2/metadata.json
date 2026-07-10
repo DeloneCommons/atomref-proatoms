@@ -1,0 +1,20 @@
+{
+  "schema_version": "atomref.proatoms.qa_dataset.v1",
+  "profile_data_version": "2.0.0",
+  "dataset_id": "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2",
+  "basis_id": "dyall-av4z",
+  "files": {
+    "qa_csv": "data/qa/pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2/qa.csv",
+    "metadata_json": "data/qa/pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2/metadata.json"
+  },
+  "sources": {
+    "profiles_csv": "data/profiles/pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2/profiles.csv",
+    "profile_metadata_json": "data/profiles/pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2/metadata.json"
+  },
+  "row_count": 166,
+  "passed_count": 166,
+  "failed_count": 0,
+  "provenance": {
+    "profile_datasets_yaml_sha256": "d99b9f83055fd9fbd214cb3d1f3876c23887a3b58518cf7e72e1838b22673957"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "elements": [
+    "Ni",
+    "Pd"
+  ],
+  "element_range": null,
+  "method": "PBE0",
+  "relativity": "x2c",
+  "basis": null,
+  "basis_file": "input/dyall-v2z-ni-pd-pt.nw",
+  "basis_name": "dyall-v2z-ni-pd-pt",
+  "state_policy": "stockholder",
+  "charges": [
+    -1,
+    0,
+    1
+  ],
+  "artifacts": [
+    "profiles",
+    "rad",
+    "wfn"
+  ],
+  "workdir": "output",
+  "resource_root": null,
+  "allow_ecp": false,
+  "allow_unverified_basis": true,
+  "resume": false,
+  "force": true,
+  "continue_on_error": false,
+  "allow_pyscf_version_mismatch": true,
+  "conv_tol": null,
+  "max_cycle": null,
+  "diis_space": null,
+  "diis_start_cycle": null,
+  "grid_level": 0,
+  "verbose": 0,
+  "quiet_scf_log": true,
+  "rad_angular_points": 1,
+  "rad_eval_chunk_size": 8192,
+  "dry_run": false
+}

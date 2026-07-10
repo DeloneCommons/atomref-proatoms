@@ -40,10 +40,19 @@ jobs:
         run: ruff check .
 
       - name: Validate curated atom states
-        run: python scripts/build_atom_states.py --check
+        run: python scripts/check_states.py
 
       - name: Check bundled basis data
         run: python scripts/check_basis_bundles.py
+
+      - name: Check generated profile artifacts
+        run: python scripts/check_profile_artifacts.py --require-generated
+
+      - name: Check generated Multiwfn artifacts
+        run: python scripts/check_multiwfn_artifacts.py --require-generated
+
+      - name: Check derived documentation
+        run: python scripts/prepare_docs.py --check
 
       - name: Inspect active SCF build plan
         run: python scripts/compute_wavefunctions.py --list
@@ -53,6 +62,49 @@ jobs:
 
       - name: Run tests
         run: pytest -q
+
+  installed-wheel:
+    name: Installed wheel smoke test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Run installed-wheel smoke test
+        run: |
+          python -m pip install --upgrade pip
+          python scripts/smoke_installed_wheel.py
+
+  distribution:
+    name: Distribution build and metadata check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install release tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ".[release]"
+
+      - name: Build and inspect distributions
+        run: python scripts/build_release_artifacts.py
 
   docs:
     name: Documentation build

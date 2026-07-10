@@ -1,0 +1,9 @@
+{
+  "schema_version": "atomref.proatoms.generator_workspace.v1",
+  "context": {
+    "method": "PBE0",
+    "relativity": "x2c",
+    "basis_key": "file:dyall-v2z-ni-pd-pt",
+    "state_policy": "stockholder"
+  }
+}

@@ -25,11 +25,28 @@ retain the Basis Set Exchange BSD-3-Clause notice included at
 `data/basis_sets/LICENSE-BSE-BSD-3-Clause.txt`. Upstream basis-set references are
 recorded in each basis bundle's `references.md` file.
 
-The atomic-state source layer uses compact electronic-configuration labels
+The atomic-state source layer uses compact electronic-configuration labels,
+ground-level labels, parsed simple term multiplicities, a small set of manual
+v2-domain multiplicity assignments, and ionization-energy provenance classes
 prepared from the NIST Atomic Spectra Database, NIST Standard Reference Database
-78. This project does not redistribute raw NIST ASD pages, ionization-energy
-tables, uncertainty records, or bibliography rows. Cite the NIST Atomic Spectra
-Database when publishing work that relies on these state labels.
+78. This project does not redistribute raw NIST ASD pages, quantitative
+ionization-energy tables, uncertainty records, or bibliography rows. Cite the
+NIST Atomic Spectra Database when publishing work that relies on these state
+labels.
+
+The monoanion source-status table is a compact curation from Ning and Lu,
+*Electron Affinities of Atoms and Structures of Atomic Negative Ions*, J. Phys.
+Chem. Ref. Data 51, 021502 (2022). It stores state labels and status flags only;
+electron-affinity values and numerical uncertainties from the review are not
+redistributed in this table. Cite Ning and Lu 2022 when publishing work that
+relies on these monoanion labels or status classes.
+
+The v2 formal-anion preparation table is a project-curated set of formal density
+references derived from the documented charge policy, isoelectronic filling, and
+manual curation of theory-only/limit-based monoanion rows. Purely formal
+actinide fallback monoanions are excluded from the initial v2 formal scope. These
+rows are explicitly marked as formal `not_claimed` references and are not claims
+of stable isolated atomic anions.
 
 ## MIT License text
 

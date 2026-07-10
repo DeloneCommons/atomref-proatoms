@@ -6,19 +6,22 @@ radial-density generation.
 
 ## Scope
 
-- Role: auxiliary augmented Dyall quadruple-zeta basis retained for basis-sensitivity work.
+- Role: augmented Dyall quadruple-zeta branch used for neutral/anion basis-sensitivity work.
 - Coverage: H-Ba, Hf-Ra, Rf-Og.
 - Basis representation: NWChem spherical/pure Gaussian basis functions.
-- Active v1 dataset identifiers: none.
+- Active dataset identifiers: `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2`.
 
-No active v1 profile dataset uses this basis. Its coverage is discontinuous and excludes
-the lanthanide and actinide blocks, so it must not be described as an H-Lr basis.
+The active profile configuration uses this basis for H-Ba/Hf-Ra neutral atoms
+and selected anions in the same available intervals, including Fr and Ra
+monoanions. The bundle itself also contains basis functions beyond that generated
+profile scope; its coverage is discontinuous and excludes the lanthanide and
+actinide blocks, so it must not be described as an H-Lr basis.
 
 ## Bundle metadata
 
 The canonical metadata record is `manifest.json`. It includes the upstream BSE
 basis name, exact BSE API URL, BSE export version, upstream basis version,
-retrieval date, coverage intervals, active v1 dataset identifiers, and
+retrieval date, coverage intervals, active dataset identifiers, and
 redistribution note. The exact source URL is recorded as `source.source_api_url`
 in `manifest.json`.
 
@@ -33,5 +36,4 @@ f5a4a4c03a9b08ba6c40ff409f91d89196ba96dcd620dc563f4b1cd103213e96
 
 ## References
 
-Dyall basis-set archive, Zenodo Version 1, DOI: 10.5281/zenodo.7574629, plus the
-original Dyall references listed in this bundle.
+Dyall basis-set archive, Zenodo Version 1, [DOI: 10.5281/zenodo.7574629](https://doi.org/10.5281/zenodo.7574629), plus the original Dyall references listed in this bundle.

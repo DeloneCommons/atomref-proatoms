@@ -1,0 +1,28 @@
+{
+  "schema_version": "atomref.proatoms.radii_dataset.v1",
+  "profile_data_version": "2.0.0",
+  "dataset_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+  "basis_id": "file:dyall-v2z-ni-pd-pt",
+  "units": {
+    "r_bohr": "bohr",
+    "r_angstrom": "angstrom",
+    "rho_cutoff": "electron/bohr^3"
+  },
+  "cutoffs_e_bohr3": [
+    0.003,
+    0.001,
+    0.0001
+  ],
+  "files": {
+    "radii_csv": "examples/02_cli_stockholder_local_basis/output/radii/radii.csv",
+    "metadata_json": "examples/02_cli_stockholder_local_basis/output/radii/metadata.json"
+  },
+  "sources": {
+    "profiles_csv": "profiles/profiles.csv",
+    "profile_metadata_json": "profiles/metadata.json"
+  },
+  "row_count": 6,
+  "provenance": {
+    "generator_run_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder"
+  }
+}

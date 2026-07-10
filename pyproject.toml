@@ -1,14 +1,15 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "atomref-proatoms"
-version = "1.0.0"
+version = "2.0.0"
 description = "Reproducible spherical proatomic radial density datasets and generator."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { file = "LICENSE.md" }
+license = "MIT AND CC-BY-4.0"
+license-files = ["LICENSE.md"]
 authors = [
   { name = "Ivan Yu. Chernyshov", email = 'ivan.chernyshoff@gmail.com' }
 ]
@@ -17,6 +18,15 @@ dependencies = [
   "scipy>=1.11",
   "PyYAML>=6.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/DeloneCommons/atomref-proatoms"
+Documentation = "https://delonecommons.github.io/atomref-proatoms/"
+Repository = "https://github.com/DeloneCommons/atomref-proatoms"
+Issues = "https://github.com/DeloneCommons/atomref-proatoms/issues"
+
+[project.scripts]
+atomref-proatoms = "atomref_proatoms.cli.main:main"
 
 [project.optional-dependencies]
 test = [
@@ -28,6 +38,7 @@ dev = [
 ]
 generator = [
   "pyscf==2.13.1",
+  "basis-set-exchange",
 ]
 audit = [
   "basis-set-exchange",
@@ -40,6 +51,10 @@ docs = [
   "mkdocs-material>=9.5",
   "mkdocs-jupyter>=0.24",
 ]
+release = [
+  "build>=1.2",
+  "twine>=5",
+]
 all = [
   "pytest>=7",
   "ruff>=0.6",
@@ -51,10 +66,21 @@ all = [
   "mkdocs>=1.6,<2",
   "mkdocs-material>=9.5",
   "mkdocs-jupyter>=0.24",
+  "build>=1.2",
+  "twine>=5",
 ]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+
+[tool.setuptools.package-data]
+"atomref_proatoms.resources" = [
+  "states/*.json",
+  "presets/*.yaml",
+  "grids/*.csv",
+  "schemas/*.json",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

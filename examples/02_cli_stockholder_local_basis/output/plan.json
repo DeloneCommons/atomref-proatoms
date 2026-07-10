@@ -1,0 +1,406 @@
+{
+  "schema_version": "atomref.proatoms.generator_plan.v1",
+  "run_id": "pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder",
+  "package_version": "2.0.0",
+  "resource_origin": {
+    "kind": "package",
+    "package": "atomref_proatoms.resources",
+    "root": null
+  },
+  "state_table_sha256": "832c8bf0e023cb5398b76d0e0bbe0f5b6d2e85b94ca1542676f38435b3e67dae",
+  "tool_defaults_sha256": "8a8b5e7fa852577e3fe5c07e4942f2a08db5ea0f8ae9f527dfd05d3fec1980df",
+  "elements": [
+    "Ni",
+    "Pd"
+  ],
+  "selected_state_count": 6,
+  "selected_states": [
+    {
+      "state_id": "Ni_qm1_mult2_ning2022",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": -1,
+      "electron_count": 29,
+      "multiplicity": 2,
+      "configuration": "[Ar] 3d9 4s2",
+      "state_role": "bound_experimental",
+      "state_category": "ning2022_monoanion_reference",
+      "state_source": "ning2022",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "Ni_q0_mult3_nist",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 0,
+      "electron_count": 28,
+      "multiplicity": 3,
+      "configuration": "[Ar] 3d8 4s2",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "Ni_qp1_mult2_nist",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 1,
+      "electron_count": 27,
+      "multiplicity": 2,
+      "configuration": "[Ar] 3d9",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "Pd_qm1_mult2_ning2022",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": -1,
+      "electron_count": 47,
+      "multiplicity": 2,
+      "configuration": "[Kr] 4d10 5s1",
+      "state_role": "bound_experimental",
+      "state_category": "ning2022_monoanion_reference",
+      "state_source": "ning2022",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "Pd_q0_mult1_nist",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 0,
+      "electron_count": 46,
+      "multiplicity": 1,
+      "configuration": "[Kr] 4d10",
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    },
+    {
+      "state_id": "Pd_qp1_mult2_nist",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 1,
+      "electron_count": 45,
+      "multiplicity": 2,
+      "configuration": "[Kr] 4d9",
+      "state_role": "reference_uncertain",
+      "state_category": "nist_reference",
+      "state_source": "nist_gsie",
+      "physical_status": "experimental_or_evaluated"
+    }
+  ],
+  "method": {
+    "input_method": "PBE0",
+    "method_kind": "dft",
+    "xc": "PBE0",
+    "scf_type": "UKS"
+  },
+  "method_check": {
+    "status": "ok",
+    "message": "PySCF accepted XC string 'PBE0'.",
+    "pyscf_version": "2.13.1"
+  },
+  "relativity": {
+    "input_relativity": "x2c",
+    "relativity": "x2c",
+    "engine_label": "sf-X2C-1e"
+  },
+  "basis_source": {
+    "source": "file",
+    "name": "dyall-v2z-ni-pd-pt",
+    "label": "dyall-v2z-ni-pd-pt",
+    "path": "input/dyall-v2z-ni-pd-pt.nw",
+    "original": "input/dyall-v2z-ni-pd-pt.nw",
+    "basis_key": "file:dyall-v2z-ni-pd-pt"
+  },
+  "basis_check_status": {
+    "basis_source": {
+      "source": "file",
+      "name": "dyall-v2z-ni-pd-pt",
+      "label": "dyall-v2z-ni-pd-pt",
+      "path": "input/dyall-v2z-ni-pd-pt.nw",
+      "original": "input/dyall-v2z-ni-pd-pt.nw",
+      "basis_key": "file:dyall-v2z-ni-pd-pt"
+    },
+    "requested_symbols": [
+      "Ni",
+      "Pd"
+    ],
+    "status": "ok",
+    "full_electron_status": "unknown",
+    "coverage_checked": true,
+    "covered_symbols": [
+      "Ni",
+      "Pd",
+      "Pt"
+    ],
+    "missing_symbols": [],
+    "ecp_detected": false,
+    "ecp_symbols": [],
+    "check_method": "nwchem_text_scan",
+    "messages": [],
+    "errors": [],
+    "warnings": [
+      "No obvious ECP marker was found; full-electron status is still unverified."
+    ],
+    "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521"
+  },
+  "basis_policy": {
+    "status": "ok",
+    "errors": [],
+    "warnings": [
+      "No obvious ECP marker was found; full-electron status is still unverified.",
+      "Full-electron status is unknown for this basis source."
+    ]
+  },
+  "artifacts": [
+    "profiles",
+    "rad",
+    "wfn"
+  ],
+  "scf_settings": {
+    "engine": "pyscf",
+    "expected_engine_version": "2.13.1",
+    "conv_tol": 1e-09,
+    "max_cycle": 300,
+    "diis_space": 12,
+    "diis_start_cycle": 1,
+    "grid_level": 0,
+    "verbose": 0
+  },
+  "execution_policy": {
+    "resume": false,
+    "force": true,
+    "continue_on_error": false,
+    "allow_pyscf_version_mismatch": true,
+    "quiet_scf_log": true,
+    "rad_angular_points": 1,
+    "rad_eval_chunk_size": 8192
+  },
+  "warnings": [
+    "No obvious ECP marker was found; full-electron status is still unverified.",
+    "Full-electron status is unknown for this basis source.",
+    "WFN export will skip non-neutral state Ni_qm1_mult2_ning2022",
+    "WFN export will skip non-neutral state Ni_qp1_mult2_nist",
+    "WFN export will skip non-neutral state Pd_qm1_mult2_ning2022",
+    "WFN export will skip non-neutral state Pd_qp1_mult2_nist"
+  ],
+  "errors": [],
+  "jobs": [
+    {
+      "state_id": "Ni_qm1_mult2_ning2022",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": -1,
+      "electron_count": 29,
+      "multiplicity": 2,
+      "state_role": "bound_experimental",
+      "state_category": "ning2022_monoanion_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "requested_artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "profiles",
+        "rad"
+      ],
+      "wfn_eligible": false,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qm1_mult2_ning2022",
+        "profiles_csv": "profiles/profiles.csv",
+        "radii_csv": "radii/radii.csv",
+        "qa_csv": "qa/qa.csv",
+        "rad": "multiwfn/rad/Ni-1.rad"
+      }
+    },
+    {
+      "state_id": "Ni_q0_mult3_nist",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 0,
+      "electron_count": 28,
+      "multiplicity": 3,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "requested_artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_q0_mult3_nist",
+        "profiles_csv": "profiles/profiles.csv",
+        "radii_csv": "radii/radii.csv",
+        "qa_csv": "qa/qa.csv",
+        "rad": "multiwfn/rad/Ni_0.rad",
+        "wfn": "multiwfn/wfn/Ni.wfn"
+      }
+    },
+    {
+      "state_id": "Ni_qp1_mult2_nist",
+      "symbol": "Ni",
+      "z": 28,
+      "charge": 1,
+      "electron_count": 27,
+      "multiplicity": 2,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "requested_artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "profiles",
+        "rad"
+      ],
+      "wfn_eligible": false,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Ni_qp1_mult2_nist",
+        "profiles_csv": "profiles/profiles.csv",
+        "radii_csv": "radii/radii.csv",
+        "qa_csv": "qa/qa.csv",
+        "rad": "multiwfn/rad/Ni+1.rad"
+      }
+    },
+    {
+      "state_id": "Pd_qm1_mult2_ning2022",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": -1,
+      "electron_count": 47,
+      "multiplicity": 2,
+      "state_role": "bound_experimental",
+      "state_category": "ning2022_monoanion_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "requested_artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "profiles",
+        "rad"
+      ],
+      "wfn_eligible": false,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qm1_mult2_ning2022",
+        "profiles_csv": "profiles/profiles.csv",
+        "radii_csv": "radii/radii.csv",
+        "qa_csv": "qa/qa.csv",
+        "rad": "multiwfn/rad/Pd-1.rad"
+      }
+    },
+    {
+      "state_id": "Pd_q0_mult1_nist",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 0,
+      "electron_count": 46,
+      "multiplicity": 1,
+      "state_role": "reference",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "requested_artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "wfn_eligible": true,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_q0_mult1_nist",
+        "profiles_csv": "profiles/profiles.csv",
+        "radii_csv": "radii/radii.csv",
+        "qa_csv": "qa/qa.csv",
+        "rad": "multiwfn/rad/Pd_0.rad",
+        "wfn": "multiwfn/wfn/Pd.wfn"
+      }
+    },
+    {
+      "state_id": "Pd_qp1_mult2_nist",
+      "symbol": "Pd",
+      "z": 46,
+      "charge": 1,
+      "electron_count": 45,
+      "multiplicity": 2,
+      "state_role": "reference_uncertain",
+      "state_category": "nist_reference",
+      "method_kind": "dft",
+      "xc": "PBE0",
+      "relativity": "x2c",
+      "basis_key": "file:dyall-v2z-ni-pd-pt",
+      "requested_artifacts": [
+        "profiles",
+        "rad",
+        "wfn"
+      ],
+      "artifacts": [
+        "profiles",
+        "rad"
+      ],
+      "wfn_eligible": false,
+      "basis_status": null,
+      "output_paths": {
+        "scf_dir": "scf/pbe0_x2c_file_dyall-v2z-ni-pd-pt_stockholder/Pd_qp1_mult2_nist",
+        "profiles_csv": "profiles/profiles.csv",
+        "radii_csv": "radii/radii.csv",
+        "qa_csv": "qa/qa.csv",
+        "rad": "multiwfn/rad/Pd+1.rad"
+      }
+    }
+  ],
+  "would_write": {
+    "workspace_marker": "output/atomref_proatoms_workspace.json",
+    "run_config_input": "output/run_config.input.json",
+    "run_config_resolved": "output/run_config.resolved.json",
+    "plan": "output/plan.json",
+    "manifest": "output/manifest.json",
+    "failures": "output/failures.csv",
+    "basis_dir": "output/basis",
+    "scf_dir": "output/scf",
+    "profiles_dir": "output/profiles",
+    "radii_dir": "output/radii",
+    "qa_dir": "output/qa",
+    "multiwfn_dir": "output/multiwfn"
+  }
+}

@@ -36,7 +36,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1"
+          "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2"
         ]
       }
     },
@@ -72,7 +72,9 @@
         "n_elements": 86
       },
       "usage": {
-        "dataset_ids_using_this_basis": []
+        "dataset_ids_using_this_basis": [
+          "pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2"
+        ]
       }
     },
     {
@@ -108,7 +110,7 @@
       },
       "usage": {
         "dataset_ids_using_this_basis": [
-          "pbe0_sfx2c_dyallv4z_h-lr_spherical_v1"
+          "pbe0_sfx2c_dyallv4z_h-lr_spherical_v2"
         ]
       }
     },
@@ -154,7 +156,9 @@
         "n_elements": 88
       },
       "usage": {
-        "dataset_ids_using_this_basis": []
+        "dataset_ids_using_this_basis": [
+          "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2"
+        ]
       }
     }
   ]

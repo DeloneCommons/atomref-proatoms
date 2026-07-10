@@ -1,0 +1,83 @@
+{
+  "schema_version": "atomref.proatoms.basis_sensitivity_qa.v2",
+  "profile_data_version": "2.0.0",
+  "config": "data/profile_datasets.yaml",
+  "states_file": "data/states/curated/atom_states_v2.json",
+  "profiles_root": "data/profiles",
+  "qa_root": "data/qa",
+  "files": {
+    "basis_sensitivity_csv": "data/qa/basis_sensitivity/basis_sensitivity.csv",
+    "basis_sensitivity_summary_csv": "data/qa/basis_sensitivity/basis_sensitivity_summary.csv",
+    "basis_sensitivity_outliers_csv": "data/qa/basis_sensitivity/basis_sensitivity_outliers.csv",
+    "basis_sensitivity_metric_distributions_csv": "data/qa/basis_sensitivity/basis_sensitivity_metric_distributions.csv",
+    "metadata_json": "data/qa/basis_sensitivity/metadata.json"
+  },
+  "pair_outputs": {
+    "basis_sensitivity_dyall": {
+      "output_dir": "data/qa/basis_sensitivity/dyall-v4z",
+      "rows_csv": "data/qa/basis_sensitivity/dyall-v4z/basis_sensitivity.csv",
+      "summary_csv": "data/qa/basis_sensitivity/dyall-v4z/basis_sensitivity_summary.csv",
+      "outliers_csv": "data/qa/basis_sensitivity/dyall-v4z/basis_sensitivity_outliers.csv",
+      "metric_distributions_csv": "data/qa/basis_sensitivity/dyall-v4z/basis_sensitivity_metric_distributions.csv",
+      "row_count": "166",
+      "summary_count": "1",
+      "outlier_count": "14",
+      "metric_distribution_count": "198"
+    },
+    "basis_sensitivity_x2c": {
+      "output_dir": "data/qa/basis_sensitivity/x2c-QZVPall",
+      "rows_csv": "data/qa/basis_sensitivity/x2c-QZVPall/basis_sensitivity.csv",
+      "summary_csv": "data/qa/basis_sensitivity/x2c-QZVPall/basis_sensitivity_summary.csv",
+      "outliers_csv": "data/qa/basis_sensitivity/x2c-QZVPall/basis_sensitivity_outliers.csv",
+      "metric_distributions_csv": "data/qa/basis_sensitivity/x2c-QZVPall/basis_sensitivity_metric_distributions.csv",
+      "row_count": "192",
+      "summary_count": "1",
+      "outlier_count": "0",
+      "metric_distribution_count": "176"
+    }
+  },
+  "comparison_pairs": [
+    {
+      "base_dataset_id": "pbe0_sfx2c_dyallv4z_h-lr_spherical_v2",
+      "diffuse_dataset_id": "pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2",
+      "comparison_kind": "dyall_augmented_basis_sensitivity",
+      "output_stem": "basis_sensitivity_dyall",
+      "output_dirname": "dyall-v4z",
+      "required": true
+    },
+    {
+      "base_dataset_id": "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2",
+      "diffuse_dataset_id": "pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2",
+      "comparison_kind": "x2c_supplemented_basis_sensitivity",
+      "output_stem": "basis_sensitivity_x2c",
+      "output_dirname": "x2c-QZVPall",
+      "required": true
+    }
+  ],
+  "skipped_pairs": [],
+  "row_count": 358,
+  "summary_count": 2,
+  "outlier_count": 14,
+  "metric_distribution_count": 374,
+  "thresholds": {
+    "relative_l1_watch": 0.05,
+    "relative_l1_outlier": 0.15,
+    "max_cumulative_delta_watch_electrons": 0.5,
+    "max_cumulative_delta_outlier_electrons": 1.0,
+    "mean_radial_shift_watch_angstrom": 0.1,
+    "mean_radial_shift_outlier_angstrom": 0.3,
+    "max_electron_count_error": 0.005
+  },
+  "interpretation": {
+    "dyall_pair": "dyall-v4z vs dyall-av4z",
+    "x2c_pair": "x2c-QZVPall vs x2c-QZVPall-s",
+    "release_gate_status": "PASS/FAIL corruption or metadata-integrity gate",
+    "sensitivity_tier": "low/moderate/high scientific sensitivity classification",
+    "outliers_csv": "Rows with high sensitivity or release-gate failures; high sensitivity is not by itself a release blocker."
+  },
+  "notes": [
+    "The dyall-v4z/dyall-av4z and x2c-QZVPall/x2c-QZVPall-s comparisons are generated for every matched state in their configured supplemented or augmented datasets.",
+    "Basis-sensitivity rows classify profile sensitivity. Large sensitivity can be scientifically expected for formal or highly charged anions and is not automatically a release failure.",
+    "Hard failures are reserved for metadata, state-digest, grid, density, missing-expected-state, or electron-count-integrity problems."
+  ]
+}

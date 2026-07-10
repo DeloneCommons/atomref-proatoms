@@ -1,0 +1,59 @@
+{
+  "schema_version": "atomref.proatoms.basis_comparison.v1",
+  "profile_data_version": "2.0.0",
+  "config": "data/profile_datasets.yaml",
+  "states_file": "data/states/curated/atom_states_v2.json",
+  "profiles_root": "data/profiles",
+  "qa_root": "data/qa",
+  "output_root": "data/qa/basis_comparisons",
+  "pair_outputs": {
+    "x2c-QZVPall__dyall-v4z": {
+      "output_dir": "data/qa/basis_comparisons/x2c-QZVPall__dyall-v4z",
+      "rows_csv": "data/qa/basis_comparisons/x2c-QZVPall__dyall-v4z/basis_comparison.csv",
+      "summary_csv": "data/qa/basis_comparisons/x2c-QZVPall__dyall-v4z/basis_comparison_summary.csv",
+      "outliers_csv": "data/qa/basis_comparisons/x2c-QZVPall__dyall-v4z/basis_comparison_outliers.csv",
+      "metric_distributions_csv": "data/qa/basis_comparisons/x2c-QZVPall__dyall-v4z/basis_comparison_metric_distributions.csv",
+      "row_count": "430",
+      "summary_count": "1",
+      "outlier_count": "1",
+      "metric_distribution_count": "286"
+    }
+  },
+  "comparison_pairs": [
+    {
+      "comparison_id": "x2c-QZVPall__dyall-v4z",
+      "comparison_kind": "primary_basis_family_comparison",
+      "left_dataset_id": "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2",
+      "right_dataset_id": "pbe0_sfx2c_dyallv4z_h-lr_spherical_v2",
+      "left_basis_id": "x2c-QZVPall",
+      "right_basis_id": "dyall-v4z",
+      "output_dirname": "x2c-QZVPall__dyall-v4z",
+      "delta_convention": "signed deltas are right-minus-left",
+      "state_matching": "state_id plus matching state_record_sha256 digest"
+    }
+  ],
+  "skipped_pairs": [],
+  "row_count": 430,
+  "summary_count": 1,
+  "outlier_count": 1,
+  "metric_distribution_count": 286,
+  "thresholds": {
+    "relative_l1_watch": 0.05,
+    "relative_l1_outlier": 0.15,
+    "max_cumulative_delta_watch_electrons": 0.5,
+    "max_cumulative_delta_outlier_electrons": 1.0,
+    "mean_radial_shift_watch_angstrom": 0.1,
+    "mean_radial_shift_outlier_angstrom": 0.3,
+    "max_electron_count_error": 0.005
+  },
+  "interpretation": {
+    "comparison_kind": "Primary basis-family comparison over exact matched states. It is not a supplemented/augmented basis-sensitivity comparison.",
+    "integrity_status": "PASS/FAIL metadata, grid, digest, density, or electron-count gate",
+    "comparison_tier": "low/moderate/high scientific difference classification",
+    "outliers_csv": "Rows with high basis-family differences or integrity failures; high basis-family difference is not by itself a release blocker."
+  },
+  "notes": [
+    "The current comparison matches x2c-QZVPall and dyall-v4z over the H-Rn overlap by state_id and state_record_sha256.",
+    "Signed metric deltas are right-minus-left: dyall-v4z minus x2c-QZVPall for the current comparison."
+  ]
+}

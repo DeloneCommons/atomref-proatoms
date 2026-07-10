@@ -1,34 +1,40 @@
 # Basis-set input data
 
-This directory contains the fixed basis-set input layer used by `atomref-proatoms`
-for spherical proatomic radial electron-density generation. The directory is not
-a general basis-set database: it contains the basis families selected for the
-first neutral production datasets plus auxiliary frozen inputs kept for
-basis-sensitivity work.
+This directory stores the frozen orbital basis inputs consumed by the profile
+generator. It is a data dictionary and provenance page: for scientific discussion
+of why these branches were selected, see `docs/methods.md`, `docs/results.md`,
+and `docs/discussion.md`.
+
+The basis layer is deliberately small. It contains two primary all-electron
+quadruple-zeta-like branches and two supporting branches used for neutral/anion
+basis comparisons. Effective-core or valence-only basis conventions are different
+density definitions and are not mixed into this data layer.
 
 All basis definitions are stored in NWChem format with spherical/pure Gaussian
 basis functions. Generated profile metadata must record both the `basis_id` and
-the `dataset_id`; diffuse and non-diffuse basis branches must not be merged
-silently.
+the `dataset_id`; supplemented, augmented, and primary branches must not be
+merged silently.
 
 ## Basis-set selection rationale
 
 The primary H-Rn branch uses `x2c-QZVPall`. This Karlsruhe x2c quadruple-zeta
-basis family is a practical default for spin-free X2C all-electron calculations.
-The quadruple-zeta level is preferred over lower-zeta x2c-TZVPall-like
-alternatives because radial density tails and density-cutoff radii are sensitive
-to basis quality, while still keeping the dataset feasible for a reusable
-empirical proatom library.
+basis family is a practical default for spin-free X2C all-electron calculations
+through radon. The quadruple-zeta level is preferred over lower-zeta
+x2c-TZVPall-like alternatives because radial density tails and density-cutoff
+radii are sensitive to basis quality, while still keeping the dataset feasible
+for a reusable empirical proatom library.
 
 The primary heavy-element extension uses `dyall-v4z`. It provides continuous
-coverage through the actinide region and is therefore the default basis branch
-for the H-Lr dataset.
+large-basis coverage through the actinide region and is therefore the default
+basis branch for the H-Lr dataset.
 
-The supplemented/augmented branches, `x2c-QZVPall-s` and `dyall-av4z`, are retained
-as auxiliary frozen inputs for basis-sensitivity work. They are not active v1
-profile datasets. In particular, `dyall-av4z` has discontinuous element coverage
-and should be treated as an available-element auxiliary basis, not as an H-Lr
-basis.
+The supporting branches, `x2c-QZVPall-s` and `dyall-av4z`, are committed
+neutral/anion comparison branches. They are intentionally separate from the
+primary non-diffuse branches. `x2c-QZVPall-s` is described in the BSE header as
+an all-electron relativistic polarized quadruple-zeta basis for one-component
+NMR shielding, so it should not be treated as a generic diffuse tail basis. In
+contrast, `dyall-av4z` is the augmented Dyall branch; its bundle coverage is
+discontinuous and should be treated as available-element coverage, not as H-Lr.
 
 ## Directory layout
 
@@ -82,7 +88,7 @@ exact BSE API URL used for each exported basis is recorded in the corresponding
 
 For each bundle, the manifest records the upstream basis name, BSE export
 version, upstream basis version, retrieval date, basis-file checksum, element
-coverage intervals, active v1 dataset identifiers, redistribution note, and the
+coverage intervals, active dataset identifiers, redistribution note, and the
 expected spherical NWChem header. The basis-file checksum is the basis-data
 identity used by this project; documentation and metadata edits do not change the
 basis-data identity.
@@ -92,12 +98,16 @@ the density generator and by the structural checker.
 
 ## Bundle summary
 
-| basis_id | role | coverage | n_elements | active v1 dataset IDs |
+| basis_id | role | basis coverage | n_elements | active dataset IDs |
 |---|---|---:|---:|---|
-| `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1` |
-| `x2c-QZVPall-s` | auxiliary H-Rn | H-Rn | 86 | none |
-| `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v1` |
-| `dyall-av4z` | auxiliary augmented / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | none |
+| `x2c-QZVPall` | primary H-Rn | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2` |
+| `x2c-QZVPall-s` | NMR-shielding-oriented supplemented H-Rn neutral/anion branch | H-Rn | 86 | `pbe0_sfx2c_x2cqzvpalls_h-rn_spherical_v2` |
+| `dyall-v4z` | primary H-Lr / actinide-capable | H-Og | 118 | `pbe0_sfx2c_dyallv4z_h-lr_spherical_v2` |
+| `dyall-av4z` | augmented neutral/anion branch / discontinuous | H-Ba, Hf-Ra, Rf-Og | 88 | `pbe0_sfx2c_dyallav4z_h-ba_hf-ra_spherical_v2` |
+
+The `dyall-av4z` row reports bundle coverage. The active augmented branch uses
+this basis for H-Ba/Hf-Ra neutral atoms plus selected anion states in the same
+available intervals, including Fr and Ra monoanions.
 
 ## Validation
 

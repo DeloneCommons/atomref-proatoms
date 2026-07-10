@@ -1,0 +1,74 @@
+{
+  "schema_version": "atomref.proatoms.state_build_summary.v2",
+  "state_count": 501,
+  "selection_count": 501,
+  "neutral_count": 103,
+  "cation_count": 286,
+  "anion_count": 112,
+  "output_files": [
+    "selection/required_states_v2.csv",
+    "curated/atom_states_v2.csv",
+    "curated/atom_states_v2.json"
+  ],
+  "by_category": {
+    "formal_anion_reference": 40,
+    "ning2022_monoanion_reference": 72,
+    "nist_reference": 389
+  },
+  "by_charge": {
+    "-3": 6,
+    "-2": 20,
+    "-1": 86,
+    "0": 103,
+    "1": 102,
+    "2": 95,
+    "3": 89
+  },
+  "by_source": {
+    "formal_rule": 34,
+    "manual_curated": 6,
+    "ning2022": 72,
+    "nist_gsie": 389
+  },
+  "by_role": {
+    "bound_experimental": 65,
+    "bound_provisional": 4,
+    "diagnostic_theory": 3,
+    "formal_monoanion": 14,
+    "formal_multianion": 26,
+    "reference": 229,
+    "reference_uncertain": 160
+  },
+  "by_physical_status": {
+    "experimental_or_evaluated": 454,
+    "not_claimed": 40,
+    "provisional_experimental": 4,
+    "theoretical_only": 3
+  },
+  "spin_model": "curated_ground_multiplicity",
+  "occupation_policy": "spherical_l_counts_from_curated_multiplicity_v2",
+  "policy_notes": [
+    "H+ and He2+/He3+ are not included because they are not electron-bearing NIST source rows.",
+    "Source-backed Ning--Lu Fr--U monoanions are included in the primary dyall-v4z H-Lr dataset; purely formal actinide fallback monoanions remain out of the initial v2 scope.",
+    "Group-18 anions are excluded from the v2 anion policy."
+  ],
+  "diagnostics": {
+    "skipped_cations": [
+      {
+        "symbol": "H",
+        "charge": "1",
+        "reason": "missing_nist_electron_bearing_state"
+      },
+      {
+        "symbol": "He",
+        "charge": "2",
+        "reason": "missing_nist_electron_bearing_state"
+      },
+      {
+        "symbol": "He",
+        "charge": "3",
+        "reason": "missing_nist_electron_bearing_state"
+      }
+    ]
+  }
+}

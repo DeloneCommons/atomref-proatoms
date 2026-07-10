@@ -1,0 +1,30 @@
+schema_version: atomref.proatoms.generator_tool_defaults.v1
+profile_data_version: "2.0.0"
+default_state_policy: neutral
+default_relativity: x2c
+default_artifacts:
+  - profiles
+  - rad
+scf_defaults:
+  engine: pyscf
+  expected_engine_version: "2.13.1"
+  conv_tol: 1.0e-9
+  max_cycle: 300
+  diis_space: 12
+  diis_start_cycle: 1
+  grid_level: 4
+profile_grid:
+  type: log
+  r_min_bohr: 1.0e-6
+  r_max_bohr: 60.0
+  n: 1200
+qa_grid:
+  type: gauss_legendre_log_r
+  r_min_bohr: 1.0e-7
+  r_max_bohr: 120.0
+  n: 400
+  angular_points: 110
+cutoffs_e_bohr3:
+  - 0.003
+  - 0.001
+  - 0.0001

@@ -39,7 +39,7 @@
   },
   "usage": {
     "dataset_ids_using_this_basis": [
-      "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v1"
+      "pbe0_sfx2c_x2cqzvpall_h-rn_spherical_v2"
     ]
   },
   "redistribution": {
@@ -47,6 +47,7 @@
     "license_notice_file": "../LICENSE-BSE-BSD-3-Clause.txt"
   },
   "notes": [
-    "Primary H-Rn basis for the default PBE0/sf-X2C spherical proatom density dataset."
+    "Primary H-Rn basis for the default PBE0/sf-X2C spherical proatom density dataset.",
+    "Active v2 primary profile dataset uses this basis for all curated states in its declared coverage."
   ]
 }

@@ -1,0 +1,32 @@
+{
+  "basis_source": {
+    "source": "file",
+    "name": "dyall-v2z-ni-pd-pt",
+    "label": "dyall-v2z-ni-pd-pt",
+    "path": "input/dyall-v2z-ni-pd-pt.nw",
+    "original": "input/dyall-v2z-ni-pd-pt.nw",
+    "basis_key": "file:dyall-v2z-ni-pd-pt"
+  },
+  "requested_symbols": [
+    "Ni",
+    "Pd"
+  ],
+  "status": "ok",
+  "full_electron_status": "unknown",
+  "coverage_checked": true,
+  "covered_symbols": [
+    "Ni",
+    "Pd",
+    "Pt"
+  ],
+  "missing_symbols": [],
+  "ecp_detected": false,
+  "ecp_symbols": [],
+  "check_method": "nwchem_text_scan",
+  "messages": [],
+  "errors": [],
+  "warnings": [
+    "No obvious ECP marker was found; full-electron status is still unverified."
+  ],
+  "basis_sha256": "cb3da401bdefaf8c915d7e594c7ad1096babe05b8377d41e65da0207bda46521"
+}

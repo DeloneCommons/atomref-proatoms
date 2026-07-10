@@ -17,3 +17,5 @@ Summary:
 When publishing work based on these data, cite the repository release, Basis Set
 Exchange and the upstream basis references used by the selected dataset, and the
 NIST Atomic Spectra Database for the state-configuration source layer.
+The repository root `CITATION.cff` supplies machine-readable metadata for the
+exact software/dataset release; prefer the archived release DOI once assigned.
